@@ -1,8 +1,9 @@
-import './App.css'
+import SplashScreen from './modules/SplashScreen'
 
 function App() {
   return (
     <>
+      <SplashScreen />
     </>
   )
 }
