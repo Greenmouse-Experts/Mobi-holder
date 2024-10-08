@@ -11,7 +11,6 @@ function CardType({ type, text, colorGradient }) {
                 borderImageSlice: 1,
             }}>
                 <div className="relative w-full h-[120px] sm:min-h-[200px] flex">
-                    <div className={`absolute top-0 w-[1px] h-full left-[0%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[10%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[20%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[30%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
@@ -21,7 +20,6 @@ function CardType({ type, text, colorGradient }) {
                     <div className={`absolute top-0 w-[1px] h-full left-[70%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[80%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[90%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
-                    <div className={`absolute top-0 w-[1px] h-full left-[100%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute left-0 w-full h-[1px] top-[20%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute left-0 w-full h-[1px] top-[40%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute left-0 w-full h-[1px] top-[60%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
