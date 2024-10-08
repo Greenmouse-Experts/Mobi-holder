@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import 'animate.css';
 
-const SplashScreen = () => {
+function SplashScreen({ clearScreen }) {
     const [progress, setProgress] = useState(0);
     const [fadeIn, setFadeIn] = useState(true);
 
@@ -12,10 +11,11 @@ const SplashScreen = () => {
                     return oldProgress + 1;
                 } else {
                     clearInterval(progressInterval);
+                    clearScreen(true)
                     return 100;
                 }
             });
-        }, 100); // Adjust the speed as needed
+        }, 50); // Adjust the speed as needed
 
         const logoInterval = setInterval(() => {
             setFadeIn((prevFade) => !prevFade);
@@ -26,6 +26,13 @@ const SplashScreen = () => {
             clearInterval(logoInterval);
         };
     }, []);
+
+    // Effect to handle when the progress reaches 100% and trigger the screen clear
+    useEffect(() => {
+        if (progress === 100) {
+            clearScreen(true);
+        }
+    }, [progress, clearScreen]);
 
     // Function to interpolate between two RGBA colors
     const interpolateColor = (color1, color2, factor) => {
@@ -47,7 +54,7 @@ const SplashScreen = () => {
         <div className='absolute w-full flex justify-center'>
             <div className="flex flex-col items-center justify-center h-screen w-3/4 lg:w-[300px] md:w-[300px]">
                 <div className={`${fadeIn ? 'animate__animated animate__fadeIn' : 'animate__animated animate__fadeOut'}`}>
-                    <div className='flex justify-center gap-3'>
+                    <div className='flex justify-center gap-3 -ml-2'>
                         <img src="/mobiHolder.svg" alt="Logo" className="w-[64px] h-[64px] object-contain" />
                         <div className='flex flex-col justify-center'>
                             <span className='text-3xl mt-1 font-semibold'>MobiHolder</span>
