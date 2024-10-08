@@ -6,7 +6,16 @@ module.exports = withMT({
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        mobiPink: 'rgba(163, 36, 242, 1)',
+        mobiLight: 'rgba(238, 238, 238, 1)',
+        mobiBlue: 'rgba(36, 46, 242, 1)',
+        mobiGrayDark: 'rgba(82, 81, 81, 1)',
+        mobiDarkOlay: 'rgba(46, 47, 54, 1)',
+        mobiFormGray: 'rgba(153, 151, 151, 1)'
+      }
+    },
   },
   plugins: [],
 })
