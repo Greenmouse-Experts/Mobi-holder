@@ -1,16 +1,18 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function CardType({ type, text, colorGradient }) {
+function CardType({ type, text, colorGradient, link }) {
     const isIndividual = type === 'Individual';
 
     return (
         <>
-            <div className='relative w-full max-w-md flex flex-col' style={{
+            <div className='relative w-full max-w-md flex flex-col bs-cageBlock' style={{
                 border: '1px solid transparent',
                 background: `linear-gradient(170deg, ${colorGradient[0]} 72.05%, ${colorGradient[1]} 200.35%)`,
                 borderImageSlice: 1,
             }}>
                 <div className="relative w-full h-[120px] sm:min-h-[200px] flex">
+                    <div className={`absolute top-0 w-[1px] h-full left-[0%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[10%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[20%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[30%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
@@ -20,6 +22,8 @@ function CardType({ type, text, colorGradient }) {
                     <div className={`absolute top-0 w-[1px] h-full left-[70%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[80%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute top-0 w-[1px] h-full left-[90%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
+                    <div className={`absolute top-0 w-[1px] h-full left-[100%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
+                    <div className={`absolute left-0 w-full h-[1px] top-[0%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute left-0 w-full h-[1px] top-[20%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute left-0 w-full h-[1px] top-[40%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
                     <div className={`absolute left-0 w-full h-[1px] top-[60%] ${isIndividual ? 'indGradient' : 'orgGradient'}`}></div>
@@ -29,7 +33,7 @@ function CardType({ type, text, colorGradient }) {
                 <div className='absolute lg:top-20 md:top-20 top-7 left-4'>
                     <img src={type === 'Individual' ? `/individual.svg` : `/organisation.svg`} width={isIndividual ? 60 : 90} />
                 </div>
-                <div className='absolute w-auto lg:py-2 md:py-2 lg:px-3 md:px-3 p-1 top-[-0.5%] left-[91.3%] lg:left-[89.5%] md:left-[89%] shadow-lg shadow-black bS-overlay'>
+                <div className='absolute w-auto lg:py-2 md:py-2 lg:px-3 md:px-3 p-1 top-[-0.5%] left-[91.3%] lg:left-[89.5%] md:left-[89%] shadow-md shadow-black bS-overlay'>
                     {isIndividual ?
                         <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="7.35376" y="27.5723" width="27.0277" height="2.57406" transform="rotate(-45 7.35376 27.5723)" fill="#76129B" />
@@ -43,16 +47,18 @@ function CardType({ type, text, colorGradient }) {
                     }
                 </div>
                 <div className={`w-[100.2%] rounded-sm lg:py-8 md:py-8 lg:px-4 md:px-4 p-4 flex flex-col gap-4 ${type === 'Individual' ? 'bg-mobiPink' : 'bg-mobiBlue'}`}>
-                    <p className='lg:text-xl text-base font-semibold text-mobiLight'>
-                        {type}
-                    </p>
-                    <p className='text-sm text-mobiLight'>
-                        {text}
-                    </p>
+                    <Link to={`${link}`} className='w-full'>
+                        <p className='lg:text-xl text-base font-semibold text-mobiLight'>
+                            {type}
+                        </p>
+                        <p className='text-sm text-mobiLight'>
+                            {text}
+                        </p>
+                    </Link>
                 </div>
             </div>
 
-            <style jsx>{`
+            <style jsx="true">{`
         .indGradient {
           background: linear-gradient(90deg, rgba(41, 22, 61, 1), rgba(163, 58, 160, 1));
         }

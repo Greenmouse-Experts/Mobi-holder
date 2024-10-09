@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import SignUp from './modules/SignUp';
 import Login from './modules/Login';
 import PasswordReset from './modules/PasswordReset';
+import IndividualSignUp from './modules/SignUp/individual';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -21,6 +22,7 @@ function App() {
         :
         <Routes>
           <Route path="/signup" element={<SignUp />} />
+          <Route path='/signup/individual' element={<IndividualSignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/forgot-password' element={<PasswordReset />} />
         </Routes>

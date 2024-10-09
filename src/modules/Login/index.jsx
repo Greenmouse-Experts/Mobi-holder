@@ -47,7 +47,7 @@ export default function Login() {
 
                         <div className="flex w-full justify-center">
                             <p className='lg:text-base md:text-base text-[12px]'>Are you a new user ?
-                                <Link className='text-mobiPink font-semibold mx-1' to={'/login'}>Create An Account</Link>
+                                <Link className='text-mobiPink font-semibold mx-1' to={'/signup'}>Create An Account</Link>
                             </p>
                         </div>
                     </div>
