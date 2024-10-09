@@ -1,9 +1,9 @@
 import React from "react";
-import Input from "../../components/Input";
-import { Link } from "react-router-dom";
+import Input from "../../../components/Input";
 import { Button, Checkbox } from "@material-tailwind/react";
+import RangeSlider from "../../../components/RangeSlider";
 
-export default function IndividualSignUp() {
+export default function OrgInfoSetUp({ moveNext }) {
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -18,32 +18,26 @@ export default function IndividualSignUp() {
                         </div>
 
                         <div className="bS-borderRay py-7 px-5 w-full flex rounded-xl flex-col gap-3">
-                            <p className="lg:text-xl md:text-xl text-lg font-semibold">Sign Up as Individual</p>
+                            <p className="lg:text-xl md:text-xl text-lg font-semibold">Sign Up as Organisation</p>
+
+                            <div className="py-4 px-3 bg-mobiDarkRoamn flex w-full gap-6">
+                                <div className="flex flex-col gap-2 w-auto">
+                                    <p className="bs-mobiCeramaic text-base uppercase">Step 1</p>
+                                    <p className="bs-mobiCeramaic text-sm">Organization Info</p>
+                                </div>
+                                <div className="lg:flex md:flex hidden flex-grow flex-col justify-center">
+                                    <RangeSlider value={50} />
+                                </div>
+                            </div>
 
                             <div className="mb-1 flex flex-col gap-6 mt-5">
-                                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            First name
+                                            Company Name
                                         </p>
-                                        <Input icon="human.svg" type="text" placeholder="Enter your first name" />
+                                        <Input icon="company.svg" type="text" placeholder="Enter your company name" />
                                     </div>
 
-                                    <div className="flex flex-col gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Last name
-                                        </p>
-                                        <Input icon="human.svg" type="text" placeholder="Enter your last name" />
-                                    </div>
-                                </div>
-
-                                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                                    <div className="flex flex-col gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Email
-                                        </p>
-                                        <Input icon="email.svg" type="email" placeholder="Enter your email" />
-                                    </div>
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
@@ -51,13 +45,35 @@ export default function IndividualSignUp() {
                                         </p>
                                         <Input icon="phone.svg" type="tel" placeholder="Enter your phone number" />
                                     </div>
+
+                                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Country
+                                        </p>
+                                        <Input icon="human.svg" type="text" placeholder="Choose your country" />
+                                    </div>
+
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            State
+                                        </p>
+                                        <Input icon="human.svg" type="text" placeholder="Choose your state" />
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-col gap-6">
                                     <p className="-mb-3 text-mobiFormGray">
-                                        Username
+                                        Address
                                     </p>
-                                    <Input icon="human.svg" type="text" placeholder="Enter your preferred username" />
+                                    <Input icon="address.svg" type="text" placeholder="Enter your address" />
+                                </div>
+
+                                <div className="flex flex-col gap-6">
+                                    <p className="-mb-3 text-mobiFormGray">
+                                        Email
+                                    </p>
+                                    <Input icon="email.svg" type="email" placeholder="Enter your email" />
                                 </div>
 
                                 <div className="flex flex-col gap-6">
@@ -68,7 +84,7 @@ export default function IndividualSignUp() {
                                 </div>
 
                                 <div className="flex justify-start">
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-1">
                                         <span className="flex">
                                             <Checkbox />
                                         </span>
@@ -77,15 +93,10 @@ export default function IndividualSignUp() {
                                 </div>
 
                                 <div className="flex">
-                                    <Button className="bg-mobiPink w-full p-5 rounded-full">Sign Up</Button>
+                                    <Button className="bg-mobiPink w-full p-5 rounded-full" onClick={() => moveNext(true)}>Proceed</Button>
                                 </div>
                             </div>
                         </div>
-
-                        <div className="flex w-full justify-center">
-                            <p className='lg:text-base md:text-base text-[12px]'>Already have an account ?
-                                <Link className='text-mobiBlue font-semibold mx-1' to={'/login'}>Login</Link>
-                            </p>                        </div>
                     </div>
                 </div>
             </div>

@@ -24,7 +24,6 @@ function SignUp() {
                             <div className='w-full flex flex-col h-full'>
                             <CardType type="Individual"
                                 text="This account type is for regular users"
-                                    colorGradient={['rgba(41, 22, 61, 0.5)', 'rgba(163, 58, 160, 0.5)']}
                                     link='/signup/individual'
                             />
                         </div>
@@ -32,7 +31,6 @@ function SignUp() {
                         <div className='w-full flex flex-col h-full'>
                             <CardType type="Organisation"
                                 text="This account type is for companies and organizations"
-                                    colorGradient={['rgba(22, 24, 61, 0.5)', 'rgba(60, 58, 163, 0.5)']}
                                     link='/signup/organisation'
                             />
                         </div>
@@ -40,8 +38,8 @@ function SignUp() {
                 </div>
 
                     <div className='w-full flex justify-center my-1'>
-                        <div className='lg:max-w-md md:max-w-md w-full flex rounded-2xl bg-mobiGrayDark p-5 justify-center'>
-                            <p className='lg:text-base md:text-base text-[12px] text-white'>Already have an account ? Proceed to
+                        <div className='lg:max-w-md md:max-w-md w-full flex rounded-2xl p-5 bs-boxAccount justify-center border' style={{ borderColor: 'rgba(22, 24, 61, 0.2)' }}>
+                            <p className='lg:text-base md:text-base text-[12px]'>Already have an account ? Proceed to
                                 <Link className='text-mobiBlue font-semibold mx-1' to={'/login'}>Login</Link>
                             </p>
                         </div>

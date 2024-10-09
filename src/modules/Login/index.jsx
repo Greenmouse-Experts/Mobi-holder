@@ -40,7 +40,7 @@ export default function Login() {
                                 </div>
 
                                 <div className="flex">
-                                    <Button className="bg-mobiPink w-full">Login</Button>
+                                    <Button className="bg-mobiPink w-full p-5 rounded-full">Login</Button>
                                 </div>
                             </div>
                         </div>

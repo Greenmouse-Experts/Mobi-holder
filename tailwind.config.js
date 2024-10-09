@@ -13,7 +13,8 @@ module.exports = withMT({
         mobiBlue: 'rgba(36, 46, 242, 1)',
         mobiGrayDark: 'rgba(82, 81, 81, 1)',
         mobiDarkOlay: 'rgba(46, 47, 54, 1)',
-        mobiFormGray: 'rgba(153, 151, 151, 1)'
+        mobiFormGray: 'rgba(153, 151, 151, 1)',
+        mobiDarkRoamn: 'rgba(46, 47, 54, 0.2)'
       }
     },
   },
