@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function CardType({ type, text, colorGradient, link }) {
+function CardType({ type, text, link }) {
     const isIndividual = type === 'Individual';
 
     return (
         <>
-            <div className='relative w-full max-w-md flex flex-col bs-cageBlock' style={{
+            <div className={`relative w-full max-w-md flex flex-col ${isIndividual ? 'bs-cageBlockIndividual' : 'bs-cageBlockOrganisation'}`} style={{
                 border: '1px solid transparent',
-                background: `linear-gradient(170deg, ${colorGradient[0]} 72.05%, ${colorGradient[1]} 200.35%)`,
                 borderImageSlice: 1,
             }}>
                 <div className="relative w-full h-[120px] sm:min-h-[200px] flex">
@@ -33,7 +32,7 @@ function CardType({ type, text, colorGradient, link }) {
                 <div className='absolute lg:top-20 md:top-20 top-7 left-4'>
                     <img src={type === 'Individual' ? `/individual.svg` : `/organisation.svg`} width={isIndividual ? 60 : 90} />
                 </div>
-                <div className='absolute w-auto lg:py-2 md:py-2 lg:px-3 md:px-3 p-1 top-[-0.5%] left-[91.3%] lg:left-[89.5%] md:left-[89%] shadow-md shadow-black bS-overlay'>
+                <div className='absolute w-auto lg:py-2 md:py-2 lg:px-3 md:px-3 p-1 top-[0%] left-[91.3%] lg:left-[89.5%] md:left-[89%] shadow-sm shadow-black bS-overlay'>
                     {isIndividual ?
                         <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="7.35376" y="27.5723" width="27.0277" height="2.57406" transform="rotate(-45 7.35376 27.5723)" fill="#76129B" />

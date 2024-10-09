@@ -29,7 +29,7 @@ export default function PasswordReset() {
                                 </div>
 
                                 <div className="flex">
-                                    <Button className="bg-mobiPink w-full">Send password reset link</Button>
+                                    <Button className="bg-mobiPink w-full p-5 rounded-full">Send password reset link</Button>
                                 </div>
                             </div>
                         </div>
