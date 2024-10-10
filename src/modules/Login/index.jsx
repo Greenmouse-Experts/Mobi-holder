@@ -2,12 +2,13 @@ import React from "react";
 import Input from "../../components/Input";
 import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
+import AuthSideBar from "../../components/AuthSideBar";
 
 export default function Login() {
     return (
         <>
             <div className="w-full flex h-screen animate__animated animate__fadeIn">
-                <div className="w-1/3 h-full lg:flex md:flex hidden flex-grow"></div>
+                <AuthSideBar />
                 <div className="w-full flex justify-center px-6 bS-leftOverlay">
                     <div className="lg:w-1/2 md:w-1/2 w-full flex flex-col h-full gap-4 justify-center">
                         <div className='flex gap-3'>

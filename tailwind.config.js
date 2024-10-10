@@ -14,7 +14,8 @@ module.exports = withMT({
         mobiGrayDark: 'rgba(82, 81, 81, 1)',
         mobiDarkOlay: 'rgba(46, 47, 54, 1)',
         mobiFormGray: 'rgba(153, 151, 151, 1)',
-        mobiDarkRoamn: 'rgba(46, 47, 54, 0.2)'
+        mobiDarkRoamn: 'rgba(46, 47, 54, 0.2)',
+        mobiDarkCloud: 'var(--bs-darkCloud)'
       }
     },
   },

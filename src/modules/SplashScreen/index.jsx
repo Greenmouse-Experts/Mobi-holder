@@ -62,7 +62,7 @@ function SplashScreen({ clearScreen }) {
                     </div>
                 </div>
 
-                <div className="w-full mt-6 bg-gray-300 rounded-full h-1">
+                <div className="w-full mt-6 bg-white rounded-full h-1">
                     <div
                         className="h-full rounded-full transition-all duration-100"
                         style={{ width: `${progress}%`, backgroundColor: currentColor }}
