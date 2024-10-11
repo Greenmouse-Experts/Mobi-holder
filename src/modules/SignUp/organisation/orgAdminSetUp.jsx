@@ -2,20 +2,31 @@ import React from "react";
 import Input from "../../../components/Input";
 import { Button, Checkbox } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
+import DropdownMenu from "../../../components/DropdownMenu";
+import { Link } from "react-router-dom";
 
 export default function OrgAdminSetUp() {
-    window.scrollTo({top: 0, behavior: 'smooth'})
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
-                <div className="w-1/3 h-full lg:flex md:flex hidden flex-grow"></div>
+                <AuthSideBar />
                 <div className="w-full flex justify-center px-6 py-7 bS-leftOverlay">
                     <div className="lg:w-1/2 md:w-1/2 w-full flex flex-col h-full gap-4 justify-center">
-                        <div className='flex gap-3'>
-                            <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
-                            <div className='flex flex-col justify-center'>
-                                <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
+                        <div className="w-full flex justify-between items-center">
+                            <div className='flex gap-3 flex-grow'>
+                                <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
+                                <div className='flex flex-col justify-center'>
+                                    <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
+                                </div>
+                            </div>
+                            <div className="flex">
+                                <DropdownMenu buttonLabel="Organisation" color="#A324F2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiPink border rounded-md border-mobiPink">
+                                    <Link to={'/signup/individual'} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        Individual
+                                    </Link>
+                                </DropdownMenu>
                             </div>
                         </div>
 
@@ -35,7 +46,7 @@ export default function OrgAdminSetUp() {
                             <div className="mb-1 flex flex-col gap-6 mt-5">
                                 <div className="flex flex-col gap-6">
                                     <p className="-mb-3 text-mobiFormGray">
-                                       Full Name
+                                        Full Name
                                     </p>
                                     <Input icon="human.svg" type="text" placeholder="Enter contact person name" />
                                 </div>
