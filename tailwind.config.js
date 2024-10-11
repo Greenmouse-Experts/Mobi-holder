@@ -15,7 +15,11 @@ module.exports = withMT({
         mobiDarkOlay: 'rgba(46, 47, 54, 1)',
         mobiFormGray: 'rgba(153, 151, 151, 1)',
         mobiDarkRoamn: 'rgba(46, 47, 54, 0.2)',
-        mobiDarkCloud: 'var(--bs-darkCloud)'
+        mobiDarkCloud: 'var(--bs-darkCloud)',
+        mobiSilverDivider: 'var(--bs-lineDivider)',
+        mobiBlueFade: 'rgba(36, 46, 242, 0.1)',
+        mobiRomanSilver: 'rgba(127, 127, 127, 1)',
+        mobiSearchDark: 'rgba(18, 20, 19, 1)'
       }
     },
   },
