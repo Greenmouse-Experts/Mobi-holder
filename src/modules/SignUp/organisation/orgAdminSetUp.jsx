@@ -4,6 +4,7 @@ import { Button, Checkbox } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
 import DropdownMenu from "../../../components/DropdownMenu";
 import { Link } from "react-router-dom";
+import AuthSideBar from "../../../components/AuthSideBar";
 
 export default function OrgAdminSetUp() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
