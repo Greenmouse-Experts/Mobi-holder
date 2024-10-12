@@ -19,7 +19,12 @@ module.exports = withMT({
         mobiSilverDivider: 'var(--bs-lineDivider)',
         mobiBlueFade: 'rgba(36, 46, 242, 0.1)',
         mobiRomanSilver: 'rgba(127, 127, 127, 1)',
-        mobiSearchDark: 'rgba(18, 20, 19, 1)'
+        mobiSearchDark: 'rgba(18, 20, 19, 1)',
+        mobiOrange: 'rgba(104, 78, 70, 1)',
+        mobiSkyCloud: 'rgba(64, 79, 109, 1)',
+        mobiSubPurple: 'rgba(109, 66, 92, 1)',
+        mobiLightGreen: 'rgba(64, 105, 102, 1)',
+        mobiSkyBlue: 'rgba(174, 185, 225, 1)'
       }
     },
   },
