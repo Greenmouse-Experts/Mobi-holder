@@ -17,7 +17,7 @@ export default function SearchInput(props) {
                 />
 
                 {props.appendIcon ?
-                    <img src={`/${props.appendIcon}`} />
+                    <img src={`/${props.appendIcon}`} style={{ width: '20px' }} />
                     :
                     null}
             </div>        </>
