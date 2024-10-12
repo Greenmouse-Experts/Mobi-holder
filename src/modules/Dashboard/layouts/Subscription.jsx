@@ -57,7 +57,7 @@ export default function Subscription() {
     return (
         <div className="text-white px-5 py-7 rounded-lg border-gray-900 border">
             <p className="text-mobiSkyBlue font-[500px] mb-4">Today</p>
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Subscriptions</h3>
                 <div className="flex space-x-2">
                     <button className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
@@ -76,7 +76,7 @@ export default function Subscription() {
                     </button>
                 </div>
             </div>
-            <div className="py-1 mt-7 rounded-lg">
+            <div className="py-1 mt-5 rounded-lg">
                 <div style={{ width: '100%', minHeight: '300px', borderRadius: '10px' }}>
                     <Bar options={options} data={data} />
                 </div>
