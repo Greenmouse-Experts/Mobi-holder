@@ -7,6 +7,7 @@ import DashboardStats from "./layouts/DashboardStats";
 import Table from "../../../components/Tables";
 import Badge from "../../../components/Badge";
 import Subscription from "./layouts/Subscription";
+import { Link } from "react-router-dom";
 
 const TableData = [
     {
