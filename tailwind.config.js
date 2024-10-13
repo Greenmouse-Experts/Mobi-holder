@@ -24,7 +24,8 @@ module.exports = withMT({
         mobiSkyCloud: 'rgba(64, 79, 109, 1)',
         mobiSubPurple: 'rgba(109, 66, 92, 1)',
         mobiLightGreen: 'rgba(64, 105, 102, 1)',
-        mobiSkyBlue: 'rgba(174, 185, 225, 1)'
+        mobiSkyBlue: 'rgba(174, 185, 225, 1)',
+        mobiUnread: 'var(--bs-unread)'
       }
     },
   },

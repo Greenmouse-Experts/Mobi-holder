@@ -1,8 +1,8 @@
-import StatCard from "../../../components/StatsCard";
-import cards from "../../../assets/cards.svg";
-import organisation from "../../../assets/organisation.svg";
-import subscriptions from "../../../assets/subscriptions.svg";
-import calendar from "../../../assets/calendar.svg";
+import StatCard from "../../../../components/StatsCard";
+import cards from "../../../../assets/cards.svg";
+import organisation from "../../../../assets/organisation.svg";
+import subscriptions from "../../../../assets/subscriptions.svg";
+import calendar from "../../../../assets/calendar.svg";
 
 const DashboardStats = () => {
     return (
