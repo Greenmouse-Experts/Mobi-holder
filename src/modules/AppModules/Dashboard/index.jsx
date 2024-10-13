@@ -1,12 +1,11 @@
 import React from "react";
-import Sidebar from "./layouts/sideBar";
-import SearchInput from "../../components/SearchInput";
-import settings from "../../assets/settings.svg";
-import notifications from "../../assets/notifications.svg"
+import SearchInput from "../../../components/SearchInput";
+import settings from "../../../assets/settings.svg";
+import notifications from "../../../assets/notifications.svg"
 import Greeting from "./layouts/Greetings";
 import DashboardStats from "./layouts/DashboardStats";
-import Table from "../../components/Tables";
-import Badge from "../../components/Badge";
+import Table from "../../../components/Tables";
+import Badge from "../../../components/Badge";
 import Subscription from "./layouts/Subscription";
 
 const TableData = [
@@ -63,9 +62,8 @@ const NewTableHeaders = ["Organisations", "Renewal Date", "Current Status", "Act
 export default function Dashboard() {
     return (
         <>
-            <div className="w-full flex h-full p-4 animate__animated animate__fadeIn">
-                <Sidebar />
-                <div className="w-full lg:ml-[25%] flex flex-col gap-5 md:ml-[25%] h-full">
+            <div className="w-full flex h-full animate__animated animate__fadeIn">
+                <div className="w-full flex flex-col gap-5 h-full">
                     <div className="w-full lg:flex-row md:flex-row flex flex-col gap-5">
                         <div className="lg:w-[70%] md:w-[70%] w-full flex flex-col gap-5">
                             <div className="w-full flex gap-10">
@@ -78,7 +76,12 @@ export default function Dashboard() {
                                         <img src={settings} />
                                     </div>
                                     <div className="lg:flex md:flex flex p-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                                        <img src={notifications} />
+                                        <Link to={'/app/notification'} className="w-full">
+                                            <img src={notifications} />
+                                        </Link>
+                                    </div>
+                                    <div className="lg:hidden md:hidden flex p-3 bg-mobiSearchDark rounded-md flex-col justify-center">
+                                        <img src="/userProfilexs.png" />
                                     </div>
                                 </div>
                             </div>

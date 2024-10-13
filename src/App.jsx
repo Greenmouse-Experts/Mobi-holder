@@ -6,7 +6,9 @@ import Login from './modules/Login';
 import PasswordReset from './modules/PasswordReset';
 import IndividualSignUp from './modules/SignUp/individual';
 import OrganisationSignUp from './modules/SignUp/organisation';
-import Dashboard from './modules/Dashboard';
+import AppModules from './modules/AppModules';
+import Dashboard from './modules/AppModules/Dashboard';
+import Notification from './modules/AppModules/Notifications';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -28,7 +30,10 @@ function App() {
           <Route path='/signup/organisation' element={<OrganisationSignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/forgot-password' element={<PasswordReset />} />
-          <Route path='/dashboard/*' element={<Dashboard />} />
+          <Route path='/app' element={<AppModules />}>
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path='notification' element={<Notification />} />
+            </Route>
         </Routes>
       }
     </>
