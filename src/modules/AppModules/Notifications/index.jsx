@@ -80,7 +80,7 @@ export default function Notification() {
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">Notifications</p>
 
                         <div className="w-full flex justify-center">
-                            <div className="bg-mobiDarkCloud text-white my-3 lg:w-3/4 md:w-3/4 w-full rounded-lg">
+                            <div className="bg-mobiDarkCloud my-3 lg:w-3/4 md:w-3/4 w-full rounded-lg">
                                 <div className="flex justify-between items-center p-6">
                                     <p className="text-sm font-[500]">All (18)</p>
                                     <div className="flex space-x-2">
@@ -90,11 +90,11 @@ export default function Notification() {
                                     </div>
                                 </div>
 
-                                <div className="w-full h-[1px]" style={{ borderBottom: '0.8px solid rgba(33, 34, 34, 1)' }} />
+                                <div className="w-full h-[1px]" style={{ borderBottom: '0.8px solid rgba(188, 189, 189, 1)' }} />
 
                                 <ul className="space-y-2 flex flex-col p-6 gap-3">
                                     {notificationsData.map((notification, index) => (
-                                        <li key={index} className={`flex items-center relative gap-2 py-3 px-3 border rounded-md ${notification.read ? '' : 'bg-mobiUnread'}`} style={{ borderColor: 'rgba(36, 36, 37, 1)' }}>
+                                        <li key={index} className={`flex items-center relative gap-2 py-3 px-3 shadow-lg rounded-md ${notification.read ? '' : 'bg-mobiUnread'}`} style={{ borderColor: 'rgba(36, 36, 37, 1)' }}>
                                             <img src={notification.icon} alt={notification.title} className="w-8 h-8 rounded-full mr-2" />
                                             <div className="flex-1">
                                                 <p className="text-base font-semibold">{notification.title}</p>

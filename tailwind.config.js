@@ -27,7 +27,8 @@ module.exports = withMT({
         mobiLightGreen: 'rgba(64, 105, 102, 1)',
         mobiSkyBlue: 'var(--bs-skyBlue)',
         mobiUnread: 'var(--bs-unread)',
-        mobiBorder: 'var(--bs-bgBody)'
+        mobiBorder: 'var(--bs-bgBody)',
+        borderMB: 'rgba(96, 101, 116, 1)'
       }
     },
   },
