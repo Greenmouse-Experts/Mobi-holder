@@ -57,7 +57,7 @@ const data = {
 
 export default function Subscription() {
     return (
-        <div className="px-5 py-7 rounded-lg border-borderMB border bg-mobiSearchDark">
+        <div className="px-5 py-7 rounded-lg border bg-mobiSearchDark" style={{ borderColor: 'rgba(188, 189, 189, 1)' }}>
             <p className="text-mobiSkyBlue font-[500px] mb-4">Today</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Subscriptions</h3>
