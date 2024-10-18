@@ -55,7 +55,7 @@ const data = {
 
 export default function Subscription() {
     return (
-        <div className="text-white px-5 py-7 rounded-lg border-gray-900 border">
+        <div className="px-5 py-7 rounded-lg border-gray-900 border bg-mobiSearchDark">
             <p className="text-mobiSkyBlue font-[500px] mb-4">Today</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Subscriptions</h3>
@@ -77,7 +77,7 @@ export default function Subscription() {
                 </div>
             </div>
             <div className="py-1 mt-5 rounded-lg">
-                <div style={{ width: '100%', minHeight: '300px', borderRadius: '10px' }}>
+                <div className='chartColor' style={{ width: '100%', minHeight: '300px', borderRadius: '10px' }}>
                     <Bar options={options} data={data} />
                 </div>
             </div>

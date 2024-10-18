@@ -5,7 +5,7 @@ import checkMark from "../assets/checkMark.png";
 
 export default function AuthSideBar() {
     return (
-        <div className="w-2/5 h-full lg:flex md:flex hidden bg-mobiDarkCloud flex-col flex-grow">
+        <div className="w-2/5 h-full lg:flex md:flex hidden bg-mobiDarkSide flex-col flex-grow">
             <div className="relative flex w-full justify-center items-center h-screen flex-col">
                 <img
                     src={womanWithCard}

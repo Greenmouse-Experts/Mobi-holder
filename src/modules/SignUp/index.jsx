@@ -38,7 +38,7 @@ function SignUp() {
                 </div>
 
                     <div className='w-full flex justify-center my-1'>
-                        <div className='lg:max-w-md md:max-w-md w-full flex rounded-2xl p-5 bs-boxAccount justify-center border' style={{ borderColor: 'rgba(22, 24, 61, 0.2)' }}>
+                        <div className='lg:max-w-md md:max-w-md w-full flex rounded-full p-5 bs-boxAccount shadow shadow-md justify-center border' style={{ borderColor: 'rgba(22, 24, 61, 0.2)' }}>
                             <p className='lg:text-base md:text-base text-[12px]'>Already have an account ? Proceed to
                                 <Link className='text-mobiBlue font-semibold mx-1' to={'/login'}>Login</Link>
                             </p>

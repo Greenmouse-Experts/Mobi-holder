@@ -93,8 +93,8 @@ export default function Dashboard() {
                         </div>
 
                         <div className="flex lg:w-[30%] md:w-[30%] w-full flex-col">
-                            <div className="w-full flex flex-col gap-6 p-2 rounded-md" style={{ border: '1px solid rgba(52, 59, 79, 1)' }}>
-                                <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiSearchDark px-3 py-1 rounded-[7px]">
+                            <div className="w-full flex flex-col gap-6 p-2 rounded-md bg-mobiSearchDark">
+                                <div className="flex items-center justify-center border w-full border-mobiSearchDark bGmobiGrayDark px-3 py-1 rounded-[7px]">
                                     <div className="flex flex-grow">
                                         <p className="text-sm font-semibold">My Profile</p>
                                     </div>
@@ -122,23 +122,23 @@ export default function Dashboard() {
                                     </div>
                                 </div>
 
-                                <div className="flex gap-2 px-3 mb-2">
+                                <div className="flex gap-2 px-3 mt-2 mb-2">
                                     <div className="flex flex-col  gap-1">
-                                        <p className="text-mobiRomanSilver text-center lg:text-sm md:text-sm sm:text-sm text-xs">Type</p>
+                                        <p className="text-mobiRomanSilver text-center lg:text-xs md:text-sm sm:text-sm text-xs">Type</p>
                                         <p className="text-sm text-center">Individual</p>
                                     </div>
 
                                     <div className="w-[1px] mx-2 lg:h-full md:h-full min-h-[20px] border border-mobiRomanSilver" />
 
                                     <div className="flex flex-col gap-1">
-                                        <p className="text-mobiRomanSilver text-center lg:text-sm md:text-sm sm:text-sm text-xs">Date Joined</p>
+                                        <p className="text-mobiRomanSilver text-center lg:text-xs md:text-sm sm:text-sm text-xs">Date Joined</p>
                                         <p className="text-sm text-center">09-10-22</p>
                                     </div>
 
                                     <div className="w-[1px] mx-2 lg:h-full md:h-full min-h-[20px] border border-mobiRomanSilver" />
 
                                     <div className="flex flex-col gap-1">
-                                        <p className="text-mobiRomanSilver text-center lg:text-sm md:text-sm sm:text-sm text-xs">Status</p>
+                                        <p className="text-mobiRomanSilver text-center lg:text-xs md:text-xs sm:text-sm text-xs">Status</p>
                                         <p className="text-sm text-center">VERIFIED</p>
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@ export default function Dashboard() {
                             </div>
 
                         <div className="lg:w-[50%] md:w-[50%] w-full flex flex-col gap-5">
-                            <Table title="Today" subTitle={<span>Upcoming Subscriptions</span>} filter exportData
+                            <Table title="Today" subTitle={'Upcoming Subscriptions'} filter exportData
                                 tableHeader={NewTableHeaders}>
                                 {TableData.map((data, index) => (
                                     <tr key={index}>

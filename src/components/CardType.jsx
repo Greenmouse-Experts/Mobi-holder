@@ -32,7 +32,7 @@ function CardType({ type, text, link }) {
                 <div className='absolute lg:top-20 md:top-20 top-7 left-4'>
                     <img src={type === 'Individual' ? `/individual.svg` : `/organisation.svg`} width={isIndividual ? 60 : 90} />
                 </div>
-                <div className='absolute w-auto lg:py-2 md:py-2 lg:px-3 md:px-3 p-1 top-[0%] left-[91.3%] lg:left-[89.5%] md:left-[89%] shadow-sm shadow-black bS-overlay'>
+                <div className='absolute w-auto lg:py-2 md:py-2 lg:px-3 md:px-3 p-1 top-[0%] left-[91.3%] lg:left-[89.5%] md:left-[89%] border border-mobiBorder border-b-2 border-t-0 border-l-2 border-r-0 bg-black'>
                     {isIndividual ?
                         <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="7.35376" y="27.5723" width="27.0277" height="2.57406" transform="rotate(-45 7.35376 27.5723)" fill="#76129B" />
