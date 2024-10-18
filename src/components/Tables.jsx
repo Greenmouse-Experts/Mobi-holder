@@ -8,7 +8,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, children, tableH
     };
 
     return (
-        <div className="text-white px-5 py-7 rounded-lg border-gray-900 border">
+        <div className="px-5 py-7 rounded-lg border-gray-900 border bg-mobiSearchDark">
             <p className="text-mobiSkyBlue font-[500px] mb-4">{title}</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">{subTitle}</h3>
@@ -35,7 +35,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, children, tableH
                 </div>
             </div>
 
-            <div className="overflow-x-auto border py-1 mt-7 border-gray-900 rounded-lg">
+            <div className="overflow-x-auto border border-gray-900 py-1 mt-7 rounded-lg">
                 <table className="table-auto lg:w-full md:w-full sm:w-full w-[500px] text-mobiSkyBlue">
                     {tableHeader ?
                         <thead>
