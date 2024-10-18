@@ -5,13 +5,15 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register components in ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
+const theme = document.documentElement.getAttribute('data-theme');
+
 const options = {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
         x: {
             ticks: {
-                color: 'white',
+                color: theme ? 'white' : 'rgba(96, 101, 116, 1)',
             },
             grid: {
                 display: false,
@@ -19,13 +21,13 @@ const options = {
         },
         y: {
             ticks: {
-                color: 'white',
+                color: theme ? 'white' : 'rgba(96, 101, 116, 1)',
                 beginAtZero: true,
                 callback: (value) => `${value / 1000}K`, // Adjust tick values for 'K' format
             },
             grid: {
                 borderDash: [8, 4],
-                color: 'rgba(255, 255, 255, 0.2)',
+                color: theme ? 'rgb(255,255,255)' : 'rgba(96, 101, 116, 1)'
             },
         },
     },
@@ -55,7 +57,7 @@ const data = {
 
 export default function Subscription() {
     return (
-        <div className="px-5 py-7 rounded-lg border-gray-900 border bg-mobiSearchDark">
+        <div className="px-5 py-7 rounded-lg border bg-mobiSearchDark" style={{ borderColor: 'rgba(188, 189, 189, 1)' }}>
             <p className="text-mobiSkyBlue font-[500px] mb-4">Today</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Subscriptions</h3>
