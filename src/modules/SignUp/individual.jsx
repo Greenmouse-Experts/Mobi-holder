@@ -4,20 +4,23 @@ import { Link } from "react-router-dom";
 import { Button, Checkbox } from "@material-tailwind/react";
 import DropdownMenu from "../../components/DropdownMenu";
 import AuthSideBar from "../../components/AuthSideBar";
+import Theme from "../../components/Theme";
 
 export default function IndividualSignUp() {
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <AuthSideBar />
-                <div className="w-full flex justify-center px-6 py-7 bS-leftOverlay">
-                    <div className="lg:w-1/2 md:w-1/2 w-full flex flex-col h-full gap-4 justify-center">
+                <div className="w-full flex justify-center mt-8 px-6 py-7 bS-leftOverlay relative shadow-lg lg:ml-[33%]">
+                    <div className="lg:w-3/5 md:w-3/5 w-full flex flex-col h-full gap-4 justify-center">
                         <div className="w-full flex justify-between items-center">
                             <div className='flex gap-3 flex-grow'>
-                                <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
-                                <div className='flex flex-col justify-center'>
-                                    <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
-                                </div>
+                                <Link to={'/signup'} className="w-full flex gap-3">
+                                    <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
+                                    <div className='flex flex-col justify-center'>
+                                        <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
+                                    </div>
+                                </Link>
                             </div>
                             <div className="flex">
                                 <DropdownMenu buttonLabel="Individual" color="#242EF2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiBlue border rounded-md border-mobiBlue">
@@ -97,6 +100,15 @@ export default function IndividualSignUp() {
                             <p className='lg:text-base md:text-base text-[12px]'>Already have an account ?
                                 <Link className='text-mobiBlue font-semibold mx-1' to={'/login'}>Login</Link>
                             </p>                        </div>
+                    </div>
+                </div>
+
+                {/** Dark Theme */}
+                <div className="absolute flex w-full">
+                    <div className='flex w-full relative justify-end'>
+                        <div className='max-w-[11rem] top-[2%] p-3 w-full flex'>
+                            <Theme />
+                        </div>
                     </div>
                 </div>
             </div>

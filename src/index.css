@@ -24,9 +24,21 @@
   --bs-bodyRoam: rgba(255, 189, 244, 0.2);
   --bs-boxShadow: none;
   --bs-search: #ffffff;
-  --bs-skyBlue: #000000;
+  --bs-skyBlue: rgba(54, 93, 226, 1);
   --bs-active: rgba(5, 193, 104, 0.2);
   --bs-pending: rgba(187, 193, 5, 0.2);
+  --bs-borderMobi: transparent;
+  --bs-gradBorder: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --bs-profileBlock: rgba(233, 235, 251, 1);
+  --bs-mobiOrange: rgba(255, 212, 199, 1);
+  --bs-mobiSkyCloud: rgba(176, 198, 243, 1);
+  --bs-mobiSubPurple: rgba(255, 198, 232, 1);
+  --bs-mobiLightGreen: rgba(147, 252, 245, 0.4);
+  --bs-mobiTable: rgba(129, 133, 143, 1);
+  --bs-mobiBorderTable: rgba(236, 236, 236, 1);
+  --bs-tableText: rgba(96, 101, 116, 1);
+  --bs-notificationBorder: rgba(196, 196, 196, 1);
 }
 
 [data-theme="dark"] {
@@ -52,8 +64,20 @@
   --bs-bodyRoam: rgba(46, 47, 54, 0.2);
   --bs-search: rgba(18, 20, 19, 1);
   --bs-skyBlue: rgba(174, 185, 225, 1);
-  --bs-active: rgba(49, 46, 11, 1);
+  --bs-active: rgba(11, 49, 31, 1);
   --bs-pending: rgba(49, 46, 11, 1);
+  --bs-borderMobi: rgba(33, 33, 33, 1);
+  --bs-gradBorder: -1px 0px 1px 0.5px rgba(133, 136, 156, 0.6),
+    1px 1px 1px 0px rgba(94, 94, 97, 0.4);
+  --bs-profileBlock: rgba(33, 34, 34, 1);
+  --bs-mobiOrange: rgba(104, 78, 70, 1);
+  --bs-mobiSkyCloud: rgba(64, 79, 109, 1);
+  --bs-mobiSubPurple: rgba(109, 66, 92, 1);
+  --bs-mobiLightGreen: rgba(64, 105, 102, 1);
+  --bs-mobiTable: rgba(174, 185, 225, 1);
+  --bs-mobiBorderTable: rgba(30, 30, 30, 1);
+  --bs-tableText: rgba(174, 185, 225, 1);
+  --bs-notificationBorder: rgba(42, 43, 43, 1);
 }
 
 body {
@@ -83,10 +107,7 @@ body {
 }
 
 .bS-borderRay {
-  box-shadow: var(--bs-boxShadow);
-  /* border: 1px solid transparent;
-  border-image: linear-gradient(278.85deg, #2e2f36 13%, #85889c 93.28%);
-  border-image-slice: 1; */
+  box-shadow: var(--bs-gradBorder);
   border-radius: 20px !important;
   background-color: var(--bs-bodyRay);
 }
@@ -163,7 +184,6 @@ input[type="range"]::-ms-thumb {
 }
 
 .custom-scrollbar:hover {
-  height: 750px; /* Make div scrollable */
   overflow-y: scroll; /* Enable vertical scrolling */
   scrollbar-width: thin; /* For Firefox */
   scrollbar-color: #888 transparent; /* For Firefox */
