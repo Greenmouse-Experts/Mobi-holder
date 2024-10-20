@@ -3,10 +3,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link } from 'react-router-dom';
 import Theme from '../../components/Theme';
 
-export default function Sidebar() {
+export default function Sidebar({mobile}) {
     const url = window.location.pathname;
     return (
-        <div className={`h-full rounded-md lg:flex md:flex hidden flex-col w-[22%] bg-mobiDarkCloud transition-all custom-scrollbar overflow-auto h-[750px] fixed mb-10`}>
+        <div className={`h-full rounded-md flex-col ${mobile ? 'w-full lg:hidden md:hidden flex overflow-auto' : 'md:w-[22%] lg:flex md:hidden hidden custom-scrollbar overflow-auto h-[750px] fixed'} bg-mobiDarkCloud transition-all mb-10`}>
             {/* Logo */}
             <div className="py-6 px-4 flex gap-6 flex-col space-x-2 border-bottom">
                 <div className='flex px-3 gap-3'>
@@ -75,17 +75,17 @@ export default function Sidebar() {
 
             {/* Footer */}
             <div className="px-4 py-6">
-                <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg hover:bg-mobiBlueFade transition`}>
-                    <i className="fas fa-cog mr-3"></i>
-                    Settings
-                </a>
+                <Link to={'/app/settings'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg ${url === '/app/settings' ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade'} transition`}>
+                    <i className={`fas fa-cog mr-3 ${url === '/app/settings' ? 'text-mobiPink' : ''}`}></i>
+                    <span className={`${url === '/app/settings' ? 'text-mobiPink' : ''}`}>Settings</span>
+                </Link>
                 <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg text-red-500 hover:bg-mobiBlueFade transition`}>
                     <i className="fas fa-sign-out-alt mr-3"></i>
                     Logout
                 </a>
 
                 {/* Image/Advertisement */}
-                <div className="mt-1 bg-cover bg-center p-4 rounded-lg">
+                <div className="mt-1 bg-cover bg-center p-4 rounded-lg md:flex hidden">
                     <img src='/mobi-image.png' />
                 </div>
 

@@ -112,6 +112,10 @@ body {
   background-color: var(--bs-bodyRay);
 }
 
+.card-body {
+  background-color: var(--bs-bodyRay);
+}
+
 input:focus {
   border: 0px !important;
   color: var(--bs-color);

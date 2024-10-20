@@ -3,13 +3,26 @@ import SearchInput from "../../components/SearchInput";
 import Greeting from "./Dashboard/layouts/Greetings";
 import settings from "../../assets/settings.svg";
 import notifications from "../../assets/notifications.svg"
+import { useState } from "react";
+import { Drawer } from "@material-tailwind/react";
+import Sidebar from "./sideBar";
 
-export default function Header({greeting, profile}) {
+export default function Header({ greeting, profile }) {
+    const [open, setOpen] = useState(false);
+
+    const openDrawer = () => {
+        document.documentElement.style.position = 'fixed'; setOpen(true)
+    };
+    const closeDrawer = () => {
+        document.documentElement.style.position = null;
+        setOpen(false);
+    }
+
     return (
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
             <div className="lg:w-[70%] md:w-[70%] w-full md:px-0 px-3 flex flex-col gap-5">
                 <div className="w-full flex gap-8 justify-between">
-                    <div className="flex w-3/5">
+                    <div className="flex md:w-3/5 w-3/4">
                         <SearchInput appendIcon="search.svg" type="password" placeholder="Enter keyword to search" />
                     </div>
 
@@ -23,7 +36,16 @@ export default function Header({greeting, profile}) {
                             </Link>
                         </div>
                         <div className="lg:hidden md:hidden flex p-2 bg-mobiSearchDark rounded-md flex-col justify-center">
-                            <img src="/userProfilexs.png" />
+                            <button
+                                className="text-black focus:outline-none"
+                                aria-label="Open Menu"
+                                id="mobile-menu-button"
+                                onClick={openDrawer}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -95,6 +117,9 @@ export default function Header({greeting, profile}) {
                     }
                 </div>
             </div>
+            <Drawer open={open} onClose={closeDrawer} className="bg-mobiDarkCloud">
+                <Sidebar mobile />
+            </Drawer>
         </div>
     )
 }
