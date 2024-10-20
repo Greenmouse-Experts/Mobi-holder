@@ -78,7 +78,7 @@ export default function Subscription() {
                         <p className='text-xs text-white'>Jan 2024 - Dec 2024</p>
                         <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g opacity="0.8">
-                                <path d="M4.87769 6.34473L8.97329 10.4403L13.0689 6.34473" stroke="#AEB9E1" stroke-width="1.3652" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M4.87769 6.34473L8.97329 10.4403L13.0689 6.34473" stroke="#AEB9E1" strokeWidth="1.3652" stroke-linecap="round" strokeLinejoin="round" />
                             </g>
                         </svg>
                     </button>

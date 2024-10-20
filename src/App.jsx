@@ -10,6 +10,7 @@ import AppModules from './modules/AppModules';
 import Dashboard from './modules/AppModules/Dashboard';
 import Notification from './modules/AppModules/Notifications';
 import { ThemeProvider } from './context/ThemeContext';
+import Settings from './modules/AppModules/Settings';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -35,6 +36,7 @@ function App() {
             <Route path='/app' element={<AppModules />}>
               <Route path='dashboard' element={<Dashboard />} />
               <Route path='notification' element={<Notification />} />
+              <Route path='settings' element={<Settings />} />
             </Route>
           </Routes>
         }
