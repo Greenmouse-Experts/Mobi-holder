@@ -9,6 +9,7 @@ import OrganisationSignUp from './modules/SignUp/organisation';
 import AppModules from './modules/AppModules';
 import Dashboard from './modules/AppModules/Dashboard';
 import Notification from './modules/AppModules/Notifications';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -21,21 +22,23 @@ function App() {
 
   return (
     <>
-      {splash ?
-        <SplashScreen clearScreen={handleSplashScreen} />
-        :
-        <Routes>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path='/signup/individual' element={<IndividualSignUp />} />
-          <Route path='/signup/organisation' element={<OrganisationSignUp />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/forgot-password' element={<PasswordReset />} />
-          <Route path='/app' element={<AppModules />}>
-            <Route path='dashboard' element={<Dashboard />} />
-            <Route path='notification' element={<Notification />} />
+      <ThemeProvider>
+        {splash ?
+          <SplashScreen clearScreen={handleSplashScreen} />
+          :
+          <Routes>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path='/signup/individual' element={<IndividualSignUp />} />
+            <Route path='/signup/organisation' element={<OrganisationSignUp />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/forgot-password' element={<PasswordReset />} />
+            <Route path='/app' element={<AppModules />}>
+              <Route path='dashboard' element={<Dashboard />} />
+              <Route path='notification' element={<Notification />} />
             </Route>
-        </Routes>
-      }
+          </Routes>
+        }
+      </ThemeProvider>
     </>
   )
 }

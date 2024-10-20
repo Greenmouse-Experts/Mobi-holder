@@ -4,6 +4,7 @@ import SearchInput from "../../../components/SearchInput";
 import { useState } from "react";
 import notificationImg from "../../../assets/notificationImg.svg";
 import { Link } from "react-router-dom";
+import Header from "../header";
 
 const notificationsData = [
     {
@@ -46,55 +47,29 @@ export default function Notification() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <div className="w-full lg:flex-row md:flex-row flex flex-col gap-5">
-                        <div className="w-full flex flex-col gap-5">
-                            <div className="w-full flex justify-between items-center">
-                                <div className="flex w-1/2">
-                                    <SearchInput appendIcon="search.svg" type="password" placeholder="Enter keyword to search" />
-                                </div>
-
-                                <div className="flex gap-5">
-                                    <div className="lg:flex md:flex hidden p-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                                        <img src={settings} />
-                                    </div>
-                                    <div className="lg:flex md:flex flex p-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                                        <Link to={'/app/notification'} className="w-full">
-                                            <img src={notifications} />
-                                        </Link>
-                                    </div>
-
-                                    <div className="flex items-center justify-center gap-24 border border-mobiSearchDark bg-mobiSearchDark px-3 py-1 rounded-[7px]">
-                                        <div className="flex flex-grow">
-                                            <p className="text-sm font-semibold">My Profile</p>
-                                        </div>
-                                        <div className="flex">
-                                            <img src="/userProfilexs.png" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    <Header />
                     <div className="w-full flex flex-col gap-8 my-5">
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">Notifications</p>
 
                         <div className="w-full flex justify-center">
                             <div className="bg-mobiDarkCloud my-3 lg:w-3/4 md:w-3/4 w-full rounded-lg">
-                                <div className="flex justify-between items-center p-6">
-                                    <p className="text-sm font-[500]">All (18)</p>
+                                <div className="flex justify-between items-center px-6 py-5">
+                                    <div className="flex gap-14">
+                                        <p className="text-sm font-[500]">All (18)</p>
+                                        <p className="text-sm text-mobiRomanSilver font-[500]">Unread</p>
+                                        </div>
                                     <div className="flex space-x-2">
-                                        <p className="text-sm underline text-mobiSkyBlue" onClick={handleMarkAllReadClick}>
+                                        <p className="text-sm underline font-[500] text-mobiSkyBlue" onClick={handleMarkAllReadClick}>
                                             {isMarkAllReadVisible ? 'Hide Mark All Read' : 'Mark All as Read'}
                                         </p>
                                     </div>
                                 </div>
 
-                                <div className="w-full h-[1px]" style={{ borderBottom: '0.8px solid rgba(188, 189, 189, 1)' }} />
+                                <div className="w-full h-[1px] border border-b-[0.8px] border-mobiNotification" />
 
                                 <ul className="space-y-2 flex flex-col p-6 gap-3">
                                     {notificationsData.map((notification, index) => (
-                                        <li key={index} className={`flex items-center relative gap-2 py-3 px-3 shadow-lg rounded-md ${notification.read ? '' : 'bg-mobiUnread'}`} style={{ borderColor: 'rgba(36, 36, 37, 1)' }}>
+                                        <li key={index} className={`flex items-center relative gap-2 py-3 px-3 rounded-md ${notification.read ? 'border border-mobiNotification' : 'bg-mobiUnread'}`}>
                                             <img src={notification.icon} alt={notification.title} className="w-8 h-8 rounded-full mr-2" />
                                             <div className="flex-1">
                                                 <p className="text-base font-semibold">{notification.title}</p>

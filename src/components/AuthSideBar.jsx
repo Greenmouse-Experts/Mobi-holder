@@ -5,7 +5,7 @@ import checkMark from "../assets/checkMark.png";
 
 export default function AuthSideBar() {
     return (
-        <div className="w-2/5 h-full lg:flex md:flex hidden bg-mobiDarkSide flex-col flex-grow">
+        <div className="lg:w-[33%] md:hidden h-full lg:flex md:flex sm:hidden hidden bg-mobiDarkSide flex-col fixed flex-grow">
             <div className="relative flex w-full justify-center items-center h-screen flex-col">
                 <img
                     src={womanWithCard}
@@ -28,15 +28,17 @@ export default function AuthSideBar() {
                     </div>
                 </div>
 
-                <div className="absolute top-[45%] left-4 bg-white border shadow-lg flex items-center space-x-2 px-4 py-2 rounded-lg">
+                <div className="absolute top-[45%] left-8 bg-white border shadow-lg flex items-center space-x-2 px-4 py-2 rounded-lg">
                     <img src={checkMark} alt="Checkmark" className="w-4 h-4" />
                     <span className="text-black text-xs font-medium">ID Created successfully</span>
                 </div>
 
-                <div className="absolute top-[23%] right-10 w-[71px] h-[71px] bg-white rounded-full shadow-lg p-1 flex items-center justify-center">
+                <div className="absolute top-[23%] md:right-10 lg:right-16 w-[71px] h-[71px] bg-white rounded-full shadow-lg p-1 flex items-center justify-center">
                     <img src={idCard} alt="ID card" className="w-[36px] object-contain rounded-md" />
                 </div>
             </div>
-
+            <div className="w-full flex p-2 justify-center">
+                <p className="text-sm" style={{ color: 'rgba(63, 67, 83, 1)' }}>Copyright © 2024 BOG. All Rights Reserved</p>
+            </div>
         </div>)
 }
