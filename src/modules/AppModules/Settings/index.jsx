@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Header from "../header";
 import { useState } from "react";
 import Input from "../../../components/Input";
@@ -24,17 +23,20 @@ export default function Settings() {
             slug: 'additional-settings',
             name: 'Additional Settings'
         }
-    ]
+    ];
+
+    document.documentElement.style.position = null;
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header />
-                    <div className="w-full flex flex-col gap-8 my-5">
+                    <Header mobile />
+                    <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">Settings</p>
 
                         <div className="w-full flex gap-10">
-                            <div className="bg-mobiDarkCloud w-[23%] rounded-md flex flex-col gap-3 px-2 py-5">
+                            <div className="bg-mobiDarkCloud w-[23%] rounded-md lg:flex md:flex hidden flex-col gap-3 px-2 py-5">
                                 <nav className="px-1 space-y-4">
                                     {tabs.map((tab, index) => (
                                         <div key={index} className={`flex items-center py-2 px-4 h-[40px] rounded-lg ${activeTab === tab.slug ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade text-mobiRomanSilver'} transition`}>
@@ -45,7 +47,7 @@ export default function Settings() {
                             </div>
 
                             <div className="w-full flex">
-                                <div className="shadow-xl py-7 px-5 w-3/4 border border-mobiBorderFray card-body flex rounded-xl flex-col gap-3">
+                                <div className="shadow-xl py-7 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-3">
 
                                     <div className="mb-1 flex flex-col gap-8 mt-5">
                                         <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
@@ -90,7 +92,7 @@ export default function Settings() {
                                         </div>
 
                                         <div className="flex">
-                                            <Button className="bg-mobiPink w-1/4 p-3 rounded-md">Update Info</Button>
+                                            <Button className="bg-mobiPink md:w-1/4 w-full p-3 rounded-md">Update Info</Button>
                                         </div>
                                     </div>
                                 </div>

@@ -3,13 +3,14 @@ import Input from "../../components/Input";
 import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import AuthSideBar from "../../components/AuthSideBar";
+import Theme from "../../components/Theme";
 
 export default function PasswordReset() {
     return (
         <>
             <div className="w-full flex h-screen animate__animated animate__fadeIn">
                 <AuthSideBar />
-                <div className="w-full flex justify-center px-6 bS-leftOverlay">
+                <div className="w-full flex justify-center px-6 bS-leftOverlay relative shadow-lg lg:ml-[33%]">
                     <div className="lg:w-1/2 md:w-1/2 w-full flex flex-col h-full gap-4 justify-center">
                         <div className='flex gap-3'>
                             <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
@@ -39,6 +40,15 @@ export default function PasswordReset() {
                             <p className='lg:text-base md:text-base text-[12px]'>Remember your password ?
                                 <Link className='text-mobiBlue font-semibold mx-1' to={'/login'}>Login</Link>
                             </p>
+                        </div>
+                    </div>
+
+                    {/** Dark Theme */}
+                    <div className="absolute flex w-full">
+                        <div className='flex w-full relative justify-end'>
+                            <div className='max-w-[11rem] top-[2%] p-3 w-full flex'>
+                                <Theme />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -5,8 +5,8 @@ export default function Theme() {
     const { theme, toggleTheme } = useContext(ThemeContext);
     return (
         <>
-            <div className='md:min-h-[40px] h-[21px] w-full md:p-1 bg-black border border-gray-800 flex md:rounded-lg rounded-md'>
-                    <div className={`md:h-[30px] h-[20px] w-full ${theme === 'light' ? 'bg-mobiPink' : ''} text-white md:rounded-md rounded-l-md cursor-pointer flex justify-center py-1`}
+            <div className='md:min-h-[40px] h-[30px] w-full md:p-1 bg-black border border-gray-800 flex md:rounded-lg rounded-md'>
+                    <div className={`md:h-[30px] h-[29px] w-full ${theme === 'light' ? 'bg-mobiPink' : ''} text-white md:rounded-md rounded-l-md cursor-pointer flex justify-center py-1`}
                         onClick={toggleTheme}>
                         <span className='flex flex-col justify-center'>
                             <svg width="18" height="18" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +14,7 @@ export default function Theme() {
                             </svg>
                         </span>
                     </div>
-                <div className={`md:h-[30px] h-[20px] w-full ${theme === 'dark' ? 'bg-mobiPink' : ''} md:rounded-md rounded-r-md text-white cursor-pointer flex justify-center py-1`}
+                <div className={`md:h-[30px] h-[29px] w-full ${theme === 'dark' ? 'bg-mobiPink' : ''} md:rounded-md rounded-r-md text-white cursor-pointer flex justify-center py-1`}
                         onClick={toggleTheme}
                     >
                         <span className='flex flex-col justify-center'>
