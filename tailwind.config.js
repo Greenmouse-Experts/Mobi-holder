@@ -7,10 +7,18 @@ module.exports = withMT({
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '320px',        // Extra small devices (mobile)
+        'sm': '640px',        // Small devices (tablets)
+        'md': '1024px',       // Large devices (laptops/desktops)
+        'lg': '1280px',       // Extra large devices (desktops)
+        'xl': '1536px',
+      },
       colors: {
         mobiPink: 'rgba(163, 36, 242, 1)',
         mobiLight: 'rgba(238, 238, 238, 1)',
         mobiBlue: 'rgba(36, 46, 242, 1)',
+        mobiDarkBlue: 'rgba(40, 66, 242, 1)',
         mobiGrayDark: 'rgba(82, 81, 81, 1)',
         mobiDarkOlay: 'rgba(46, 47, 54, 1)',
         mobiFormGray: 'rgba(153, 151, 151, 1)',
@@ -36,7 +44,10 @@ module.exports = withMT({
         mobiBorderTable: 'var(--bs-mobiBorderTable)',
         mobiTableText: 'var(--bs-tableText)',
         mobiNotification: 'var(--bs-notificationBorder)'
-      }
+      },
+      backgroundImage: {
+        'home-gradient': 'linear-gradient(to right, rgba(1, 12, 16, 0.42), rgba(1, 21, 26, 0.4))',
+      },
     },
   },
   plugins: [],
