@@ -38,19 +38,20 @@ export default function Notification() {
         setIsMarkAllReadVisible(!isMarkAllReadVisible);
     };
 
+    document.documentElement.style.position = null;
 
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header />
-                    <div className="w-full flex flex-col gap-8 my-5">
+                    <Header mobile />
+                    <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">Notifications</p>
 
                         <div className="w-full flex justify-center">
-                            <div className="bg-mobiDarkCloud my-3 lg:w-3/4 md:w-3/4 w-full rounded-lg">
+                            <div className="bg-mobiDarkCloud md:my-3 lg:w-3/4 md:w-3/4 w-full rounded-lg">
                                 <div className="flex justify-between items-center px-6 py-5">
-                                    <div className="flex gap-14">
+                                    <div className="flex md:gap-14 gap-4">
                                         <p className="text-sm font-[500]">All (18)</p>
                                         <p className="text-sm text-mobiRomanSilver font-[500]">Unread</p>
                                         </div>
@@ -63,12 +64,12 @@ export default function Notification() {
 
                                 <div className="w-full h-[1px] border border-b-[0.8px] border-mobiNotification" />
 
-                                <ul className="space-y-2 flex flex-col p-6 gap-3">
+                                <ul className="space-y-2 flex flex-col md:p-6 p-3 gap-3">
                                     {notificationsData.map((notification, index) => (
                                         <li key={index} className={`flex items-center relative gap-2 py-3 px-3 rounded-md ${notification.read ? 'border border-mobiNotification' : 'bg-mobiUnread'}`}>
                                             <img src={notification.icon} alt={notification.title} className="w-8 h-8 rounded-full mr-2" />
                                             <div className="flex-1">
-                                                <p className="text-base font-semibold">{notification.title}</p>
+                                                <p className="md:text-base text-sm font-semibold">{notification.title}</p>
                                                 <p className="text-mobiSkyBlue">{notification.time}</p>
                                             </div>
                                             <button className="text-white px-2 py-1 rounded-md">

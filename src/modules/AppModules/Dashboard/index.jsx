@@ -57,6 +57,8 @@ const NewTableHeaders = ["Organisations", "Renewal Date", "Current Status", "Act
 
 
 export default function Dashboard() {
+    document.documentElement.style.position = null;
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">

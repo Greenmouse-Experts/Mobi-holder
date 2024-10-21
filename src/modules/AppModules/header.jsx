@@ -3,11 +3,12 @@ import SearchInput from "../../components/SearchInput";
 import Greeting from "./Dashboard/layouts/Greetings";
 import settings from "../../assets/settings.svg";
 import notifications from "../../assets/notifications.svg"
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Drawer } from "@material-tailwind/react";
 import Sidebar from "./sideBar";
+import { ThemeContext } from "../../context/ThemeContext";
 
-export default function Header({ greeting, profile }) {
+export default function Header({ greeting, profile, mobile }) {
     const [open, setOpen] = useState(false);
 
     const openDrawer = () => {
@@ -17,6 +18,8 @@ export default function Header({ greeting, profile }) {
         document.documentElement.style.position = null;
         setOpen(false);
     }
+
+    const { theme } = useContext(ThemeContext);
 
     return (
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
@@ -42,7 +45,7 @@ export default function Header({ greeting, profile }) {
                                 id="mobile-menu-button"
                                 onClick={openDrawer}
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke={theme === 'light' ? '#000000' : '#FFFFFF'} className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
                                 </svg>
                             </button>
@@ -59,7 +62,7 @@ export default function Header({ greeting, profile }) {
                 }
             </div>
 
-            <div className="flex lg:w-[30%] md:w-[30%] w-full md:px-0 px-3 flex-col">
+            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex lg:w-[30%] md:w-[30%] w-full md:px-0 px-3 flex-col'}`}>
                 <div className={`w-full flex flex-col gap-6 ${profile ? 'p-2 rounded-md bg-mobiSearchDark' : ''}`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
                         <div className="flex flex-grow">
