@@ -3,6 +3,7 @@ import IntroSection from "./layouts/IntroSection";
 import Header from "./layouts/Header";
 import ManagementSection from "./layouts/ManagementSection";
 import ModuleAccess from "./layouts/ModuleAccess";
+import Footer from "./layouts/Footer";
 
 export default function Home() {
     return (
@@ -22,6 +23,9 @@ export default function Home() {
                 </div>
                 <div className="w-full flex">
                     <ModuleAccess />
+                </div>
+                <div className="w-full flex">
+                    <Footer />
                 </div>
             </div>
         </>

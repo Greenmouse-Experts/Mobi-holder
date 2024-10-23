@@ -108,7 +108,7 @@ export default function ModuleAccess() {
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col gap-8 md:py-14 md:px-32 relative gap-10 px-6" style={{ backgroundColor: 'rgba(2, 13, 17, 1)' }}>
+                <div className="w-full flex flex-col gap-8 md:py-14 md:px-32 relative gap-7 px-6" style={{ backgroundColor: 'rgba(2, 13, 17, 1)' }}>
                     <div className="w-full flex md:flex-row py-10 md:gap-10 gap-5 flex-col">
                         <div className="flex w-full flex-col gap-2">
                             <span className="md:text-5xl text-3xl font-bold leading-[60px] gradient-text">Stay In the Loop</span>
