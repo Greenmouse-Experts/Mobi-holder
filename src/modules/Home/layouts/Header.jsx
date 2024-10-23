@@ -1,5 +1,5 @@
 import { Button, Drawer } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Theme from "../../../components/Theme"
@@ -24,19 +24,38 @@ export default function Header() {
         }
     ];
 
-    window.addEventListener('scroll', function () {
-        var scrolledY = window.scrollY;
+    const isMobile = () => {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        return /android|iPad|iPhone|iPod|windows phone|Mobi/i.test(userAgent);
+    };
 
-        if (scrolledY >= 40) {
-            document.querySelector("[data-header]").style.position = 'fixed';
-            document.querySelector("[data-header]").style.top = 0;
-        }
-        else {
-            document.querySelector("[data-header]").style.position = null;
-            document.querySelector("[data-header]").style.top = null;
-        }
-    });
+    useEffect(() => {
+        // Only add the scroll listener if not on mobile
+        if (!isMobile()) {
+            const handleScroll = () => {
+                const scrolledY = window.scrollY;
+                const header = document.querySelector("[data-header]");
 
+                if (scrolledY >= 40) {
+                    header.style.position = 'fixed';
+                    header.style.top = 0;
+                } else {
+                    header.style.position = null;
+                    header.style.top = null;
+                }
+            };
+
+            // Add the scroll event listener
+            window.addEventListener('scroll', handleScroll);
+
+            // Cleanup: remove the event listener on component unmount
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, []); // Run this effect
+
+    
     const { theme } = useContext(ThemeContext);
 
     const [open, setOpen] = useState(false);
@@ -51,7 +70,8 @@ export default function Header() {
 
     return (
         <>
-            <div className="w-full flex py-6 lg:px-44 md:px-20 px-6 md:relative fixed justify-between backdrop-blur-[53.8px] z-[9999]" data-header>
+            <div className="w-full flex py-6 lg:px-44 md:px-20 px-6 md:relative justify-between backdrop-blur-[53.8px] z-[9999]" data-header
+                style={{ background: 'linear-gradient(to right, rgba(1, 12, 16, 0.42), rgba(1, 21, 26, 0.4))' }}>
                 <div className='flex gap-3 w-full'>
                     <Link to={'/'} className="w-full flex gap-3">
                         <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
@@ -75,7 +95,7 @@ export default function Header() {
 
                 <div className="md:flex hidden h-full w-full">
                     <div className="flex w-full gap-2 justify-end">
-                        <Button className="bg-transparent rounded-full border border-gray-600 text-white">
+                        <Button className="bg-transparent rounded-full border border-white text-white">
                             <Link className="w-full h-full flex" to={'/login'}>
                                 <span className="font-semibold capitalize">Login</span>
                             </Link>
