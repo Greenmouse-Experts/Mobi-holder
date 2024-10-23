@@ -66,7 +66,7 @@ export default function ModuleAccess() {
                 <div className="w-full h-full relative flex-col">
                     <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${stringBlock})` }}></div>
                     <div className="md:w-[63%] w-full flex flex-col relative md:py-28 mt-10 lg:px-44 md:px-20 px-6 gap-5 z-50">
-                        <span className="md:text-5xl text-4xl font-bold leading-[60px] gradient-text">Ready to unlock your Management potential?</span>
+                        <span className="md:text-5xl text-3xl font-bold md:leading-[60px] gradient-text">Ready to unlock your Management potential?</span>
                         <span className="text-base leading-[30px] text-white">
                             Take control of your team, tasks,
                             and performance with streamlined management tools.
@@ -89,27 +89,33 @@ export default function ModuleAccess() {
                 </div>
 
                 <div className="w-full h-full relative">
-                    <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
-                        <div className="flex md:w-2/5">
-                            <img src={iPhone} style={{ width: '400px' }} />
-                            <img src={authGroup} className="absolute z-50 bottom-20 left-16 w-[460px]" />
+                    <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 py-10 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
+                        <div className="flex md:w-2/5 w-full md:justify-start justify-center">
+                            <img src={iPhone} className="md:w-[400px] w-[200px]" />
+                            <img src={authGroup} className="absolute z-50 md:flex hidden bottom-20 left-16 w-[460px]" />
                         </div>
-                        <div className="flex md:w-1/2 flex-col gap-4 md:py-12">
+                        <div className="flex md:w-1/2 flex-col gap-4 md:py-12 md:px-0 px-7">
                             <p className="md:text-5xl text-2xl font-bold">Download the App</p>
                             <p className="text-sm leading-[35px]">
                                 Experience seamless access to all our features right at your fingertips!
                                 Download the mobile app now and enjoy convenience, real-time updates, and a user-friendly interface wherever you go.
                             </p>
                             <div className="flex gap-5">
-                                <img src={playStore} />
-                                <img src={appleStore} />
+                                <img src={playStore} className="md:w-[400px] w-[120px]" />
+                                <img src={appleStore} className="md:w-[400px] w-[120px]" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col gap-8 md:py-14 md:px-32 relative gap-10" style={{ backgroundColor: 'rgba(2, 13, 17, 1)' }}>
-                    <div className="w-full flex md:flex-row py-10 gap-10 flex-col">
+                <div className="w-full flex flex-col gap-8 md:py-14 md:px-32 relative gap-10 px-6" style={{ backgroundColor: 'rgba(2, 13, 17, 1)' }}>
+                    <div className="w-full flex md:flex-row py-10 md:gap-10 gap-5 flex-col">
+                        <div className="flex w-full flex-col gap-2">
+                            <span className="md:text-5xl text-3xl font-bold leading-[60px] gradient-text">Stay In the Loop</span>
+                            <span className="text-base leading-[30px] text-white">
+                                Never miss an update! Subscribe for the latest news, tips, and insights.
+                            </span>
+                        </div>
                         <div className="flex w-full py-3">
                             <div className="relative flex w-full max-w-[30rem]">
                                 <Input
@@ -130,19 +136,19 @@ export default function ModuleAccess() {
                         </div>
                     </div>
 
-                    <div className="w-full flex gap-10">
+                    <div className="w-full flex md:flex-row flex-col gap-10">
                         <div className="flex flex-col w-full justify-center">
                             <img src="/conference.png" className="w-[500px]" />
                         </div>
                         <div className="flex flex-col w-full gap-8">
                             <div className="w-full flex flex-wrap gap-x-4 gap-y-4">
-                                <Button className="bg-transparent w-1/3 rounded-full border" style={{ borderColor: 'rgba(234, 248, 91, 0.5)' }}>
+                                <Button className="bg-transparent md:w-1/3 rounded-full border" style={{ borderColor: 'rgba(234, 248, 91, 0.5)' }}>
                                     Business Tools
                                 </Button>
-                                <Button className="bg-transparent w-1/3 rounded-full border" style={{ borderColor: 'rgba(234, 248, 91, 0.5)' }}>
+                                <Button className="bg-transparent md:w-1/3 rounded-full border" style={{ borderColor: 'rgba(234, 248, 91, 0.5)' }}>
                                     Productivity Hacks
                                 </Button>
-                                <Button className="bg-transparent w-1/3 rounded-full border" style={{ borderColor: 'rgba(234, 248, 91, 0.5)' }}>
+                                <Button className="bg-transparent md:w-1/3 rounded-full border" style={{ borderColor: 'rgba(234, 248, 91, 0.5)' }}>
                                     Team Management
                                 </Button>
                             </div>
@@ -163,7 +169,7 @@ export default function ModuleAccess() {
                     <div className="w-full h-[1px] border my-4" style={{ borderColor: 'rgba(30, 55, 55, 1)' }} />
 
                     <div className="flex flex-col gap-2 w-full">
-                        <span className="md:text-5xl text-4xl font-bold leading-[60px] gradient-text">
+                        <span className="md:text-5xl text-3xl font-bold md:leading-[60px] gradient-text">
                             Trusted by Top Brands
                         </span>
                         <span className="text-base leading-[30px] text-white">
@@ -171,16 +177,16 @@ export default function ModuleAccess() {
                         </span>
                     </div>
 
-                    <div className="w-full flex">
+                    <div className="w-full flex md:my-0 my-3">
                         <img src={logoGradient} />
                     </div>
                 </div>
 
 
                 <div className="w-full h-full relative">
-                    <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
+                    <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 px-6 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
                         <div className="w-full flex justify-center">
-                            <div className="w-3/5 flex flex-col gap-8">
+                            <div className="md:w-3/5 flex flex-col md:gap-8 gap-5">
                                 <p className="md:text-4xl text-2xl font-bold w-full my-4 text-center">Frequently Asked Questions</p>
                                 <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                                     <AccordionHeader onClick={() => handleOpen(1)}>What is MobiHolder?</AccordionHeader>
