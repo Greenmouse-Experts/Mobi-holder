@@ -33,7 +33,7 @@ export default function ModuleAccess() {
                 <div className="w-full h-full flex flex-col gap-8 md:py-10 md:px-10 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
                     <div className="w-full flex py-8 justify-center">
                         <div className="lg:w-1/3 md:w-2/5 w-full flex justify-center">
-                            <span className="md:text-4xl text-2xl tracking-wide md:leading-[55px] leading-[50px] font-bold w-full text-center">
+                            <span className="md:text-4xl text-2xl tracking-wide md:leading-[55px] leading-[50px] text-black font-bold w-full text-center">
                                 <span style={{ backgroundColor: 'rgba(205, 205, 251, 1)' }}>Verification</span> Module for
                                 Access <span style={{ backgroundColor: 'rgba(205, 205, 251, 1)' }}>Control</span>
                             </span>
@@ -47,7 +47,7 @@ export default function ModuleAccess() {
                     </div>
                     <div className="w-full flex justify-center">
                         <div className="lg:w-3/5 md:w-2/5 w-full flex justify-center">
-                            <p className="text-base text-center">
+                            <p className="text-base text-center text-black">
                                 Easily manage event access with our built-in verification module.
                                 Assign personnel, control entry, and monitor access in real time to ensure secure and efficient event management.
                             </p>
@@ -94,7 +94,7 @@ export default function ModuleAccess() {
                             <img src={iPhone} className="md:w-[400px] w-[200px]" />
                             <img src={authGroup} className="absolute z-50 md:flex hidden bottom-20 left-16 w-[460px]" />
                         </div>
-                        <div className="flex md:w-1/2 flex-col gap-4 md:py-12 md:px-0 px-7">
+                        <div className="flex md:w-1/2 flex-col gap-4 md:py-12 md:px-0 px-7 text-black">
                             <p className="md:text-5xl text-2xl font-bold">Download the App</p>
                             <p className="text-sm leading-[35px]">
                                 Experience seamless access to all our features right at your fingertips!
@@ -187,7 +187,7 @@ export default function ModuleAccess() {
                     <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 px-6 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
                         <div className="w-full flex justify-center">
                             <div className="md:w-3/5 flex flex-col md:gap-8 gap-5">
-                                <p className="md:text-4xl text-2xl font-bold w-full my-4 text-center">Frequently Asked Questions</p>
+                                <p className="md:text-4xl text-2xl font-bold w-full my-4 text-center text-black">Frequently Asked Questions</p>
                                 <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                                     <AccordionHeader onClick={() => handleOpen(1)}>What is MobiHolder?</AccordionHeader>
                                     <AccordionBody>

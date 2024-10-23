@@ -18,7 +18,7 @@ export default function ManagementSection() {
                         }}>
                         </div>
                         <div className="flex w-full md:justify-end justify-center py-6 md:px-28 z-50">
-                            <div className="flex flex-col md:w-[75%] md:pl-4 gap-2">
+                            <div className="flex flex-col md:w-[75%] md:pl-4 gap-2 text-black">
                                 <span className="flex gap-3">
                                     <p className="md:text-5xl text-2xl font-bold">Create.</p>
                                     <p className="md:text-5xl text-2xl font-bold">Personalize.</p>
