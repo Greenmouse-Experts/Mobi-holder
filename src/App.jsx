@@ -11,6 +11,7 @@ import Dashboard from './modules/AppModules/Dashboard';
 import Notification from './modules/AppModules/Notifications';
 import { ThemeProvider } from './context/ThemeContext';
 import Settings from './modules/AppModules/Settings';
+import Home from './modules/Home';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -18,7 +19,7 @@ function App() {
 
   const handleSplashScreen = () => {
     setSplash(false);
-    navigate('/signup');
+    navigate('/');
   }
 
   return (
@@ -28,6 +29,7 @@ function App() {
           <SplashScreen clearScreen={handleSplashScreen} />
           :
           <Routes>
+            <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path='/signup/individual' element={<IndividualSignUp />} />
             <Route path='/signup/organisation' element={<OrganisationSignUp />} />

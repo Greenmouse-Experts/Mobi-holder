@@ -226,3 +226,26 @@ input[type="range"]::-ms-thumb {
 .chartColor {
   color: var(--bs-color);
 }
+
+.gradient-text {
+  background: linear-gradient(
+    to right,
+    rgba(223, 217, 254, 1),
+    rgba(93, 129, 237, 1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.box-shadow-gradient {
+  border: 1px solid;
+  border-image: linear-gradient(
+      90deg,
+      rgba(234, 248, 91, 0.5),
+      rgba(121, 149, 251, 0.5)
+    )
+    1;
+  padding: 20px;
+}

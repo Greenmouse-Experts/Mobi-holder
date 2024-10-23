@@ -13,7 +13,7 @@ export default function Login() {
                 <div className="w-full flex justify-center px-6 bS-leftOverlay relative shadow-lg lg:ml-[33%]">
                     <div className="lg:w-3/5 md:w-3/5 w-full flex flex-col h-full gap-4 justify-center">
                         <div className='flex gap-3'>
-                            <Link to={'/signup'} className="w-full flex gap-3">
+                            <Link to={'/'} className="w-full flex gap-3">
                                 <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
                                 <div className='flex flex-col justify-center'>
                                     <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
