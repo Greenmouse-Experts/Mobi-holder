@@ -7,7 +7,7 @@ import { useState, useContext } from "react";
 import { Drawer } from "@material-tailwind/react";
 import Sidebar from "./sideBar";
 import { ThemeContext } from "../../context/ThemeContext";
-import SuperAdminSideBar from "./superAdminSideBar";
+import SuperAdminSideBar from "../SuperAdmin/superAdminSideBar";
 
 export default function Header({ greeting, profile, mobile, superAdmin }) {
     const [open, setOpen] = useState(false);
@@ -69,7 +69,7 @@ export default function Header({ greeting, profile, mobile, superAdmin }) {
                 <div className={`w-full flex flex-col gap-6 ${profile ? 'p-2 rounded-md bg-mobiSearchDark' : ''}`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
                         <div className="flex flex-grow">
-                            <p className="text-sm font-semibold">My Profile</p>
+                            <p className="text-sm font-semibold">{superAdmin ? 'Admin Profile' : 'My Profile'}</p>
                         </div>
                         <div className="flex">
                             <img src="/userProfilexs.png" />

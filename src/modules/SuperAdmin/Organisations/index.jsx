@@ -1,5 +1,5 @@
-import Table from "../../../../components/Tables";
-import Header from "../../header";
+import Table from "../../../components/Tables";
+import Header from "../../AppModules/header";
 
 export default function Organisations() {
     const TableHeaders = ["Name", "Email", "Phone Number", "Members", "Date", "Action"];

@@ -1,6 +1,6 @@
-import Badge from "../../../../components/Badge";
-import Table from "../../../../components/Tables";
-import Header from "../../header";
+import Badge from "../../../components/Badge";
+import Table from "../../../components/Tables";
+import Header from "../../AppModules/header";
 
 export default function Events() {
     const TableHeaders = ["Event Name", "Event Host", "Event Fee", "Event Type", "Event Date", "Action"];
