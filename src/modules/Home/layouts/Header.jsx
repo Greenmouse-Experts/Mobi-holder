@@ -36,7 +36,7 @@ export default function Header() {
                 const scrolledY = window.scrollY;
                 const header = document.querySelector("[data-header]");
 
-                if (scrolledY >= 40) {
+                if (scrolledY >= 20) {
                     header.style.position = 'fixed';
                     header.style.top = 0;
                 } else {

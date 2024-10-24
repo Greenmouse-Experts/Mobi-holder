@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function Table({ title, subTitle, filter, exportData, tableBtn, children, tableHeader }) {
+function Table({ title, subTitle, filter, exportData, tableBtn, children, tableHeader, hasNumber }) {
     const [isExportDataVisible, setIsExportDataVisible] = useState(false);
+    const [updatedTableHeader, setUpdatedTableHeader] = useState(tableHeader);
 
     const handleExportDataClick = () => {
         setIsExportDataVisible(!isExportDataVisible);
     };
 
+    useEffect(() => {
+        if (hasNumber) {
+            setUpdatedTableHeader(["#", ...tableHeader]);
+        } else {
+            setUpdatedTableHeader(tableHeader);
+        }
+    }, [hasNumber, tableHeader]); 
+
+    console.log(updatedTableHeader)
+
     return (
-        <div className="md:px-5 px-3 py-7 md:rounded-lg border border-mobiBorderFray bg-mobiSearchDark">
+        <div className="md:px-5 px-3 py-7 md:rounded-lg w-full border border-mobiBorderFray bg-mobiSearchDark">
             <p className="text-mobiTable font-[500px] mb-4">{title}</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">{subTitle}</h3>
@@ -21,7 +32,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, children, tableH
                         </button>
                     )}
                     {exportData && (
-                        <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
+                        <button className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
                             <span className="text-xs text-white">Export data</span>
                             <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -29,18 +40,16 @@ function Table({ title, subTitle, filter, exportData, tableBtn, children, tableH
                             </svg>
                         </button>
                     )}
-                    {tableBtn && (
-                        <button className="bg-mobiPink text-white px-2 py-1 rounded-md">{tableBtn}</button>
-                    )}
+                    {tableBtn}
                 </div>
             </div>
 
             <div className="overflow-x-auto border py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
                 <table className="table-auto lg:w-full md:w-full sm:w-full w-[500px] text-mobiSkyBlue">
-                    {tableHeader ?
+                    {updatedTableHeader ?
                         <thead>
                             <tr>
-                                {tableHeader.map((header, index) => (
+                                {updatedTableHeader.map((header, index) => (
                                     <th className="px-3 text-left py-2" key={index}>{ header }</th>
                                 ))}
                             </tr>

@@ -7,8 +7,9 @@ import { useState, useContext } from "react";
 import { Drawer } from "@material-tailwind/react";
 import Sidebar from "./sideBar";
 import { ThemeContext } from "../../context/ThemeContext";
+import SuperAdminSideBar from "./superAdminSideBar";
 
-export default function Header({ greeting, profile, mobile }) {
+export default function Header({ greeting, profile, mobile, superAdmin }) {
     const [open, setOpen] = useState(false);
 
     const openDrawer = () => {
@@ -20,6 +21,8 @@ export default function Header({ greeting, profile, mobile }) {
     }
 
     const { theme } = useContext(ThemeContext);
+
+    const url = window.location.pathname;
 
     return (
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
@@ -62,7 +65,7 @@ export default function Header({ greeting, profile, mobile }) {
                 }
             </div>
 
-            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex lg:w-[30%] md:w-[30%] w-full md:px-0 px-3 flex-col'}`}>
+            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[30%] md:w-[30%]`}>
                 <div className={`w-full flex flex-col gap-6 ${profile ? 'p-2 rounded-md bg-mobiSearchDark' : ''}`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
                         <div className="flex flex-grow">
@@ -121,7 +124,11 @@ export default function Header({ greeting, profile, mobile }) {
                 </div>
             </div>
             <Drawer open={open} onClose={closeDrawer} className="bg-mobiDarkCloud">
-                <Sidebar mobile />
+                {url !== '/app/dashboard' ?
+                    <SuperAdminSideBar mobile />
+                    :
+                    <Sidebar mobile />
+                }
             </Drawer>
         </div>
     )
