@@ -12,10 +12,13 @@ import Notification from './modules/AppModules/Notifications';
 import { ThemeProvider } from './context/ThemeContext';
 import Settings from './modules/AppModules/Settings';
 import Home from './modules/Home';
-import SuperAdmin from './modules/AppModules/SuperAdmin';
-import Organisations from './modules/AppModules/SuperAdmin/Organisations';
-import DashBoard from "./modules/AppModules/SuperAdmin/DashBoard";
-import Events from './modules/AppModules/SuperAdmin/Events';
+import SuperAdmin from './modules/SuperAdmin';
+import DashBoard from "./modules/SuperAdmin/DashBoard";
+import Organisations from "./modules/SuperAdmin/Organisations";
+import Events from "./modules/SuperAdmin/Events";
+import AllUsers from './modules/SuperAdmin/Users';
+import Subscriptions from './modules/SuperAdmin/Subscriptions';
+import IDCards from './modules/SuperAdmin/IDCards';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -43,11 +46,14 @@ function App() {
               <Route path='dashboard' element={<Dashboard />} />
               <Route path='notification' element={<Notification />} />
               <Route path='settings' element={<Settings />} />
-              <Route path='superadmin' element={<SuperAdmin />}>
-                <Route path='dashboard' element={<DashBoard />} />
-                <Route path="organisations" element={<Organisations />} />
-                <Route path="events" element={<Events />} />
-              </Route>
+            </Route>
+            <Route path='/superadmin' element={<SuperAdmin />}>
+              <Route path='dashboard' element={<DashBoard />} />
+              <Route path="organisations" element={<Organisations />} />
+              <Route path="events" element={<Events />} />
+              <Route path='users' element={<AllUsers />} />
+              <Route path='subscriptions' element={<Subscriptions />} />
+              <Route path='id-cards' element={<IDCards />} />
             </Route>
           </Routes>
         }

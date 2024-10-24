@@ -1,4 +1,4 @@
-const StatCard = ({ number, label, iconColor, IconComponent, colorGradient, cronTop, cronTopIcon }) => {
+const StatCard = ({ number, label, iconColor, IconComponent, colorGradient, cronTop, cronTopIcon,cronAnalytics }) => {
     let style = null;
     if (colorGradient) {
         style = {
@@ -14,12 +14,7 @@ const StatCard = ({ number, label, iconColor, IconComponent, colorGradient, cron
                     { cronTopIcon } {cronTop ? label : number}
                 </span>
                 <span className={`${cronTop ? 'text-xl' : 'text-sm font-semibold'} flex gap-2`}>{cronTop ? number : label}
-                    {cronTop ? <span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                        28.4%
-                    </span>
-                        :
-                        <></>
-                    }
+                    {cronAnalytics}
                 </span>
             </div>
             <div
