@@ -60,11 +60,11 @@ export default function Footer() {
 
                     <div className="w-full h-[1px] border md:my-4 my-1" style={{ borderColor: 'rgba(57, 57, 57, 1)' }} />
                     <div className="w-full flex md:flex-row gap-2 md:mb-0">
-                        <div className="flex flex-col flex-grow gap-2 items-center">
-                            <div className='flex gap-3 justify-center w-full'>
-                                <Link to={'/'} className="w-full flex justify-center gap-3">
+                        <div className="flex flex-col flex-grow gap-2 md:items-start items-center">
+                            <div className='flex gap-3 md:justify-start justify-center w-full'>
+                                <Link to={'/'} className="w-full flex md:justify-start justify-center gap-3">
                                     <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
-                                    <div className='flex flex-col justify-center'>
+                                    <div className='flex flex-col md:justify-start justify-center'>
                                         <span className='text-xl mt-1 font-semibold text-white'>MobiHolder</span>
                                     </div>
                                 </Link>

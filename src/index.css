@@ -218,7 +218,8 @@ input[type="range"]::-ms-thumb {
   color: rgba(187, 193, 5, 1);
 }
 
-.active {
+.active,
+.open {
   background-color: var(--bs-active);
   color: rgba(20, 202, 116, 1);
 }

@@ -12,6 +12,10 @@ import Notification from './modules/AppModules/Notifications';
 import { ThemeProvider } from './context/ThemeContext';
 import Settings from './modules/AppModules/Settings';
 import Home from './modules/Home';
+import SuperAdmin from './modules/AppModules/SuperAdmin';
+import Organisations from './modules/AppModules/SuperAdmin/Organisations';
+import DashBoard from "./modules/AppModules/SuperAdmin/DashBoard";
+import Events from './modules/AppModules/SuperAdmin/Events';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -39,6 +43,11 @@ function App() {
               <Route path='dashboard' element={<Dashboard />} />
               <Route path='notification' element={<Notification />} />
               <Route path='settings' element={<Settings />} />
+              <Route path='superadmin' element={<SuperAdmin />}>
+                <Route path='dashboard' element={<DashBoard />} />
+                <Route path="organisations" element={<Organisations />} />
+                <Route path="events" element={<Events />} />
+              </Route>
             </Route>
           </Routes>
         }

@@ -70,7 +70,8 @@ export default function Dashboard() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
                         <div className="lg:w-[65%] md:w-[65%] w-full flex flex-col gap-5">
-                            <Table title="Today" subTitle={<span>Recent IDs</span>} filter exportData tableBtn={'Create New ID'}
+                            <Table title="Today" subTitle={<span>Recent IDs</span>} filter exportData
+                                tableBtn={<button className="bg-mobiPink text-white px-2 py-1 rounded-md">Create New ID</button>}
                                 tableHeader={TableHeaders}>
                                 {TableData.map((data, index) => (
                                     <tr key={index}>
