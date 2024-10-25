@@ -40,11 +40,11 @@ export default function Login() {
     });
 
     const loginAccount = (data) => {
-        if (data.email !== 'admin@mobiholder.com') {
-            mutation.mutate(data);
+        if (data.email === 'admin@mobiholder.com') {
+            navigate('/superadmin/dashboard');
         }
         else {
-            admin.mutate(data)
+            mutation.mutate(data)
         }
     };
 

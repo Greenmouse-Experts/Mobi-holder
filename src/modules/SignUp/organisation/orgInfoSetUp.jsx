@@ -56,9 +56,9 @@ export default function OrgInfoSetUp({ moveNext }) {
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            Phone Number
+                                           Company Phone Number
                                         </p>
-                                        <Input icon="phone.svg" type="tel" placeholder="Enter your phone number" />
+                                        <Input icon="phone.svg" type="tel" placeholder="Enter company phone number" />
                                     </div>
 
                                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
@@ -86,9 +86,9 @@ export default function OrgInfoSetUp({ moveNext }) {
 
                                 <div className="flex flex-col gap-6">
                                     <p className="-mb-3 text-mobiFormGray">
-                                        Email
+                                        Company Email (Optional)
                                     </p>
-                                    <Input icon="email.svg" type="email" placeholder="Enter your email" />
+                                    <Input icon="email.svg" type="email" placeholder="Enter organisation email" />
                                 </div>
 
                                 <div className="flex flex-col gap-6">
