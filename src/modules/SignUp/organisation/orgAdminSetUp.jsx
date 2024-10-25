@@ -66,7 +66,7 @@ export default function OrgAdminSetUp() {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Password
                                     </p>
-                                    <Input icon="padlock.svg" appendIcon="eyeClosed.svg" type="password" placeholder="Password" />
+                                    <Input icon="padlock.svg" type="password" placeholder="Password" />
                                 </div>
 
                                 <div className="flex justify-start">

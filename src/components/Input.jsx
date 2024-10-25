@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function Input(props) {
+export default function Input({ icon, type, placeholder, name, register, rules, errors }) {
+    const [passwordOpen, setPasswordOpen] = useState(false);
+
     return (
         <>
             <div className="flex items-center border border-transparent bGmobiGrayDark px-3 py-1.5 rounded-[7px]">
-                {props.icon ?
-                    <img src={`/${props.icon}`} />
-                    :
-                    null}
+                {icon ? (
+                    <img src={`/${icon}`} alt="icon" />
+                ) : null}
 
                 <input
-                    type={props.type}
-                    placeholder={`${props.placeholder}`}
-                    className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-sm px-3 py-3 rounded-[7px]"
+                    type={type === 'password' ? (passwordOpen ? 'text' : type) : type}
+                    placeholder={`${placeholder}`}
+                    className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
                     style={{ borderColor: 'transparent', border: '0px !important' }}
+                    {...register(name, rules)}
                 />
 
-                {props.appendIcon ?
-                    <img src={`/${props.appendIcon}`} />
-                    :
-                    null}
-            </div>        </>
-    )
+                {type === 'password' ? (
+                    <img
+                        src={passwordOpen ? `/eyeOpen.svg` : `/eyeClosed.svg`}
+                        className="cursor-pointer"
+                        alt="toggle visibility"
+                        onClick={() => setPasswordOpen(!passwordOpen)}
+                    />
+                ) : null}
+            </div>
+            {errors ? (
+                <p style={{ color: 'red' }} className="-mt-2">{errors[name]?.message}</p>
+            ) : null}
+        </>
+    );
 }
