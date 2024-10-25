@@ -101,7 +101,9 @@ export default function Header() {
                             </Link>
                         </Button>
                         <Button className="bg-mobiDarkBlue rounded-full text-white">
-                            <span className="font-semibold normal-case">Sign up</span>
+                            <Link className="w-full h-full flex flex-col justify-center" to={'/signup'}>
+                                <span className="font-semibold normal-case">Sign up</span>
+                                </Link>
                         </Button>
                     </div>
                 </div>
