@@ -3,12 +3,21 @@ import Input from "../../../components/Input";
 import { Button, Checkbox } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
 import DropdownMenu from "../../../components/DropdownMenu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthSideBar from "../../../components/AuthSideBar";
 import Theme from "../../../components/Theme";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 export default function OrgAdminSetUp() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    
 
     return (
         <>

@@ -3,11 +3,24 @@ import Input from "../../../components/Input";
 import { Button, Checkbox } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
 import DropdownMenu from "../../../components/DropdownMenu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthSideBar from "../../../components/AuthSideBar";
 import Theme from "../../../components/Theme";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 export default function OrgInfoSetUp({ moveNext }) {
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const loginAccount = (data) => {
+        dispatch(setUser(data.data.data));
+    }
+
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -45,72 +58,73 @@ export default function OrgInfoSetUp({ moveNext }) {
                                 </div>
                             </div>
 
-                            <div className="mb-1 flex flex-col gap-6 mt-5">
+                            <form onSubmit={handleSubmit(loginAccount)}>
+                                <div className="mb-1 flex flex-col gap-6 mt-5">
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Company Name
                                         </p>
-                                        <Input icon="company.svg" type="text" placeholder="Enter your company name" />
+                                        <Input icon="company.svg" type="text" name="companyName" register={register}
+                                            rules={{ required: 'Company Name is required' }} errors={errors} placeholder="Enter your company name" />
                                     </div>
 
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                           Company Phone Number
+                                            Company Phone Number
                                         </p>
-                                        <Input icon="phone.svg" type="tel" placeholder="Enter company phone number" />
+                                        <Input icon="phone.svg" type="tel" name="phoneNumber" register={register}
+                                            rules={{ required: 'Phone Number is required' }} errors={errors} placeholder="Enter company phone number" />
                                     </div>
 
-                                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                        <div className="flex flex-col gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Country
+                                            </p>
+                                            {/**  <Input icon="human.svg" type="text" name="email" register={register}
+                                                rules={{ required: 'Email is required' }} errors={errors} placeholder="Choose your country" /> **/}
+                                        </div>
+
+                                        <div className="flex flex-col gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                State
+                                            </p>
+                                            {/**  <Input icon="human.svg" type="text" placeholder="Choose your state" /> **/}
+                                        </div>
+                                    </div>
+
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            Country
+                                            Address
                                         </p>
-                                        <Input icon="human.svg" type="text" placeholder="Choose your country" />
+                                        <Input icon="address.svg" type="text" name="companyAddress" register={register}
+                                            rules={{ required: 'Company Address is required' }} errors={errors} placeholder="Enter your address" />
                                     </div>
 
-                                    <div className="flex flex-col gap-6">
+                                    {/**  <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            State
+                                            Company Email (Optional)
                                         </p>
-                                        <Input icon="human.svg" type="text" placeholder="Choose your state" />
+                                        <Input icon="email.svg" type="email" name="companyEmail" register={register}
+                                             placeholder="Enter organisation email" />
+                                    </div> **/}
+
+                                    
+                                    <div className="flex justify-start">
+                                        <div className="flex gap-1">
+                                            <span className="flex">
+                                                <Checkbox />
+                                            </span>
+                                            <span className="flex flex-col justify-center">I agree to the Terms & Conditions and Privacy Policy</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex">
+                                        <Button className="bg-mobiPink w-full p-5 rounded-full" onClick={() => moveNext(true)}>Proceed</Button>
                                     </div>
                                 </div>
-
-                                <div className="flex flex-col gap-6">
-                                    <p className="-mb-3 text-mobiFormGray">
-                                        Address
-                                    </p>
-                                    <Input icon="address.svg" type="text" placeholder="Enter your address" />
-                                </div>
-
-                                <div className="flex flex-col gap-6">
-                                    <p className="-mb-3 text-mobiFormGray">
-                                        Company Email (Optional)
-                                    </p>
-                                    <Input icon="email.svg" type="email" placeholder="Enter organisation email" />
-                                </div>
-
-                                <div className="flex flex-col gap-6">
-                                    <p className="-mb-3 text-mobiFormGray">
-                                        Password
-                                    </p>
-                                    <Input icon="padlock.svg" type="password" placeholder="Password" />
-                                </div>
-
-                                <div className="flex justify-start">
-                                    <div className="flex gap-1">
-                                        <span className="flex">
-                                            <Checkbox />
-                                        </span>
-                                        <span className="flex flex-col justify-center">I agree to the Terms & Conditions and Privacy Policy</span>
-                                    </div>
-                                </div>
-
-                                <div className="flex">
-                                    <Button className="bg-mobiPink w-full p-5 rounded-full" onClick={() => moveNext(true)}>Proceed</Button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
