@@ -13,13 +13,11 @@ import { useSelector } from "react-redux";
 export default function VerifyEmail() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const userData = useSelector((state) => state.userData.data);
-    console.log(userData)
     const navigate = useNavigate();
 
     const mutation = useMutation({
         mutationFn: (userData) => apiClient.post('/api/users/auth/verify/email', userData),
         onSuccess: (data) => {
-            console.log(data)
            toast.success(data.data.message);
           //  dispatch(setUser(data.data.data));
           navigate('/login');
@@ -30,7 +28,11 @@ export default function VerifyEmail() {
     });
 
     const verifyAccount = (data) => {
-        mutation.mutate(data);
+        const payload = {
+            email: userData.email,
+            ...data
+        }
+        mutation.mutate(payload);
     };
 
     const resend = useMutation({
@@ -68,13 +70,6 @@ export default function VerifyEmail() {
 
                             <form onSubmit={handleSubmit(verifyAccount)}>
                                 <div className="mb-1 flex flex-col gap-8 mt-5">
-                                    <div className="flex flex-col gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Email
-                                        </p>
-                                        <Input icon="email.svg" type="email" name="email" register={register}
-                                            rules={{ required: 'Email is required' }} errors={errors} placeholder="Enter your email" />
-                                    </div>
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
