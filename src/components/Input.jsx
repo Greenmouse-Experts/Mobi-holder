@@ -16,6 +16,7 @@ export default function Input({ icon, type, placeholder, name, register, rules, 
                     className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:bg-blue-gray-50 disabled:border-0 disabled:cursor-not-allowed transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
                     style={{ borderColor: 'transparent', border: '0px !important' }}
                     {...register(name, rules)}
+                    autoComplete="off"
                 />
 
                 {type === 'password' ? (

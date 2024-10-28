@@ -7,17 +7,38 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthSideBar from "../../../components/AuthSideBar";
 import Theme from "../../../components/Theme";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useMutation } from "@tanstack/react-query";
+import apiClient from "../../../api/apiFactory";
+import { setOrg } from "../../../reducers/organisationSlice";
+import { toast } from "react-toastify";
 
 export default function OrgAdminSetUp() {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const orgData = useSelector((state) => state.orgData.orgData);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    
+    const mutation = useMutation({
+        mutationFn: (userData) => apiClient.post('/api/users/auth/register/organization', userData),
+        onSuccess: (data) => {
+            dispatch(setOrg(data.data.data));
+            toast.success(data.data.message);
+            navigate('/verify-email');
+        },
+        onError: (error) => {
+            toast.error(error.response.data.message);
+        },
+    });
+
+    const createOrgAccount = (data) => {
+        const payload = { ...orgData, ...data };
+        mutation.mutate(payload);
+    }
 
     return (
         <>
@@ -56,41 +77,61 @@ export default function OrgAdminSetUp() {
                                 </div>
                             </div>
 
-                            <div className="mb-1 flex flex-col gap-6 mt-5">
-                                <div className="flex flex-col gap-6">
-                                    <p className="-mb-3 text-mobiFormGray">
-                                        Full Name
-                                    </p>
-                                    <Input icon="human.svg" type="text" placeholder="Enter contact person name" />
-                                </div>
+                            <form onSubmit={handleSubmit(createOrgAccount)} autoComplete="off">
+                                <div className="mb-1 flex flex-col gap-6 mt-5">
+                                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                        <div className="flex flex-col gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                First name
+                                            </p>
+                                            <Input icon="human.svg" name="firstName" register={register}
+                                                rules={{ required: 'First Name is required' }} errors={errors} type="text" placeholder="Enter your first name" />
+                                        </div>
 
-                                <div className="flex flex-col gap-6">
-                                    <p className="-mb-3 text-mobiFormGray">
-                                        Email
-                                    </p>
-                                    <Input icon="email.svg" type="email" placeholder="Enter your email" />
-                                </div>
+                                        <div className="flex flex-col gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Last name
+                                            </p>
+                                            <Input icon="human.svg" type="text" name="lastName" register={register}
+                                                rules={{ required: 'Last Name is required' }} errors={errors} placeholder="Enter your last name" />
+                                        </div>
+                                    </div>
 
-                                <div className="flex flex-col gap-6">
-                                    <p className="-mb-3 text-mobiFormGray">
-                                        Password
-                                    </p>
-                                    <Input icon="padlock.svg" type="password" placeholder="Password" />
-                                </div>
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Email
+                                        </p>
+                                        <Input icon="email.svg" type="email" name="email" register={register}
+                                            rules={{ required: 'Email is required' }} errors={errors} placeholder="Enter your email" />
+                                    </div>
 
-                                <div className="flex justify-start">
-                                    <div className="flex gap-1">
-                                        <span className="flex">
-                                            <Checkbox />
-                                        </span>
-                                        <span className="flex flex-col justify-center">Note, this person would be your organisation Super Admin</span>
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Password
+                                        </p>
+                                        <Input icon="padlock.svg" name="password" register={register}
+                                            rules={{ required: 'Password is required' }} errors={errors} type="password" placeholder="Password" />
+                                    </div>
+
+                                    <div className="flex justify-start">
+                                        <div className="flex gap-1">
+                                            <span className="flex">
+                                                <Checkbox
+                                                    name="acceptedTnC"
+                                                    label="Note, this person would be your organisation Super Admin"
+                                                    register={register}
+                                                    rules={{ required: 'Terms & Conditions is required' }}
+                                                    errors={errors}
+                                                />
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex">
+                                        <Button type="submit" className="bg-mobiPink w-full p-5 rounded-full">Sign Up As Organisation</Button>
                                     </div>
                                 </div>
-
-                                <div className="flex">
-                                    <Button className="bg-mobiPink w-full p-5 rounded-full">Sign Up As Organisation</Button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
