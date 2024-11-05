@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../../components/Input";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import AuthSideBar from "../../components/AuthSideBar";
 import Theme from "../../components/Theme";
@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 export default function VerifyEmail() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const userData = useSelector((state) => state.userData.data);
+    const orgData = useSelector((state) => state.orgData.orgData);
+
     const navigate = useNavigate();
 
     const mutation = useMutation({
@@ -29,7 +31,7 @@ export default function VerifyEmail() {
 
     const verifyAccount = (data) => {
         const payload = {
-            email: userData.email,
+            email: orgData ? orgData.email : userData.email,
             ...data
         }
         mutation.mutate(payload);
@@ -47,7 +49,7 @@ export default function VerifyEmail() {
 
     const verifyLink = () => {
         const payload = {
-            email: userData.email
+            email: orgData ? orgData.email : userData.email,
         }
         resend.mutate(payload);
     }

@@ -117,7 +117,6 @@ body {
 }
 
 input:focus {
-  border: 0px !important;
   color: var(--bs-color);
 }
 
@@ -238,6 +237,25 @@ input[type="range"]::-ms-thumb {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+}
+
+.gradient-purple {
+  background: linear-gradient(
+    to right,
+    rgba(163, 36, 242, 1),
+    rgba(36, 46, 242, 1)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.gradient-layout {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.09) rgba(255, 255, 255, 0)
+  );
 }
 
 .box-shadow-gradient {

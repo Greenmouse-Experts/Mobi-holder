@@ -70,7 +70,7 @@ export default function Header() {
 
     return (
         <>
-            <div className="w-full flex py-6 lg:px-44 md:px-20 px-6 md:relative justify-between backdrop-blur-[53.8px] z-[9999]" data-header
+            <div className="w-full flex py-6 lg:px-44 md:px-20 px-6 xl:px-72 md:relative justify-between backdrop-blur-[53.8px] z-[9999]" data-header
                 style={{ background: 'linear-gradient(to right, rgba(1, 12, 16, 0.42), rgba(1, 21, 26, 0.4))' }}>
                 <div className='flex gap-3 w-full'>
                     <Link to={'/'} className="w-full flex gap-3">
@@ -100,7 +100,7 @@ export default function Header() {
                                 <span className="font-semibold capitalize">Login</span>
                             </Link>
                         </Button>
-                        <Button className="bg-mobiDarkBlue rounded-full text-white">
+                        <Button className="bg-mobiPink rounded-full text-white">
                             <Link className="w-full h-full flex flex-col justify-center" to={'/signup'}>
                                 <span className="font-semibold normal-case">Sign up</span>
                                 </Link>

@@ -1,6 +1,6 @@
 import React from "react";
 import Input from "../../../components/Input";
-import { Button, Checkbox } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
 import DropdownMenu from "../../../components/DropdownMenu";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ import AuthSideBar from "../../../components/AuthSideBar";
 import Theme from "../../../components/Theme";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { setOrg } from "../../../reducers/organisationSlice";
+import Checkbox from "../../../components/CheckBox";
 
 export default function OrgInfoSetUp({ moveNext }) {
 
@@ -16,8 +18,9 @@ export default function OrgInfoSetUp({ moveNext }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const loginAccount = (data) => {
-        dispatch(setUser(data.data.data));
+    const moveTo = (data) => {
+        dispatch(setOrg(data));
+        moveNext();
     }
 
 
@@ -58,7 +61,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                 </div>
                             </div>
 
-                            <form onSubmit={handleSubmit(loginAccount)}>
+                            <form onSubmit={handleSubmit(moveTo)} autoComplete="off">
                                 <div className="mb-1 flex flex-col gap-6 mt-5">
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
@@ -82,15 +85,16 @@ export default function OrgInfoSetUp({ moveNext }) {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Country
                                             </p>
-                                            {/**  <Input icon="human.svg" type="text" name="email" register={register}
-                                                rules={{ required: 'Email is required' }} errors={errors} placeholder="Choose your country" /> **/}
+                                            <Input icon="human.svg" type="text" name="country" register={register}
+                                                rules={{ required: 'Country is required' }} errors={errors} placeholder="Choose your country" />
                                         </div>
 
                                         <div className="flex flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 State
                                             </p>
-                                            {/**  <Input icon="human.svg" type="text" placeholder="Choose your state" /> **/}
+                                            <Input icon="human.svg" type="text" name="state" register={register}
+                                                rules={{ required: 'State is required' }} placeholder="Choose your state" />
                                         </div>
                                     </div>
 
@@ -114,14 +118,19 @@ export default function OrgInfoSetUp({ moveNext }) {
                                     <div className="flex justify-start">
                                         <div className="flex gap-1">
                                             <span className="flex">
-                                                <Checkbox />
+                                                <Checkbox
+                                                    name="acceptedTnC"
+                                                    label="I agree to the Terms & Conditions and Privacy Policy"
+                                                    register={register}
+                                                    rules={{ required: 'Terms & Conditions is required' }}
+                                                    errors={errors}
+                                                />
                                             </span>
-                                            <span className="flex flex-col justify-center">I agree to the Terms & Conditions and Privacy Policy</span>
                                         </div>
                                     </div>
 
                                     <div className="flex">
-                                        <Button className="bg-mobiPink w-full p-5 rounded-full" onClick={() => moveNext(true)}>Proceed</Button>
+                                        <Button className="bg-mobiPink w-full p-5 rounded-full" type="submit">Proceed</Button>
                                     </div>
                                 </div>
                             </form>
