@@ -43,7 +43,11 @@ module.exports = withMT({
         mobiTable: 'var(--bs-mobiTable)',
         mobiBorderTable: 'var(--bs-mobiBorderTable)',
         mobiTableText: 'var(--bs-tableText)',
-        mobiNotification: 'var(--bs-notificationBorder)'
+        mobiNotification: 'var(--bs-notificationBorder)',
+        'custom-dark': 'rgba(27, 28, 54, 0.16)',
+        'custom-light': 'rgba(112, 113, 122, 0.16)',
+        'inner-light': 'rgba(255, 255, 255, 0.07)',
+        'outer-light': 'rgba(255, 255, 255, 0.15)'
       },
       backgroundImage: {
         'home-gradient': 'linear-gradient(to right, rgba(1, 12, 16, 0.42), rgba(1, 21, 26, 0.4))',

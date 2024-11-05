@@ -42,7 +42,7 @@ export default function IntroSection() {
                     and Manage Your Identity <br /> Effortlessly with Our All-in-One Platform.</p>
                 
                 <div className="w-full flex my-3">
-                    <Button className="rounded-full w-auto bg-mobiDarkBlue">
+                    <Button className="rounded-full w-auto bg-mobiPink">
                         <span className="normal-case flex gap-1">Download the App
                             <span className="flex flex-col justify-center pt-[1.5px]">
                             <svg width="25" height="7" viewBox="0 0 27 9" fill="none" xmlns="http://www.w3.org/2000/svg">

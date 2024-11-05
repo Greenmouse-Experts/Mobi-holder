@@ -30,42 +30,102 @@ export default function ModuleAccess() {
     return (
         <>
             <div className="w-full flex flex-col">
-                <div className="w-full h-full flex flex-col gap-8 md:py-10 md:px-10 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
-                    <div className="w-full flex py-8 justify-center">
-                        <div className="lg:w-1/3 md:w-2/5 w-full flex justify-center">
-                            <span className="md:text-4xl text-2xl tracking-wide md:leading-[55px] leading-[50px] text-black font-bold w-full text-center">
-                                <span style={{ backgroundColor: 'rgba(205, 205, 251, 1)' }}>Verification</span> Module for
-                                Access <span style={{ backgroundColor: 'rgba(205, 205, 251, 1)' }}>Control</span>
-                            </span>
+                <div className="w-full h-full flex flex-col gap-8 md:py-10 lg:px-28 xl:px-52 md:px-20 relative bg-[rgba(2,13,17,1)]">
+                    <div className="w-full h-full relative flex flex-col py-10">
+                        <div className="flex justify-center w-full">
+                            <img src="/section-oval.png" className="md:w-3/5" />
                         </div>
-                    </div>
-                    <div className="flex w-full">
-                        <img src="/access_wave.png" />
-                    </div>
-                    <div className="absolute md:flex hidden right-48 top-16">
-                        <img src="/anigma-cell.gif" className="w-[100px]" />
-                    </div>
-                    <div className="w-full flex justify-center">
-                        <div className="lg:w-3/5 md:w-2/5 w-full flex justify-center">
-                            <p className="text-base text-center text-black">
-                                Easily manage event access with our built-in verification module.
-                                Assign personnel, control entry, and monitor access in real time to ensure secure and efficient event management.
-                            </p>
+                        <div className="w-full flex flex-col -mt-20 sm:-mt-52 xl:-mt-72 gap-20 gradient-layout">
+                            <div className="w-full flex justify-center">
+                                <div className="md:w-3/5 w-full text-center">
+                                    <span className="text-4xl md:text-5xl md:leading-[70px] w-full text-center font-bold text-white">
+                                        Why Individuals and SMEs choose us
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="w-full flex md:px-7">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-8 bg-darkBlue text-white">
+                                    {/* Card 1 */}
+                                    <div className="bg-gradient-to-r from-custom-dark to-custom-light p-6 rounded-xl shadow-lg">
+                                        <h2 className="text-2xl font-semibold mb-2">Easy Sign Up</h2>
+                                        <p className="text-sm text-gray-400 mb-6">
+                                            Choose a user type and get started in seconds with our simple and user-friendly sign-up process. Start exploring without any hassle!
+                                        </p>
+                                        <div className="flex items-center justify-between bg-gradient-to-r from-inner-light to-outer-light p-4 rounded-lg">
+                                            <div className="w-full flex flex-col gap-3">
+                                                <div className="w-full flex gap-3 justify-center">
+                                                    <img src="/user_connect.png" />
+                                                </div>
+                                                <div className="w-full flex">
+                                                    <img src="/shimmer-fade.png" />
+                                                </div>
+                                                <div className="w-full flex">
+                                                    <img src="/signup-frame.png" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Card 2 */}
+                                    <div className="bg-gradient-to-r from-custom-dark to-custom-light p-6 flex flex-col rounded-xl shadow-lg">
+                                        <h2 className="text-2xl font-semibold mb-2">Never lose your IDs</h2>
+                                        <p className="text-sm text-gray-400 mb-6">
+                                            Keep all your important IDs safe and accessible in one secure place. Our platform allows you to store, organize, and retrieve your IDs effortlessly.
+                                        </p>
+                                        <div className="flex items-center mt-auto justify-between bg-gradient-to-r from-inner-light to-outer-light p-4 rounded-lg">
+                                            <img src="/frame_2.png" />
+                                        </div>
+                                    </div>
+
+                                    {/* Card 3 */}
+                                    <div className="bg-gradient-to-r from-custom-dark to-custom-light p-6 flex flex-col rounded-xl shadow-lg">
+                                        <h2 className="text-2xl font-semibold mb-2">24/7 Customer Support</h2>
+                                        <p className="text-sm text-gray-400 mb-6">
+                                            You’ll receive regular reports on your privacy status and any outstanding threats. If new records become associated with you, we will send you an alert.
+                                        </p>
+                                        <div className="flex flex-col rounded-lg">
+                                            <div className="w-1/4"><img src="/security-validation.png" /></div>
+                                            <div className="flex mt-auto w-full justify-end">
+                                                <div className="bg-gradient-to-r from-inner-light to-outer-light rounded-lg flex w-3/4">
+                                                    <img src="/frame_67.png" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Card 4 */}
+                                    <div className="md:col-span-2 bg-gradient-to-r from-custom-dark to-custom-light flex md:flex-row flex-col gap-3 p-6 rounded-xl shadow-lg">
+                                        <div className="md:w-[60%] w-full flex flex-col gap-1">
+                                            <h2 className="text-2xl font-semibold mb-2">Revenue from Subscriptions Module</h2>
+                                            <p className="text-sm text-gray-400 mb-6">
+                                                Unlock a steady revenue stream by offering subscription-based access to your organization. Our platform’s subscription module allows you to create flexible plans that cater to different user needs.
+                                            </p>
+                                        </div>
+                                        <div className="md:w-[40%] w-full flex rounded-lg">
+                                            <img src="/fram-6-7.png" className="w-full h-full object-fit-contain" />
+                                        </div>
+                                    </div>
+
+                                    {/* Card 5 */}
+                                    <div className="bg-gradient-to-r from-custom-dark to-custom-light p-6 flex flex-col rounded-xl shadow-lg">
+                                        <h2 className="text-2xl font-semibold mb-2">Join Us Today</h2>
+                                        <p className="text-sm text-gray-400 mb-6">
+                                            Enjoy these benefits as you become a Mobiholder user today
+                                        </p>
+                                        <button className="bg-purple-500 px-6 py-3 w-full text-center font-semibold rounded-full">Get Started →</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
-                    </div>
-                    <div className="w-full flex justify-center">
-                        <div className="lg:w-2/5 md:w-2/5 w-full flex justify-center mb-8">
-                            <Button className="w-1/2 rounded-full p-5 bg-mobiBlue">Learn More</Button>
-                        </div>
-                    </div>
-                    <div className="absolute md:flex hidden bottom-10 left-20">
-                        <img src="/golden-roller-ball.gif" className="w-[100px]" />
                     </div>
                 </div>
 
-                <div className="w-full h-full relative flex-col">
+                <div className="w-full h-full relative flex flex-col">
                     <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${stringBlock})` }}></div>
-                    <div className="md:w-[63%] w-full flex flex-col relative md:py-28 mt-10 lg:px-44 md:px-20 px-6 gap-5 z-50">
+                    <div className="md:w-[63%] xl:w-1/3 w-full flex flex-col xl:mx-72 relative md:py-24 mt-10 xl:px-0 lg:px-44 md:px-20 px-6 gap-5 z-50">
                         <span className="md:text-5xl text-3xl font-bold md:leading-[60px] gradient-text">Ready to unlock your Management potential?</span>
                         <span className="text-base leading-[30px] text-white">
                             Take control of your team, tasks,
@@ -89,10 +149,10 @@ export default function ModuleAccess() {
                 </div>
 
                 <div className="w-full h-full relative">
-                    <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 py-10 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
+                    <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 xl:px-72 md:px-32 py-10 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
                         <div className="flex md:w-2/5 w-full md:justify-start justify-center">
                             <img src={iPhone} className="md:w-[400px] w-[200px]" />
-                            <img src={authGroup} className="absolute z-50 md:flex hidden bottom-20 left-16 w-[460px]" />
+                            <img src={authGroup} className="absolute z-50 md:flex hidden bottom-20 left-16 xl:left-64 w-[460px]" />
                         </div>
                         <div className="flex md:w-1/2 flex-col gap-4 md:py-12 md:px-0 px-7 text-black">
                             <p className="md:text-5xl text-2xl font-bold">Download the App</p>
@@ -108,7 +168,7 @@ export default function ModuleAccess() {
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col gap-8 md:py-14 md:px-32 relative gap-7 px-6" style={{ backgroundColor: 'rgba(2, 13, 17, 1)' }}>
+                <div className="w-full flex flex-col gap-8 md:py-14 md:px-32 xl:px-72 relative gap-7 px-6" style={{ backgroundColor: 'rgba(2, 13, 17, 1)' }}>
                     <div className="w-full flex md:flex-row py-10 md:gap-10 gap-5 flex-col">
                         <div className="flex w-full flex-col gap-2">
                             <span className="md:text-5xl text-3xl font-bold leading-[60px] gradient-text">Stay In the Loop</span>
