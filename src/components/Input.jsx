@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-export default function Input({ icon, type, placeholder, name, register, rules, errors }) {
+export default function Input({ icon, type, style, placeholder, name, register, rules, errors }) {
     const [passwordOpen, setPasswordOpen] = useState(false);
 
     return (
         <>
-            <div className="flex items-center border border-transparent bGmobiGrayDark px-3 py-1.5 rounded-[7px]">
+            <div className="flex items-center border border-transparent bGmobiGrayDark px-3 py-1.5 rounded-[7px]" style={style}>
                 {icon ? (
                     <img src={`/${icon}`} alt="icon" />
                 ) : null}

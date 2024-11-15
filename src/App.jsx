@@ -25,6 +25,7 @@ import { store } from './store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VerifyEmail from './modules/VerifyEmail';
+import AdminLogin from './modules/Admin/Login';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -52,6 +53,7 @@ function App() {
                 <Route path='/signup/individual' element={<IndividualSignUp />} />
                 <Route path='/signup/organisation' element={<OrganisationSignUp />} />
                 <Route path='/login' element={<Login />} />
+                <Route path='/admin' element={<AdminLogin />} />
                 <Route path='/forgot-password' element={<PasswordReset />} />
                 <Route path='/app' element={<AppModules />}>
                   <Route path='dashboard' element={<Dashboard />} />
