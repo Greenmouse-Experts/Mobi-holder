@@ -96,7 +96,7 @@ export default function Header() {
                 <div className="md:flex hidden h-full w-full">
                     <div className="flex w-full gap-2 justify-end">
                         <Button className="bg-transparent rounded-full border border-white text-white">
-                            <Link className="w-full h-full flex" to={'/admin'}>
+                            <Link className="w-full h-full flex" to={'/login'}>
                                 <span className="font-semibold capitalize">Login</span>
                             </Link>
                         </Button>

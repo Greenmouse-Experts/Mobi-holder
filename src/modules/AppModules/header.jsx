@@ -8,8 +8,9 @@ import { Drawer } from "@material-tailwind/react";
 import Sidebar from "./sideBar";
 import { ThemeContext } from "../../context/ThemeContext";
 import SuperAdminSideBar from "../SuperAdmin/superAdminSideBar";
+import OrgGreeting from "./OrgDashboard/layouts/Greetings";
 
-export default function Header({ greeting, profile, mobile, superAdmin }) {
+export default function Header({ greeting, profile, mobile, organisation, superAdmin }) {
     const [open, setOpen] = useState(false);
 
     const openDrawer = () => {
@@ -26,7 +27,7 @@ export default function Header({ greeting, profile, mobile, superAdmin }) {
 
     return (
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
-            <div className="lg:w-[70%] md:w-[70%] w-full md:px-0 px-3 flex flex-col gap-5">
+            <div className="lg:w-[70%] md:w-[60%] w-full md:px-0 px-3 flex flex-col gap-5">
                 <div className="w-full flex gap-8 justify-between">
                     <div className="flex md:w-3/5 w-3/4">
                         <SearchInput appendIcon="search.svg" type="password" placeholder="Enter keyword to search" />
@@ -58,33 +59,33 @@ export default function Header({ greeting, profile, mobile, superAdmin }) {
 
                 {greeting ?
                     <div className="w-full flex">
-                        <Greeting />
+                        {organisation ? <OrgGreeting /> : <Greeting />}
                     </div>
                     :
                     <></>
                 }
             </div>
 
-            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[30%] md:w-[30%]`}>
+            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[30%] md:w-[40%]`}>
                 <div className={`w-full flex flex-col gap-6 ${profile ? 'p-2 rounded-md bg-mobiSearchDark' : ''}`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
                         <div className="flex flex-grow">
                             <p className="text-sm font-semibold">{superAdmin ? 'Admin Profile' : 'My Profile'}</p>
                         </div>
-                        <div className="flex">
-                            <img src="/userProfilexs.png" />
+                        <div className="flex w-[34px] rounded-md">
+                            <img src={organisation ? '/org-image.png' : '/userProfilexs.png'} className="w-full h-full rounded-md" />
                         </div>
                     </div>
 
                     {profile ?
                         <>
                             <div className="w-full flex px-3 gap-3">
-                                <div className="flex">
-                                    <img src="/userProfileLg.png" />
+                                <div className="flex rounded rounded-full w-[93px] h-[93px]">
+                                    <img src={organisation ? '/org-image.png' : '/userProfileLg.png'} className="w-full h-full rounded-md" />
                                 </div>
                                 <div className="flex flex-col gap-1">
-                                    <p className="text-base font-semibold">Chukka Uzo</p>
-                                    <p className="text-sm text-mobiRomanSilver">Individual Account</p>
+                                    <p className="text-base font-semibold">{!organisation ? 'Chukka Uzo' : 'Green Mouse'}</p>
+                                    <p className="text-sm text-mobiRomanSilver">{!organisation ? 'Individual Account' : 'Organisation Account'}</p>
                                     <div className="flex gap-2">
                                         <p className="text-mobiBlue">ID: 364888484</p>
                                         <div className="flex flex-col justify-center">
@@ -100,21 +101,21 @@ export default function Header({ greeting, profile, mobile, superAdmin }) {
                             <div className="flex gap-2 px-3 mt-2 mb-2">
                                 <div className="flex flex-col  gap-1">
                                     <p className="text-mobiRomanSilver text-center lg:text-xs md:text-sm sm:text-sm text-xs">Type</p>
-                                    <p className="text-sm text-center">Individual</p>
+                                    <p className="text-xs font-[500] text-center">{!organisation ? 'Individual' : 'Organisation'}</p>
                                 </div>
 
                                 <div className="w-[1px] mx-2 lg:h-full md:h-full min-h-[20px] border border-mobiRomanSilver" />
 
                                 <div className="flex flex-col gap-1">
                                     <p className="text-mobiRomanSilver text-center lg:text-xs md:text-sm sm:text-sm text-xs">Date Joined</p>
-                                    <p className="text-sm text-center">09-10-22</p>
+                                    <p className="text-xs font-[500] text-center">09-10-22</p>
                                 </div>
 
                                 <div className="w-[1px] mx-2 lg:h-full md:h-full min-h-[20px] border border-mobiRomanSilver" />
 
                                 <div className="flex flex-col gap-1">
                                     <p className="text-mobiRomanSilver text-center lg:text-xs md:text-xs sm:text-sm text-xs">Status</p>
-                                    <p className="text-sm text-center">VERIFIED</p>
+                                    <p className="text-xs font-[500] text-center">VERIFIED</p>
                                 </div>
                             </div>
                         </>

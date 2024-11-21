@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Checkbox } from "@material-tailwind/react";
@@ -11,11 +11,14 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../api/apiFactory";
 import { setUser } from "../../reducers/userSlice";
 import { toast } from "react-toastify";
+import useErrorHandler from "../../api/hooks/errorHooks";
 
 export default function IndividualSignUp() {
+    const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const handleError = useErrorHandler();
 
     const mutation = useMutation({
         mutationFn: (userData) => apiClient.post('/api/users/auth/register/individual', userData),
@@ -23,15 +26,20 @@ export default function IndividualSignUp() {
             dispatch(setUser(data.data.data));
             toast.success(data.data.message);
             navigate('/verify-email');
+            setIsLoading(false);
         },
         onError: (error) => {
-            toast.error(error.response.data.message);
+            handleError(error)
+            setIsLoading(false);
         },
     });
 
     const createAccount = (data) => {
+        setIsLoading(true);
+        data.acceptedTnC = true;
         mutation.mutate(data);
     };
+
 
     return (
         <>
@@ -133,8 +141,8 @@ export default function IndividualSignUp() {
                                     </div>
 
                                     <div className="flex">
-                                        <Button type="submit" disabled={mutation.isLoading} className="bg-mobiPink w-full p-5 rounded-full">
-                                            {mutation.isLoading ? 'Submitting...' : 'Sign Up'}
+                                        <Button type="submit" disabled={isLoading} className="bg-mobiPink w-full p-5 rounded-full">
+                                            {isLoading ? 'Submitting...' : 'Sign Up'}
                                         </Button>
                                     </div>
                                 </div>
