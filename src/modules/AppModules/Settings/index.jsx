@@ -2,9 +2,11 @@ import Header from "../header";
 import { useState } from "react";
 import Input from "../../../components/Input";
 import { Button } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
 
 export default function Settings() {
     const [activeTab, setActiveTab] = useState('profile');
+    const user = useSelector((state) => state.userData.data);
 
     const tabs = [
         {
@@ -31,7 +33,7 @@ export default function Settings() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile />
+                    <Header mobile data={user} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">Settings</p>
 

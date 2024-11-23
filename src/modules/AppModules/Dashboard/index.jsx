@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DashboardStats from "./layouts/DashboardStats";
 import Table from "../../../components/Tables";
 import Badge from "../../../components/Badge";
 import Subscription from "./layouts/Subscription";
 import Header from "../header";
+import { useSelector } from "react-redux";
 
 const TableData = [
     {
@@ -58,12 +59,13 @@ const NewTableHeaders = ["Organisations", "Renewal Date", "Current Status", "Act
 
 export default function Dashboard() {
     document.documentElement.style.position = null;
+    const user = useSelector((state) => state.userData.data);
 
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header greeting profile />
+                    <Header greeting profile data={user} />
                     <div className="w-full flex lg:flex-row md:flex-row flex-col h-full gap-5 my-2 md:px-0 px-3">
                         <DashboardStats />
                     </div>
