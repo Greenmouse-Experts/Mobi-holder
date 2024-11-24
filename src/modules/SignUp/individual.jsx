@@ -8,6 +8,7 @@ import Theme from "../../components/Theme";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../reducers/userSlice";
+import useApiMutation from "../../api/hooks/useApiMutation";
 
 export default function IndividualSignUp() {
     const [isLoading, setIsLoading] = useState(false);

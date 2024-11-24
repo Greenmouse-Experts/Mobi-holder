@@ -7,7 +7,7 @@ import Theme from "../../components/Theme";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../reducers/userSlice";
-import useApiMutation from "../../api/services/useApiMutation";
+import useApiMutation from "../../api/hooks/useApiMutation";
 
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -27,6 +27,9 @@ export default function Login() {
                 dispatch(setUser(response.data.data));
                 localStorage.setItem("userToken", response.data.token)
             },
+            onError: () => {
+                setIsLoading(false);
+            }
         });
     };
 

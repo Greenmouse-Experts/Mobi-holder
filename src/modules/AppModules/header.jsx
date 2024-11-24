@@ -80,7 +80,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                                     <img src={`${data.photo}`} className="w-full h-full rounded-md" />
                                 </div>
                                 :
-                                <AvatarInitials name={!organisation ? `${data.firstName}${data.lastName}` : `${data.companyName}`} size="10" />
+                                <AvatarInitials name={!organisation ? `${data.firstName}${data.lastName}` : `${data.companyName}`} size="8" />
                             }
                         </div>
                     </div>
@@ -122,7 +122,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
 
                                 <div className="flex flex-col gap-1">
                                     <p className="text-mobiRomanSilver text-center lg:text-xs md:text-sm sm:text-sm text-xs">Date Joined</p>
-                                    <p className="text-xs font-[500] text-center">{dateFormat(data.createdAt, "dd-MM-yyyy") }</p>
+                                    <p className="text-xs font-[500] text-center">{dateFormat(data.createdAt, "dd-MM-yyyy")}</p>
                                 </div>
 
                                 <div className="w-[1px] mx-2 lg:h-full md:h-full min-h-[20px] border border-mobiRomanSilver" />
