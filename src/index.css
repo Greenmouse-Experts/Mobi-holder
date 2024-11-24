@@ -11,6 +11,7 @@
   --bs-cagePink: rgba(41, 22, 61, 1);
   --bs-cageBlue: rgba(22, 24, 61, 1);
   --bs-mobiGray: rgba(233, 235, 251, 1);
+  --bs-cardSupport: rgba(233, 235, 251, 1);
   --bs-inputBorder: transparent;
   --bs-cagePinkBlack: rgba(163, 58, 160, 0.5);
   --bs-cageBlueBlack: rgba(60, 58, 163, 0.5);
@@ -78,6 +79,7 @@
   --bs-mobiBorderTable: rgba(30, 30, 30, 1);
   --bs-tableText: rgba(174, 185, 225, 1);
   --bs-notificationBorder: rgba(42, 43, 43, 1);
+  --bs-cardSupport: rgba(21, 23, 30, 1);
 }
 
 body {
@@ -153,6 +155,10 @@ button {
 .bGmobiGrayDark {
   background-color: var(--bs-mobiGray);
   border: 1px solid var(--bs-inputBorder) !important;
+}
+
+.bg-cardSupport {
+  background-color: var(--bs-cardSupport);
 }
 
 .bs-boxAccount {

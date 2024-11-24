@@ -1,43 +1,34 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Checkbox } from "@material-tailwind/react";
 import DropdownMenu from "../../components/DropdownMenu";
 import AuthSideBar from "../../components/AuthSideBar";
 import Theme from "../../components/Theme";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useMutation } from "@tanstack/react-query";
-import apiClient from "../../api/apiFactory";
 import { setUser } from "../../reducers/userSlice";
-import { toast } from "react-toastify";
-import useErrorHandler from "../../api/hooks/errorHooks";
+import useApiMutation from "../../api/hooks/useApiMutation";
 
 export default function IndividualSignUp() {
     const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const handleError = useErrorHandler();
 
-    const mutation = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/users/auth/register/individual', userData),
-        onSuccess: (data) => {
-            dispatch(setUser(data.data.data));
-            toast.success(data.data.message);
-            navigate('/verify-email');
-            setIsLoading(false);
-        },
-        onError: (error) => {
-            handleError(error)
-            setIsLoading(false);
-        },
-    });
+    const { mutate } = useApiMutation();
 
     const createAccount = (data) => {
         setIsLoading(true);
         data.acceptedTnC = true;
-        mutation.mutate(data);
+        mutate({
+            url: "/api/users/auth/register/individual",
+            method: "POST",
+            data: data,
+            navigateTo: "/verify-email",
+            onSuccess: (response) => {
+                dispatch(setUser(response.data.data));
+            },
+        });
     };
 
 

@@ -1,51 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../components/Input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import AuthSideBar from "../../components/AuthSideBar";
 import Theme from "../../components/Theme";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useMutation } from "@tanstack/react-query";
-import apiClient from "../../api/apiFactory";
+import { setUser } from "../../reducers/userSlice";
+import useApiMutation from "../../api/hooks/useApiMutation";
 
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const mutation = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/users/auth/login', userData),
-        onSuccess: (data) => {
-            dispatch(setUser(data.data.data));
-            toast.success(data.data.message);
-            navigate('/app/dashboard');
-        },
-        onError: (error) => {
-            toast.error(error.response.data.message);
-        },
-    });
-
-    const admin = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/admins/login', userData),
-        onSuccess: (data) => {
-            dispatch(setUser(data.data.data));
-            toast.success(data.data.message);
-            navigate('/superadmin/dashboard');
-        },
-        onError: (error) => {
-            toast.error(error.response.data.message);
-        },
-    });
+    const { mutate } = useApiMutation();
 
     const loginAccount = (data) => {
-        if (data.email === 'admin@mobiholder.com') {
-            navigate('/superadmin/dashboard');
-        }
-        else {
-            mutation.mutate(data)
-        }
+        setIsLoading(true)
+        mutate({
+            url: "/api/users/auth/login",
+            method: "POST",
+            data: data,
+            navigateTo: "/app/dashboard",
+            onSuccess: (response) => {
+                dispatch(setUser(response.data.data));
+                localStorage.setItem("userToken", response.data.token)
+            },
+            onError: () => {
+                setIsLoading(false);
+            }
+        });
     };
 
     return (
@@ -89,7 +74,9 @@ export default function Login() {
                                     </div>
 
                                     <div className="flex">
-                                        <Button type="submit" className="bg-mobiPink w-full p-5 rounded-full">Login</Button>
+                                        <Button type="submit" disabled={isLoading} className="bg-mobiPink w-full p-5 rounded-full">
+                                            {isLoading ? 'Submitting...' : 'Login'}
+                                        </Button>
                                     </div>
                                 </div>
                             </form>
