@@ -27,6 +27,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import VerifyEmail from './modules/VerifyEmail';
 import AdminLogin from './modules/Admin/Login';
 import OrgDashboard from './modules/AppModules/OrgDashboard';
+import FAQ from './modules/Home/pages/faq';
+import ContactUs from './modules/Home/pages/contactUs';
+import PricingPlans from './modules/Home/pages/pricing';
+import Legal from './modules/Home/pages/legal';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -47,6 +51,10 @@ function App() {
               :
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/pricing" element={<PricingPlans />} />
+                <Route path="/legal" element={<Legal />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path='/signup/individual' element={<IndividualSignUp />} />
