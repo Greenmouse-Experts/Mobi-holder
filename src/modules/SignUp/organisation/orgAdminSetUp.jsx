@@ -37,7 +37,7 @@ export default function OrgAdminSetUp() {
 
     const createOrgAccount = (data) => {
         const payload = { ...orgData, ...data };
-        mutation.mutate(payload);
+         mutation.mutate(payload);
     }
 
     return (

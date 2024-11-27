@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
@@ -10,19 +10,49 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setOrg } from "../../../reducers/organisationSlice";
 import Checkbox from "../../../components/CheckBox";
+import MultipleSelect from "../../../components/MultipleSelect";
 
 export default function OrgInfoSetUp({ moveNext }) {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [payload, setPayload] = useState({});
+    const [errorAccess, setErrorAccess] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const moveTo = (data) => {
-        dispatch(setOrg(data));
-        moveNext();
-    }
+        setPayload((prevPayload) => {
+            const { country, state, street, ...restData } = data;
+            const updatedPayload = {
+                ...prevPayload,
+                ...restData,
+                companyAddress: {
+                    country,
+                    state,
+                    street,
+                },
+            };
 
+            // Perform actions using the updated payload
+            if (!updatedPayload.natureOfOrganisation) {
+                setErrorAccess(true);
+            } else {
+                setErrorAccess(false);
+                dispatch(setOrg(updatedPayload)); // Use updatedPayload here
+                moveNext();
+            }
+
+            return updatedPayload; // Update the payload state
+        });
+    };
+
+    const handleAccessType = (data) => {
+        setPayload((prevPayload) => ({
+            ...prevPayload,
+            natureOfOrganisation: data,
+        }));
+    }
 
     return (
         <>
@@ -80,6 +110,14 @@ export default function OrgInfoSetUp({ moveNext }) {
                                             rules={{ required: 'Phone Number is required' }} errors={errors} placeholder="Enter company phone number" />
                                     </div>
 
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Address
+                                        </p>
+                                        <Input icon="address.svg" type="text" name="street" register={register}
+                                            rules={{ required: 'Company Address is required' }} errors={errors} placeholder="Enter your address" />
+                                    </div>
+
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                                         <div className="flex flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
@@ -94,27 +132,39 @@ export default function OrgInfoSetUp({ moveNext }) {
                                                 State
                                             </p>
                                             <Input icon="human.svg" type="text" name="state" register={register}
-                                                rules={{ required: 'State is required' }} placeholder="Choose your state" />
+                                                rules={{ required: 'State is required' }} errors={errors} placeholder="Choose your state" />
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            Address
-                                        </p>
-                                        <Input icon="address.svg" type="text" name="companyAddress" register={register}
-                                            rules={{ required: 'Company Address is required' }} errors={errors} placeholder="Enter your address" />
-                                    </div>
-
-                                    {/**  <div className="flex flex-col gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
                                             Company Email (Optional)
                                         </p>
                                         <Input icon="email.svg" type="email" name="companyEmail" register={register}
-                                             placeholder="Enter organisation email" />
-                                    </div> **/}
+                                            placeholder="Enter organisation email" />
+                                    </div>
 
-                                    
+
+                                    <div className="flex flex-col gap-6 my-2">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            About Company (Optional)
+                                        </p>
+                                        <Input type="text" name="aboutCompany" register={register}
+                                            placeholder="Tell us about your company" />
+                                    </div>
+
+                                    <div className="flex flex-col gap-6 my-1">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Organisation Access Type
+                                        </p>
+                                        <MultipleSelect accessType={handleAccessType} />
+                                        {errorAccess &&
+                                            <p className="-mt-3" style={{ color: 'red' }}>
+                                                Select Organisation Access Type
+                                            </p>
+                                        }
+                                    </div>
+
                                     <div className="flex justify-start">
                                         <div className="flex gap-1">
                                             <span className="flex">

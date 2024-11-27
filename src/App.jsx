@@ -30,13 +30,11 @@ import OrgDashboard from './modules/AppModules/OrgDashboard';
 
 function App() {
   const [splash, setSplash] = useState(true);
-  const navigate = useNavigate();
 
   const queryClient = new QueryClient();
 
   const handleSplashScreen = () => {
     setSplash(false);
-    navigate('/');
   }
 
   return (

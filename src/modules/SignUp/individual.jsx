@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
 import { Link } from "react-router-dom";
-import { Button, Checkbox } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 import DropdownMenu from "../../components/DropdownMenu";
 import AuthSideBar from "../../components/AuthSideBar";
 import Theme from "../../components/Theme";
@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../reducers/userSlice";
 import useApiMutation from "../../api/hooks/useApiMutation";
+import Checkbox from "../../components/CheckBox";
 
 export default function IndividualSignUp() {
     const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +20,6 @@ export default function IndividualSignUp() {
 
     const createAccount = (data) => {
         setIsLoading(true);
-        data.acceptedTnC = true;
         mutate({
             url: "/api/users/auth/register/individual",
             method: "POST",
@@ -124,10 +124,14 @@ export default function IndividualSignUp() {
                                     <div className="flex justify-start">
                                         <div className="flex gap-2">
                                             <span className="flex">
-                                                <Checkbox name="acceptedTnC" register={register}
-                                                    rules={{ required: 'This is required' }} errors={errors} />
+                                                <Checkbox
+                                                    name="acceptedTnC"
+                                                    label="I agree to the Terms & Conditions and Privacy Policy"
+                                                    register={register}
+                                                    rules={{ required: 'Terms & Conditions is required' }}
+                                                    errors={errors}
+                                                />
                                             </span>
-                                            <span className="flex flex-col justify-center">I agree to the Terms & Conditions and Privacy Policy</span>
                                         </div>
                                     </div>
 

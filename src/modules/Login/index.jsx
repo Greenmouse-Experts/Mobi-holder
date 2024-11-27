@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Input from "../../components/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import AuthSideBar from "../../components/AuthSideBar";
 import Theme from "../../components/Theme";
@@ -8,11 +8,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../reducers/userSlice";
 import useApiMutation from "../../api/hooks/useApiMutation";
+import { setOrg } from "../../reducers/organisationSlice";
 
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
 
@@ -22,10 +24,15 @@ export default function Login() {
             url: "/api/users/auth/login",
             method: "POST",
             data: data,
-            navigateTo: "/app/dashboard",
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
                 localStorage.setItem("userToken", response.data.token)
+                if (response.data.data.accountType === 'Organization') {
+                    navigate('/app/org-dashboard')
+                }
+                else {
+                    navigate('/app/dashboard')
+                }
             },
             onError: () => {
                 setIsLoading(false);

@@ -9,12 +9,12 @@ export default function Sidebar({mobile}) {
         <div className={`h-full rounded-md flex-col ${mobile ? 'w-full lg:hidden md:hidden flex overflow-auto' : 'md:w-[22%] lg:flex md:hidden hidden custom-scrollbar overflow-auto h-[750px] fixed'} bg-mobiDarkCloud transition-all mb-10`}>
             {/* Logo */}
             <div className="py-6 px-4 flex gap-6 flex-col space-x-2 border-bottom">
-                <div className='flex px-3 gap-3'>
+                <Link to={'/'} className='flex px-3 gap-3'>
                     <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
                     <div className='flex flex-col justify-center'>
                         <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
                     </div>
-                </div>
+                </Link>
                 <div className='w-full h-[1px] border-mobiSilverDivider border-bottom border'></div>
             </div>
 

@@ -29,7 +29,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
 
     return (
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
-            <div className="lg:w-[70%] md:w-[60%] w-full md:px-0 px-3 flex flex-col gap-5">
+            <div className="lg:w-[68%] md:w-[60%] w-full md:px-0 px-3 flex flex-col gap-5">
                 <div className="w-full flex gap-8 justify-between">
                     <div className="flex md:w-3/5 w-3/4">
                         <SearchInput appendIcon="search.svg" type="password" placeholder="Enter keyword to search" />
@@ -60,7 +60,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                 </div>
 
                 {greeting ?
-                    <div className="w-full flex">
+                    <div className="w-full flex -mt-1">
                         {organisation ? <OrgGreeting orgData={data} /> : <Greeting userData={data} />}
                     </div>
                     :
@@ -68,7 +68,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                 }
             </div>
 
-            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[30%] md:w-[40%]`}>
+            <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[32%] md:w-[40%]`}>
                 <div className={`w-full flex flex-col gap-6 ${profile ? 'p-2 rounded-md bg-mobiSearchDark' : ''}`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
                         <div className="flex flex-grow">
@@ -112,7 +112,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                                 </div>
                             </div>
 
-                            <div className="flex gap-2 px-3 mt-1 mb-2">
+                            <div className="flex gap-2 px-3 mt-2 mb-2">
                                 <div className="flex flex-col  gap-1">
                                     <p className="text-mobiRomanSilver text-center lg:text-xs md:text-sm sm:text-sm text-xs">Type</p>
                                     <p className="text-xs font-[500] text-center">{data.accountType}</p>

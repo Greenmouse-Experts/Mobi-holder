@@ -32,7 +32,7 @@ function SignUp() {
                             <div className='w-full flex flex-col h-full'>
                                 <CardType type="Organisation"
                                     text="This account type is for companies and organizations"
-                                    link='/app/org-dashboard'
+                                    link='/signup/organisation'
                                 />
                             </div>
                         </div>
