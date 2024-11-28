@@ -27,12 +27,7 @@ export default function Login() {
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
                 localStorage.setItem("userToken", response.data.token)
-                if (response.data.data.accountType === 'Organization') {
-                    navigate('/app/org-dashboard')
-                }
-                else {
-                    navigate('/app/dashboard')
-                }
+                navigate('/app/dashboard')
             },
             onError: () => {
                 setIsLoading(false);
