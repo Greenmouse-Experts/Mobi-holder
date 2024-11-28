@@ -38,7 +38,7 @@ export default function AuthSideBar() {
                 </div>
             </div>
             <div className="w-full flex p-2 justify-center">
-                <p className="text-sm" style={{ color: 'rgba(63, 67, 83, 1)' }}>Copyright © 2024 BOG. All Rights Reserved</p>
+                <p className="text-sm" style={{ color: 'rgba(63, 67, 83, 1)' }}>Copyright © 2024 Mobiholder. All Rights Reserved</p>
             </div>
         </div>)
 }

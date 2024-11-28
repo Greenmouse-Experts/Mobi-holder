@@ -51,6 +51,15 @@ module.exports = withMT({
       },
       backgroundImage: {
         'home-gradient': 'linear-gradient(to right, rgba(1, 12, 16, 0.42), rgba(1, 21, 26, 0.4))',
+        'btn-gradient': 'background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 100%)',
+        'custom-gradient': 'linear-gradient(195.05deg, rgba(43, 255, 255, 0.1) 0%, rgba(43, 255, 255, 0.02) 50%, rgba(43, 255, 255, 0.06) 100%)',
+      },
+      backdropBlur: {
+        '40': '40px',
+      },
+      borderColor: {
+        custom: 'rgba(36, 60, 242, 0.5)',
+        lBlue: 'rgba(36, 46, 242, 1)'
       },
     },
   },

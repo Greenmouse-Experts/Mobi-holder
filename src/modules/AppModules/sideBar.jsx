@@ -5,16 +5,17 @@ import Theme from '../../components/Theme';
 
 export default function Sidebar({mobile}) {
     const url = window.location.pathname;
+    console.log(url)
     return (
         <div className={`h-full rounded-md flex-col ${mobile ? 'w-full lg:hidden md:hidden flex overflow-auto' : 'md:w-[22%] lg:flex md:hidden hidden custom-scrollbar overflow-auto h-[750px] fixed'} bg-mobiDarkCloud transition-all mb-10`}>
             {/* Logo */}
             <div className="py-6 px-4 flex gap-6 flex-col space-x-2 border-bottom">
-                <div className='flex px-3 gap-3'>
+                <Link to={'/'} className='flex px-3 gap-3'>
                     <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
                     <div className='flex flex-col justify-center'>
                         <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
                     </div>
-                </div>
+                </Link>
                 <div className='w-full h-[1px] border-mobiSilverDivider border-bottom border'></div>
             </div>
 
@@ -28,30 +29,32 @@ export default function Sidebar({mobile}) {
                     </i>
                     <span className={`${url === '/app/dashboard' ? 'text-mobiPink' : ''}`}>Dashboard</span>
                 </Link>
-                <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg hover:bg-mobiBlueFade text-mobiRomanSilver transition`}>
+                <Link to={'/app/subscriptions'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg ${url === '/app/subscriptions' ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade text-mobiRomanSilver'} transition`}>
                     <i className="mr-3">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 12.5V6.8C20 5.11984 20 4.27976 19.673 3.63803C19.3854 3.07354 18.9265 2.6146 18.362 2.32698C17.7202 2 16.8802 2 15.2 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H12M14 11H8M10 15H8M16 7H8M14.5 19L16.5 21L21 16.5" stroke="#7F7F7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M20 12.5V6.8C20 5.11984 20 4.27976 19.673 3.63803C19.3854 3.07354 18.9265 2.6146 18.362 2.32698C17.7202 2 16.8802 2 15.2 2H8.8C7.11984 2 6.27976 2 5.63803 2.32698C5.07354 2.6146 4.6146 3.07354 4.32698 3.63803C4 4.27976 4 5.11984 4 6.8V17.2C4 18.8802 4 19.7202 4.32698 20.362C4.6146 20.9265 5.07354 21.3854 5.63803 21.673C6.27976 22 7.11984 22 8.8 22H12M14 11H8M10 15H8M16 7H8M14.5 19L16.5 21L21 16.5"
+                                stroke={`${url === '/app/subscriptions' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </i>
-                    <span>Membership & Subscription</span>
-                </a>
-                <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg hover:bg-mobiBlueFade text-mobiRomanSilver transition`}>
+                    <span className={`${url === '/app/subscriptions' ? 'text-mobiPink' : ''}`}>Membership & Subscription</span>
+                </Link>
+                <Link to={'/app/id-cards'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg ${url === '/app/id-cards' ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade text-mobiRomanSilver'} transition`}>
                     <i className="mr-3">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22.7 13.5L20.7005 11.5L18.7 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C15.3019 3 18.1885 4.77814 19.7545 7.42909M12 7V12L15 14" stroke="#7F7F7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M22.7 13.5L20.7005 11.5L18.7 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C15.3019 3 18.1885 4.77814 19.7545 7.42909M12 7V12L15 14" stroke={`${url === '/app/id-cards' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </i>
-                    ID Cards
-                </a>
-                <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg hover:bg-mobiBlueFade text-mobiRomanSilver transition`}>
+                    <span className={`${url === '/app/id-cards' ? 'text-mobiPink' : ''}`}>ID Cards</span>
+                </Link>
+                <Link to={'/app/events'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg ${url === '/app/events' ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade text-mobiRomanSilver'} transition`}>
                     <i className="mr-3">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 10H2M2 8.2L2 15.8C2 16.9201 2 17.4802 2.21799 17.908C2.40973 18.2843 2.71569 18.5903 3.09202 18.782C3.51984 19 4.07989 19 5.2 19L18.8 19C19.9201 19 20.4802 19 20.908 18.782C21.2843 18.5903 21.5903 18.2843 21.782 17.908C22 17.4802 22 16.9201 22 15.8V8.2C22 7.0799 22 6.51984 21.782 6.09202C21.5903 5.7157 21.2843 5.40974 20.908 5.21799C20.4802 5 19.9201 5 18.8 5L5.2 5C4.0799 5 3.51984 5 3.09202 5.21799C2.7157 5.40973 2.40973 5.71569 2.21799 6.09202C2 6.51984 2 7.07989 2 8.2Z" stroke="#7F7F7F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M22 10H2M2 8.2L2 15.8C2 16.9201 2 17.4802 2.21799 17.908C2.40973 18.2843 2.71569 18.5903 3.09202 18.782C3.51984 19 4.07989 19 5.2 19L18.8 19C19.9201 19 20.4802 19 20.908 18.782C21.2843 18.5903 21.5903 18.2843 21.782 17.908C22 17.4802 22 16.9201 22 15.8V8.2C22 7.0799 22 6.51984 21.782 6.09202C21.5903 5.7157 21.2843 5.40974 20.908 5.21799C20.4802 5 19.9201 5 18.8 5L5.2 5C4.0799 5 3.51984 5 3.09202 5.21799C2.7157 5.40973 2.40973 5.71569 2.21799 6.09202C2 6.51984 2 7.07989 2 8.2Z"
+                                stroke={`${url === '/app/events' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </i>
-                    Event
-                </a>
+                    <span className={`${url === '/app/events' ? 'text-mobiPink' : ''}`}> Event </span>
+                </Link>
                 <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg hover:bg-mobiBlueFade text-mobiRomanSilver transition`}>
                     <i className="mr-3">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

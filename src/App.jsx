@@ -26,17 +26,21 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VerifyEmail from './modules/VerifyEmail';
 import AdminLogin from './modules/Admin/Login';
-import OrgDashboard from './modules/AppModules/OrgDashboard';
+import FAQ from './modules/Home/pages/faq';
+import ContactUs from './modules/Home/pages/contactUs';
+import PricingPlans from './modules/Home/pages/pricing';
+import Legal from './modules/Home/pages/legal';
+import IDCardsPage from './modules/AppModules/pages/IdCards';
+import IndividualSubscriptions from './modules/AppModules/pages/Subscriptions';
+import IndividualEvents from './modules/AppModules/pages/Events';
 
 function App() {
   const [splash, setSplash] = useState(true);
-  const navigate = useNavigate();
 
   const queryClient = new QueryClient();
 
   const handleSplashScreen = () => {
     setSplash(false);
-    navigate('/');
   }
 
   return (
@@ -49,6 +53,10 @@ function App() {
               :
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/pricing" element={<PricingPlans />} />
+                <Route path="/legal" element={<Legal />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
                 <Route path='/signup/individual' element={<IndividualSignUp />} />
@@ -58,7 +66,9 @@ function App() {
                 <Route path='/forgot-password' element={<PasswordReset />} />
                 <Route path='/app' element={<AppModules />}>
                   <Route path='dashboard' element={<Dashboard />} />
-                  <Route path='org-dashboard' element={<OrgDashboard />} />
+                  <Route path='id-cards' element={<IDCardsPage />} />
+                  <Route path='subscriptions' element={<IndividualSubscriptions />} />
+                  <Route path='events' element={<IndividualEvents />} />
                   <Route path='notification' element={<Notification />} />
                   <Route path='settings' element={<Settings />} />
                 </Route>

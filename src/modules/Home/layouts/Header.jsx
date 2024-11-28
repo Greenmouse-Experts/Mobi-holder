@@ -12,15 +12,19 @@ export default function Header() {
         },
         {
             url: '/',
-            text: 'Features'
+            text: 'Use Cases'
         },
         {
-            url: '/',
+            url: '/pricing',
             text: 'Pricing'
         },
         {
-            url: '/',
+            url: '/faq',
             text: 'FAQs'
+        },
+        {
+            url: '/contact-us',
+            text: 'Contact Us'
         }
     ];
 
@@ -70,9 +74,9 @@ export default function Header() {
 
     return (
         <>
-            <div className="w-full flex py-6 lg:px-44 md:px-20 px-6 xl:px-72 md:relative justify-between backdrop-blur-[53.8px] z-[9999]" data-header
+            <div className="w-full flex py-6 lg:px-20 md:px-20 px-6 xl:px-72 md:relative justify-between backdrop-blur-[53.8px] z-[9999]" data-header
                 style={{ background: 'linear-gradient(to right, rgba(1, 12, 16, 0.42), rgba(1, 21, 26, 0.4))' }}>
-                <div className='flex gap-3 w-full'>
+                <div className='flex gap-3 w-1/4'>
                     <Link to={'/'} className="w-full flex gap-3">
                         <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
                         <div className='flex flex-col justify-center'>
@@ -81,10 +85,10 @@ export default function Header() {
                     </Link>
                 </div>
 
-                <div className="md:flex hidden w-full text-white">
+                <div className="md:flex hidden w-1/2 justify-center mx-10 text-white">
                     <div className="flex w-full gap-4">
                         {navs.map((nav, index) => (
-                            <div className="w-full  h-full flex flex-col justify-center" key={index}>
+                            <div className="w-1/5 h-full flex flex-col justify-center" key={index}>
                                 <Link to={nav.url} className="w-full flex">
                                     <span className="font-[500] text-base">{nav.text}</span>
                                 </Link>
@@ -93,7 +97,7 @@ export default function Header() {
                     </div>
                 </div>
 
-                <div className="md:flex hidden h-full w-full">
+                <div className="md:flex hidden h-full w-1/4">
                     <div className="flex w-full gap-2 justify-end">
                         <Button className="bg-transparent rounded-full border border-white text-white">
                             <Link className="w-full h-full flex" to={'/login'}>
