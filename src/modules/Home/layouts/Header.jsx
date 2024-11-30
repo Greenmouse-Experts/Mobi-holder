@@ -1,17 +1,30 @@
 import { Button, Drawer } from "@material-tailwind/react";
 import { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Theme from "../../../components/Theme"
 
 export default function Header() {
+
+    const location = useLocation(); // React Router Hook to access the URL
+
+    useEffect(() => {
+        if (location.hash) {
+            const elementId = location.hash.substring(1); // Remove the "#" from hash
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    }, [location]);
+
     const navs = [
         {
             url: '/',
             text: 'Home'
         },
         {
-            url: '/',
+            url: '/#useCases',
             text: 'Use Cases'
         },
         {
