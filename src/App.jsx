@@ -33,6 +33,10 @@ import Legal from './modules/Home/pages/legal';
 import IDCardsPage from './modules/AppModules/pages/IdCards';
 import IndividualSubscriptions from './modules/AppModules/pages/Subscriptions';
 import IndividualEvents from './modules/AppModules/pages/Events';
+import AddCard from './modules/AppModules/pages/IdCards/addCard';
+import ViewCard from './modules/AppModules/pages/IdCards/viewCard';
+import AddEvent from './modules/AppModules/pages/Events/addEvent';
+import ViewEvent from './modules/AppModules/pages/Events/viewEvent';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -67,6 +71,10 @@ function App() {
                 <Route path='/app' element={<AppModules />}>
                   <Route path='dashboard' element={<Dashboard />} />
                   <Route path='id-cards' element={<IDCardsPage />} />
+                  <Route path='add-card' element={<AddCard />} />
+                  <Route path='view-card' element={<ViewCard />} />
+                  <Route path='add-event' element={<AddEvent />} />
+                  <Route path='view-event' element={<ViewEvent />} />
                   <Route path='subscriptions' element={<IndividualSubscriptions />} />
                   <Route path='events' element={<IndividualEvents />} />
                   <Route path='notification' element={<Notification />} />

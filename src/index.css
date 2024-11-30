@@ -132,6 +132,11 @@ input::placeholder {
   color: rgba(153, 151, 151, 1);
 }
 
+textarea::placeholder {
+  opacity: 1;
+  color: rgba(153, 151, 151, 1);
+}
+
 button {
   font-family: "Montserrat", sans-serif !important;
 }

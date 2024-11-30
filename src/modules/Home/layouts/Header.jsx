@@ -153,14 +153,14 @@ export default function Header() {
                         <div className="flex w-full flex-col gap-7">
                             {navs.map((nav, index) => (
                                 <div className="w-full  h-full flex flex-col justify-center" key={index}>
-                                    <Link to={nav.url} className="w-full flex">
+                                    <Link to={nav.url} className="w-full flex" onClick={closeDrawer}>
                                         <span className="font-[500] text-base">{nav.text}</span>
                                     </Link>
                                 </div>
                             ))}
                             <Button className="bg-transparent rounded-full border border-gray-600">
                                 <Link className="w-full h-full flex justify-center" to={'/login'}>
-                                    <span className="font-semibold capitalize">Login</span>
+                                    <span className="font-semibold bs-mobiCeramaic capitalize">Login</span>
                                 </Link>
                             </Button>
                             <Button className="bg-mobiDarkBlue rounded-full text-white">
