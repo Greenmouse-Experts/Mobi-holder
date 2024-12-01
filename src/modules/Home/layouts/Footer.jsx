@@ -43,7 +43,7 @@ export default function Footer() {
                                 <h3 className="text-lg font-semibold">COMPANY</h3>
                                 <ul className="space-y-4">
                                     <li><a href="#" className="uppercase">Home</a></li>
-                                    <li><a href="#" className="uppercase">Features</a></li>
+                                    <li><Link to='#useCases' className="uppercase">Use Cases</Link></li>
                                     <li><a href="#" className="uppercase">Pricing</a></li>
                                     <li><a href="#" className="uppercase">FAQs</a></li>
                                     <li><a href="#" className="uppercase">Contact</a></li>
@@ -58,7 +58,6 @@ export default function Footer() {
                                     <li><Link to='/legal' className="uppercase">Privacy Policy</Link></li>
                                     <li><a href="#" className="uppercase">Help Center</a></li>
                                     <li><Link to='/legal' className="uppercase">Legal</Link></li>
-                                    <li><a href="#" className="uppercase">Download</a></li>
                                 </ul>
                             </div>
 
