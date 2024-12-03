@@ -11,6 +11,7 @@
   --bs-cagePink: rgba(41, 22, 61, 1);
   --bs-cageBlue: rgba(22, 24, 61, 1);
   --bs-mobiGray: rgba(233, 235, 251, 1);
+  --bs-patchRadio: rgba(233, 235, 251, 1);
   --bs-cardSupport: rgba(233, 235, 251, 1);
   --bs-inputBorder: transparent;
   --bs-cagePinkBlack: rgba(163, 58, 160, 0.5);
@@ -51,6 +52,7 @@
   --bs-cagePink: rgba(41, 22, 61, 1);
   --bs-cageBlue: rgba(22, 24, 61, 1);
   --bs-mobiGray: rgba(82, 81, 81, 1);
+  --bs-patchRadio: rgba(21, 23, 30, 1);
   --bs-inputBorder: transparent;
   --bs-cagePinkBlack: rgba(163, 58, 160, 0.5);
   --bs-cageBlueBlack: rgba(60, 58, 163, 0.5);
@@ -240,6 +242,10 @@ input[type="range"]::-ms-thumb {
 
 .chartColor {
   color: var(--bs-color);
+}
+
+.listColor {
+  background-color: var(--bs-color);
 }
 
 .gradient-text {

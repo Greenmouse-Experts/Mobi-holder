@@ -1,6 +1,7 @@
 import { useState } from "react";
 import notificationImg from "../../../assets/notificationImg.svg";
 import Header from "../header";
+import { useSelector } from "react-redux";
 
 const notificationsData = [
     {
@@ -39,12 +40,13 @@ export default function Notification() {
     };
 
     document.documentElement.style.position = null;
+    const user = useSelector((state) => state.userData.data);
 
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile />
+                    <Header mobile data={user} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">Notifications</p>
 

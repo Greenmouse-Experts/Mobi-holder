@@ -37,6 +37,15 @@ import AddCard from './modules/AppModules/pages/IdCards/addCard';
 import ViewCard from './modules/AppModules/pages/IdCards/viewCard';
 import AddEvent from './modules/AppModules/pages/Events/addEvent';
 import ViewEvent from './modules/AppModules/pages/Events/viewEvent';
+import AddSubscription from './modules/AppModules/pages/Subscriptions/addSubscription';
+import ViewOrganisation from './modules/AppModules/pages/Subscriptions/viewOrganisation';
+import Membership from './modules/AppModules/pages/Memberships';
+import JoinOrganisation from './modules/AppModules/pages/Memberships/joinOrganisation';
+import VerificationDashboard from './modules/AppModules/pages/Verify';
+import ViewVerifiers from './modules/AppModules/pages/Verify/viewVerifiers';
+import AddEventVerifier from './modules/AppModules/pages/Verify/addEventVerifier';
+import AddVerifier from './modules/AppModules/pages/Verify/addVerifiers';
+import VerificationRequest from './modules/AppModules/pages/Verify/verificationRequest';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -76,9 +85,19 @@ function App() {
                   <Route path='add-event' element={<AddEvent />} />
                   <Route path='view-event' element={<ViewEvent />} />
                   <Route path='subscriptions' element={<IndividualSubscriptions />} />
+                  <Route path='add-subscription' element={<AddSubscription />} />
+                  <Route path='join-organisation/:id' element={<AddSubscription />} />
+                  <Route path='join-organisation-form' element={<JoinOrganisation />} />
+                  <Route path='view-organisation/:id' element={<ViewOrganisation />} />
+                  <Route path='membership' element={<Membership />} />
                   <Route path='events' element={<IndividualEvents />} />
                   <Route path='notification' element={<Notification />} />
                   <Route path='settings' element={<Settings />} />
+                  <Route path='verify' element={<VerificationDashboard />} />
+                  <Route path='add-verifiers' element={<AddVerifier />} />
+                  <Route path='view-verifiers/:id' element={<ViewVerifiers />} />
+                  <Route path='add-event-verifier/:id' element={<AddEventVerifier />} />
+                  <Route path='verification-request' element={<VerificationRequest />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />

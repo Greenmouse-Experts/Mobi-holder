@@ -32,7 +32,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
             <div className="lg:w-[68%] md:w-[60%] w-full md:px-0 px-3 flex flex-col gap-5">
                 <div className="w-full flex gap-8 justify-between">
                     <div className="flex md:w-3/5 w-3/4">
-                        <SearchInput appendIcon="search.svg" type="password" placeholder="Enter keyword to search" />
+                        <SearchInput appendIcon="search.svg" type="text" placeholder="Enter keyword to search" />
                     </div>
 
                     <div className="flex gap-3">
@@ -139,11 +139,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                 </div>
             </div>
             <Drawer open={open} onClose={closeDrawer} className="bg-mobiDarkCloud">
-                {url !== '/app/dashboard' ?
-                    <SuperAdminSideBar mobile />
-                    :
                     <Sidebar mobile />
-                }
             </Drawer>
         </div>
     )

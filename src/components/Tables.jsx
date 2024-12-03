@@ -43,7 +43,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, children, tableH
             </div>
 
             <div className="overflow-x-auto border py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
-                <table className="table-auto lg:w-full md:w-full sm:w-full w-[500px] text-mobiSkyBlue">
+                <table className="table-auto lg:w-full md:w-full sm:w-full w-[700px] text-mobiSkyBlue">
                     {updatedTableHeader ?
                         <thead>
                             <tr>

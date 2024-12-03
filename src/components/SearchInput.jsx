@@ -3,7 +3,7 @@ import React from "react";
 export default function SearchInput(props) {
     return (
         <>
-            <div className="flex items-center border w-full border-mobiSearchDark bg-mobiSearchDark md:px-3 px-1.5 py-1 rounded-[7px]">
+            <div className="flex items-center border w-full border-mobiSearchDark bg-mobiSearchDark md:px-3 px-1.5 py-2 rounded-[7px]">
                 {props.icon ?
                     <img src={`/${props.icon}`} />
                     :

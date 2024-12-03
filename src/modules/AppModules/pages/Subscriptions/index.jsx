@@ -6,6 +6,7 @@ import Table from "../../../../components/Tables";
 import Badge from "../../../../components/Badge";
 import organisation from "../../../../assets/organisation.svg";
 import calendar from "../../../../assets/calendar.svg";
+import { Link } from "react-router-dom";
 
 export default function IndividualSubscriptions() {
     const user = useSelector((state) => state.userData.data);
@@ -54,7 +55,7 @@ export default function IndividualSubscriptions() {
                         </div>
                     </div>
 
-                    <div className="w-full md:flex-row flex flex-col gap-5">
+                    <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                         <StatCard
                             number={12}
                             label="Total Subscription"
@@ -76,7 +77,7 @@ export default function IndividualSubscriptions() {
                             IconComponent={<img src={calendar} alt="Events" style={{ width: '20px' }} />}
                             colorGradient={['rgba(107, 239, 215, 1)', 'rgba(52, 59, 79, 1)']}
                         />
-                        <div className="bg-mobiDarkCloud rounded-md shadow-md py-2 px-4 w-3/5 flex items-center justify-between">
+                        <Link to={'/app/add-subscription'} className="bg-mobiDarkCloud rounded-md shadow-md py-2 px-4 md:w-3/5 w-full flex items-center justify-between">
                             <div className="flex flex-col items-center w-full gap-3">
                                 <span className={`flex gap-1`}>
                                     New Subscription
@@ -87,7 +88,7 @@ export default function IndividualSubscriptions() {
                                     <path d="M23.8033 37V16H28.1805V37H23.8033ZM15 28.5814V24.4031H37V28.5814H15Z" fill="#242EF2" />
                                 </svg>
                             </div>
-                        </div>
+                        </Link>
                     </div>
 
 

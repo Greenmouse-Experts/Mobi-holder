@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import Header from "../../header";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import Input from "../../../../components/Input";
 import DropdownMenu from "../../../../components/DropdownMenu";
 
@@ -19,7 +18,7 @@ export default function ViewCard() {
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">View ID Card</p>
                             <p className="text-base">Preview ID Card for : <span className="text-mobiBlue">GreenMouse</span></p>
                             <div className="flex my-2">
-                                <DropdownMenu buttonLabel="Created by Organisation" color="#A324F2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiPink border rounded-md border-mobiPink">
+                                <DropdownMenu buttonLabel="Created by Organisation" disabled color="#A324F2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiPink border rounded-md border-mobiPink">
                                 </DropdownMenu>
                             </div>
                         </div>

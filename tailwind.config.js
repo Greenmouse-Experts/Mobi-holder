@@ -33,6 +33,7 @@ module.exports = withMT({
         mobiSkyCloud: 'var(--bs-mobiSkyCloud)',
         mobiSubPurple: 'var(--bs-mobiSubPurple)',
         mobiLightGreen: 'var(--bs-mobiLightGreen)',
+        mobiRadioBg: 'var(--bs-patchRadio)',
         mobiSkyBlue: 'var(--bs-skyBlue)',
         mobiUnread: 'var(--bs-unread)',
         mobiBorder: 'var(--bs-bgBody)',

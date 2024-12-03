@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
-const RadioButtonGroup = ({ options, selectedOption }) => {
+const RadioButtonGroup = ({ options, selectedOption, className }) => {
     const [selected, setSelected] = useState(selectedOption);
 
     return (
         <>
-            <div className="flex flex-col sm:flex-row w-full items-center sm:space-x-2 space-y-2 sm:space-y-0">
+            <div className={`flex w-full items-center sm:space-x-2 space-y-2 sm:space-y-0 ${className ? className : 'flex-col sm:flex-row'}`}>
                 {options.map((option, index) => (
                     <div className="flex w-full flex-col sm:flex-row items-center sm:space-x-2 space-y-2 sm:space-y-0" key={index}>
                         <label
-                            className={`cursor-pointer flex justify-between items-center px-6 py-3 w-full bGmobiGrayDark rounded-lg border transition ${selectedOption === option.slug
-                                ? 'text-white border-purple-700'
+                            className={`cursor-pointer flex justify-between items-center px-6 py-3 w-full bg-mobiRadioBg rounded-lg transition ${selectedOption === option.slug
+                                ? 'text-white border border-purple-700'
                                 : ''
                                 }`}
                             onClick={() => setSelected(option.slug)}

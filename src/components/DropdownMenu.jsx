@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-const DropdownMenu = ({ buttonLabel, children, btnClass, color }) => {
+const DropdownMenu = ({ buttonLabel, children, btnClass, disabled, color }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleDropdown = () => {
+        if(!disabled)
         setIsOpen(!isOpen);
     };
 
@@ -15,12 +16,13 @@ const DropdownMenu = ({ buttonLabel, children, btnClass, color }) => {
                 className={btnClass}
             >
                 <span className='flex'>{buttonLabel}</span>
-                <span className='flex flex-col h-full justify-center'>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 0.617188L5 9.61719L10 0.617188H0Z" fill={color} />
-                    </svg>
-
-                </span>
+                {!disabled &&
+                    <span className='flex flex-col h-full justify-center'>
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0.617188L5 9.61719L10 0.617188H0Z" fill={color} />
+                        </svg>
+                    </span>
+                }
             </button>
 
             {/* Dropdown menu */}

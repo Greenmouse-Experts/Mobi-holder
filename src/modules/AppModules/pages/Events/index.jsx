@@ -55,7 +55,7 @@ export default function IndividualEvents() {
                         </div>
                     </div>
 
-                    <div className="w-full md:flex-row flex flex-col gap-5">
+                    <div className="w-full md:px-0 px-3 md:flex-row flex flex-col gap-5">
                         <StatCard
                             number={12}
                             label="Total Event"
@@ -77,7 +77,7 @@ export default function IndividualEvents() {
                             IconComponent={<img src={organisation} alt="Events" style={{ width: '20px' }} />}
                             colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}
                         />
-                        <Link to={'/app/add-event'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 w-1/2 flex items-center justify-between">
+                        <Link to={'/app/add-event'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between">
                             <div className="flex flex-col items-center w-full gap-3">
                                 <span className={`flex gap-1`}>
                                     Create Event

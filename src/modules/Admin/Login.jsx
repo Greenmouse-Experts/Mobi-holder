@@ -14,20 +14,8 @@ export default function AdminLogin() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const mutation = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/users/auth/login', userData),
-        onSuccess: (data) => {
-            dispatch(setUser(data.data.data));
-            toast.success(data.data.message);
-            navigate('/app/dashboard');
-        },
-        onError: (error) => {
-            toast.error(error.response.data.message);
-        },
-    });
-
     const admin = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/admins/login', userData),
+        mutationFn: (userData) => apiClient.post('/api/admins/login?URL=https://mobiholder.victornwadinobi.com', userData),
         onSuccess: (data) => {
             dispatch(setUser(data.data.data));
             toast.success(data.data.message);
@@ -39,12 +27,7 @@ export default function AdminLogin() {
     });
 
     const loginAccount = (data) => {
-        if (data.email === 'admin@mobiholder.com') {
-            navigate('/superadmin/dashboard');
-        }
-        else {
-            mutation.mutate(data)
-        }
+            admin.mutate(data)
     };
 
     return (
