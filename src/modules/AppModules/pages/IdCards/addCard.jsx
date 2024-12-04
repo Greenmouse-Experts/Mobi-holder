@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Header from "../../header";
+import Header from "../../../../components/Header";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Input from "../../../../components/Input";

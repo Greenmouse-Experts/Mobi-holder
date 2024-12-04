@@ -25,9 +25,17 @@ export default function Login() {
             method: "POST",
             data: data,
             onSuccess: (response) => {
-                dispatch(setUser(response.data.data));
-                localStorage.setItem("userToken", response.data.token)
-                navigate('/app/dashboard')
+                console.log(response.data);
+                if (response.data.data.accountType === 'Organization') {
+                    dispatch(setOrg(response.data.data));
+                    localStorage.setItem("userToken", response.data.token);
+                    navigate('/org/dashboard');
+                }
+                else {
+                     dispatch(setUser(response.data.data));
+                     localStorage.setItem("userToken", response.data.token)
+                     navigate('/app/dashboard')
+                }
             },
             onError: () => {
                 setIsLoading(false);

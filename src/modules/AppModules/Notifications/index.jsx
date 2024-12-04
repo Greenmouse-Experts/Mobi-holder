@@ -1,6 +1,6 @@
 import { useState } from "react";
 import notificationImg from "../../../assets/notificationImg.svg";
-import Header from "../header";
+import Header from "../../../components/Header";
 import { useSelector } from "react-redux";
 
 const notificationsData = [

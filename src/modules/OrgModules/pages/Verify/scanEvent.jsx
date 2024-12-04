@@ -51,7 +51,7 @@ const Card = ({ logo, category }) => {
 };
 
 
-export default function ScanEvents() {
+export default function OrgScanEvents() {
     const user = useSelector((state) => state.userData.data);
     const { id } = useParams();
 
@@ -130,7 +130,7 @@ export default function ScanEvents() {
                         <div className="py-5">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                 {cards.map((card, index) => (
-                                    <Link to='/app/verify-event/:id'>
+                                    <Link to='/org/verify-event/:id'>
                                         <Card key={index} {...card} />
                                     </Link>
                                 ))}

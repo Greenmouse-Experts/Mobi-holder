@@ -2,10 +2,10 @@ import React from "react";
 import DashboardStats from "./layouts/DashboardStats";
 import Table from "../../../components/Tables";
 import Badge from "../../../components/Badge";
-import Header from "../header";
 import MembersAnalysis from "./layouts/MembersAnalysis";
 import SubscriptionAnalysis from "./layouts/SubscriptionAnalysis";
 import { useSelector } from "react-redux";
+import Header from "../../../components/Header";
 
 const TableData = [
     {
@@ -59,7 +59,7 @@ const NewTableHeaders = ["Organisations", "Renewal Date", "Current Status", "Act
 
 export default function OrgDashboard() {
     document.documentElement.style.position = null;
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
 
     return (
         <>

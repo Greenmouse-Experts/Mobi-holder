@@ -1,4 +1,4 @@
-import Header from "../header";
+import Header from "../../../components/Header";
 import { useState } from "react";
 import ProfileInfo from "./tabs/profileInfo";
 import { useSelector } from "react-redux";

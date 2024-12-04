@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Header from "../../header";
+import Header from "../../../../components/Header";
 import SearchInput from "../../../../components/SearchInput";
 import { Link, useParams } from "react-router-dom";
 

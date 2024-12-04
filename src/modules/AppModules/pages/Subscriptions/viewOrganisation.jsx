@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Header from "../../header";
+import Header from "../../../../components/Header";
 import Badge from "../../../../components/Badge";
 import { Button } from "@material-tailwind/react";
 import RadioButtonGroup from "../../../../components/RadioButtonGroup";

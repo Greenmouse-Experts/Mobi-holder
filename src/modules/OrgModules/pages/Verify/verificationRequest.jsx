@@ -6,7 +6,7 @@ import Table from "../../../../components/Tables";
 import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
 
-export default function VerificationRequest() {
+export default function OrgVerificationRequest() {
     const user = useSelector((state) => state.userData.data);
 
     const RequetsHeaders = ["Individual", "Email", "Event", "Request On", "Response", "Action"];
@@ -47,14 +47,14 @@ export default function VerificationRequest() {
                 <div className="w-full md:w-1/2 md:flex-row flex flex-col md:px-0 px-3 gap-5">
                     <StatCard
                         number={12}
-                        label="Total Recieved"
+                        label="Received Requests"
                         iconColor="bg-mobiOrange"
                         IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px', color: 'rgba(107, 239, 215, 1)' }} />}
                         colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                     />
                     <StatCard
                         number={21}
-                        label="Total Initiated"
+                        label="Initiated Requests"
                         iconColor="bg-mobiSkyCloud"
                         IconComponent={<img src={organisation} alt="ID Cards" style={{ width: '22px' }} />}
                         colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}

@@ -5,40 +5,13 @@ import Badge from "../../../../components/Badge";
 import Table from "../../../../components/Tables";
 import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
-import calendar from "../../../../assets/calendar.svg";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 
-export default function VerificationDashboard() {
-    const user = useSelector((state) => state.userData.data);
+export default function OrgVerificationDashboard() {
+    const user = useSelector((state) => state.orgData.orgData);
     const navigate = useNavigate();
 
-    const TableHeaders = ["Event Name", "Event ID", "Created by", "Date", "Status", "Action"];
     const RequetsHeaders1 = ["Individual", "Email", "Event", "Event Image", "Status", "Action"];
-
-    const NewTableData = [
-        {
-            name: 'Google UI Event',
-            email: '346738HJKL',
-            number: 'Google UI Event',
-            date: '20-11-24',
-            status: 'active'
-        },
-        {
-            name: 'Google UI Event',
-            email: '346738HJKL',
-            number: 'Google UI Event',
-            date: '20-11-24',
-            status: 'active'
-        },
-        {
-            name: 'Google UI Event',
-            email: '346738HJKL',
-            number: 'Google UI Event',
-            date: '20-11-24',
-            status: 'active'
-        },
-    ];
 
     const TableData = [
         {
@@ -79,13 +52,6 @@ export default function VerificationDashboard() {
 
                 <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                     <StatCard
-                        number={4}
-                        label="Upcoming Events"
-                        iconColor="bg-mobiLightGreen"
-                        IconComponent={<img src={calendar} alt="Events" style={{ width: '20px' }} />}
-                        colorGradient={['rgba(107, 239, 215, 1)', 'rgba(52, 59, 79, 1)']}
-                    />
-                    <StatCard
                         number={12}
                         label="Total Verifiers"
                         iconColor="bg-mobiOrange"
@@ -99,7 +65,7 @@ export default function VerificationDashboard() {
                         IconComponent={<img src={organisation} alt="ID Cards" style={{ width: '22px' }} />}
                         colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}
                     />
-                    <Link to={'/app/add-verifiers'} className="bg-mobiDarkCloud rounded-md shadow-md py-2 px-4 md:w-[70%] w-full flex items-center justify-between">
+                    <Link to={'/org/add-verifiers'} className="bg-mobiDarkCloud rounded-md shadow-md py-2 px-4 md:w-[70%] w-full flex items-center justify-between">
                         <div className="flex flex-col items-center w-full gap-3">
                             <span className={`flex gap-1`}>
                                 Add Verifiers
@@ -115,41 +81,7 @@ export default function VerificationDashboard() {
 
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                    <Table title="Today" filter subTitle={<span>Upcoming Events</span>} exportData
-                        tableHeader={TableHeaders}>
-                        {NewTableData.map((data, index) => (
-                            <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
-                                <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
-                                <td className="px-6 py-3 cursor-pointer">
-                                    <Menu placement="left">
-                                        <MenuHandler>
-                                            <span className="flex w-full cursor-pointer">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </MenuHandler>
-                                        <MenuList>
-                                            <MenuItem className="flex flex-col gap-3">
-                                                <span className="cursor-pointer" onClick={() => navigate('/app/view-verifiers/2')}>
-                                                    View Verifiers
-                                                </span>
-                                            </MenuItem>
-                                        </MenuList>
-                                    </Menu>
-                                </td>
-                            </tr>
-                        ))}
-                    </Table>
-                </div>
-
-
-                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                    <Table title="Today" filter subTitle={<span>All Your Verifiers</span>} exportData
+                    <Table title="Today" filter subTitle={<span>All Verifiers</span>} exportData
                         tableHeader={RequetsHeaders1}>
                         {TableData.map((data, index) => (
                             <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>

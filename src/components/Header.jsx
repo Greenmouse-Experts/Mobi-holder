@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
-import SearchInput from "../../components/SearchInput";
-import Greeting from "./Dashboard/layouts/Greetings";
-import settings from "../../assets/settings.svg";
-import notifications from "../../assets/notifications.svg"
+import SearchInput from "./SearchInput";
+import Greeting from "../modules/AppModules/Dashboard/layouts/Greetings";
+import settings from "../assets/settings.svg";
+import notifications from "../assets/notifications.svg"
 import { useState, useContext } from "react";
 import { Drawer } from "@material-tailwind/react";
-import Sidebar from "./sideBar";
-import { ThemeContext } from "../../context/ThemeContext";
-import SuperAdminSideBar from "../SuperAdmin/superAdminSideBar";
-import OrgGreeting from "./OrgDashboard/layouts/Greetings";
-import AvatarInitials from "../../components/AvatarInitials";
-import { dateFormat } from "../../helpers/dateHelper";
+import Sidebar from "../modules/AppModules/sideBar";
+import { ThemeContext } from "../context/ThemeContext";
+import OrgGreeting from "../modules/OrgModules/OrgDashboard/layouts/Greetings";
+import AvatarInitials from "./AvatarInitials";
+import { dateFormat } from "../helpers/dateHelper";
 
 export default function Header({ greeting, profile, mobile, organisation, superAdmin, data }) {
     const [open, setOpen] = useState(false);

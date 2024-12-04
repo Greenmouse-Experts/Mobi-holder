@@ -54,6 +54,14 @@ import EventLog from './modules/AppModules/pages/Events/eventLog';
 import TicketRequests from './modules/AppModules/pages/Events/ticketRequests';
 import EventGallery from './modules/AppModules/pages/Events/eventGallery';
 import BuyTickets from './modules/AppModules/pages/Events/buyTickets';
+import EventHistory from './modules/AppModules/pages/Events/eventHistory';
+import OrgModules from './modules/OrgModules';
+import OrgDashboard from './modules/OrgModules/OrgDashboard';
+import OrgVerificationDashboard from './modules/OrgModules/pages/Verify';
+import OrgAddVerifier from './modules/OrgModules/pages/Verify/addVerifiers';
+import OrgScanEvents from './modules/OrgModules/pages/Verify/scanEvent';
+import OrgVerifyEvent from './modules/OrgModules/pages/Verify/verifyEvent';
+import OrgVerificationRequest from './modules/OrgModules/pages/Verify/verificationRequest';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -114,6 +122,15 @@ function App() {
                   <Route path='ticket-requests/:id' element={<TicketRequests />} />
                   <Route path='event-gallery' element={<EventGallery />} />
                   <Route path='order-tickets/:id' element={<BuyTickets />} />
+                  <Route path='event-history' element={<EventHistory />} />
+                </Route>
+                <Route path='/org' element={<OrgModules />}>
+                  <Route path='dashboard' element={<OrgDashboard />} />
+                  <Route path='verify' element={<OrgVerificationDashboard />} />
+                  <Route path='add-verifiers' element={<OrgAddVerifier />} />
+                  <Route path='scan-event' element={<OrgScanEvents />} />
+                  <Route path='verify-event/:id' element={<OrgVerifyEvent />} />
+                  <Route path='verification-request' element={<OrgVerificationRequest />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />

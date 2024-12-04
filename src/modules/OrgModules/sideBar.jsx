@@ -11,7 +11,7 @@ export default function Sidebar({ mobile }) {
 
     const navArray = [
         {
-            path: "/app/dashboard",
+            path: "/org/dashboard",
             slug: "dashboard",
             name: "Dashboard",
             icon: <i className="mr-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,18 +34,18 @@ export default function Sidebar({ mobile }) {
             </i>,
             children: [
                 {
-                    path: "/app/membership",
+                    path: "/org/membership",
                     name: "Membership"
                 },
                 {
-                    path: "/app/subscriptions",
+                    path: "/org/subscriptions",
                     name: "Subscription"
                 }
             ],
             openChildren: false
         },
         {
-            path: "/app/id-cards",
+            path: "/org/id-cards",
             slug: "idcard",
             name: "ID Cards",
             icon: <i className="mr-3">
@@ -69,27 +69,27 @@ export default function Sidebar({ mobile }) {
             </i>,
             children: [
                 {
-                    path: "/app/events",
+                    path: "/org/events",
                     name: "Events Dashboard"
                 },
                 {
-                    path: "/app/upcoming-events",
+                    path: "/org/upcoming-events",
                     name: "Upcoming Event"
                 },
                {
-                    path: "/app/event-gallery",
+                    path: "/org/event-gallery",
                     name: "Event Gallery"
                 },
               /*  {
-                    path: "/app/my-tickets",
+                    path: "/org/my-tickets",
                     name: "My Tickets"
                 },
                 {
-                    path: "/app/event-invites",
+                    path: "/org/event-invites",
                     name: "Event Invites"
                 }, */
                 {
-                    path: "/app/event-history",
+                    path: "/org/event-history",
                     name: "Event History"
                 }
             ],
@@ -107,15 +107,15 @@ export default function Sidebar({ mobile }) {
             </i>,
             children: [
                 {
-                    path: "/app/verify",
+                    path: "/org/verify",
                     name: "Verification Dashboard"
                 },
                 {
-                    path: "/app/verification-request",
+                    path: "/org/verification-request",
                     name: "Verification Request"
                 },
                 {
-                    path: "/app/scan-event",
+                    path: "/org/scan-event",
                     name: "Scan Event"
                 },
             ],
@@ -123,7 +123,7 @@ export default function Sidebar({ mobile }) {
         },
 
         {
-            path: "/app/notification",
+            path: "/org/notification",
             slug: "notification",
             name: "Notification",
             icon: <i className="mr-3">
@@ -204,9 +204,9 @@ export default function Sidebar({ mobile }) {
 
             {/* Footer */}
             <div className="px-4 py-6">
-                <Link to={'/app/settings'} onClick={() => setActiveNav('/app/settings')} className={`flex items-center py-2 px-4 h-[57px] rounded-lg ${activeNav === '/app/settings' ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade'} transition`}>
-                    <i className={`fas fa-cog mr-3 ${activeNav === '/app/settings' ? 'text-mobiPink' : ''}`}></i>
-                    <span className={`${activeNav === '/app/settings' ? 'text-mobiPink' : ''}`}>Settings</span>
+                <Link to={'/org/settings'} onClick={() => setActiveNav('/org/settings')} className={`flex items-center py-2 px-4 h-[57px] rounded-lg ${activeNav === '/org/settings' ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade'} transition`}>
+                    <i className={`fas fa-cog mr-3 ${activeNav === '/org/settings' ? 'text-mobiPink' : ''}`}></i>
+                    <span className={`${activeNav === '/org/settings' ? 'text-mobiPink' : ''}`}>Settings</span>
                 </Link>
                 <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg text-red-500 hover:bg-mobiBlueFade transition`}>
                     <i className="fas fa-sign-out-alt mr-3"></i>

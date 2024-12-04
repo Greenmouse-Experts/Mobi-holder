@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Header from "../../header";
+import Header from "../../../../components/Header";
 import { useState } from "react";
 import AboutEvent from "./components/aboutEvent";
 import LocationEvent from "./components/locationEvent";

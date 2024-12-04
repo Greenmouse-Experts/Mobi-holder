@@ -3,9 +3,8 @@ import DashboardStats from "./layouts/DashboardStats";
 import Table from "../../../components/Tables";
 import Badge from "../../../components/Badge";
 import Subscription from "./layouts/Subscription";
-import Header from "../header";
+import Header from "../../../components/Header";
 import { useSelector } from "react-redux";
-import OrgDashboard from "../OrgDashboard";
 
 const TableData = [
     {
@@ -64,7 +63,6 @@ export default function Dashboard() {
 
     return (
         <>
-            {user.accountType === 'Individual' ?
                 <div className="w-full flex h-full animate__animated animate__fadeIn">
                     <div className="w-full flex flex-col gap-5 h-full">
                         <Header greeting profile data={user} />
@@ -145,9 +143,6 @@ export default function Dashboard() {
 
                     </div>
                 </div>
-                :
-                <OrgDashboard />
-            }
         </>
     )
 }

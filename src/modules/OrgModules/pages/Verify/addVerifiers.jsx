@@ -4,7 +4,7 @@ import Header from "../../../../components/Header";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 
-export default function AddVerifier() {
+export default function OrgAddVerifier() {
     const user = useSelector((state) => state.userData.data);
     const { register, formState: { errors } } = useForm();
 

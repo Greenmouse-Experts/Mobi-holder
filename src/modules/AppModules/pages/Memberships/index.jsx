@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Header from "../../header";
+import Header from "../../../../components/Header";
 import StatCard from "../../../../components/StatsCard";
 import Badge from "../../../../components/Badge";
 import Table from "../../../../components/Tables";

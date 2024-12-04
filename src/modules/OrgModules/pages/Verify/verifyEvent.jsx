@@ -1,12 +1,15 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import Badge from "../../../../components/Badge";
-import Table from "../../../../components/Tables";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
+import Input from "../../../../components/Input";
+import { useForm } from "react-hook-form";
 
-export default function TicketRequests() {
+export default function OrgVerifyEvent() {
     const user = useSelector((state) => state.userData.data);
     const navigate = useNavigate();
+    const { register, formState: { errors } } = useForm();
 
     const eventDetails = [
         {
@@ -61,25 +64,6 @@ export default function TicketRequests() {
     ];
 
 
-    const TableHeaders = ["Individual", "MobiHolder ID", "Requested On", "Action"];
-    const NewTableData = [
-        {
-            name: 'Chukka Uzo',
-            email: 'DWT57383993',
-            number: '12-11-2024',
-        },
-        {
-            name: 'Chukka Uzo',
-            email: 'DWT57383993',
-            number: '12-11-2024',
-        },
-        {
-            name: 'Chukka Uzo',
-            email: 'DWT57383993',
-            number: '12-11-2024',
-        },
-    ];
-
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -87,8 +71,8 @@ export default function TicketRequests() {
                     <Header mobile data={user} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Ticket Requests</p>
-                            <p className="text-base">Ticket requests for: <span className="text-mobiBlue">Google UI Event</span></p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Scan Event</p>
+                            <p className="text-base">Scan Users for: <span className="text-mobiBlue">Google UI Event</span></p>
                         </div>
                     </div>
 
@@ -123,29 +107,22 @@ export default function TicketRequests() {
                             </div>
                         </div>
                         <div className="shadow-xl md:py-5 md:px-8 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
-                            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                                <Table title="Today" filter subTitle={<span>Ticket Requests</span>} exportData
-                                    tableHeader={TableHeaders}>
-                                    {NewTableData.map((data, index) => (
-                                        <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                            <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                            <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                            <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                            <td className="px-3 py-3 text-mobiTableText">
-                                                <span className="flex gap-2">
-                                                    <span className="flex py-2 px-3 rounded-full border border-[rgba(247,77,27,1)]">
-                                                        <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
-                                                    </span>
-                                                    <span className="flex py-2 px-3 rounded-full bg-mobiPink">
-                                                        <p className="text-white text-xs font-[500]">Accept</p>
-                                                    </span>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </Table>
-                            </div>
+                            <form>
+                                <div className="mb-1 flex flex-col gap-10 mt-5">
+                                    <div className="flex flex-col w-full gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                           Verify with Ticket ID
+                                        </p>
+                                        <Input type="text" name="firstName" register={register} placeholder="Enter User Ticket ID" />
+                                    </div>
+                                    <div className="flex">
+                                        <Button type="submit" className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
+                                            Scan Ticket
+                                        </Button>
+                                    </div>
+                                </div>
 
+                            </form>
                         </div>
 
                     </div>
