@@ -1,10 +1,10 @@
 import Table from "../../../components/Tables";
 import DashboardStats from "../layouts/DashboardStats";
-import Greeting from "../layouts/Greetings";
-import Header from "../../AppModules/header";
 import UserAnalysis from "../layouts/UserAnalysis";
 import Events from "../layouts/Events";
 import Badge from "../../../components/Badge"
+import Header from "../header";
+import Greeting from "../greetings";
 
 export default function Dashboard() {
     const TableHeaders = ["Name", "User Type", "Date", "Action"];

@@ -27,7 +27,8 @@ export default function AdminLogin() {
     });
 
     const loginAccount = (data) => {
-            admin.mutate(data)
+        navigate('/superadmin/dashboard');
+           // admin.mutate(data)
     };
 
     return (

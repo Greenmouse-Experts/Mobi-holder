@@ -1,6 +1,6 @@
 import Badge from "../../../components/Badge";
 import Table from "../../../components/Tables";
-import Header from "../../AppModules/header";
+import Header from "../header";
 
 export default function IDCards() {
     const TableHeaders = ["Name", "Organisation Name", "ID Card", "Status", "Expiry Date", "Action"];

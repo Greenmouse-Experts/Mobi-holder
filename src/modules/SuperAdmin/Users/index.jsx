@@ -1,9 +1,9 @@
 import Table from "../../../components/Tables";
-import Header from "../../AppModules/header";
 import usersSmall from "../../../assets/users-small.svg";
 import StatCard from "../../../components/StatsCard";
 import plusSign from "../../../assets/plus-sign.svg";
 import eye from "../../../assets/eye.svg";
+import Header from "../header";
 
 export default function AllUsers() {
     const TableHeaders = ["Name", "Email", "Phone Number", "User Type", "Date", "Action"];

@@ -46,6 +46,8 @@ import ViewVerifiers from './modules/AppModules/pages/Verify/viewVerifiers';
 import AddEventVerifier from './modules/AppModules/pages/Verify/addEventVerifier';
 import AddVerifier from './modules/AppModules/pages/Verify/addVerifiers';
 import VerificationRequest from './modules/AppModules/pages/Verify/verificationRequest';
+import ScanEvents from './modules/AppModules/pages/Verify/scanEvent';
+import VerifyEvent from './modules/AppModules/pages/Verify/verifyEvent';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -98,6 +100,8 @@ function App() {
                   <Route path='view-verifiers/:id' element={<ViewVerifiers />} />
                   <Route path='add-event-verifier/:id' element={<AddEventVerifier />} />
                   <Route path='verification-request' element={<VerificationRequest />} />
+                  <Route path='scan-event' element={<ScanEvents />} />
+                  <Route path='verify-event/:id' element={<VerifyEvent />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />

@@ -5,8 +5,6 @@ import Badge from "../../../../components/Badge";
 import Table from "../../../../components/Tables";
 import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
-import calendar from "../../../../assets/calendar.svg";
-import { Link } from "react-router-dom";
 
 export default function VerificationRequest() {
     const user = useSelector((state) => state.userData.data);

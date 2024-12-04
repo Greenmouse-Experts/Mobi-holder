@@ -1,9 +1,9 @@
 import StatCard from "../../../components/StatsCard";
 import Table from "../../../components/Tables";
-import Header from "../../AppModules/header";
 import plusSign from "../../../assets/plus-sign.svg";
 import eye from "../../../assets/eye.svg";
 import usersSmall from "../../../assets/users-small.svg";
+import Header from "../header";
 
 export default function Subscriptions() {
     const TableHeaders = ["Organisation Name", "Subscription Plans", "Active Subscribers", "InActive Subscribers", "Total Members", "Action"];
