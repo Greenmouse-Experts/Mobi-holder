@@ -48,6 +48,12 @@ import AddVerifier from './modules/AppModules/pages/Verify/addVerifiers';
 import VerificationRequest from './modules/AppModules/pages/Verify/verificationRequest';
 import ScanEvents from './modules/AppModules/pages/Verify/scanEvent';
 import VerifyEvent from './modules/AppModules/pages/Verify/verifyEvent';
+import UpcomingEvents from './modules/AppModules/pages/Events/upcomingEvent';
+import ViewInvites from './modules/AppModules/pages/Events/viewInvites';
+import EventLog from './modules/AppModules/pages/Events/eventLog';
+import TicketRequests from './modules/AppModules/pages/Events/ticketRequests';
+import EventGallery from './modules/AppModules/pages/Events/eventGallery';
+import BuyTickets from './modules/AppModules/pages/Events/buyTickets';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -85,7 +91,7 @@ function App() {
                   <Route path='add-card' element={<AddCard />} />
                   <Route path='view-card' element={<ViewCard />} />
                   <Route path='add-event' element={<AddEvent />} />
-                  <Route path='view-event' element={<ViewEvent />} />
+                  <Route path='view-event/:id' element={<ViewEvent />} />
                   <Route path='subscriptions' element={<IndividualSubscriptions />} />
                   <Route path='add-subscription' element={<AddSubscription />} />
                   <Route path='join-organisation/:id' element={<AddSubscription />} />
@@ -102,6 +108,12 @@ function App() {
                   <Route path='verification-request' element={<VerificationRequest />} />
                   <Route path='scan-event' element={<ScanEvents />} />
                   <Route path='verify-event/:id' element={<VerifyEvent />} />
+                  <Route path='upcoming-events' element={<UpcomingEvents />} />
+                  <Route path='view-invites/:id' element={<ViewInvites />} />
+                  <Route path='event-log/:id' element={<EventLog />} />
+                  <Route path='ticket-requests/:id' element={<TicketRequests />} />
+                  <Route path='event-gallery' element={<EventGallery />} />
+                  <Route path='order-tickets/:id' element={<BuyTickets />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />

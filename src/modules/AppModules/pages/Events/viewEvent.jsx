@@ -1,9 +1,15 @@
 import { useSelector } from "react-redux";
 import Header from "../../header";
 import Badge from "../../../../components/Badge";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Button } from "@material-tailwind/react";
 
 export default function ViewEvent() {
     const user = useSelector((state) => state.userData.data);
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    const paramValue = searchParams.get("slug");
 
     const eventDetails = [
         {
@@ -69,11 +75,16 @@ export default function ViewEvent() {
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
                     <Header mobile data={user} />
-                    <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
+                    <div className="w-full md:w-3/4 flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Event Details</p>
                             <p className="text-base">Event details for : <span className="text-mobiBlue">Google UI Event</span></p>
                         </div>
+                        {paramValue &&
+                            <div className="flex md:w-2/5 w-full justify-end">
+                                <Button className="bg-mobiPink" onClick={() => navigate('/app/order-tickets/2')}>Buy Tickets</Button>
+                            </div>
+                        }
                     </div>
 
                     <div className="w-full flex flex-grow">

@@ -72,15 +72,15 @@ export default function Sidebar({ mobile }) {
                     path: "/app/events",
                     name: "Events Dashboard"
                 },
-              /*  {
+                {
                     path: "/app/upcoming-events",
                     name: "Upcoming Event"
                 },
-                {
+               {
                     path: "/app/event-gallery",
                     name: "Event Gallery"
                 },
-                {
+               /* {
                     path: "/app/event-tickets",
                     name: "Event Tickets"
                 },
@@ -114,10 +114,10 @@ export default function Sidebar({ mobile }) {
                     path: "/app/verification-request",
                     name: "Verification Request"
                 },
-               /* {
-                    path: "",
+                {
+                    path: "/app/scan-event",
                     name: "Scan Event"
-                },*/
+                },
             ],
             openChildren: false
         },

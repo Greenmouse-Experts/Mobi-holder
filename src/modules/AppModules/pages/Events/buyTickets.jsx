@@ -1,15 +1,13 @@
 import { useSelector } from "react-redux";
 import Header from "../../header";
 import Badge from "../../../../components/Badge";
+import Table from "../../../../components/Tables";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@material-tailwind/react";
-import Input from "../../../../components/Input";
-import { useForm } from "react-hook-form";
+import RadioButtonGroup from "../../../../components/RadioButtonGroup";
 
-export default function VerifyEvent() {
+export default function BuyTickets() {
     const user = useSelector((state) => state.userData.data);
     const navigate = useNavigate();
-    const { register, formState: { errors } } = useForm();
 
     const eventDetails = [
         {
@@ -64,6 +62,45 @@ export default function VerifyEvent() {
     ];
 
 
+
+    const arrayOptions = [
+        {
+            name: <div className="flex flex-col gap-3">
+                <span className="text-mobiRomanSilver text-sm uppercase">Premium</span>
+                <span className="font-semibold">
+                    N 5,000</span>
+
+                <span className="my-3 text-xs text-mobiRomanSilver">
+                    Plus: 1
+                </span>
+            </div>,
+            slug: '5000'
+        },
+        {
+            name: <div className="flex flex-col gap-3">
+                <span className="text-mobiRomanSilver text-sm uppercase">Premium</span>
+                <span className="font-semibold">
+                    N 15,000</span>
+
+                <span className="my-3 text-xs text-mobiRomanSilver">
+                    Plus: 3
+                </span>
+            </div>,
+            slug: '15000'
+        },
+        {
+            name: <div className="flex flex-col gap-3">
+                <span className="text-mobiRomanSilver text-sm uppercase">Premium</span>
+                <span className="font-semibold">
+                    N 25,000</span>
+
+                <span className="my-3 text-xs text-mobiRomanSilver">Plus: 4</span>
+            </div>,
+            slug: '25000'
+        }
+    ];
+
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -71,8 +108,8 @@ export default function VerifyEvent() {
                     <Header mobile data={user} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Scan Event</p>
-                            <p className="text-base">Scan Users for: <span className="text-mobiBlue">Google UI Event</span></p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Ticket Requests</p>
+                            <p className="text-base">Ticket requests for: <span className="text-mobiBlue">Google UI Event</span></p>
                         </div>
                     </div>
 
@@ -107,22 +144,12 @@ export default function VerifyEvent() {
                             </div>
                         </div>
                         <div className="shadow-xl md:py-5 md:px-8 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
-                            <form>
-                                <div className="mb-1 flex flex-col gap-10 mt-5">
-                                    <div className="flex flex-col w-full gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                           Verify with Ticket ID
-                                        </p>
-                                        <Input type="text" name="firstName" register={register} placeholder="Enter User Ticket ID" />
-                                    </div>
-                                    <div className="flex">
-                                        <Button type="submit" className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                                            Scan Ticket
-                                        </Button>
-                                    </div>
+                            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                                <div className="w-full flex flex-col gap-10">
+                                    <RadioButtonGroup options={arrayOptions} selectedOption={'5000'} className="flex flex-col gap-10" />
                                 </div>
+                            </div>
 
-                            </form>
                         </div>
 
                     </div>
