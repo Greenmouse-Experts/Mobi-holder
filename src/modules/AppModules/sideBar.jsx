@@ -72,7 +72,7 @@ export default function Sidebar({ mobile }) {
                     path: "/app/events",
                     name: "Events Dashboard"
                 },
-                {
+              /*  {
                     path: "/app/upcoming-events",
                     name: "Upcoming Event"
                 },
@@ -91,7 +91,7 @@ export default function Sidebar({ mobile }) {
                 {
                     path: "/app/event-history",
                     name: "Event History"
-                }
+                } */
             ],
             openChildren: false
         },
@@ -114,10 +114,10 @@ export default function Sidebar({ mobile }) {
                     path: "/app/verification-request",
                     name: "Verification Request"
                 },
-                {
-                    path: "/app/scan-event",
+               /* {
+                    path: "",
                     name: "Scan Event"
-                },
+                },*/
             ],
             openChildren: false
         },
