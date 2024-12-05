@@ -71,6 +71,9 @@ import OrgTicketRequests from './modules/OrgModules/pages/Events/ticketRequests'
 import OrgEventLog from './modules/OrgModules/pages/Events/eventLog';
 import OrgEventGallery from './modules/OrgModules/pages/Events/eventGallery';
 import OrgAddEventVerifier from './modules/OrgModules/pages/Events/addEventVerifier';
+import OrgIDCardsPage from './modules/OrgModules/pages/IdCards';
+import OrgMembership from './modules/OrgModules/pages/Memberships';
+import OrgSubscriptions from './modules/OrgModules/pages/Subscriptions';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -149,6 +152,9 @@ function App() {
                   <Route path='event-log/:id' element={<OrgEventLog />} />
                   <Route path='event-gallery' element={<OrgEventGallery />} />
                   <Route path='add-event-verifier/:id' element={<OrgAddEventVerifier />} />
+                  <Route path='id-cards' element={<OrgIDCardsPage />} />
+                  <Route path='membership' element={<OrgMembership />} />
+                  <Route path='subscriptions' element={<OrgSubscriptions />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />
