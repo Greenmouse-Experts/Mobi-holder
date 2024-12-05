@@ -7,7 +7,7 @@ import Input from "../../../../components/Input";
 import { useForm } from "react-hook-form";
 
 export default function OrgVerifyEvent() {
-    const user = useSelector((state) => state.orgData.orgData);
+    const user = useSelector((state) => state.userData.data);
     const navigate = useNavigate();
     const { register, formState: { errors } } = useForm();
 

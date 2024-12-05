@@ -51,8 +51,8 @@ const Card = ({ logo, category }) => {
 };
 
 
-export default function OrgScanEvents() {
-    const user = useSelector((state) => state.orgData.orgData);
+export default function OrgEventGallery() {
+    const user = useSelector((state) => state.userData.data);
     const { id } = useParams();
 
     const cards = [
@@ -110,14 +110,14 @@ export default function OrgScanEvents() {
     return <>
         <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
-                <Header mobile data={user} />
+                <Header mobile organisation data={user} />
                 <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                     <div className="w-full flex flex-col gap-2">
                         <p className="lg:text-2xl md:text-xl text-lg font-semibold">
-                            Scan Event
+                            Event Gallery
                         </p>
                         <p className="text-base">
-                        Choose an event to verify for    
+                            Upcoming events around you
                         </p>
                     </div>
                     <div className="md:flex md:w-2/5 hidden">
@@ -130,7 +130,7 @@ export default function OrgScanEvents() {
                         <div className="py-5">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                 {cards.map((card, index) => (
-                                    <Link to='/org/verify-event/:id'>
+                                    <Link to='/org/view-event/2'>
                                         <Card key={index} {...card} />
                                     </Link>
                                 ))}

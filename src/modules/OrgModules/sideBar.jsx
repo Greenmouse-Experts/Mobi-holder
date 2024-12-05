@@ -88,10 +88,6 @@ export default function Sidebar({ mobile }) {
                     path: "/org/event-invites",
                     name: "Event Invites"
                 }, */
-                {
-                    path: "/org/event-history",
-                    name: "Event History"
-                }
             ],
             openChildren: false
         },

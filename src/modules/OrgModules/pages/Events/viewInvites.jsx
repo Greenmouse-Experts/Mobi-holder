@@ -5,11 +5,34 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import Input from "../../../../components/Input";
 import { useForm } from "react-hook-form";
+import Checkbox from "../../../../components/CheckBox";
+import Table from "../../../../components/Tables";
 
-export default function OrgVerifyEvent() {
+export default function OrgViewInvites() {
     const user = useSelector((state) => state.orgData.orgData);
     const navigate = useNavigate();
     const { register, formState: { errors } } = useForm();
+
+    const RequetsHeaders = ["Individual", "Email", "Invited On", "Status", "Action"];
+    const NewTableData = [
+        {
+            name: 'Chukka Uzo',
+            email: 'testmail@gmail.com',
+            number: '12-11-2024',
+            status: 'active'
+        }, {
+            name: 'Chukka Uzo',
+            email: 'testmail@gmail.com',
+            number: '12-11-2024',
+            status: 'active'
+        },
+        {
+            name: 'Chukka Uzo',
+            email: 'testmail@gmail.com',
+            number: '12-11-2024',
+            status: 'active'
+        },
+    ];
 
     const eventDetails = [
         {
@@ -71,8 +94,8 @@ export default function OrgVerifyEvent() {
                     <Header mobile data={user} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Scan Event</p>
-                            <p className="text-base">Scan Users for: <span className="text-mobiBlue">Google UI Event</span></p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Invites</p>
+                            <p className="text-base">Invites for: <span className="text-mobiBlue">Google UI Event</span></p>
                         </div>
                     </div>
 
@@ -111,18 +134,61 @@ export default function OrgVerifyEvent() {
                                 <div className="mb-1 flex flex-col gap-10 mt-5">
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                           Verify with Ticket ID
+                                            Invite User(s)
                                         </p>
-                                        <Input type="text" name="firstName" register={register} placeholder="Enter User Ticket ID" />
+                                        <Input type="text" name="firstName" register={register} placeholder="Enter User(s) email or ID" />
                                     </div>
+
+                                    <div className="flex gap-2 -mt-5">
+                                        <span className="flex">
+                                            <Checkbox
+                                                name="acceptedTnC"
+                                                label="Mark event FREE to user(s)"
+                                                register={register}
+                                            />
+                                        </span>
+                                    </div>
+
+                                    <div className="flex gap-2 -mt-5">
+                                        <span className="flex">
+                                            <Checkbox
+                                                name="acceptedTnC"
+                                                label="Invite all Members"
+                                                register={register}
+                                            />
+                                        </span>
+                                    </div>
+
                                     <div className="flex">
                                         <Button type="submit" className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                                            Scan Ticket
+                                            Invite User(s)
                                         </Button>
                                     </div>
                                 </div>
 
                             </form>
+
+
+                            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                                <Table title="Today" filter subTitle={<span>Invite Sent (3+)</span>} exportData
+                                    tableHeader={RequetsHeaders}>
+                                    {NewTableData.map((data, index) => (
+                                        <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
+                                            <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                            <td className="px-6 py-3">
+                                                <span className="flex w-full">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </Table>
+                            </div>
                         </div>
 
                     </div>

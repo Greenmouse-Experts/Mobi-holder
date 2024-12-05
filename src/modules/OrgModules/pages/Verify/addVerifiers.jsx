@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 
 export default function OrgAddVerifier() {
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
     const { register, formState: { errors } } = useForm();
 
     return (

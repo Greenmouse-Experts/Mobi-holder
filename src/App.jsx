@@ -62,6 +62,15 @@ import OrgAddVerifier from './modules/OrgModules/pages/Verify/addVerifiers';
 import OrgScanEvents from './modules/OrgModules/pages/Verify/scanEvent';
 import OrgVerifyEvent from './modules/OrgModules/pages/Verify/verifyEvent';
 import OrgVerificationRequest from './modules/OrgModules/pages/Verify/verificationRequest';
+import OrgEvents from './modules/OrgModules/pages/Events';
+import OrgAddEvent from './modules/OrgModules/pages/Events/addEvent';
+import OrgUpcomingEvents from './modules/OrgModules/pages/Events/upcomingEvent';
+import OrgViewEvent from './modules/OrgModules/pages/Events/viewEvent';
+import OrgViewInvites from './modules/OrgModules/pages/Events/viewInvites';
+import OrgTicketRequests from './modules/OrgModules/pages/Events/ticketRequests';
+import OrgEventLog from './modules/OrgModules/pages/Events/eventLog';
+import OrgEventGallery from './modules/OrgModules/pages/Events/eventGallery';
+import OrgAddEventVerifier from './modules/OrgModules/pages/Events/addEventVerifier';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -131,6 +140,15 @@ function App() {
                   <Route path='scan-event' element={<OrgScanEvents />} />
                   <Route path='verify-event/:id' element={<OrgVerifyEvent />} />
                   <Route path='verification-request' element={<OrgVerificationRequest />} />
+                  <Route path='events' element={<OrgEvents />} />
+                  <Route path='add-event' element={<OrgAddEvent />} />
+                  <Route path='upcoming-events' element={<OrgUpcomingEvents />} />
+                  <Route path='view-event/:id' element={<OrgViewEvent />} />
+                  <Route path='view-invites/:id' element={<OrgViewInvites />} />
+                  <Route path='ticket-requests/:id' element={<OrgTicketRequests />} />
+                  <Route path='event-log/:id' element={<OrgEventLog />} />
+                  <Route path='event-gallery' element={<OrgEventGallery />} />
+                  <Route path='add-event-verifier/:id' element={<OrgAddEventVerifier />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />

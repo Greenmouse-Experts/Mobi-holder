@@ -7,7 +7,7 @@ import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
 
 export default function OrgVerificationRequest() {
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
 
     const RequetsHeaders = ["Individual", "Email", "Event", "Request On", "Response", "Action"];
     const RequetsHeaders1 = ["Individual", "Email", "Event", "Request On", "Status", "Action"];
