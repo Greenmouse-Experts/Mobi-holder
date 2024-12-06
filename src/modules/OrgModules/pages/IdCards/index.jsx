@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 
 export default function OrgIDCardsPage() {
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
     const navigate = useNavigate();
 
     const TableHeaders = ["Organisation", "Staff ID", "Role", "Category", "Expiry Date", "Status", "Action"];
@@ -85,7 +85,7 @@ export default function OrgIDCardsPage() {
                             colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}
                         />
 
-                        <Link to={'/app/add-card'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between">
+                        <Link to={'/org/add-card'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between">
                             <div className="flex flex-col items-center w-full gap-3">
                                 <span className={`flex gap-1`}>
                                     Create ID Card

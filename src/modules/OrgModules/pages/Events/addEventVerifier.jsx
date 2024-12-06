@@ -6,7 +6,7 @@ import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 
 export default function OrgAddEventVerifier() {
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
     const { register, formState: { errors } } = useForm();
 
     const eventDetails = [

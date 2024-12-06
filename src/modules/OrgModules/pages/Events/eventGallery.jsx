@@ -52,7 +52,7 @@ const Card = ({ logo, category }) => {
 
 
 export default function OrgEventGallery() {
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
     const { id } = useParams();
 
     const cards = [
