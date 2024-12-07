@@ -5,7 +5,7 @@ import cards from "../../../../assets/cards.svg";
 import Table from "../../../../components/Tables";
 import Badge from "../../../../components/Badge";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 
 export default function OrgIDCardsPage() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -122,7 +122,7 @@ export default function OrgIDCardsPage() {
                                             </MenuHandler>
                                             <MenuList>
                                                 <MenuItem className="flex flex-col gap-3">
-                                                    <span className="cursor-pointer" onClick={() => navigate('/app/view-card')}>
+                                                    <span className="cursor-pointer" onClick={() => navigate('/org/card/viewCard')}>
                                                         View Card
                                                     </span>
                                                 </MenuItem>
@@ -146,7 +146,11 @@ export default function OrgIDCardsPage() {
                                     <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
                                     <td className="px-3 py-3 text-mobiTableText">{data.category}</td>
                                     <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
-                                    <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                    <td className="px-3 py-3 text-mobiTableText">
+                                        <Button className="bg-mobiPink w-full px-1 rounded-full text-xs" onClick={() => navigate('/org/cards/createUser/2')}>
+                                            <span className="text-xs normal-case">Create ID</span>
+                                        </Button>
+                                    </td>
                                     <td className="px-6 py-3 cursor-pointer">
                                         <Menu placement="left">
                                             <MenuHandler>

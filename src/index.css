@@ -164,6 +164,10 @@ button {
   border: 1px solid var(--bs-inputBorder) !important;
 }
 
+[data-category="selected"].bGmobiGrayDark {
+  border: 1px solid rgba(163, 36, 242, 1) !important;
+}
+
 .bg-cardSupport {
   background-color: var(--bs-cardSupport);
 }

@@ -75,6 +75,9 @@ import OrgIDCardsPage from './modules/OrgModules/pages/IdCards';
 import OrgMembership from './modules/OrgModules/pages/Memberships';
 import OrgSubscriptions from './modules/OrgModules/pages/Subscriptions';
 import OrgAddCard from './modules/OrgModules/pages/IdCards/addCard';
+import CardStructure from './modules/OrgModules/pages/IdCards/cardStructure';
+import CreateUserCard from './modules/OrgModules/pages/IdCards/createUserCard';
+import PreviewCard from './modules/OrgModules/pages/IdCards/viewCard';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -157,6 +160,9 @@ function App() {
                   <Route path='membership' element={<OrgMembership />} />
                   <Route path='subscriptions' element={<OrgSubscriptions />} />
                   <Route path='add-card' element={<OrgAddCard />} />
+                  <Route path='cards/structure' element={<CardStructure />} />
+                  <Route path='cards/createUser/:id' element={<CreateUserCard />} />
+                  <Route path='card/viewCard' element={<PreviewCard />} />
                 </Route>
                 <Route path='/superadmin' element={<SuperAdmin />}>
                   <Route path='dashboard' element={<DashBoard />} />
