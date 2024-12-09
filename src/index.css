@@ -51,9 +51,9 @@
   --bs-gray: rgb(7, 8, 9);
   --bs-cagePink: rgba(41, 22, 61, 1);
   --bs-cageBlue: rgba(22, 24, 61, 1);
-  --bs-mobiGray: rgba(82, 81, 81, 1);
+  --bs-mobiGray: rgba(21, 23, 30, 1);
   --bs-patchRadio: rgba(21, 23, 30, 1);
-  --bs-inputBorder: transparent;
+  --bs-inputBorder: rgba(46, 47, 54, 1);
   --bs-cagePinkBlack: rgba(163, 58, 160, 0.5);
   --bs-cageBlueBlack: rgba(60, 58, 163, 0.5);
   --bs-grayDark: rgba(82, 81, 81, 1);
@@ -87,7 +87,7 @@
 body {
   margin: 0;
   width: 100%;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat", sans-serif !important;
   font-optical-sizing: auto;
   font-style: normal;
   line-height: 1.5;
@@ -100,6 +100,11 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.montserrat {
+  font-family: "Montserrat", sans-serif !important;
+  color: var(--bs-color);
 }
 
 .bS-overlay {
@@ -160,7 +165,7 @@ button {
 }
 
 .bGmobiGrayDark {
-  background-color: var(--bs-mobiGray);
+  background-color: var(--bs-mobiGray) !important;
   border: 1px solid var(--bs-inputBorder) !important;
 }
 

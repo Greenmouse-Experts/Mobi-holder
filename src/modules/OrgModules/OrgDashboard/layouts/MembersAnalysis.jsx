@@ -49,18 +49,18 @@ export default function MembersAnalysis() {
     };
 
     const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
         datasets: [
             {
                 label: 'Monthly Sales',
-                data: [20000, 45000, 35000, 60000, 70000, 15000, 30000, 10000, 5000, 40000, 20000, 30000],
+                data: [10000, 15000, 15000, 20000, 30000, 15000],
                 backgroundColor: 'rgba(198, 0, 249, 1)', // Purple color for the bars
                 borderRadius: 5,
                 barThickness: 6
             },
             {
                 label: "Monthly Sales (Dataset 2)",
-                data: [2000, 4500, 3500, 6000, 7000, 1500, 3000, 1000, 500, 4000, 2000, 3000],
+                data: [2000, 4500, 3500, 6000, 7000, 1500],
                 backgroundColor: "rgba(0, 123, 255, 1)", // Blue color for the bars
                 borderRadius: 5,
                 barThickness: 6,
@@ -75,7 +75,7 @@ export default function MembersAnalysis() {
                 <h3 className="text-lg font-semibold">Members Analysis</h3>
             </div>
             <div className="py-1 mt-5 rounded-lg border border-mobiBorderTable px-3">
-                <div className='chartColor' style={{ width: '100%', minHeight: '300px' }}>
+                <div className='chartColor' style={{ width: '100%', height: '240px' }}>
                     <Bar options={options} data={data} />
                 </div>
             </div>
