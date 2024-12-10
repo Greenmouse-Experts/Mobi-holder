@@ -82,6 +82,9 @@ import UpdateMember from './modules/OrgModules/pages/Memberships/updateMember';
 import InviteMember from './modules/OrgModules/pages/Memberships/inviteMember';
 import OrgNotification from './modules/OrgModules/Notifications';
 import OrgSettings from './modules/OrgModules/Settings';
+import AddSubscriptionPlan from './modules/OrgModules/pages/Subscriptions/addSubscriptionPlan';
+import EditSubscriptionPlan from './modules/OrgModules/pages/Subscriptions/editSubscriptionPlan';
+import SubscriptionHistory from './modules/OrgModules/pages/Subscriptions/subscriptionHistory';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -163,6 +166,9 @@ function App() {
                   <Route path='id-cards' element={<OrgIDCardsPage />} />
                   <Route path='membership' element={<OrgMembership />} />
                   <Route path='subscriptions' element={<OrgSubscriptions />} />
+                  <Route path='add-subscription' element={<AddSubscriptionPlan />} />
+                  <Route path='subscription/editPlan/:id' element={<EditSubscriptionPlan />} />
+                  <Route path='subscription/history/:id' element={<SubscriptionHistory />} />
                   <Route path='add-card' element={<OrgAddCard />} />
                   <Route path='cards/structure' element={<CardStructure />} />
                   <Route path='cards/createUser/:id' element={<CreateUserCard />} />

@@ -33,15 +33,15 @@ const SelectField = ({ options, selectedOption, label, errors }) => {
 
     return (
         <>
-            <div ref={dropdownRef} className="relative w-full px-6 py-4.5 rounded-[7px] border border-transparent bGmobiGrayDark">
+            <div ref={dropdownRef} className="relative w-full px-6 py-[1.24rem] rounded-[7px] border border-transparent bGmobiGrayDark">
                 {/* Trigger Button */}
                 <a
                     onClick={toggleDropdown}
-                    className="flex items-center justify-between w-full text-mobiFormGray h-full text-sm py-4 font-medium rounded-md focus:outline-none cursor-pointer"
+                    className="flex items-center justify-between w-full text-mobiFormGray h-full text-sm font-medium rounded-md focus:outline-none cursor-pointer"
                 >
-                    <p className="w-full flex-grow">
+                    <span className="w-full h-2 flex-grow">
                         {selected}
-                    </p>
+                    </span>
                     <svg
                         className="w-4 h-4 ml-2"
                         fill="none"
@@ -56,7 +56,7 @@ const SelectField = ({ options, selectedOption, label, errors }) => {
 
                 {/* Dropdown Menu */}
                 {isOpen && (
-                    <div className="absolute z-10 mt-2 left-0 w-full bg-gray-800 border border-gray-700 bGmobiGrayDark rounded-md shadow-lg">
+                    <div className="absolute z-10 mt-6 left-0 w-full bg-gray-800 border border-gray-700 bGmobiGrayDark rounded-md shadow-lg">
                         <div className="py-2 flex flex-col gap-3">
                             {/* Options */}
                             {options.map((option, index) => (

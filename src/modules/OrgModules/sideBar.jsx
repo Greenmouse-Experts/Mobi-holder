@@ -39,7 +39,7 @@ export default function Sidebar({ mobile }) {
                 },
                 {
                     path: "/org/subscriptions",
-                    name: "Subscription"
+                    name: "Subscription",
                 }
             ],
             openChildren: false
