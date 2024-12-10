@@ -22,13 +22,6 @@ export default function AccountInfo() {
             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                 <div className="flex flex-col w-full gap-6">
                     <p className="-mb-3 text-mobiFormGray">
-                        Access Type
-                    </p>
-                    <Input name="phoneNumber" value={user.accountType} register={register} type="text" disabled placeholder="Phone Number" />
-                </div>
-
-                <div className="flex flex-col w-full gap-6">
-                    <p className="-mb-3 text-mobiFormGray">
                         Date Joined
                     </p>
                     <Input disabled name="dateJoined" value={dateFormat(user.createdAt, "dd-MM-yyyy")} register={register} type="text" placeholder="Email" />

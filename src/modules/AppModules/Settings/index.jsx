@@ -40,7 +40,7 @@ export default function Settings() {
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex justify-between items-center">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Settings</p>
-                            <div className="flex">
+                            <div className="flex md:hidden">
                                 <DropdownMenu buttonLabel={activeTab} color="#242EF2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiBlue border rounded-md border-mobiBlue">
                                     {tabs.map((tab, index) => (
                                         <div key={index} onClick={() => setActiveTab(tab.slug)} className={`flex items-center text-black py-2 cursor-pointer px-4 h-[40px] rounded-lg transition`}>
@@ -62,7 +62,7 @@ export default function Settings() {
                             </div>
 
                             <div className="w-full flex flex-grow">
-                                <div className="shadow-xl py-7 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-3">
+                                <div className="shadow-xl py-7 px-5 md:w-[77%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-3">
                                     {activeTab === 'Profile Info' && <ProfileInfo />}
                                     {activeTab === 'Account Info' && <AccountInfo />}
                                     {activeTab === 'Security' && <Security />}

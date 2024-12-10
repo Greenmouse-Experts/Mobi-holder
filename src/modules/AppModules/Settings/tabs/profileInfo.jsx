@@ -5,51 +5,45 @@ import { useForm } from "react-hook-form";
 import DropZone from "../../../../components/DropZone";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { setUser } from "../../../../reducers/userSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AvatarInitials from "../../../../components/AvatarInitials";
+import SelectField from "../../../../components/SelectField";
+import { toast } from "react-toastify";
 
 export default function ProfileInfo() {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register: registerUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
-    const [fileLoading, setFileLoading] = useState(false);
+    const [isLoadingDocuments, setIsLoadingDocuments] = useState(false);
     const [files, setFiles] = useState([]);
+    const [documentSelected, setSelectedDocument] = useState(null);
+    const [customError, setCustomError] = useState(false);
     const dispatch = useDispatch();
-
     const user = useSelector((state) => state.userData.data);
     const token = localStorage.getItem("userToken");
-
     const { mutate } = useApiMutation();
-
-    const url = `${import.meta.env.VITE_CLOUDINARY_URL}`;
-    const formData = new FormData();
-
-    const handleDrop = (acceptedFiles) => {
-        setFileLoading(true);
-        for (let i = 0; i < acceptedFiles.length; i++) {
-            let file = acceptedFiles[i];
-            formData.append('file', file);
-            formData.append('upload_preset', 'mobil_holder');
-            formData.append("folder", "mobiHolder");
-
-            fetch(url, {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json(); // Parse the response as JSON
-                })
-                .then((data) => {
-                    setFiles((prevFiles) => [...prevFiles, data.secure_url]);
-                    setFileLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error during upload:", error);
-                    setFileLoading(false);
-                });
+    const documentOptions = [
+        {
+            name: 'NIN'
+        },
+        {
+            name: 'Drivers Licence'
         }
-    };
+    ];
+
+
+    useEffect(() => {
+        getUploadedIDCards()
+    }, []);
+
+
+    const handleSelectedDocument = (data) => {
+        setSelectedDocument(data)
+    }
+
+    const handleDrop = (data) => {
+        setFiles((prevFiles) => [...prevFiles, data]);
+    }
 
     const changeProfile = (data) => {
         setIsLoading(true)
@@ -66,36 +60,77 @@ export default function ProfileInfo() {
                 setIsLoading(false)
             },
         });
+    };
 
-        const payload = {
-            name: "National ID Card",
-            front: files[0],
-            back: files[1]
+
+    const updateDocuments = (data) => {
+        if (files.length > 0) {
+            if (!documentSelected) {
+                setCustomError(true);
+                return;
+            }
+            setIsLoadingDocuments(true);
+            const payload = {
+                name: documentSelected,
+                front: files[0],
+                back: files[1],
+                ...data
+            }
+            mutate({
+                url: "/api/users/upload/verified/IDCard",
+                method: "POST",
+                data: payload,
+                headers: {
+                    Authorization: `Bearer ${token}`, // Add the token dynamically
+                    "Content-Type": "application/json",  // Optional: Specify the content type
+                },
+                onSuccess: (response) => {
+                    setIsLoadingDocuments(false)
+                },
+                onError: () => {
+                    setIsLoadingDocuments(false);
+                }
+            });
         }
+        else {
+            toast.error('No file(s) selected')
+        }
+    }
+
+    const getUploadedIDCards = () => {
         mutate({
             url: "/api/users/upload/verified/IDCard",
-            method: "POST",
-            data: payload,
+            method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`, // Add the token dynamically
                 "Content-Type": "application/json",  // Optional: Specify the content type
             },
+            hideToast: true,
             onSuccess: (response) => {
-                dispatch(setUser(response.data.data));
-                setIsLoading(false)
+                console.log(response.data)
             },
             onError: () => {
-                setIsLoading(false);
             }
         });
-
-    };
+    }
 
     return (
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
                 <div className="mb-1 flex flex-col gap-5 mt-5">
-                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                    <div className="flex md:flex-row flex-col gap-3">
+                        {user.photo ?
+                            <div className="flex w-[34px]">
+                                <img src={`${user.photo}`} className="w-full h-full rounded-md" />
+                            </div>
+                            :
+                            <AvatarInitials name={`${user.firstName}${user.lastName}`} size="32" />
+                        }
+                        <div className="flex flex-col justify-center md:mx-3">
+                            <Button className="bg-transparent px-7 rounded-full border-[0.5px] border-gray-700">Change Picture</Button>
+                        </div>
+                    </div>
+                    <div className="w-full flex lg:flex-row md:flex-row flex-col mt-6 gap-6">
                         <div className="flex flex-col w-full gap-6">
                             <p className="-mb-3 text-mobiFormGray">
                                 First Name
@@ -141,29 +176,79 @@ export default function ProfileInfo() {
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-col gap-2">
-                        <div className="flex flex-col md:w-1/2 w-full gap-6">
-                            <p className="-mb-3 text-mobiFormGray">
-                                Verification Documents
-                            </p>
-                            <DropZone onDrop={handleDrop} loading={fileLoading} />
+                    <div className="flex">
+                        <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
+                            {isLoading ? 'Updating...' : 'Update Info'}
+                        </Button>
+                    </div>
+                </div>
+            </form>
+
+
+            <form onSubmit={handleSubmitUpload(updateDocuments)}>
+                <div className="mb-1 flex flex-col gap-5 mt-6">
+                    <p className="mt-6 text-mobiFormGray">Verification Documents</p>
+
+                    <div className="w-full flex flex-col gap-8 border-2 rounded-xl border-gray-900 border-dashed p-8">
+
+                        <div className="w-full flex flex-col gap-6">
+                            <div className="flex flex-col w-full gap-6">
+                                <p className="-mb-3 text-mobiFormGray">
+                                    Select Card/Document to Upload
+                                </p>
+                                <SelectField options={documentOptions} label="Document" errors={customError} selectedOption={handleSelectedDocument} />
+                            </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-4 mt-4">
-                            {files.map((fileObj, index) => (
-                                <div key={index} className="relative">
-                                    <img
-                                        src={fileObj}
-                                        alt="preview"
-                                        className="w-full h-24 object-cover rounded"
-                                    />
-                                </div>
-                            ))}
+
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Card/Document Number
+                            </p>
+                            <Input type="text" name="cardNumber" register={registerUpload} errors={errorsUpload} rules={{ required: 'Document Number is required' }} placeholder="Enter card Number" />
+                        </div>
+
+
+                        <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                            <div className="flex flex-col w-full gap-6">
+                                <p className="-mb-3 text-mobiFormGray">
+                                    Issue Date
+                                </p>
+                                <Input name="issueDate" register={registerUpload} errors={errorsUpload} rules={{ required: 'Issue Date is required' }} type="date" placeholder="Choose the issue date" />
+                            </div>
+
+                            <div className="flex flex-col w-full gap-6">
+                                <p className="-mb-3 text-mobiFormGray">
+                                    Expiry Date
+                                </p>
+                                <Input name="expiryDate" register={registerUpload} errors={errorsUpload} rules={{ required: 'Expiry Date is required' }} type="date" placeholder="Choose the expiry date" />
+                            </div>
+                        </div>
+
+
+                        <div className="w-full flex flex-col gap-2">
+                            <div className="flex flex-col md:w-1/2 w-full gap-6">
+                                <p className="-mb-3 text-mobiFormGray">
+                                    Upload Documents
+                                </p>
+                                <DropZone onUpload={handleDrop} />
+                            </div>
+                            <div className="grid grid-cols-3 gap-4 mt-4">
+                                {files.map((fileObj, index) => (
+                                    <div key={index} className="relative">
+                                        <img
+                                            src={fileObj}
+                                            alt="preview"
+                                            className="w-full h-24 object-cover rounded"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
                     <div className="flex">
-                        <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                            {isLoading ? 'Updating...' : 'Update Info'}
+                        <Button type="submit" disabled={isLoadingDocuments} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
+                            {isLoadingDocuments ? 'Updating...' : 'Update Documents'}
                         </Button>
                     </div>
                 </div>

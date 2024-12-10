@@ -33,18 +33,22 @@ const useApiMutation = () => {
                 variables.onSuccess(data);
             }
 
-            // Show toast message
-            if (data.data?.message) {
-                toast.success(data.data.message);
-            }
+            if (!variables.hideToast) {
+                // Show toast message
+                if (data.data?.message) {
+                    toast.success(data.data.message);
+                }
 
-            // Navigate if a navigation path is provided
-            if (variables.navigateTo) {
-                navigate(variables.navigateTo);
+                // Navigate if a navigation path is provided
+                if (variables.navigateTo) {
+                    navigate(variables.navigateTo);
+                }
             }
         },
         onError: (error, variables) => {
-            handleError(error);
+            if (!variables.hideToast) {
+                handleError(error);
+            }
             variables.onError();
         },
     });
