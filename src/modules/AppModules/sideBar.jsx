@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Theme from '../../components/Theme';
+import useApiMutation from '../../api/hooks/useApiMutation';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../reducers/userSlice';
 
 export default function Sidebar({ mobile }) {
     const location = useLocation();
     const navigate = useNavigate();
+    const { mutate } = useApiMutation();
+    const token = localStorage.getItem("userToken");
+    const dispatch = useDispatch();
 
     const [activeNav, setActiveNav] = useState(location.pathname);
 
@@ -162,6 +168,23 @@ export default function Sidebar({ mobile }) {
         }
     };
 
+
+    const logOutUser = () => {
+        mutate({
+            url: "/api/users/logout",
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`, // Add the token dynamically
+                "Content-Type": "application/json",  // Optional: Specify the content type
+            },
+            onSuccess: (response) => {
+                dispatch(setUser({}));
+                localStorage.removeItem('userToken');
+                navigate('/login');
+            },
+        });
+    }
+
     return (
         <div className={`h-full rounded-md flex-col ${mobile ? 'w-full lg:hidden md:hidden flex overflow-auto' : 'md:w-[22%] lg:flex md:hidden hidden custom-scrollbar overflow-auto h-[750px] fixed'} bg-mobiDarkCloud transition-all mb-10`}>
             {/* Logo */}
@@ -208,7 +231,7 @@ export default function Sidebar({ mobile }) {
                     <i className={`fas fa-cog mr-3 ${activeNav === '/app/settings' ? 'text-mobiPink' : ''}`}></i>
                     <span className={`${activeNav === '/app/settings' ? 'text-mobiPink' : ''}`}>Settings</span>
                 </Link>
-                <a href="#" className={`flex items-center py-2 px-4 h-[57px] rounded-lg text-red-500 hover:bg-mobiBlueFade transition`}>
+                <a onClick={() => logOutUser()} className={`flex items-center cursor-pointer py-2 px-4 h-[57px] rounded-lg text-red-500 hover:bg-mobiBlueFade transition`}>
                     <i className="fas fa-sign-out-alt mr-3"></i>
                     Logout
                 </a>

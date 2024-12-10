@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const MultipleSelect = ({accessType}) => {
+const MultipleSelect = ({accessType, selectedData}) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selected, setSelected] = useState('Choose Access Type');
+    const [selected, setSelected] = useState(selectedData ? selectedData : 'Choose Access Type');
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {
@@ -73,7 +73,7 @@ const MultipleSelect = ({accessType}) => {
                         {/* Option 2 */}
                         <label
                             className="flex items-center justify-between px-4 py-2 text-sm cursor-pointer"
-                            onClick={() => handleOptionClick('Semi-Closed')}
+                            onClick={() => handleOptionClick('Semi-Open')}
                         >
                             <div className="flex items-center">
                                 <input
@@ -81,7 +81,7 @@ const MultipleSelect = ({accessType}) => {
                                     defaultChecked={selected === 'Semi-Closed'}
                                     className="w-4 h-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-2 focus:ring-blue-600 focus:ring-offset-gray-800"
                                 />
-                                <span className="ml-2">Semi Closed</span>
+                                <span className="ml-2">Semi Open</span>
                             </div>
                         </label>
 
