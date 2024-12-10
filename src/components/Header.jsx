@@ -75,8 +75,8 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                         </div>
                         <div className="flex rounded-md">
                             {data.photo ?
-                                <div className="flex w-[34px]">
-                                    <img src={`${data.photo}`} className="w-full h-full rounded-md" />
+                                <div className="flex w-[34px] h-[34px]">
+                                    <img src={`${data.photo}`} className="w-full h-full rounded-full object-cover" />
                                 </div>
                                 :
                                 <AvatarInitials name={!organisation ? `${data.firstName}${data.lastName}` : `${data.companyName}`} size="8" />

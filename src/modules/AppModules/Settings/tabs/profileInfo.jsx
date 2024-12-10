@@ -5,14 +5,17 @@ import { useForm } from "react-hook-form";
 import DropZone from "../../../../components/DropZone";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { setUser } from "../../../../reducers/userSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AvatarInitials from "../../../../components/AvatarInitials";
 import SelectField from "../../../../components/SelectField";
 import { toast } from "react-toastify";
+import useFileUpload from "../../../../api/hooks/useFileUpload";
 
 export default function ProfileInfo() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { register: registerUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
+    const fileInputRef = useRef(null);
+    const { uploadFiles, isLoadingUpload } = useFileUpload();
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingDocuments, setIsLoadingDocuments] = useState(false);
     const [files, setFiles] = useState([]);
@@ -31,7 +34,6 @@ export default function ProfileInfo() {
         }
     ];
 
-
     useEffect(() => {
         getUploadedIDCards()
     }, []);
@@ -44,6 +46,42 @@ export default function ProfileInfo() {
     const handleDrop = (data) => {
         setFiles((prevFiles) => [...prevFiles, data]);
     }
+
+    const handleButtonClick = () => {
+        // Simulate a click on the hidden file input
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleFileChange = async (event) => {
+        const files = event.target.files;
+        if (files.length > 0) {
+            await uploadFiles(files, (uploadedUrl) => {
+                changeProfilePhoto(uploadedUrl)
+            });
+        }
+    };
+
+
+    const changeProfilePhoto = (uploadedUrl) => {
+        const payload = {
+            photo: uploadedUrl
+        };
+        mutate({
+            url: "/api/users/profile/photo/upload",
+            method: "PUT",
+            data: payload,
+            headers: {
+                Authorization: `Bearer ${token}`, // Add the token dynamically
+                "Content-Type": "application/json",  // Optional: Specify the content type
+            },
+            onSuccess: (response) => {
+                dispatch(setUser(response.data.data));
+            },
+        });
+    }
+
 
     const changeProfile = (data) => {
         setIsLoading(true)
@@ -120,14 +158,26 @@ export default function ProfileInfo() {
                 <div className="mb-1 flex flex-col gap-5 mt-5">
                     <div className="flex md:flex-row flex-col gap-3">
                         {user.photo ?
-                            <div className="flex w-[34px]">
-                                <img src={`${user.photo}`} className="w-full h-full rounded-md" />
+                            <div className="flex w-32 h-32">
+                                <img src={`${user.photo}`} className="w-full h-full object-cover rounded-full" />
                             </div>
                             :
                             <AvatarInitials name={`${user.firstName}${user.lastName}`} size="32" />
                         }
                         <div className="flex flex-col justify-center md:mx-3">
-                            <Button className="bg-transparent px-7 rounded-full border-[0.5px] border-gray-700">Change Picture</Button>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                style={{ display: "none" }}
+                                multiple
+                            />
+                            <Button className="bg-transparent px-7 rounded-full border-[0.5px] border-gray-700"
+                                onClick={handleButtonClick}
+                                disabled={isLoadingUpload}
+                            >
+                                {isLoadingUpload ? 'Changing Picture' : 'Change Picture'}
+                            </Button>
                         </div>
                     </div>
                     <div className="w-full flex lg:flex-row md:flex-row flex-col mt-6 gap-6">

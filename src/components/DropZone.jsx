@@ -1,39 +1,14 @@
 import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import useFileUpload from '../api/hooks/useFileUpload';
 
 export default function DropZone({ text, onUpload }) {
-    const [fileLoading, setFileLoading] = useState(false);
-    const url = `${import.meta.env.VITE_CLOUDINARY_URL}`;
-    const formData = new FormData();
+    const { uploadFiles, isLoadingUpload, errors } = useFileUpload();
 
-
-    const onDrop = (acceptedFiles) => {
-        setFileLoading(true);
-        for (let i = 0; i < acceptedFiles.length; i++) {
-            let file = acceptedFiles[i];
-            formData.append('file', file);
-            formData.append('upload_preset', 'mobil_holder');
-            formData.append("folder", "mobiHolder");
-
-            fetch(url, {
-                method: 'POST',
-                body: formData,
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json(); // Parse the response as JSON
-                })
-                .then((data) => {
-                    onUpload(data.secure_url);
-                    setFileLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error during upload:", error);
-                    setFileLoading(false);
-                });
-        }
+    const onDrop = async (files) => {
+        await uploadFiles(files, (uploadedUrl) => {
+            onUpload(uploadedUrl);
+        });
     };
 
 
@@ -53,7 +28,7 @@ export default function DropZone({ text, onUpload }) {
             {isDragActive ? (
                 <p className="text-blue-500">Drop the files here ...</p>
             ) : (
-                fileLoading ?
+                isLoadingUpload ?
                     <div className='flex w-full items-center flex-col gap-2'>
                         <p className="text-blue-500">Loading ...</p>
                     </div>
