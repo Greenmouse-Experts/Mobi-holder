@@ -25,7 +25,6 @@ export default function Login() {
             method: "POST",
             data: data,
             onSuccess: (response) => {
-                console.log(response.data);
                 if (response.data.data.accountType === 'Organization') {
                     dispatch(setOrg(response.data.data));
                     localStorage.setItem("userToken", response.data.token);

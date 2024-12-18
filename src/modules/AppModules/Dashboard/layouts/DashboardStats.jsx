@@ -3,12 +3,38 @@ import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
 import subscriptions from "../../../../assets/subscriptions.svg";
 import calendar from "../../../../assets/calendar.svg";
+import { useEffect } from "react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 const DashboardStats = () => {
+    const token = localStorage.getItem("userToken");
+    const { mutate } = useApiMutation();
+
+    const getIDCards = () => {
+        mutate({
+            url: "/api/idcards/fetch/cards",
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`, // Add the token dynamically
+                "Content-Type": "application/json",  // Optional: Specify the content type
+            },
+            hideToast: true,
+            onSuccess: (response) => {
+                console.log(response.data)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+    useEffect(() => {
+        getIDCards();
+    }, []);
+
     return (
         <div className="flex w-full lg:flex-row md:flex-row flex-col gap-4">
             <StatCard
-                number={12}
+                number={0}
                 label="ID Cards"
                 iconColor="bg-mobiOrange"
                 IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px' }} />}

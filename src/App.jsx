@@ -37,7 +37,7 @@ import AddCard from './modules/AppModules/pages/IdCards/addCard';
 import ViewCard from './modules/AppModules/pages/IdCards/viewCard';
 import AddEvent from './modules/AppModules/pages/Events/addEvent';
 import ViewEvent from './modules/AppModules/pages/Events/viewEvent';
-import AddSubscription from './modules/AppModules/pages/Subscriptions/addSubscription';
+import AddSubscription from './modules/AppModules/pages/Memberships/organisationLists';
 import ViewOrganisation from './modules/AppModules/pages/Subscriptions/viewOrganisation';
 import Membership from './modules/AppModules/pages/Memberships';
 import JoinOrganisation from './modules/AppModules/pages/Memberships/joinOrganisation';
@@ -85,6 +85,7 @@ import OrgSettings from './modules/OrgModules/Settings';
 import AddSubscriptionPlan from './modules/OrgModules/pages/Subscriptions/addSubscriptionPlan';
 import EditSubscriptionPlan from './modules/OrgModules/pages/Subscriptions/editSubscriptionPlan';
 import SubscriptionHistory from './modules/OrgModules/pages/Subscriptions/subscriptionHistory';
+import OrganisationLists from './modules/AppModules/pages/Memberships/organisationLists';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -125,8 +126,8 @@ function App() {
                   <Route path='view-event/:id' element={<ViewEvent />} />
                   <Route path='subscriptions' element={<IndividualSubscriptions />} />
                   <Route path='add-subscription' element={<AddSubscription />} />
-                  <Route path='join-organisation/:id' element={<AddSubscription />} />
-                  <Route path='join-organisation-form' element={<JoinOrganisation />} />
+                  <Route path='join-organisation' element={<OrganisationLists />} />
+                  <Route path='join-organisation-form/:id' element={<JoinOrganisation />} />
                   <Route path='view-organisation/:id' element={<ViewOrganisation />} />
                   <Route path='membership' element={<Membership />} />
                   <Route path='events' element={<IndividualEvents />} />

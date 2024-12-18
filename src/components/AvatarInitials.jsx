@@ -1,6 +1,6 @@
 import React from "react";
 
-const AvatarInitials = ({ name, size = "12", bgColor = "blue-500", textColor = "white" }) => {
+const AvatarInitials = ({ name, size = "12", bgColor = "mobiPink", textColor = "white", noRounded }) => {
     // Function to extract initials
     const getInitials = (name) => {
         if (!name) return "NN"; // Default to "NN" for no name
@@ -14,7 +14,7 @@ const AvatarInitials = ({ name, size = "12", bgColor = "blue-500", textColor = "
 
     return (
         <div
-            className={`flex items-center justify-center w-${size} h-${size} rounded-full bg-${bgColor} text-${textColor} text-lg font-bold`}
+            className={`flex items-center justify-center w-${size} h-${size} ${!noRounded ? 'rounded-full text-lg' : 'rounded-t-lg text-2xl'} bg-${bgColor} text-${textColor} font-bold`}
             style={{ lineHeight: 1 }}
         >
             {getInitials(name)}

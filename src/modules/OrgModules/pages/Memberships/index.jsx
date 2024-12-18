@@ -13,6 +13,10 @@ import ReusableModal from "../../../../components/ReusableModal";
 import Input from "../../../../components/Input";
 import { useForm } from "react-hook-form";
 import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
+import { dateFormat } from "../../../../helpers/dateHelper";
+import Loader from "../../../../components/Loader";
 
 
 const UserDetails = ({ closeModal }) => {
@@ -86,66 +90,16 @@ const UserDetails = ({ closeModal }) => {
 export default function OrgMembership() {
     const user = useSelector((state) => state.orgData.orgData);
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
+    const [allMembers, setAllMembers] = useState([]);
+    const [initiatedMembers, setInitiatedMembers] = useState([]);
+    const [pendingMembers, setPendingMembers] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const { mutate } = useApiMutation();
 
     const TableHeaders = ["Individual", "Role", "Staff ID", "Email", "Status", "Action"];
     const RequetsHeaders1 = ["Individual", "Email", "Invited On", "Status", "Action"];
     const RequetsHeaders2 = ["Individual", "Email", "Requested On", "Action"];
 
-    const NewTableData = [
-        {
-            name: 'Chukka Uzo',
-            email: 'testmail@gmail.com',
-            number: '20-11-24',
-            status: 'pending',
-        },
-        {
-            name: 'Chukka Uzo',
-            email: 'testmail@gmail.com',
-            number: '20-11-24',
-            status: 'pending',
-        },
-        {
-            name: 'Chukka Uzo',
-            email: 'testmail@gmail.com',
-            number: '20-11-24',
-            status: 'pending',
-        },
-    ];
-
-    const TableData = [
-        {
-            name: 'Green Mouse',
-            email: 'Product Designer',
-            number: 'ASD1234',
-            date: 'testmail@gmail.com',
-            status: 'active',
-            id: 1
-        },
-        {
-            name: 'Green Mouse',
-            email: 'Product Designer',
-            number: 'ASD1234',
-            date: 'testmail@gmail.com',
-            status: 'active',
-            id: 2
-        },
-        {
-            name: 'Green Mouse',
-            email: 'Product Designer',
-            number: 'ASD1234',
-            date: 'testmail@gmail.com',
-            status: 'active',
-            id: 1
-        },
-        {
-            name: 'Green Mouse',
-            email: 'Product Designer',
-            number: 'ASD1234',
-            date: 'testmail@gmail.com',
-            status: 'active',
-            id: 2
-        },
-    ];
 
     const handleDeclineMember = () => {
         openModal({
@@ -155,6 +109,39 @@ export default function OrgMembership() {
     }
 
     const navigate = useNavigate();
+    const token = localStorage.getItem("userToken");
+
+
+    const getOrganisationsMember = (params) => {
+        mutate({
+            url: `/api/memberships-subscriptions/organization/membership${params}`,
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`, // Add the token dynamically
+                "Content-Type": "application/json",  // Optional: Specify the content type
+            },
+            hideToast: true,
+            onSuccess: (response) => {
+                if (params === '?sortBy=status') {
+                    setAllMembers(response.data.data)
+                }
+                else if (params === '?filter=pendingFromOrganization') {
+                    setInitiatedMembers(response.data.data)
+                }
+                setIsLoading(false)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+    useEffect(() => {
+        getOrganisationsMember('?sortBy=status')
+        getOrganisationsMember('?filter=pendingFromOrganization')
+        getOrganisationsMember('?filter=pendingFromIndividual')
+    }, []);
+
+    console.log(allMembers)
 
     return (
         <>   <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -168,21 +155,21 @@ export default function OrgMembership() {
 
                 <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                     <StatCard
-                        number={12}
+                        number={allMembers.length}
                         label="Total Members"
                         iconColor="bg-mobiLightGreen"
                         IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px', color: 'rgba(107, 239, 215, 1)' }} />}
                         colorGradient={['rgba(107, 239, 215, 1)', 'rgba(52, 59, 79, 1)']}
                     />
                     <StatCard
-                        number={21}
+                        number={allMembers.filter(item => item.status === 'active').length}
                         label="Active Members"
                         iconColor="bg-mobiOrange"
                         IconComponent={<img src={organisation} alt="ID Cards" style={{ width: '22px' }} />}
                         colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                     />
                     <StatCard
-                        number={4}
+                        number={0}
                         label="Deactivated Members"
                         iconColor="bg-mobiSkyCloud"
                         IconComponent={<img src={calendar} alt="Events" style={{ width: '20px' }} />}
@@ -206,12 +193,13 @@ export default function OrgMembership() {
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>All Members</span>} exportData
                         tableHeader={TableHeaders}>
-                        {TableData.map((data, index) => (
+                        {allMembers.length > 0 ?
+                        allMembers.map((data, index) => (
                             <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
+                                <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
+                                <td className="px-3 py-3 text-mobiTableText">{data.memberId ? data.memberId : '---'}</td>
+                                <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
                                 <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                 <td className="px-6 py-3 cursor-pointer">
                                     <Menu placement="left">
@@ -232,7 +220,21 @@ export default function OrgMembership() {
                                     </Menu>
                                 </td>
                             </tr>
-                        ))}
+                        ))
+                            :
+                            isLoading ?
+                                <tr>
+                                    <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                        <Loader size={20} />
+                                    </td>
+                                </tr>
+                                :
+                                <tr>
+                                    <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                        No Data Available
+                                    </td>
+                                </tr>
+                        }
                     </Table>
                 </div>
 
@@ -241,11 +243,12 @@ export default function OrgMembership() {
                     <div className="lg:w-[63%] md:w-[63%] w-full flex flex-col gap-5">
                         <Table title="Today" filter subTitle={<span>Pending Requests (Initiated)</span>} exportData
                             tableHeader={RequetsHeaders1}>
-                            {NewTableData.map((data, index) => (
+                            {initiatedMembers.length > 0 ?
+                                initiatedMembers.map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
+                                <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-mm-YYY')}</td>
                                     <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                     <td className="px-6 py-3">
                                         <span className="flex w-full">
@@ -255,7 +258,21 @@ export default function OrgMembership() {
                                         </span>
                                     </td>
                                 </tr>
-                            ))}
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={RequetsHeaders1.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={RequetsHeaders1.length} className="text-center py-10 font-semibold text-gray-500">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                            }
                         </Table>
                     </div>
 
@@ -271,24 +288,39 @@ export default function OrgMembership() {
                     <div className="w-full flex flex-col gap-5">
                         <Table title="Today" filter subTitle={<span>Pending Requests (Received)</span>} exportData
                             tableHeader={RequetsHeaders2}>
-                            {NewTableData.map((data, index) => (
-                                <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">
-                                        <span className="flex gap-2">
-                                            <span className="flex py-2 px-3 rounded-full border border-[rgba(247,77,27,1)]">
-                                                <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
+                            {pendingMembers.length > 0 ?
+                                pendingMembers.map((data, index) => (
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">
+                                            <span className="flex gap-2">
+                                                <span className="flex py-2 px-3 rounded-full border border-[rgba(247,77,27,1)]">
+                                                    <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
+                                                </span>
+                                                <span className="flex py-2 px-3 rounded-full cursor-pointer bg-mobiPink"
+                                                    onClick={() => handleDeclineMember()}>
+                                                    <p className="text-white text-xs font-[500]">Accept</p>
+                                                </span>
                                             </span>
-                                            <span className="flex py-2 px-3 rounded-full cursor-pointer bg-mobiPink"
-                                                onClick={() => handleDeclineMember()}>
-                                                <p className="text-white text-xs font-[500]">Accept</p>
-                                            </span>
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))}
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={RequetsHeaders2.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={RequetsHeaders2.length} className="text-center py-10 font-semibold text-gray-500">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                            }
                         </Table>
                     </div>
 

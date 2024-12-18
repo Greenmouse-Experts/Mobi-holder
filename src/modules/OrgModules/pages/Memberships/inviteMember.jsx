@@ -3,12 +3,34 @@ import Header from "../../../../components/Header";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Input from "../../../../components/Input";
-import DropZone from "../../../../components/DropZone";
 import { Button } from "@material-tailwind/react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function InviteMember() {
     const user = useSelector((state) => state.orgData.orgData);
-    const { register, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const token = localStorage.getItem("userToken");
+    const [isLoading, setIsLoading] = useState(false);
+    const { mutate } = useApiMutation();
+
+    const inviteMember = (data) => {
+        setIsLoading(true)
+        mutate({
+            url: "/api/memberships-subscriptions/send/membership/request",
+            method: "POST",
+            data: data,
+            headers: {
+                Authorization: `Bearer ${token}`, // Add the token dynamically
+                "Content-Type": "application/json",  // Optional: Specify the content type
+            },
+            onSuccess: (response) => {
+                setIsLoading(false);
+            },
+            onError: () => {
+                setIsLoading(false);
+            }
+        });
+    };
 
     return (
         <>
@@ -24,48 +46,41 @@ export default function InviteMember() {
                     <div className="w-full flex flex-grow">
                         <div className="shadow-xl py-5 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
 
-                            <form>
+                            <form onSubmit={handleSubmit(inviteMember)}>
                                 <div className="mb-1 flex flex-col gap-10 mt-5">
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Member MobiHolder ID or Email
                                         </p>
-                                        <Input type="text" name="firstName" register={register} placeholder="Enter member mobiholder ID" />
+                                        <Input type="text" name="individualInfo" register={register}
+                                            rules={{ required: 'Role is required' }} errors={errors} placeholder="Enter member mobiholder ID" />
                                     </div>
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                           Member/Staff ID
+                                            Member/Staff ID
                                         </p>
-                                        <Input type="text" name="lastName" register={register} placeholder="Enter member/staff ID" />
+                                        <Input type="text" name="memberId" register={register}
+                                            rules={{ required: 'Staff ID is required' }} errors={errors} placeholder="Enter member/staff ID" />
                                     </div>
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Role (Designation)
                                         </p>
-                                        <Input type="text" name="lastName" register={register} placeholder="Enter member/staff ID" />
+                                        <Input type="text" name="designation" register={register}
+                                            rules={{ required: 'Role is required' }} errors={errors} placeholder="Enter member/staff ID" />
                                     </div>
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                           Organisation Email
+                                            Organisation Email (optional)
                                         </p>
-                                        <Input type="text" name="email" register={register} placeholder="Email" />
+                                        <Input type="text" name="organizationEmail" register={register} placeholder="Email" />
                                     </div>
-
-                                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                                        <div className="flex flex-col w-full gap-6">
-                                            <p className="-mb-3 text-mobiFormGray">
-                                                Category
-                                            </p>
-                                            <Input type="text" name="lastName" register={register} placeholder="Enter member/staff ID" />
-                                        </div>
-                                    </div>     
-
                                     <div className="flex">
-                                        <Button type="submit" className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                                            Invite New Member
+                                        <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
+                                            {isLoading ? 'Inviting Member' : 'Invite New Member'}
                                         </Button>
                                     </div>
                                 </div>

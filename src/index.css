@@ -168,6 +168,14 @@ button {
   width: 8rem;
 }
 
+.w-44 {
+  width: 11rem;
+}
+
+.h-44 {
+  height: 11rem;
+}
+
 .h-32 {
   height: 8rem;
 }

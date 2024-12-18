@@ -16,18 +16,16 @@ export default function UserData() {
 
 
     const changeProfile = (data) => {
-        const { natureOfOrganization, companyAddress, companyName, companyEmail, phoneNumber, ...rest } = user;
+        const { companyAddress, phoneNumber, ...rest } = user;
         const payloadData = {
             ...rest,
-            companyAddress: {
-                country: data.country,
-                state: data.state,
-                street: data.address
-            },
-            companyName: data.companyName,
-            companyEmail: data.email,
+            companyAddress: typeof companyAddress === "string"
+                ? JSON.parse(companyAddress)
+                : companyAddress,
             phoneNumber: data.phoneNumber,
-            natureOfOrganization: payload?.natureOfOrganization
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email
         }
 
         setIsLoading(true)

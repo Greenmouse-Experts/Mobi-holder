@@ -29,7 +29,7 @@ export default function Security() {
             },
             navigateTo: "/login",
             onSuccess: (response) => {
-                dispatch(setOrg({}));
+                dispatch(setOrg(null));
                 navigate('/login');
                 setIsLoading(false)
             },
