@@ -106,15 +106,14 @@ export default function Membership() {
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>All Organisations</span>} exportData
                         tableHeader={TableHeaders}>
-                        {organisations
-                            .filter(item => item.memberId !== null).length > 0 ?
+                        {organisations.length > 0 ?
                             organisations
-                                .filter(item => item.memberId !== null).map((data, index) => (
+                                .map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.id}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{todayDate(data.createdAt, "dd-mm-YYY")}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3">
                                             <span className="flex w-full">
@@ -183,7 +182,7 @@ export default function Membership() {
                 </div>
 
 
-                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                {/* <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Pending Requests (Initiated) </span>} exportData
                         tableHeader={RequetsHeaders2}>
                         {organisations
@@ -220,7 +219,7 @@ export default function Membership() {
                                 </tr>
                         }
                     </Table>
-                </div>
+                </div> */}
 
             </div>
         </div>
