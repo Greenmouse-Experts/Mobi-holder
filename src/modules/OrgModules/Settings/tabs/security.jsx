@@ -13,8 +13,6 @@ export default function Security() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const token = localStorage.getItem("userToken");
-
     const { mutate } = useApiMutation();
 
     const changePassword = (data) => {
@@ -23,10 +21,7 @@ export default function Security() {
             url: "/api/users/profile/update/password",
             method: "PUT",
             data: data,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             navigateTo: "/login",
             onSuccess: (response) => {
                 dispatch(setOrg(null));

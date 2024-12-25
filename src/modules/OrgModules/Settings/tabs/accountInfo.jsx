@@ -13,7 +13,6 @@ export default function AccountInfo() {
     const [isLoading, setIsLoading] = useState(false);
     const [errorAccess, setErrorAccess] = useState(false);
     const user = useSelector((state) => state.orgData.orgData);
-    const token = localStorage.getItem("userToken");
     const dispatch = useDispatch();
     const { mutate } = useApiMutation();
     const [payload, setPayload] = useState(user);
@@ -25,10 +24,7 @@ export default function AccountInfo() {
             url: "/api/users/profile/update/organization",
             method: "PUT",
             data: payload,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 dispatch(setOrg(response.data.data));
                 setIsLoading(false)

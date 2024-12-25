@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Input from "../../../../components/Input";
 import { useForm } from "react-hook-form";
-import { dateFormat } from "../../../../helpers/dateHelper";
 import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
@@ -12,9 +11,6 @@ export default function Security() {
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
-    const user = useSelector((state) => state.userData.data);
-    const token = localStorage.getItem("userToken");
-
     const { mutate } = useApiMutation();
 
     const changePassword = (data) => {
@@ -23,10 +19,7 @@ export default function Security() {
             url: "/api/users/profile/update/password",
             method: "PUT",
             data: data,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             navigateTo: "/login",
             onSuccess: (response) => {
                 dispatch(setUser({}));

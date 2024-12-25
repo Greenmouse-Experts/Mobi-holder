@@ -9,7 +9,6 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 export default function InviteMember() {
     const user = useSelector((state) => state.orgData.orgData);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const token = localStorage.getItem("userToken");
     const [isLoading, setIsLoading] = useState(false);
     const { mutate } = useApiMutation();
 
@@ -19,10 +18,7 @@ export default function InviteMember() {
             url: "/api/memberships-subscriptions/send/membership/request",
             method: "POST",
             data: data,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 setIsLoading(false);
             },

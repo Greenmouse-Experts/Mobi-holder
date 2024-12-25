@@ -23,7 +23,6 @@ export default function ProfileInfo() {
     const [customError, setCustomError] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.userData.data);
-    const token = localStorage.getItem("userToken");
     const { mutate } = useApiMutation();
     const documentOptions = [
         {
@@ -72,10 +71,7 @@ export default function ProfileInfo() {
             url: "/api/users/profile/photo/upload",
             method: "PUT",
             data: payload,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
             },
@@ -89,10 +85,7 @@ export default function ProfileInfo() {
             url: "/api/users/profile/update/individual",
             method: "PUT",
             data: data,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
                 setIsLoading(false)
@@ -118,10 +111,7 @@ export default function ProfileInfo() {
                 url: "/api/users/upload/verified/IDCard",
                 method: "POST",
                 data: payload,
-                headers: {
-                    Authorization: `Bearer ${token}`, // Add the token dynamically
-                    "Content-Type": "application/json",  // Optional: Specify the content type
-                },
+                headers: true,
                 onSuccess: (response) => {
                     setIsLoadingDocuments(false)
                 },
@@ -139,10 +129,7 @@ export default function ProfileInfo() {
         mutate({
             url: "/api/users/upload/verified/IDCard",
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 console.log(response.data)

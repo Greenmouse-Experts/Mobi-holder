@@ -10,7 +10,6 @@ export default function Sidebar({ mobile }) {
     const location = useLocation();
     const navigate = useNavigate();
     const { mutate } = useApiMutation();
-    const token = localStorage.getItem("userToken");
     const dispatch = useDispatch();
 
     const [activeNav, setActiveNav] = useState(location.pathname);
@@ -173,10 +172,7 @@ export default function Sidebar({ mobile }) {
         mutate({
             url: "/api/users/logout",
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 dispatch(setUser({}));
                 localStorage.removeItem('userToken');

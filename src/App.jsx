@@ -101,10 +101,11 @@ function App() {
       <ThemeProvider>
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>
-            {splash ?
+            {splash ? (
               <SplashScreen clearScreen={handleSplashScreen} />
-              :
+            ) : (
               <Routes>
+                {/* Public Routes */}
                 <Route path="/" element={<Home />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/contact-us" element={<ContactUs />} />
@@ -112,84 +113,89 @@ function App() {
                 <Route path="/legal" element={<Legal />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
-                <Route path='/signup/individual' element={<IndividualSignUp />} />
-                <Route path='/signup/organisation' element={<OrganisationSignUp />} />
-                <Route path='/login' element={<Login />} />
-                <Route path='/admin' element={<AdminLogin />} />
-                <Route path='/forgot-password' element={<PasswordReset />} />
-                <Route path='/app' element={<AppModules />}>
-                  <Route path='dashboard' element={<Dashboard />} />
-                  <Route path='id-cards' element={<IDCardsPage />} />
-                  <Route path='add-card' element={<AddCard />} />
-                  <Route path='view-card' element={<ViewCard />} />
-                  <Route path='add-event' element={<AddEvent />} />
-                  <Route path='view-event/:id' element={<ViewEvent />} />
-                  <Route path='subscriptions' element={<IndividualSubscriptions />} />
-                  <Route path='add-subscription' element={<AddSubscription />} />
-                  <Route path='join-organisation' element={<OrganisationLists />} />
-                  <Route path='join-organisation-form/:id' element={<JoinOrganisation />} />
-                  <Route path='view-organisation/:id' element={<ViewOrganisation />} />
-                  <Route path='membership' element={<Membership />} />
-                  <Route path='events' element={<IndividualEvents />} />
-                  <Route path='notification' element={<Notification />} />
-                  <Route path='settings' element={<Settings />} />
-                  <Route path='verify' element={<VerificationDashboard />} />
-                  <Route path='add-verifiers' element={<AddVerifier />} />
-                  <Route path='view-verifiers/:id' element={<ViewVerifiers />} />
-                  <Route path='add-event-verifier/:id' element={<AddEventVerifier />} />
-                  <Route path='verification-request' element={<VerificationRequest />} />
-                  <Route path='scan-event' element={<ScanEvents />} />
-                  <Route path='verify-event/:id' element={<VerifyEvent />} />
-                  <Route path='upcoming-events' element={<UpcomingEvents />} />
-                  <Route path='view-invites/:id' element={<ViewInvites />} />
-                  <Route path='event-log/:id' element={<EventLog />} />
-                  <Route path='ticket-requests/:id' element={<TicketRequests />} />
-                  <Route path='event-gallery' element={<EventGallery />} />
-                  <Route path='order-tickets/:id' element={<BuyTickets />} />
-                  <Route path='event-history' element={<EventHistory />} />
+                <Route path="/signup/individual" element={<IndividualSignUp />} />
+                <Route path="/signup/organisation" element={<OrganisationSignUp />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/forgot-password" element={<PasswordReset />} />
+
+                {/* App Routes */}
+                <Route path="/app" element={<AppModules />}>
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="id-cards" element={<IDCardsPage />} />
+                  <Route path="add-card" element={<AddCard />} />
+                  <Route path="view-card" element={<ViewCard />} />
+                  <Route path="add-event" element={<AddEvent />} />
+                  <Route path="view-event/:id" element={<ViewEvent />} />
+                  <Route path="subscriptions" element={<IndividualSubscriptions />} />
+                  <Route path="add-subscription" element={<AddSubscription />} />
+                  <Route path="join-organisation" element={<OrganisationLists />} />
+                  <Route path="join-organisation-form/:id" element={<JoinOrganisation />} />
+                  <Route path="view-organisation/:id" element={<ViewOrganisation />} />
+                  <Route path="membership" element={<Membership />} />
+                  <Route path="events" element={<IndividualEvents />} />
+                  <Route path="notification" element={<Notification />} />
+                  <Route path="settings" element={<Settings />} />
+                  <Route path="verify" element={<VerificationDashboard />} />
+                  <Route path="add-verifiers" element={<AddVerifier />} />
+                  <Route path="view-verifiers/:id" element={<ViewVerifiers />} />
+                  <Route path="add-event-verifier/:id" element={<AddEventVerifier />} />
+                  <Route path="verification-request" element={<VerificationRequest />} />
+                  <Route path="scan-event" element={<ScanEvents />} />
+                  <Route path="verify-event/:id" element={<VerifyEvent />} />
+                  <Route path="upcoming-events" element={<UpcomingEvents />} />
+                  <Route path="view-invites/:id" element={<ViewInvites />} />
+                  <Route path="event-log/:id" element={<EventLog />} />
+                  <Route path="ticket-requests/:id" element={<TicketRequests />} />
+                  <Route path="event-gallery" element={<EventGallery />} />
+                  <Route path="order-tickets/:id" element={<BuyTickets />} />
+                  <Route path="event-history" element={<EventHistory />} />
                 </Route>
-                <Route path='/org' element={<OrgModules />}>
-                  <Route path='dashboard' element={<OrgDashboard />} />
-                  <Route path='verify' element={<OrgVerificationDashboard />} />
-                  <Route path='add-verifiers' element={<OrgAddVerifier />} />
-                  <Route path='scan-event' element={<OrgScanEvents />} />
-                  <Route path='verify-event/:id' element={<OrgVerifyEvent />} />
-                  <Route path='verification-request' element={<OrgVerificationRequest />} />
-                  <Route path='events' element={<OrgEvents />} />
-                  <Route path='add-event' element={<OrgAddEvent />} />
-                  <Route path='upcoming-events' element={<OrgUpcomingEvents />} />
-                  <Route path='view-event/:id' element={<OrgViewEvent />} />
-                  <Route path='view-invites/:id' element={<OrgViewInvites />} />
-                  <Route path='ticket-requests/:id' element={<OrgTicketRequests />} />
-                  <Route path='event-log/:id' element={<OrgEventLog />} />
-                  <Route path='event-gallery' element={<OrgEventGallery />} />
-                  <Route path='add-event-verifier/:id' element={<OrgAddEventVerifier />} />
-                  <Route path='id-cards' element={<OrgIDCardsPage />} />
-                  <Route path='membership' element={<OrgMembership />} />
-                  <Route path='subscriptions' element={<OrgSubscriptions />} />
-                  <Route path='add-subscription' element={<AddSubscriptionPlan />} />
-                  <Route path='subscription/editPlan/:id' element={<EditSubscriptionPlan />} />
-                  <Route path='subscription/history/:id' element={<SubscriptionHistory />} />
-                  <Route path='add-card' element={<OrgAddCard />} />
-                  <Route path='cards/structure' element={<CardStructure />} />
-                  <Route path='cards/createUser/:id' element={<CreateUserCard />} />
-                  <Route path='card/viewCard' element={<PreviewCard />} />
-                  <Route path='membership/updateMember/:id' element={<UpdateMember />} />
-                  <Route path='membership/add' element={<InviteMember />} />
-                  <Route path='notification' element={<OrgNotification />} />
-                  <Route path='settings' element={<OrgSettings />} />
+
+                {/* Organisation Routes */}
+                <Route path="/org" element={<OrgModules />}>
+                  <Route path="dashboard" element={<OrgDashboard />} />
+                  <Route path="verify" element={<OrgVerificationDashboard />} />
+                  <Route path="add-verifiers" element={<OrgAddVerifier />} />
+                  <Route path="scan-event" element={<OrgScanEvents />} />
+                  <Route path="verify-event/:id" element={<OrgVerifyEvent />} />
+                  <Route path="verification-request" element={<OrgVerificationRequest />} />
+                  <Route path="events" element={<OrgEvents />} />
+                  <Route path="add-event" element={<OrgAddEvent />} />
+                  <Route path="upcoming-events" element={<OrgUpcomingEvents />} />
+                  <Route path="view-event/:id" element={<OrgViewEvent />} />
+                  <Route path="view-invites/:id" element={<OrgViewInvites />} />
+                  <Route path="ticket-requests/:id" element={<OrgTicketRequests />} />
+                  <Route path="event-log/:id" element={<OrgEventLog />} />
+                  <Route path="event-gallery" element={<OrgEventGallery />} />
+                  <Route path="add-event-verifier/:id" element={<OrgAddEventVerifier />} />
+                  <Route path="id-cards" element={<OrgIDCardsPage />} />
+                  <Route path="membership" element={<OrgMembership />} />
+                  <Route path="subscriptions" element={<OrgSubscriptions />} />
+                  <Route path="add-subscription" element={<AddSubscriptionPlan />} />
+                  <Route path="subscription/editPlan/:id" element={<EditSubscriptionPlan />} />
+                  <Route path="subscription/history/:id" element={<SubscriptionHistory />} />
+                  <Route path="add-card" element={<OrgAddCard />} />
+                  <Route path="cards/structure" element={<CardStructure />} />
+                  <Route path="cards/createUser/:id" element={<CreateUserCard />} />
+                  <Route path="card/viewCard" element={<PreviewCard />} />
+                  <Route path="membership/updateMember/:id" element={<UpdateMember />} />
+                  <Route path="membership/add" element={<InviteMember />} />
+                  <Route path="notification" element={<OrgNotification />} />
+                  <Route path="settings" element={<OrgSettings />} />
                 </Route>
-                <Route path='/superadmin' element={<SuperAdmin />}>
-                  <Route path='dashboard' element={<DashBoard />} />
+
+                {/* Super Admin Routes */}
+                <Route path="/superadmin" element={<SuperAdmin />}>
+                  <Route path="dashboard" element={<DashBoard />} />
                   <Route path="organisations" element={<Organisations />} />
                   <Route path="events" element={<Events />} />
-                  <Route path='users' element={<AllUsers />} />
-                  <Route path='subscriptions' element={<Subscriptions />} />
-                  <Route path='id-cards' element={<IDCards />} />
+                  <Route path="users" element={<AllUsers />} />
+                  <Route path="subscriptions" element={<Subscriptions />} />
+                  <Route path="id-cards" element={<IDCards />} />
                 </Route>
               </Routes>
-
-            }
+            )}
           </QueryClientProvider>
         </Provider>
         <ToastContainer

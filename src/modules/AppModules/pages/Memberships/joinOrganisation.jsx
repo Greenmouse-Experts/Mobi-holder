@@ -13,7 +13,6 @@ export default function JoinOrganisation() {
     const paramsData = useSelector((state) => state.userData.paramsData);
     const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const token = localStorage.getItem("userToken");
     const { mutate } = useApiMutation();
 
 
@@ -27,13 +26,8 @@ export default function JoinOrganisation() {
             url: "/api/memberships-subscriptions/join/organization",
             method: "POST",
             data: payload,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
-            onSuccess: (response) => {
-                
-            },
+            headers: true,
+            onSuccess: () => {},
             onError: () => {
                 setIsLoading(false);
             }

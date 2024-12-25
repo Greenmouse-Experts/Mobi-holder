@@ -9,38 +9,38 @@ import calendar from "../../../../assets/calendar.svg";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
-import { dateFormat, todayDate } from "../../../../helpers/dateHelper";
+import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
 
 export default function Membership() {
     const user = useSelector((state) => state.userData.data);
     const [organisations, setOrganisations] = useState([]);
     const [pendingOrganisations, setPendingOrganisations] = useState([]);
+    const [pendingInitiated, setPendingInitiated] = useState([]);
+
     const [isLoading, setIsLoading] = useState(true);
 
     const TableHeaders = ["Organisation", "Role", "Staff ID", "Email", "Status", "Action"];
     const RequetsHeaders1 = ["Organisation", "Role", "Request ID", "Requested On", "Action"];
     const RequetsHeaders2 = ["Organisation", "Request ID", "Role", "Request On", "Status", "Action"];
 
-
-    const token = localStorage.getItem("userToken");
     const { mutate } = useApiMutation();
 
     const getOrganisations = (params) => {
         mutate({
             url: `/api/memberships-subscriptions/individual/membership${params}`,
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 if (params === "") {
                     setOrganisations(response.data.data)
                 }
-                else {
+                else if (params === "?filter=pendingFromOrganization") {
                     setPendingOrganisations(response.data.data)
+                }
+                else if (params === "?filter=pendingFromIndividual") {
+                    setPendingInitiated(response.data.data);
                 }
                 setIsLoading(false);
             },
@@ -52,6 +52,7 @@ export default function Membership() {
     useEffect(() => {
         getOrganisations("");
         getOrganisations("?filter=pendingFromOrganization");
+        getOrganisations("?filter=pendingFromIndividual");
     }, [])
 
     return (
@@ -66,16 +67,14 @@ export default function Membership() {
 
                 <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                     <StatCard
-                        number={organisations
-                            .filter(item => item.memberId !== null).length}
+                        number={organisations.length}
                         label="Organisations Joined"
                         iconColor="bg-mobiOrange"
                         IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px', color: 'rgba(107, 239, 215, 1)' }} />}
                         colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                     />
                     <StatCard
-                        number={organisations
-                            .filter(item => item.memberId === null).length}
+                        number={[...pendingOrganisations, ...pendingInitiated].length}
                         label="Pending Requests"
                         iconColor="bg-mobiSkyCloud"
                         IconComponent={<img src={organisation} alt="ID Cards" style={{ width: '22px' }} />}
@@ -113,7 +112,7 @@ export default function Membership() {
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.id}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{todayDate(data.createdAt, "dd-mm-YYY")}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.organization.companyEmail}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3">
                                             <span className="flex w-full">
@@ -151,7 +150,7 @@ export default function Membership() {
                                     <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
                                     <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                     <td className="px-3 py-3 text-mobiTableText">{data.id}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{todayDate(data.createdAt, "dd-mm-YYY")}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, "dd-MM-YYY")}</td>
                                     <td className="px-3 py-3 text-mobiTableText">
                                         <span className="flex gap-2">
                                             <span className="flex py-2 px-3 rounded-full border border-[rgba(247,77,27,1)]">
@@ -182,13 +181,11 @@ export default function Membership() {
                 </div>
 
 
-                {/* <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+               <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Pending Requests (Initiated) </span>} exportData
                         tableHeader={RequetsHeaders2}>
-                        {organisations
-                            .filter(item => item.memberId === null).length > 0 ?
-                            organisations
-                                .filter(item => item.memberId === null).map((data, index) => (
+                        {pendingInitiated.length > 0 ?
+                            pendingInitiated.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.id}</td>
@@ -219,7 +216,7 @@ export default function Membership() {
                                 </tr>
                         }
                     </Table>
-                </div> */}
+                </div>
 
             </div>
         </div>

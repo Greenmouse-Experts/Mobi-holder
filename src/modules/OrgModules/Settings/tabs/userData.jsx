@@ -10,7 +10,6 @@ export default function UserData() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const user = useSelector((state) => state.orgData.orgData);
-    const token = localStorage.getItem("userToken");
     const dispatch = useDispatch();
     const { mutate } = useApiMutation();
 
@@ -33,10 +32,7 @@ export default function UserData() {
             url: "/api/users/profile/update/organization",
             method: "PUT",
             data: payloadData,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 dispatch(setOrg(response.data.data));
                 setIsLoading(false)

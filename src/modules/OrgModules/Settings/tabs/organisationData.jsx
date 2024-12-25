@@ -20,7 +20,6 @@ export default function OrganisationData() {
     const [customError, setCustomError] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.orgData.orgData);
-    const token = localStorage.getItem("userToken");
     const { mutate } = useApiMutation();
     const [payload, setPayload] = useState({ natureOfOrganization: user.natureOfOrganization });
     const [errorAccess, setErrorAccess] = useState(false);
@@ -69,10 +68,7 @@ export default function OrganisationData() {
             url: "/api/users/profile/update/organization",
             method: "PUT",
             data: payloadData,
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
                 setIsLoading(false)
@@ -98,10 +94,7 @@ export default function OrganisationData() {
                 url: "/api/users/business-document",
                 method: "POST",
                 data: payload,
-                headers: {
-                    Authorization: `Bearer ${token}`, // Add the token dynamically
-                    "Content-Type": "application/json",  // Optional: Specify the content type
-                },
+                headers: true,
                 onSuccess: (response) => {
                     setIsLoadingDocuments(false)
                 },
@@ -119,10 +112,7 @@ export default function OrganisationData() {
         mutate({
             url: "/api/users/get/business-document",
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 console.log(response.data)

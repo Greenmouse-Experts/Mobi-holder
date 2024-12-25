@@ -109,17 +109,13 @@ export default function OrgMembership() {
     }
 
     const navigate = useNavigate();
-    const token = localStorage.getItem("userToken");
 
 
     const getOrganisationsMember = (params) => {
         mutate({
             url: `/api/memberships-subscriptions/organization/membership${params}`,
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 if (params === '?sortBy=status') {

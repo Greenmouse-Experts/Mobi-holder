@@ -7,17 +7,13 @@ import { useEffect } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 const DashboardStats = () => {
-    const token = localStorage.getItem("userToken");
     const { mutate } = useApiMutation();
 
     const getIDCards = () => {
         mutate({
             url: "/api/idcards/fetch/cards",
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 console.log(response.data)

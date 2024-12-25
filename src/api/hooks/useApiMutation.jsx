@@ -7,10 +7,17 @@ import apiClient from "../apiFactory";
 const useApiMutation = () => {
     const navigate = useNavigate();
     const handleError = useErrorHandler();
+    const token = localStorage.getItem("userToken");
 
     const mutation = useMutation({
-        mutationFn: ({ url, data = null, method = "POST", headers = {} }) => {
-            const config = { headers };
+        mutationFn: ({ url, data = null, method = "POST", headers = false }) => {
+            const config = headers ? {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Add the token dynamically
+                    "Content-Type": "application/json",  // Optional: Specify the content type
+                },
+            } :
+                {};
 
             switch (method.toUpperCase()) {
                 case "GET":

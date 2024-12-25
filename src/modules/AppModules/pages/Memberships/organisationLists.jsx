@@ -31,17 +31,13 @@ export default function OrganisationLists() {
     const [loader, setLoader] = useState(true);
     const dispatch = useDispatch();
 
-    const token = localStorage.getItem("userToken");
     const { mutate } = useApiMutation();
 
     const getAllOrganisations = () => {
         mutate({
             url: "/api/users/all/organizations",
             method: "GET",
-            headers: {
-                Authorization: `Bearer ${token}`, // Add the token dynamically
-                "Content-Type": "application/json",  // Optional: Specify the content type
-            },
+            headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 setOrgCards(response.data.data);
