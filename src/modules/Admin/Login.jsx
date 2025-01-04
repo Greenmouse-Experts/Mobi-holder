@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../api/apiFactory";
 import Input from "../../components/Input";
-import springRollerImage from "../../assets/spring-ball-roller.gif"
 
 export default function AdminLogin() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -35,7 +34,7 @@ export default function AdminLogin() {
         <>
             <div className="w-full flex h-screen animate__animated animate__fadeIn">
                 <div className="w-full flex justify-center px-6 bS-leftOverlay relative shadow-lg">
-                    <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${springRollerImage})` }}></div>
+                    <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(https://res.cloudinary.com/do2kojulq/image/upload/v1736029463/mobiHolder/mobiHolder_home/spring-ball-roller_d3dhsf.gif)` }}></div>
                     <div className="absolute w-full h-full" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}></div>
                     <div className="lg:w-2/5 md:w-2/5 z-50 w-full flex flex-col h-full gap-4 justify-center">
                         <div className='flex w-full justify-center gap-3'>

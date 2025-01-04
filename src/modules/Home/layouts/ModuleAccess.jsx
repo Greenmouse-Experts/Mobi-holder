@@ -1,5 +1,4 @@
 import { Accordion, AccordionBody, AccordionHeader, Button, Input } from "@material-tailwind/react";
-import stringBlock from "../../../assets/string-block.gif";
 import iPhone from "../../../assets/iPhone16_markup.png";
 import authGroup from "../../../assets/auth-group.png";
 import playStore from "../../../assets/playstore.png";
@@ -124,7 +123,7 @@ export default function ModuleAccess() {
                 </div>
 
                 <div className="w-full h-full relative flex flex-col">
-                    <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${stringBlock})` }}></div>
+                    <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(https://res.cloudinary.com/do2kojulq/image/upload/v1736029467/mobiHolder/mobiHolder_home/string-block_rhlhzf.gif)` }}></div>
                     <div className="md:w-[63%] xl:w-1/3 w-full flex flex-col xl:mx-72 relative md:py-24 mt-10 xl:px-0 lg:px-44 md:px-20 px-6 gap-5 z-50">
                         <span className="md:text-5xl text-3xl font-bold md:leading-[60px] gradient-text">Ready to unlock your Management potential?</span>
                         <span className="text-base leading-[30px] text-white">

@@ -1,4 +1,3 @@
-import circleRoller from "../../../assets/circle-roller.gif";
 import playStore from "../../../assets/playstore.png";
 import appleStore from "../../../assets/applestore.png";
 import { Link } from "react-router-dom";
@@ -7,7 +6,7 @@ export default function Footer() {
     return (
         <>
             <div className="flex flex-col w-full h-full relative">
-                <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(${circleRoller})` }}></div>
+                <div className="absolute bg-cover bg-center w-full h-full" style={{ backgroundImage: `url(https://res.cloudinary.com/do2kojulq/image/upload/v1736029459/mobiHolder/mobiHolder_home/circle-roller_jqv5di.gif)` }}></div>
                 <div className="absolute w-full h-full" style={{ backgroundColor: 'rgba(0,0,0,0.6)' }}></div>
                 <div className="w-full h-full flex flex-col gap-8 md:pt-20 lg:px-44 md:px-20 px-6 py-6 relative">
                     <div className="w-full flex flex-col md:flex-row md:py-6 gap-10 md:gap-20">

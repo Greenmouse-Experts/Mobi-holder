@@ -1,5 +1,4 @@
 import Header from "../layouts/Header";
-import springRollerImage from "../../../assets/spring-ball-roller.gif"
 import Footer from "../layouts/Footer";
 import Privacy from "./components/privacy";
 import { useState } from "react";
@@ -13,7 +12,7 @@ export default function Legal() {
         <>
             <div className="flex flex-col w-full h-full animate__animated animate__fadeIn">
                 <div className="w-full h-full relative">
-                    <div className="absolute bg-cover bg-center md:top-[0px] top-[20px] w-full h-full" style={{ backgroundImage: `url(${springRollerImage})` }}></div>
+                    <div className="absolute bg-cover bg-center md:top-[0px] top-[20px] w-full h-full" style={{ backgroundImage: `url(https://res.cloudinary.com/do2kojulq/image/upload/v1736029463/mobiHolder/mobiHolder_home/spring-ball-roller_d3dhsf.gif)` }}></div>
                     <div className="absolute w-full md:top-[0px] top-[20px] h-full" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}></div>
                     <Header />
                     <div className="w-full lg:mt-10 md:mt-10 mt-[40px] px-8 lg:py-10 relative lg:px-44 xl:px-72 md:px-20 flex flex-col gap-10 z-50">
