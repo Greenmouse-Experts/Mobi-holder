@@ -7,8 +7,9 @@ import { Drawer } from "@material-tailwind/react";
 import { ThemeContext } from "../../context/ThemeContext";
 import AvatarInitials from "../../components/AvatarInitials";
 import SuperAdminSidebar from "./superAdminSideBar";
+import Greeting from "./greetings";
 
-export default function Header({ mobile, superAdmin }) {
+export default function Header({ mobile }) {
     const [open, setOpen] = useState(false);
 
     const openDrawer = () => {
@@ -54,21 +55,13 @@ export default function Header({ mobile, superAdmin }) {
                         </div>
                     </div>
                 </div>
-
-                {/*greeting ?
-                    <div className="w-full flex -mt-1">
-                        {organisation ? <OrgGreeting orgData={data} /> : <Greeting userData={data} />}
-                    </div>
-                    :
-                    <></>
-                */}
             </div>
 
             <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[32%] md:w-[40%]`}>
                 <div className={`w-full flex flex-col gap-6`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
                         <div className="flex flex-grow">
-                            <p className="text-sm font-semibold">{superAdmin ? 'Admin Profile' : 'My Profile'}</p>
+                            <p className="text-sm font-semibold">Admin Profile</p>
                         </div>
                         <div className="flex rounded-md">
                             <AvatarInitials name={'Admin Profile'} size="8" />
