@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function Table({ title, subTitle, filter, exportData, tableBtn, children, tableHeader, hasNumber }) {
+function Table({ title, subTitle, filter, exportData, tableBtn, width='w-[700px]', children, tableHeader, hasNumber }) {
     const [isExportDataVisible, setIsExportDataVisible] = useState(false);
     const [updatedTableHeader, setUpdatedTableHeader] = useState(tableHeader);
 
@@ -43,7 +43,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, children, tableH
             </div>
 
             <div className="overflow-x-auto border py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
-                <table className="table-auto lg:w-full md:w-full sm:w-full w-[700px] text-mobiSkyBlue">
+                <table className={`table-auto table-fixed min-w-full text-mobiSkyBlue`}>
                     {updatedTableHeader ?
                         <thead>
                             <tr>

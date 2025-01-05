@@ -86,6 +86,7 @@ import AddSubscriptionPlan from './modules/OrgModules/pages/Subscriptions/addSub
 import EditSubscriptionPlan from './modules/OrgModules/pages/Subscriptions/editSubscriptionPlan';
 import SubscriptionHistory from './modules/OrgModules/pages/Subscriptions/subscriptionHistory';
 import OrganisationLists from './modules/AppModules/pages/Memberships/organisationLists';
+import ViewOrgAdmin from './modules/SuperAdmin/Organisations/viewOrganisation';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -188,7 +189,8 @@ function App() {
                 {/* Super Admin Routes */}
                 <Route path="/superadmin" element={<SuperAdmin />}>
                   <Route path="dashboard" element={<DashBoard />} />
-                  <Route path="organisations" element={<Organisations />} />
+                  <Route path="organisation" element={<Organisations />} />
+                  <Route path="view-org/:id" element={<ViewOrgAdmin />} />
                   <Route path="events" element={<Events />} />
                   <Route path="users" element={<AllUsers />} />
                   <Route path="subscriptions" element={<Subscriptions />} />

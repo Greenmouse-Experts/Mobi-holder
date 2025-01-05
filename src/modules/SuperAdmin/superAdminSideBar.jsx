@@ -124,7 +124,7 @@ export default function SuperAdminSidebar({ mobile }) {
             {/* Navigation Items */}
             <nav className="px-4 space-y-4">
                 {navigation.map((navData, index) => (
-                    <div className='w-full flex flex-col gap-4'>
+                    <div className='w-full flex flex-col gap-4' key={`nav-m${index}`}>
                         <div onClick={() => handleNavigation(navData)} className={`flex cursor-pointer items-center py-2 px-4 h-[57px] rounded-lg ${navData.slug === activeNav ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade text-mobiRomanSilver'} transition`}>
                             {navData.icon}
                             <span className={`${navData.slug === activeNav ? 'text-mobiPink' : ''}`}>{navData.name}</span>
