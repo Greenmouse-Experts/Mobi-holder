@@ -69,7 +69,7 @@ export default function JoinOrganisation() {
                         <div className="shadow-xl py-5 px-5 md:w-[30%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-6">
                             <div className="w-full flex justify-center">
                                 {paramsData.photo ?
-                                    <img src={paramsData.hoto} className="w-3/4 h-full rounded-full" />
+                                    <img src={paramsData.photo} className="w-3/4 h-full rounded-full" />
                                     :
                                     <AvatarInitials name={`${paramsData.companyName}`} size="44" />
                                 }

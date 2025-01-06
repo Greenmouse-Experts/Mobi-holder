@@ -1,47 +1,53 @@
+import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import Badge from "../../../components/Badge";
 import Table from "../../../components/Tables";
-import usersSmall from "../../../assets/users-small.svg";
-import StatCard from "../../../components/StatsCard";
-import plusSign from "../../../assets/plus-sign.svg";
-import eye from "../../../assets/eye.svg";
 import Header from "../header";
+import { useNavigate } from "react-router-dom";
 
 export default function AllUsers() {
-    const TableHeaders = ["Name", "Email", "Phone Number", "User Type", "Date", "Action"];
+    const navigate = useNavigate();
+
+    const TableHeaders = ["Name", "Mobiholder ID", "Email", "Phone Number", "Username", "Status", "Action"];
     const TableData = [
         {
             name: 'Chukka Uzo',
+            mbih: 'GRE2034',
             email: 'greenmousetech@gmail.com',
             number: '070 000 000',
-            members: 'Individual',
-            date: '12-10-24',
+            members: 'Chukky',
+            status: 'active',
         },
         {
             name: 'Chukka Uzo',
+            mbih: 'GRE2034',
             email: 'greenmousetech@gmail.com',
             number: '070 000 000',
-            members: 'Individual',
-            date: '12-10-24',
+            members: 'Chukky',
+            status: 'active',
         },
         {
             name: 'Chukka Uzo',
+            mbih: 'GRE2034',
             email: 'greenmousetech@gmail.com',
             number: '070 000 000',
-            members: 'Individual',
-            date: '12-10-24',
+            members: 'Chukky',
+            status: 'active',
         },
         {
             name: 'Chukka Uzo',
+            mbih: 'GRE2034',
             email: 'greenmousetech@gmail.com',
             number: '070 000 000',
-            members: 'Individual',
-            date: '12-10-24',
+            members: 'Chukky',
+            status: 'active',
         },
         {
             name: 'Chukka Uzo',
+            mbih: 'GRE2034',
             email: 'greenmousetech@gmail.com',
             number: '070 000 000',
-            members: 'Individual',
-            date: '12-10-24',
+            members: 'Chukky',
+            status: 'active',
         },
     ];
 
@@ -53,36 +59,7 @@ export default function AllUsers() {
                 <div className="w-full flex flex-col gap-5 h-full">
                     <Header mobile superAdmin />
                     <div className="w-full flex flex-col gap-5 my-2">
-                        <div className="flex w-full lg:flex-row md:flex-row flex-col lg:w-3/4 w-full gap-4">
-                            <StatCard
-                                cronTop
-                                cronTopIcon={<img src={eye} />}
-                                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                                    28.4%
-                                </span>}
-                                number={3023}
-                                label="Total Users"
-                            />
-                            <StatCard
-                                cronTop
-                                cronTopIcon={<img src={usersSmall} />}
-                                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                                    28.4%
-                                </span>}
-                                number={407}
-                                label="Total Individual"
-                            />
-                            <StatCard
-                                cronTop
-                                cronTopIcon={<img src={plusSign} />}
-                                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                                    28.4%
-                                </span>}
-                                number={139}
-                                label="Total Organisations"
-                            />
-                        </div>
-                        <Table title="" subTitle={<span>New Users</span>} exportData
+                        <Table title="" subTitle={<span>Individuals List</span>} exportData
                             hasNumber
                             tableBtn={
                                 <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
@@ -96,18 +73,30 @@ export default function AllUsers() {
                             tableHeader={TableHeaders}>
                             {TableData.map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                    <td className="px-3 py-5 text-mobiTableText">{index + 1}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.members}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">{index + 1}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.name}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.mbih}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.email}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.number}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.members}</td>
+                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal"><Badge status={data.status} /></td>
                                     <td className="px-3 py-3">
-                                        <span className="flex w-full">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </span>
+                                        <Menu placement="left">
+                                            <MenuHandler>
+                                                <span className="flex w-full cursor-pointer">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </MenuHandler>
+                                            <MenuList>
+                                                <MenuItem className="flex flex-col gap-3">
+                                                    <span className="cursor-pointer" onClick={() => navigate('/superadmin/view-individual/2')}>
+                                                        View
+                                                    </span>
+                                                </MenuItem>
+                                            </MenuList>
+                                        </Menu>
                                     </td>
                                 </tr>
                             ))}
