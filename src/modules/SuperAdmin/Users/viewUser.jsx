@@ -5,6 +5,7 @@ import { useLocation, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import IDCards from "./modules/idCards";
 import Subscriptions from "./modules/subscriptions";
+import OrganisationsJoined from "./modules/organisations";
 
 export default function ViewUserAdmin() {
     const [params, setParams] = useSearchParams();
@@ -139,10 +140,10 @@ export default function ViewUserAdmin() {
                             <p className="text-base">Overview for: <span className="text-mobiBlue">Chukka Victor</span></p>
                         </div>
                     </div>
-                    <div className="w-full flex lg:flex-row md:flex-row flex-col h-full gap-5 my-2 md:px-0 px-3">
+                    <div className="w-full flex lg:flex-row md:flex-row flex-col h-full gap-5 md:px-0 px-3">
                         <DashboardStats cronTop={true} statsData={statsData} />
                     </div>
-                    <div className="w-full flex flex-grow md:flex-row flex-col md:px-0 px-3 justify-between items-start gap-8">
+                    <div className="w-full flex flex-grow md:flex-row flex-col md:px-0 px-3 my-2 justify-between items-start gap-8">
                         <div className="shadow-xl py-5 px-5 md:w-[30%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-6">
                             <div className="w-full flex justify-center">
                                 <div className="w-1/3">
@@ -179,6 +180,10 @@ export default function ViewUserAdmin() {
                             {
                                 activeStat === 'subscriptions' &&
                                 <Subscriptions />
+                            }
+                            {
+                                activeStat === 'joinedOrganisations' &&
+                                <OrganisationsJoined />
                             }
                         </div>
 

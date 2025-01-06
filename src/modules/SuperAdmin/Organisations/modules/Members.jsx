@@ -36,12 +36,12 @@ export default function Members() {
                     tableHeader={RequetsHeaders}>
                     {NewTableData.map((data, index) => (
                         <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                            <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.name}</td>
-                            <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.id}</td>
-                            <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.staff}</td>
-                            <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.email}</td>
-                            <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.number}</td>
-                            <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.status}</td>
+                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.name}</td>
+                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.id}</td>
+                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.staff}</td>
+                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.email}</td>
+                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.number}</td>
+                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.status}</td>
                         </tr>
                     ))}
                 </Table>
