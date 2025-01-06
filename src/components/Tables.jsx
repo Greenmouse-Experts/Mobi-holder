@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-function Table({ title, subTitle, filter, exportData, tableBtn, width='w-[700px]', children, tableHeader, hasNumber }) {
+function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, children, tableHeader, hasNumber }) {
     const [isExportDataVisible, setIsExportDataVisible] = useState(false);
     const [updatedTableHeader, setUpdatedTableHeader] = useState(tableHeader);
 
@@ -17,7 +17,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, width='w-[700px]
     }, [hasNumber, tableHeader]); 
 
     return (
-        <div className="md:px-5 px-3 py-7 w-full md:rounded-lg border border-mobiBorderFray bg-mobiSearchDark">
+        <div className={`md:px-5 px-3 py-7 w-full md:rounded-lg ${transparentBg ? 'bg-transparent' : 'bg-mobiSearchDark border border-mobiBorderFray'}`}>
             <p className="text-mobiTable font-[500px] mb-4">{title}</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">{subTitle}</h3>

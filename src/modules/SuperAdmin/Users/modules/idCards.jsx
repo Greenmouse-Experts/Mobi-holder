@@ -36,9 +36,10 @@ export default function IDCards() {
 
     return (
         <>
-            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
+            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5">
                 <Table title="" subTitle={<span>ID Cards</span>} exportData
                     hasNumber
+                    transparentBg
                     tableBtn={
                         <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
                             <span className="text-xs text-white">Newest First</span>

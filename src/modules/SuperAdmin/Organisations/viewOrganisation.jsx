@@ -177,7 +177,7 @@ export default function ViewOrgAdmin() {
                                 <img src="/photo_collage.png" className="mt-4" />
                             </div>
                         </div>
-                        <div className="shadow-xl md:py-5 md:px-8 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-5">
+                        <div className="shadow-xl px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-5">
                             {activeStat === 'members' &&
                                 <Members />
                             }
