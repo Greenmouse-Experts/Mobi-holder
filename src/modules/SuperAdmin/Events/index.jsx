@@ -1,37 +1,52 @@
+import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import Badge from "../../../components/Badge";
 import Table from "../../../components/Tables";
 import Header from "../header";
+import { useNavigate } from "react-router-dom";
 
 export default function Events() {
-    const TableHeaders = ["Event Name", "Event Host", "Event Fee", "Event Type", "Event Date", "Action"];
+    const navigate = useNavigate();
+    const TableHeaders = ["Event ID", "Event Name", "Organisers", "Entity Type", "Date Created", "Ticket Type", "Access Type", "Status", "Action"];
     const TableData = [
         {
-            name: 'Chukka Uzo',
+            id: 'WD23142',
+            name: 'Google I/O 2021',
             email: 'Greenmouse Tech',
-            number: 'Free',
-            type: 'open',
+            number: 'Organisation',
             date: '12-10-24',
+            ticket: 'Free',
+            type: 'open',
+            status: 'active'
         },
         {
-            name: 'Chukka Uzo',
+            id: 'WD23142',
+            name: 'Google I/O 2021',
             email: 'Greenmouse Tech',
-            number: 'Free',
-            type: 'open',
+            number: 'Organisation',
             date: '12-10-24',
+            ticket: 'Free',
+            type: 'open',
+            status: 'active'
         },
         {
-            name: 'Chukka Uzo',
+            id: 'WD23142',
+            name: 'Google I/O 2021',
             email: 'Greenmouse Tech',
-            number: 'Free',
-            type: 'open',
+            number: 'Organisation',
             date: '12-10-24',
+            ticket: 'Free',
+            type: 'open',
+            status: 'active'
         },
         {
-            name: 'Chukka Uzo',
+            id: 'WD23142',
+            name: 'Google I/O 2021',
             email: 'Greenmouse Tech',
-            number: 'Free',
-            type: 'open',
+            number: 'Organisation',
             date: '12-10-24',
+            ticket: 'Free',
+            type: 'open',
+            status: 'active'
         },
     ];
 
@@ -40,7 +55,7 @@ export default function Events() {
             <div className="w-full flex flex-col gap-5 h-full">
                 <Header mobile superAdmin />
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
-                    <Table title="" subTitle={<span>Events</span>} exportData
+                    <Table title="" subTitle={<span>Created Events</span>} exportData
                         hasNumber
                         tableBtn={
                             <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
@@ -54,18 +69,38 @@ export default function Events() {
                         tableHeader={TableHeaders}>
                         {TableData.map((data, index) => (
                             <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                <td className="px-3 py-5 text-mobiTableText">{index + 1}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                <td className="px-3 py-3 text-mobiTableText"><Badge status={data.type} /></td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
+                                <td className="px-3 py-5 text-mobiTableText whitespace-normal">{index + 1}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.id}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.name}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.email}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.number}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.date}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.ticket}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal">{data.type}</td>
+                                <td className="px-3 py-3 text-mobiTableText whitespace-normal"><Badge status={data.status} /></td>
                                 <td className="px-3 py-3">
-                                    <span className="flex w-full">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </span>
+                                    <Menu placement="left">
+                                        <MenuHandler>
+                                            <span className="flex w-full cursor-pointer">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </span>
+                                        </MenuHandler>
+                                        <MenuList>
+                                            <MenuItem className="flex flex-col gap-3">
+                                                <span className="cursor-pointer" onClick={() => navigate('/superadmin/events/verifiers/2')}>
+                                                    View Verifiers
+                                                </span>
+                                            </MenuItem>
+                                            <MenuItem className="flex flex-col gap-3">
+                                                <span className="cursor-pointer" onClick={() => navigate('/superadmin/events/event-log/2')}>
+                                                    Event Log
+                                                </span>
+                                            </MenuItem>
+                                        </MenuList>
+                                    </Menu>
+
                                 </td>
                             </tr>
                         ))}
