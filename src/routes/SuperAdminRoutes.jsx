@@ -8,6 +8,8 @@ import IDCards from '../modules/SuperAdmin/Users/modules/idCards';
 import ViewOrgAdmin from '../modules/SuperAdmin/Organisations/viewOrganisation';
 import ViewUserAdmin from '../modules/SuperAdmin/Users/viewUser';
 import VerifiersList from "../modules/SuperAdmin/Events/modules/eventVerifiers";
+import EventLog from "../modules/SuperAdmin/Events/modules/eventLog";
+import EventTickets from "../modules/SuperAdmin/Events/modules/eventTickets";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -19,6 +21,8 @@ const SuperAdminRoutes = [
     <Route path="subscriptions" element={<Subscriptions />} />,
     <Route path="id-cards" element={<IDCards />} />,
     <Route path="events/verifiers/:id" element={<VerifiersList />} />,
+    <Route path="events/event-log/:id" element={<EventLog />} />,
+    <Route path="events/event-ticket/:id" element={<EventTickets />} />,
 ];
 
 export default SuperAdminRoutes;

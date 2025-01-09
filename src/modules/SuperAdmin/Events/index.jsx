@@ -98,6 +98,11 @@ export default function Events() {
                                                     Event Log
                                                 </span>
                                             </MenuItem>
+                                            <MenuItem className="flex flex-col gap-3">
+                                                <span className="cursor-pointer" onClick={() => navigate('/superadmin/events/event-ticket/2')}>
+                                                    Event Tickets
+                                                </span>
+                                            </MenuItem>
                                         </MenuList>
                                     </Menu>
 
