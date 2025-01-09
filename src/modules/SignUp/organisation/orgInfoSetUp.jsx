@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";
@@ -11,12 +11,17 @@ import { useDispatch } from "react-redux";
 import { setOrg } from "../../../reducers/organisationSlice";
 import Checkbox from "../../../components/CheckBox";
 import MultipleSelect from "../../../components/MultipleSelect";
+import useFileUpload from "../../../api/hooks/useFileUpload";
 
 export default function OrgInfoSetUp({ moveNext }) {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [payload, setPayload] = useState({});
     const [errorAccess, setErrorAccess] = useState(false);
+    const fileInputRef = useRef(null);
+    const { uploadFiles, isLoadingUpload } = useFileUpload();
+    const [uploadedPhoto, setUploadedPhoto] = useState("");
+    const [btnDisabled, setDisabled] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -32,6 +37,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                     state,
                     street,
                 },
+                photo: uploadedPhoto
             };
 
             // Perform actions using the updated payload
@@ -53,6 +59,26 @@ export default function OrgInfoSetUp({ moveNext }) {
             natureOfOrganisation: data,
         }));
     }
+
+
+    const handleButtonClick = () => {
+        // Simulate a click on the hidden file input
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleFileChange = async (event) => {
+        const files = event.target.files;
+        setDisabled(true);
+        if (files.length > 0) {
+            await uploadFiles(files, (uploadedUrl) => {
+                setUploadedPhoto(uploadedUrl);
+                setDisabled(false)
+            });
+        }
+    };
+
 
     return (
         <>
@@ -165,6 +191,34 @@ export default function OrgInfoSetUp({ moveNext }) {
                                         }
                                     </div>
 
+                                    <div className="flex flex-col gap-6 my-1">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Upload Profile Photo
+                                        </p>
+                                        <div className="flex md:flex-row flex-col gap-3">
+                                            {uploadedPhoto &&
+                                                <div className="flex w-32 h-32">
+                                                    <img src={`${uploadedPhoto}`} className="w-full h-full object-cover rounded-full" />
+                                                </div>
+                                            }
+                                            <div className="flex flex-col justify-center md:mx-3">
+                                                <input
+                                                    type="file"
+                                                    ref={fileInputRef}
+                                                    onChange={handleFileChange}
+                                                    style={{ display: "none" }}
+                                                    multiple
+                                                />
+                                                <Button className="bg-transparent px-7 rounded-full border-[0.5px] border-gray-700"
+                                                    onClick={handleButtonClick}
+                                                    disabled={isLoadingUpload}
+                                                >
+                                                    {isLoadingUpload ? 'Uploading Picture' : 'Click to Set Profile Picture'}
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div className="flex justify-start">
                                         <div className="flex gap-1">
                                             <span className="flex">
@@ -180,7 +234,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                     </div>
 
                                     <div className="flex">
-                                        <Button className="bg-mobiPink w-full p-5 rounded-full" type="submit">Proceed</Button>
+                                        <Button className="bg-mobiPink w-full p-5 rounded-full" disabled={btnDisabled} type="submit">Proceed</Button>
                                     </div>
                                 </div>
                             </form>
