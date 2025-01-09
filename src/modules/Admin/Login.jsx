@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../api/apiFactory";
 import Input from "../../components/Input";
+import {setUser} from "../../reducers/userSlice";
+import { toast } from "react-toastify";
 
 export default function AdminLogin() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -26,8 +28,7 @@ export default function AdminLogin() {
     });
 
     const loginAccount = (data) => {
-        navigate('/superadmin/dashboard');
-           // admin.mutate(data)
+        admin.mutate(data)
     };
 
     return (
