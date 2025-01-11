@@ -334,3 +334,7 @@ input[type="range"]::-ms-thumb {
     1;
   padding: 20px;
 }
+
+.dialog-mobi {
+  background-color: var(--bs-bg) !important;
+}

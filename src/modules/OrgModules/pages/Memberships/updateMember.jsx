@@ -2,9 +2,11 @@ import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import { Button } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 export default function UpdateMember() {
     const user = useSelector((state) => state.orgData.orgData);
+    const [loading, setLoading] = useState(true);
 
     const { id } = useParams();
 

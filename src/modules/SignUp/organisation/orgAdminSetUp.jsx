@@ -18,8 +18,6 @@ export default function OrgAdminSetUp() {
 
     const orgData = useSelector((state) => state.orgData.orgData);
 
-    console.log(orgData);
-
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const dispatch = useDispatch();
@@ -39,7 +37,6 @@ export default function OrgAdminSetUp() {
 
     const createOrgAccount = (data) => {
         const payload = { ...orgData, ...data };
-        console.log(payload);
         mutation.mutate(payload);
     }
 

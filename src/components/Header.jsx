@@ -10,6 +10,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import OrgGreeting from "../modules/OrgModules/OrgDashboard/layouts/Greetings";
 import AvatarInitials from "./AvatarInitials";
 import { dateFormat } from "../helpers/dateHelper";
+import UserPhoto from "./UserPhoto";
 
 export default function Header({ greeting, profile, mobile, organisation, superAdmin, data }) {
     const [open, setOpen] = useState(false);
@@ -74,13 +75,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                             <p className="text-sm font-semibold">{superAdmin ? 'Admin Profile' : 'My Profile'}</p>
                         </div>
                         <div className="flex rounded-md">
-                            {data.photo ?
-                                <div className="flex w-[34px] h-[34px]">
-                                    <img src={`${data.photo}`} className="w-full h-full rounded-full object-cover" />
-                                </div>
-                                :
-                                <AvatarInitials name={!organisation ? `${data.firstName}${data.lastName}` : `${data.companyName}`} size="8" />
-                            }
+                            <UserPhoto data={data} organisation={organisation} />
                         </div>
                     </div>
 

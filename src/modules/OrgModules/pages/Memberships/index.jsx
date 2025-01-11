@@ -17,10 +17,37 @@ import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
+import UserPhoto from "../../../../components/UserPhoto";
 
 
-const UserDetails = ({ closeModal }) => {
-    const { register, formState: { errors } } = useForm();
+const UserDetails = ({ closeModal, userInfo, type, reload }) => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { mutate } = useApiMutation();
+
+    const updateMember = (data) => {
+        setIsLoading(true)
+        delete data.firstname;
+        data.status = type === 'Accept' ? 'active' : 'declined';
+        data.membershipId = userInfo.id;
+        mutate({
+            url: "/api/memberships-subscriptions/organization/update/membership/status",
+            method: "PUT",
+            data: data,
+            headers: true,
+            onSuccess: (response) => {
+                setIsLoading(false);
+                handleCloseModal();
+                reload();
+            },
+            onError: () => {
+                setIsLoading(false);
+                handleCloseModal();
+            }
+        });
+    };
+
 
     const handleCloseModal = () => {
         if (closeModal) {
@@ -30,57 +57,64 @@ const UserDetails = ({ closeModal }) => {
         }
     }
 
+
     return (
         <>
-            <div className="w-full flex flex-col px-3 py-6 gap-3">
+            <div className="w-full flex max-h-[95vh] overflow-auto custom-scrollbar flex-col px-3 py-6 gap-3 -mt-3">
                 <div className="flex gap-5">
                     <div className="flex flex-col justify-start">
-                        <img src="/userProfileLg.png" />
+                        <UserPhoto data={userInfo.individual} size="110px" />
                     </div>
                     <div className="flex flex-col gap-2 justify-start">
-                        <p className="font-semibold text-lg">Frank Uzo</p>
-                        <p>testmail@gmail.com</p>
-                        <p>MobiHolder Id: QWRE1234</p>
+                        <p className="font-semibold text-lg">{userInfo.individual.firstName} {userInfo.individual.lastName}</p>
+                        <p>{userInfo.individual.email}</p>
+                        <p>MobiHolder Id: {userInfo.individual.mobiHolderId}</p>
                     </div>
                 </div>
-                <div className="flex flex-col gap-4 mt-7">
-                    <div className="flex flex-col w-full gap-6">
-                        <p className="-mb-3 text-mobiFormGray">
-                            Member/Staff ID
-                        </p>
-                        <Input type="text" name="firstName" register={register}
-                            placeholder="3FG883J" />
-                    </div>
+                <form onSubmit={handleSubmit(updateMember)}>
+                    <div className="flex flex-col gap-4 mt-7">
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Member/Staff ID
+                            </p>
+                            <Input type="text" name="memberId" register={register}
+                                placeholder="Member ID" rules={{ required: 'Membership ID is required' }} errors={errors} />
+                        </div>
 
-                    <div className="flex flex-col w-full gap-6">
-                        <p className="-mb-3 text-mobiFormGray">
-                            Organisation Email
-                        </p>
-                        <Input type="text" name="firstName" register={register}
-                            placeholder="Enter organisation email" />
-                    </div>
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Organisation Email
+                            </p>
+                            <Input type="text" name="organizationEmail" register={register}
+                                placeholder="Enter organisation email"
+                                rules={{ required: 'Organization Email is required' }} errors={errors} />
+                        </div>
 
-                    <div className="flex flex-col w-full gap-6">
-                        <p className="-mb-3 text-mobiFormGray">
-                            Role (Designation)
-                        </p>
-                        <Input type="text" name="firstName" register={register}
-                            placeholder="Enter member designation" />
-                    </div>
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Role (Designation)
+                            </p>
+                            <Input type="text" disabled name="firstname" register={register}
+                                placeholder={userInfo.designation} />
+                        </div>
 
-                    <div className="flex flex-col w-full gap-6">
-                        <p className="-mb-3 text-mobiFormGray">
-                            Member Category
-                        </p>
-                        <Input type="text" name="firstName" register={register}
-                            placeholder="Enter member category" />
+                        {/*  <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Membership ID
+                            </p>
+                            <Input type="text" name="membershipId" disabled pl />
+                        </div> */}
+                        <div className="w-full flex justify-center mt-5">
+                            <Button type="submit"
+                                disabled={isLoading}
+                                className={`${type === 'Accept' ? 'bg-mobiPink' : 'bg-transparent border border-[rgba(247,77,27,1)] text-[rgba(247,77,27,1)]'}
+                         md:w-1/2 w-full p-3 rounded-full`}
+                            >
+                                {type} Member
+                            </Button>
+                        </div>
                     </div>
-                    <div className="w-full flex justify-center mt-5">
-                        <Button type="submit" className="bg-mobiPink md:w-1/2 w-full p-3 rounded-full" onClick={handleCloseModal}>
-                            Accept Member
-                        </Button>
-                    </div>
-                </div>
+                </form>
             </div>
         </>
     )
@@ -95,21 +129,32 @@ export default function OrgMembership() {
     const [pendingMembers, setPendingMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { mutate } = useApiMutation();
+    const [stampTime, setTimeStaamp] = useState(new Date().getTime());
 
     const TableHeaders = ["Individual", "Role", "Staff ID", "Email", "Status", "Action"];
     const RequetsHeaders1 = ["Individual", "Email", "Invited On", "Status", "Action"];
     const RequetsHeaders2 = ["Individual", "Email", "Requested On", "Action"];
 
 
-    const handleDeclineMember = () => {
+    const handleDeclineMember = (data) => {
         openModal({
             size: "sm",
-            content: <UserDetails closeModal={closeModal} />
+            content: <UserDetails closeModal={closeModal} userInfo={data} type='Decline' reload={handleReload} />
+        })
+    }
+
+    const handleAcceptMember = (data) => {
+        openModal({
+            size: "sm",
+            content: <UserDetails closeModal={closeModal} userInfo={data} type='Accept' reload={handleReload} />
         })
     }
 
     const navigate = useNavigate();
 
+    const handleReload = () => {
+        setTimeStaamp(new Date().getTime())
+    }
 
     const getOrganisationsMember = (params) => {
         mutate({
@@ -118,11 +163,14 @@ export default function OrgMembership() {
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                if (params === '?sortBy=status') {
+                if (params === '') {
                     setAllMembers(response.data.data)
                 }
                 else if (params === '?filter=pendingFromOrganization') {
                     setInitiatedMembers(response.data.data)
+                }
+                else if (params === '?filter=pendingFromIndividual') {
+                    setPendingMembers(response.data.data)
                 }
                 setIsLoading(false)
             },
@@ -132,12 +180,11 @@ export default function OrgMembership() {
     }
 
     useEffect(() => {
-        getOrganisationsMember('?sortBy=status')
+        getOrganisationsMember('')
         getOrganisationsMember('?filter=pendingFromOrganization')
         getOrganisationsMember('?filter=pendingFromIndividual')
-    }, []);
+    }, [stampTime]);
 
-    console.log(allMembers)
 
     return (
         <>   <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -190,33 +237,33 @@ export default function OrgMembership() {
                     <Table title="Today" filter subTitle={<span>All Members</span>} exportData
                         tableHeader={TableHeaders}>
                         {allMembers.length > 0 ?
-                        allMembers.map((data, index) => (
-                            <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.memberId ? data.memberId : '---'}</td>
-                                <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
-                                <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
-                                <td className="px-6 py-3 cursor-pointer">
-                                    <Menu placement="left">
-                                        <MenuHandler>
-                                            <span className="flex w-full cursor-pointer">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </MenuHandler>
-                                        <MenuList>
-                                            <MenuItem className="flex flex-col gap-3">
-                                                <span className="cursor-pointer" onClick={() => navigate(`/org/membership/updateMember/${data.id}`)}>
-                                                    Update Member
+                            allMembers.map((data, index) => (
+                                <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                    <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{data.memberId ? data.memberId : '---'}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                    <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                    <td className="px-6 py-3 cursor-pointer">
+                                        <Menu placement="left">
+                                            <MenuHandler>
+                                                <span className="flex w-full cursor-pointer">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
                                                 </span>
-                                            </MenuItem>
-                                        </MenuList>
-                                    </Menu>
-                                </td>
-                            </tr>
-                        ))
+                                            </MenuHandler>
+                                            <MenuList>
+                                                <MenuItem className="flex flex-col gap-3">
+                                                    <span className="cursor-pointer" onClick={() => navigate(`/org/membership/updateMember/${data.individual.id}`)}>
+                                                        Update Member
+                                                    </span>
+                                                </MenuItem>
+                                            </MenuList>
+                                        </Menu>
+                                    </td>
+                                </tr>
+                            ))
                             :
                             isLoading ?
                                 <tr>
@@ -241,19 +288,19 @@ export default function OrgMembership() {
                             tableHeader={RequetsHeaders1}>
                             {initiatedMembers.length > 0 ?
                                 initiatedMembers.map((data, index) => (
-                                <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-mm-YYY')}</td>
-                                    <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
-                                    <td className="px-6 py-3">
-                                        <span className="flex w-full">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </span>
-                                    </td>
-                                </tr>
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                        <td className="px-6 py-3">
+                                            <span className="flex w-full">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </span>
+                                        </td>
+                                    </tr>
                                 ))
                                 :
                                 isLoading ?
@@ -287,16 +334,17 @@ export default function OrgMembership() {
                             {pendingMembers.length > 0 ?
                                 pendingMembers.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText">
                                             <span className="flex gap-2">
-                                                <span className="flex py-2 px-3 rounded-full border border-[rgba(247,77,27,1)]">
+                                                <span className="flex py-2 px-3 rounded-full cursor-pointer border border-[rgba(247,77,27,1)]"
+                                                    onClick={() => handleDeclineMember(data)}>
                                                     <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
                                                 </span>
                                                 <span className="flex py-2 px-3 rounded-full cursor-pointer bg-mobiPink"
-                                                    onClick={() => handleDeclineMember()}>
+                                                    onClick={() => handleAcceptMember(data)}>
                                                     <p className="text-white text-xs font-[500]">Accept</p>
                                                 </span>
                                             </span>

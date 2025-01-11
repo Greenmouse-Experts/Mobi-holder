@@ -28,6 +28,9 @@ export default function IndividualSignUp() {
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
             },
+            onError: () => {
+                setIsLoading(false)
+            }
         });
     };
 

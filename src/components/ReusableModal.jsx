@@ -6,17 +6,19 @@ const ReusableModal = ({
     size,
     title,
     content,
+    closeModal
 }) => {
     return (
         <Dialog
             open={isOpen}
             size={size || "md"}
             animate={{
-                mount: { scale: 1, y: 0 },
+                mount: { scale: 1, y: -10 },
                 unmount: { scale: 0.9, y: -100 },
             }}
-            className="bGmobiGrayDark"
+            className="dialog-mobi"
             style={{ WebkitFontSmoothing: 'none' }}
+            handler={closeModal}
         >
             <DialogBody className="montserrat">
                 {content}
