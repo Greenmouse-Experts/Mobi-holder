@@ -14,8 +14,6 @@ import { dateFormat } from "../helpers/dateHelper";
 export default function Header({ greeting, profile, mobile, organisation, superAdmin, data }) {
     const [open, setOpen] = useState(false);
 
-    console.log(data)
-
     const openDrawer = () => {
         document.documentElement.style.position = 'fixed'; setOpen(true)
     };

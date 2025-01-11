@@ -21,7 +21,7 @@ export default function OrgInfoSetUp({ moveNext }) {
     const fileInputRef = useRef(null);
     const { uploadFiles, isLoadingUpload } = useFileUpload();
     const [uploadedPhoto, setUploadedPhoto] = useState("");
-    const [btnDisabled, setDisabled] = useState(false);
+    const [btnDisabled, setDisabled] = useState(true);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -41,7 +41,7 @@ export default function OrgInfoSetUp({ moveNext }) {
             };
 
             // Perform actions using the updated payload
-            if (!updatedPayload.natureOfOrganisation) {
+            if (!updatedPayload.natureOfOrganization) {
                 setErrorAccess(true);
             } else {
                 setErrorAccess(false);
@@ -56,7 +56,7 @@ export default function OrgInfoSetUp({ moveNext }) {
     const handleAccessType = (data) => {
         setPayload((prevPayload) => ({
             ...prevPayload,
-            natureOfOrganisation: data,
+            natureOfOrganization: data,
         }));
     }
 

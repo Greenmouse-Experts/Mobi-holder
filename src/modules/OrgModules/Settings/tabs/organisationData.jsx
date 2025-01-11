@@ -4,11 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import DropZone from "../../../../components/DropZone";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
-import { setUser } from "../../../../reducers/userSlice";
 import { useEffect, useRef, useState } from "react";
 import SelectField from "../../../../components/SelectField";
 import { toast } from "react-toastify";
 import MultipleSelect from "../../../../components/MultipleSelect";
+import { setOrg } from "../../../../reducers/organisationSlice";
 
 export default function OrganisationData() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -19,10 +19,17 @@ export default function OrganisationData() {
     const [documentSelected, setSelectedDocument] = useState(null);
     const [customError, setCustomError] = useState(false);
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.orgData.orgData);
+    let user = useSelector((state) => state.orgData.orgData);
     const { mutate } = useApiMutation();
     const [payload, setPayload] = useState({ natureOfOrganization: user.natureOfOrganization });
     const [errorAccess, setErrorAccess] = useState(false);
+
+    let userCopy = { ...user };
+    if (typeof userCopy.companyAddress === "string") {
+        const companyAddress = JSON.parse(userCopy.companyAddress);
+        userCopy.companyAddress = companyAddress;
+    }
+    user = userCopy;
 
     const documentOptions = [
         {
@@ -70,9 +77,12 @@ export default function OrganisationData() {
             data: payloadData,
             headers: true,
             onSuccess: (response) => {
-                dispatch(setUser(response.data.data));
+                dispatch(setOrg(response.data.data));
                 setIsLoading(false)
             },
+            onError: () => {
+                setIsLoading(false)
+            }
         });
     };
 
@@ -172,7 +182,7 @@ export default function OrganisationData() {
                     </div>
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                        <div className="flex flex-col gap-6">
+                        <div className="flex md:w-1/2 flex-col gap-6">
                             <p className="-mb-3 text-mobiFormGray">
                                 Country
                             </p>
@@ -180,7 +190,7 @@ export default function OrganisationData() {
                                 rules={{ required: 'Country is required' }} errors={errors} placeholder="Choose your country" />
                         </div>
 
-                        <div className="flex flex-col gap-6">
+                        <div className="flex md:w-1/2 flex-col gap-6">
                             <p className="-mb-3 text-mobiFormGray">
                                 State
                             </p>
@@ -211,7 +221,7 @@ export default function OrganisationData() {
             </form>
 
 
-            {/*  <form onSubmit={handleSubmitUpload(updateDocuments)}>
+            <form onSubmit={handleSubmitUpload(updateDocuments)}>
                 <div className="mb-1 flex flex-col gap-5 mt-6">
                     <p className="mt-6 text-mobiFormGray">Verification Documents</p>
 
@@ -278,7 +288,7 @@ export default function OrganisationData() {
                         </Button>
                     </div>
                 </div>
-            </form> */}
+            </form>
         </>
     )
 }

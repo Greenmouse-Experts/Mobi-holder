@@ -27,7 +27,7 @@ export default function JoinOrganisation() {
             method: "POST",
             data: payload,
             headers: true,
-            onSuccess: () => {},
+            onSuccess: () => { },
             onError: () => {
                 setIsLoading(false);
             }
@@ -75,8 +75,10 @@ export default function JoinOrganisation() {
                                 }
                             </div>
                             <div className="w-full flex flex-col mt-3 gap-2">
-                                <div className="w-1/3">
-                                    <Badge status={`Type: ${paramsData.natureOfOrganization}`} color="active" />
+                                <div className="w-full flex justify-center">
+                                    <div className="md:w-2/5">
+                                        <Badge status={`Type: ${paramsData.natureOfOrganization}`} color="active" />
+                                    </div>
                                 </div>
                                 <div className="w-full my-2 text-mobiRomanSilver">
                                     <span className="text-sm">
