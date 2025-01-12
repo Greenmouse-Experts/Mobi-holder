@@ -177,7 +177,7 @@ export default function Sidebar({ mobile }) {
 
 
     return (
-        <div className={`h-full rounded-md flex-col ${mobile ? 'w-full lg:hidden md:hidden flex overflow-auto' : 'md:w-[22%] lg:flex md:hidden hidden custom-scrollbar overflow-auto h-[750px] fixed'} bg-mobiDarkCloud transition-all mb-10`}>
+        <div className={`h-full rounded-md flex-col ${mobile ? 'w-full lg:hidden md:hidden flex overflow-y-auto' : 'md:w-[22%] lg:flex md:hidden hidden custom-scrollbar overflow-auto h-[750px] fixed'} bg-mobiDarkCloud transition-all mb-10`}>
             {/* Logo */}
             <div className="py-6 px-4 flex gap-6 flex-col space-x-2 border-bottom">
                 <Link to={'/'} className='flex px-3 gap-3'>
@@ -192,7 +192,7 @@ export default function Sidebar({ mobile }) {
             {/* Navigation Items */}
             <nav className="px-4 space-y-4">
                 {navigation.map((navData, index) => (
-                    <div className='w-full flex flex-col gap-4'>
+                    <div className='w-full flex flex-col gap-4' key={`app-si${index}`}>
                         <div onClick={() => handleNavigation(navData)} className={`flex cursor-pointer items-center py-2 px-4 h-[57px] rounded-lg ${navData.slug === activeNav ? 'bg-mobiBlueFade' : 'hover:bg-mobiBlueFade text-mobiRomanSilver'} transition`}>
                             {navData.icon}
                             <span className={`${navData.slug === activeNav ? 'text-mobiPink' : ''}`}>{navData.name}</span>

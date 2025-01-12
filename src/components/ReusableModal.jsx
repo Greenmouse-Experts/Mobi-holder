@@ -21,7 +21,7 @@ const ReusableModal = ({
             handler={closeModal}
         >
             <DialogBody className="montserrat">
-                {content}
+                {content || <></>}
             </DialogBody>
         </Dialog>
     );

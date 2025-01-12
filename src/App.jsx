@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import SplashScreen from './modules/SplashScreen'
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import SplashScreen from './modules/SplashScreen';
+import { Route, Routes } from 'react-router-dom';
 import AppModules from './modules/AppModules';
 import { ThemeProvider } from './context/ThemeContext';
 import SuperAdmin from './modules/SuperAdmin';
@@ -14,6 +14,7 @@ import PublicRoutes from './routes/PublicRoutes';
 import UserRoutes from './routes/UserRoutes';
 import OrgRoutes from './routes/OrgRoutes';
 import SuperAdminRoutes from './routes/SuperAdminRoutes';
+import ProtectedRoute from './routes/ProtectedRoutes';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -22,7 +23,7 @@ function App() {
 
   const handleSplashScreen = () => {
     setSplash(false);
-  }
+  };
 
   return (
     <>
@@ -36,18 +37,37 @@ function App() {
                 {/* Public Routes */}
                 {PublicRoutes}
 
-                {/* Individual/User Routes */}
-                <Route path="/app" element={<AppModules />}>
+                {/* Protected Routes */}
+                <Route
+                  path="/app"
+                  element={
+                    <ProtectedRoute>
+                      <AppModules />
+                    </ProtectedRoute>
+                  }
+                >
                   {UserRoutes}
                 </Route>
 
-                {/* Organisation Routes */}
-                <Route path="/org" element={<OrgModules />}>
+                <Route
+                  path="/org"
+                  element={
+                    <ProtectedRoute>
+                      <OrgModules />
+                    </ProtectedRoute>
+                  }
+                >
                   {OrgRoutes}
                 </Route>
 
-                {/* Super Admin Routes */}
-                <Route path="/superadmin" element={<SuperAdmin />}>
+                <Route
+                  path="/superadmin"
+                  element={
+                    <ProtectedRoute>
+                      <SuperAdmin />
+                    </ProtectedRoute>
+                  }
+                >
                   {SuperAdminRoutes}
                 </Route>
               </Routes>
@@ -68,7 +88,7 @@ function App() {
         />
       </ThemeProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

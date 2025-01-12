@@ -159,7 +159,7 @@ export default function ProfileInfo() {
                                 style={{ display: "none" }}
                                 multiple
                             />
-                            <Button className="bg-transparent px-7 rounded-full border-[0.5px] border-gray-700"
+                            <Button className="bg-transparent px-7 rounded-full chartColor border-[0.5px] border-gray-700"
                                 onClick={handleButtonClick}
                                 disabled={isLoadingUpload}
                             >

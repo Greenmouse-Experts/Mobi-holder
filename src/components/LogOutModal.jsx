@@ -37,7 +37,7 @@ const LogOutModal = ({ closeModal }) => {
                 <div className="flex justify-center mt-5 gap-4">
                     <Button
                         onClick={logOutUser}
-                        className="bg-red-500 text-white px-4 py-2 rounded-full"
+                        className="bg-red-500 text-white outline-none px-4 py-2 rounded-full"
                     >
                         Yes, Log Out
                     </Button>
