@@ -2,13 +2,67 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { ThemeContext } from '../../../../context/ThemeContext';
+import { useMemo } from 'react';
 
 // Register components in ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function MembersAnalysis() {
+
+
+
+function generateChartData(members) {
+    const currentDate = new Date();
+  
+    // Generate labels for the next 6 months starting from the current month
+    const labels = [];
+    for (let i = 0; i < 6; i++) {
+      const date = new Date(currentDate.getFullYear(), currentDate.getMonth() + i);
+      labels.push(date.toLocaleString('default', { month: 'short', year: 'numeric' }));
+    }
+  
+    // Count members joined in each of the next 6 months
+    const memberCountPerMonth = Array(6).fill(0);
+  
+    members.forEach((member) => {
+      const joinedDate = new Date(member.dateJoined);
+      const joinedMonth = joinedDate.getMonth();
+      const joinedYear = joinedDate.getFullYear();
+  
+      for (let i = 0; i < 6; i++) {
+        const labelDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + i);
+        const labelMonth = labelDate.getMonth();
+        const labelYear = labelDate.getFullYear();
+  
+        if (joinedMonth === labelMonth && joinedYear === labelYear) {
+          memberCountPerMonth[i]++;
+        }
+      }
+    });
+  
+    // Chart data
+    return {
+      labels,
+      datasets: [
+        {
+          label: 'Newly Added Members',
+          data: memberCountPerMonth,
+          backgroundColor: 'rgba(198, 0, 249, 1)', // Purple color for the bars
+          borderRadius: 5,
+          barThickness: 6,
+        },
+      ],
+    };
+  }
+    
+
+
+
+
+
+export default function MembersAnalysis({members}) {
 
     const { theme } = useContext(ThemeContext);
+
 
     const options = {
         responsive: true,
@@ -28,11 +82,11 @@ export default function MembersAnalysis() {
                 ticks: {
                     color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
                     beginAtZero: true,
-                    callback: (value) => `${value / 1000}K`, // Adjust tick values for 'K' format
+                    stepSize: 1, // Ensure Y-axis ticks increment by 1
                 },
                 grid: {
                     color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)'
-                   // display: false
+                    // display: false
                 },
             },
         },
@@ -48,25 +102,9 @@ export default function MembersAnalysis() {
         },
     };
 
-    const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [
-            {
-                label: 'Monthly Sales',
-                data: [10000, 15000, 15000, 20000, 30000, 15000],
-                backgroundColor: 'rgba(198, 0, 249, 1)', // Purple color for the bars
-                borderRadius: 5,
-                barThickness: 6
-            },
-            {
-                label: "Monthly Sales (Dataset 2)",
-                data: [2000, 4500, 3500, 6000, 7000, 1500],
-                backgroundColor: "rgba(0, 123, 255, 1)", // Blue color for the bars
-                borderRadius: 5,
-                barThickness: 6,
-            },
-        ],
-    };
+
+    const data = useMemo(() => generateChartData(members), [members]);
+
 
     return (
         <div className="md:px-5 px-2 py-7 md:rounded-lg border border-mobiBorderFray bg-mobiSearchDark">

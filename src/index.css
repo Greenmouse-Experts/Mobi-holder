@@ -265,6 +265,11 @@ input[type="range"]::-ms-thumb {
   color: rgba(20, 202, 116, 1);
 }
 
+.inactive {
+  background-color: rgba(193, 5, 5, 0.2);
+  color: rgba(202, 20, 20, 1);
+}
+
 .chartColor {
   color: var(--bs-color);
 }

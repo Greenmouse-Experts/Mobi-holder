@@ -18,7 +18,7 @@ const StatCard = ({ number, label, iconColor, IconComponent, colorGradient, cron
                 </span>
             </div>
             <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center ${iconColor}`}
+                className={`w-14 h-14 rounded-full flex items-center justify-center ${iconColor}`}
             >
                 {IconComponent}
             </div>
