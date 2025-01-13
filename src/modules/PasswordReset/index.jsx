@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../components/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
@@ -12,23 +12,44 @@ import { toast } from "react-toastify";
 export default function PasswordReset() {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const navigate = useNavigate();
+    const [resetBlock, setResetBlock] = useState(false);
+    const [emailData, setEmailData] = useState('');
+
+    const navigate = useNavigate()
 
     const mutation = useMutation({
         mutationFn: (userData) => apiClient.post('/api/users/auth/password/forgot', userData),
         onSuccess: (data) => {
-            console.log(data.data)
             toast.success(data.data.message);
-            navigate('/login');
+            setResetBlock(true);
         },
         onError: (error) => {
             toast.error(error.response.data.message);
         },
     });
 
-    const passwordReset = (data) => {
-            mutation.mutate(data);
+
+    const resetPassword = useMutation({
+        mutationFn: (userData) => apiClient.post('/api/users/auth/password/reset', userData),
+        onSuccess: (data) => {
+            toast.success(data.data.message);
+            navigate("/login")
+        },
+        onError: (error) => {
+            toast.error(error.response.data.message);
+        },
+    });
+
+
+    const getOTP = (data) => {
+        setEmailData(data.email);
+        mutation.mutate(data);
     };
+
+    const passwordReset = (newData) => {
+        const newPayload = { ...newData, email: emailData };
+        resetPassword.mutate(newPayload);
+    }
 
     return (
         <>
@@ -46,18 +67,50 @@ export default function PasswordReset() {
                         <div className="bS-borderRay shadow-lg py-7 px-5 w-full flex rounded-xl flex-col gap-3">
                             <p className="lg:text-xl md:text-xl text-lg font-semibold">Reset your password</p>
 
-                            <form onSubmit={handleSubmit(passwordReset)}>
+                            <form onSubmit={!resetBlock ? handleSubmit(getOTP) : handleSubmit(passwordReset)}>
                                 <div className="mb-1 flex flex-col gap-8 mt-5">
-                                    <div className="flex flex-col gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Email
-                                        </p>
-                                        <Input icon="email.svg" type="email" name="email" register={register}
-                                            rules={{ required: 'Email is required' }} errors={errors} placeholder="Enter your email to get a reset password link " />
-                                    </div>
+                                    {!resetBlock &&
+                                        <div className="flex flex-col gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Email
+                                            </p>
+                                            <Input icon="email.svg" type="email" name="email" disabled={resetBlock} register={register}
+                                                rules={{ required: 'Email is required' }} errors={errors} placeholder="Enter your email to get a reset password link " />
+                                        </div>
+                                    }
+
+                                    {resetBlock &&
+                                        <>
+                                            <div className="flex flex-col gap-6">
+                                                <p className="-mb-3 text-mobiFormGray">
+                                                    OTP
+                                                </p>
+                                                <Input icon="padlock.svg" type="text" name="otpCode" register={register}
+                                                    rules={{ required: 'OTP is required' }} errors={errors} placeholder="Enter otp sent to your registered email" />
+                                            </div>
+
+                                            <div className="flex flex-col gap-6">
+                                                <p className="-mb-3 text-mobiFormGray">
+                                                    New Password
+                                                </p>
+                                                <Input icon="padlock.svg" type="password" name="newPassword" register={register}
+                                                    rules={{ required: 'New Password is required' }} errors={errors} placeholder="Set New Password" />
+                                            </div>
+
+                                            <div className="flex flex-col gap-6">
+                                                <p className="-mb-3 text-mobiFormGray">
+                                                    Confirm Password
+                                                </p>
+                                                <Input icon="padlock.svg" type="password" name="confirmPassword" register={register}
+                                                    rules={{ required: 'Confirm Password is required' }} errors={errors} placeholder="Confirm Password" />
+                                            </div>
+                                        </>
+                                    }
 
                                     <div className="flex">
-                                        <Button type="submit" className="bg-mobiPink w-full p-5 rounded-full">Send password reset link</Button>
+                                        <Button type="submit" disabled={resetPassword.isLoading} className="bg-mobiPink w-full p-5 rounded-full">
+                                            {resetPassword.isLoading ? 'Submitting...' : resetBlock ? 'Reset Password' : 'Send password reset link'}
+                                        </Button>
                                     </div>
                                 </div>
                             </form>
