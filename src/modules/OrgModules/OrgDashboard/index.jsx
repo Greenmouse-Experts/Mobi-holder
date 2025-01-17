@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashboardStats from "./layouts/DashboardStats";
 import Table from "../../../components/Tables";
 import Badge from "../../../components/Badge";
@@ -6,6 +6,7 @@ import MembersAnalysis from "./layouts/MembersAnalysis";
 import SubscriptionAnalysis from "./layouts/SubscriptionAnalysis";
 import { useSelector } from "react-redux";
 import Header from "../../../components/Header";
+import useApiMutation from "../../../api/hooks/useApiMutation";
 
 const TableData = [
     {
@@ -60,6 +61,32 @@ const NewTableHeaders = ["Organisations", "Renewal Date", "Current Status", "Act
 export default function OrgDashboard() {
     document.documentElement.style.position = null;
     const user = useSelector((state) => state.orgData.orgData);
+    const [allMembers, setAllMembers] = useState([]);
+    const { mutate } = useApiMutation();
+    const [stampTime, setTimeStaamp] = useState(new Date().getTime());
+
+
+    const getOrganisationsMember = (params) => {
+        mutate({
+            url: `/api/memberships-subscriptions/organization/membership${params}`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                if (params === '') {
+                    setAllMembers(response.data.data)
+                }
+                setIsLoading(false)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+    useEffect(() => {
+        getOrganisationsMember('')
+    }, [stampTime]);
+
 
     return (
         <>
@@ -94,7 +121,7 @@ export default function OrgDashboard() {
                         </div>
 
                         <div className="lg:w-[37%] md:w-[37%] w-full flex-grow h-full flex flex-col gap-5">
-                            <MembersAnalysis />
+                            <MembersAnalysis members={allMembers} />
                         </div>
                     </div>
 
