@@ -10,6 +10,8 @@ import AvatarInitials from "../../../../components/AvatarInitials";
 import SelectField from "../../../../components/SelectField";
 import { toast } from "react-toastify";
 import useFileUpload from "../../../../api/hooks/useFileUpload";
+import { FaTimes } from "react-icons/fa";
+
 
 export default function ProfileInfo() {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -91,6 +93,11 @@ export default function ProfileInfo() {
                 setIsLoading(false)
             },
         });
+    };
+
+
+    const removeImage = (indexToRemove) => {
+        setFiles((prevFiles) => prevFiles.filter((_, index) => index !== indexToRemove));
     };
 
 
@@ -277,6 +284,12 @@ export default function ProfileInfo() {
                                             alt="preview"
                                             className="w-full h-24 object-cover rounded"
                                         />
+                                        <button
+                                            onClick={() => removeImage(index)}
+                                            className="absolute top-1 right-1 bg-white shadow-lg text-black rounded-full p-1"
+                                        >
+                                            <FaTimes className="w-4 h-4" />
+                                        </button>
                                     </div>
                                 ))}
                             </div>
