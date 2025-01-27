@@ -6,7 +6,7 @@ import calendar from "../../../../assets/calendar.svg";
 import { useEffect } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 
-const DashboardStats = () => {
+const DashboardStats = ({orgData}) => {
     const { mutate } = useApiMutation();
 
     const getIDCards = () => {
@@ -37,7 +37,7 @@ const DashboardStats = () => {
                 colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
             />
             <StatCard
-                number={21}
+                number={orgData.length}
                 label="Organisations Joined"
                 iconColor="bg-mobiSkyCloud"
                 IconComponent={<img src={organisation} alt="Organisations" style={{ width: '20px' }} />}

@@ -2,12 +2,17 @@ import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import { Button } from "@material-tailwind/react";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useProfileApi } from "../../../../api/hooks/useProfileApi";
+import { useOrganizationApi } from "../../../../api/hooks/useOrganizationApi";
 
 export default function UpdateMember() {
     const user = useSelector((state) => state.orgData.orgData);
     const [loading, setLoading] = useState(true);
-
+    const [profile, setProfile] = useState([]);
+    const [orgMembers, setOrgMembers]= useState([]);
+    const { getUser } = useProfileApi();
+    const { getOrganisationsMembers } = useOrganizationApi();
     const { id } = useParams();
 
     const eventDetails = [
@@ -63,17 +68,59 @@ export default function UpdateMember() {
 
     ];
 
+
+    const getOrgMembers = async () => {
+        try {
+            const data = await getOrganisationsMembers("");
+            await getUserProfile(data);
+        } catch (error) {
+            setLoading(false);
+        }
+    }
+
+
+    const getUserProfile = async (members) => {
+        try {
+            const data = await getUser(id);
+            if(data) {
+                const mergedIndividual = mergeIndividualData(
+                    data,
+                    members.find(m => m.individual.id === data.id)?.individual || {}
+                );
+                setProfile(mergedIndividual);
+                setLoading(false);
+            }
+        } catch (error) {
+            setLoading(false);
+        }
+    }
+
+    const mergeIndividualData = (standalone, membershipData) => ({
+        ...standalone,
+        ...membershipData, // Membership data overwrites standalone data
+        // For nested objects, you might want to deep merge:
+        // nested: { ...standalone.nested, ...membershipData.nested }
+    });
+
+
+
+    useEffect(() => {
+        getOrgMembers();
+    }, []);
+
+
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
                     <Header mobile organisation data={user} />
-                    <div className="w-full md:w-3/4 flex justify-between items-center gap-8 md:my-5 my-2 px-3">
+                    <div className="w-full md:w-3/4 lg:w-3/5 flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Update Member Details</p>
-                            <p className="text-base">Member details for : <span className="text-mobiBlue">Frank Uzo</span></p>
+                            <p className="text-base">Member details for : <span className="text-mobiBlue">{profile.firstName} {profile.lastName}</span></p>
                         </div>
-                        <div className="flex md:w-2/5 w-full justify-end">
+                        <div className="flex md:w-1/2 w-full justify-end">
                             <Button className="normal-case bg-transparent border border-gray-200 rounded-full">
                                 <span className="text-sm px-6">Update Info</span>
                             </Button>
@@ -81,7 +128,7 @@ export default function UpdateMember() {
                     </div>
 
                     <div className="w-full flex flex-grow">
-                        <div className="shadow-xl py-5 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
+                        <div className="shadow-xl py-5 px-5 md:w-3/4 lg:w-3/5 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                             <div className="w-full flex flex-col gap-8 justify-center py-10 items-center">
                                 <p>Member ID</p>
                                 <img className="md:w-3/4 w-full" src={`${id === '1' ? '/id-card.png' : '/create-card-frame.png'}`} />
@@ -99,7 +146,7 @@ export default function UpdateMember() {
 
                                     <div className="flex w-full flex-col gap-5 mt-3">
                                         {eventDetails.map((details, index) => (
-                                            <div className="w-full flex gap-3">
+                                            <div className="w-full flex gap-3" key={index}>
                                                 <div className="p-2 rounded-lg bGmobiGrayDark flex items-center">
                                                     <span className="bs-mobiCeramaic">
                                                         {details.icon}
