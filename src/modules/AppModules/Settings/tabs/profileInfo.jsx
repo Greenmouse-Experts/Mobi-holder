@@ -208,7 +208,7 @@ export default function ProfileInfo() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Date of Birth
                             </p>
-                            <Input type="date" name="dateOfBirth" value={user.dateOfBirth} register={register}
+                            <Input type="date" name="dateOfBirth" value={user.dateOfBirth} disableFutureDates register={register}
                                 rules={{ required: 'Date of Birth is required' }} errors={errors} placeholder="Enter your date of birth" />
                         </div>
                     </div>

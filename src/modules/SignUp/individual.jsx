@@ -104,7 +104,7 @@ export default function IndividualSignUp() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Date of Birth (Optional)
                                         </p>
-                                        <Input icon="human.svg" type="date" name="dateOfBirth" register={register}
+                                        <Input icon="human.svg" type="date" name="dateOfBirth" disableFutureDates register={register}
                                             placeholder="Enter your date of birth" />
                                     </div>
 
