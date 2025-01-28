@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const SelectField = ({ options, selectedOption, label, errors }) => {
+const SelectField = ({ options, selectedOption, label, value, errors }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selected, setSelected] = useState('');
+    const [selected, setSelected] = useState(value || '');
     const dropdownRef = useRef(null);
 
     const toggleDropdown = () => {

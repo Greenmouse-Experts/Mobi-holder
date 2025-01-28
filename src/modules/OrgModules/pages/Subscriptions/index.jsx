@@ -194,7 +194,7 @@ export default function OrgSubscriptions() {
                                                 </MenuHandler>
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate('/org/subscription/editPlan/2')}>
+                                                        <span className="cursor-pointer" onClick={() => [navigate(`/org/subscription/editPlan/${data.id}`), localStorage.setItem('viewPlan', JSON.stringify(data))]}>
                                                             Edit Plan
                                                         </span>
                                                     </MenuItem>
