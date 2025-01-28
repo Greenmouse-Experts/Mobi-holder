@@ -113,7 +113,7 @@ export default function CardStructure() {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Name of Category
                                     </p>
-                                    <Input type="text" name="firstName" register={register}
+                                    <Input type="text" name="name" register={register}
                                         rules={{ required: 'Name of Category is required' }} errors={errors} placeholder="Enter the category name" />
                                 </div>
 

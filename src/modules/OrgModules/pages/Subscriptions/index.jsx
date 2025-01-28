@@ -10,70 +10,62 @@ import { Link, useNavigate } from "react-router-dom";
 import Subscription from "./components/Subscription";
 import SubscriptionAnalysis from "../../OrgDashboard/layouts/SubscriptionAnalysis";
 import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
+import Loader from "../../../../components/Loader";
 
 export default function OrgSubscriptions() {
     const user = useSelector((state) => state.orgData.orgData);
+    const [isLoading, setIsLoading] = useState(true);
+    const [plans, setPlans] = useState([]);
+    const [subscribers, setSubscribers] = useState([]);
+    const { mutate } = useApiMutation();
 
-    const TableHeaders = ["Individual", "Email", "Staff ID", "Subscription Plan", "Status", "Action"];
-    const NewTableHeaders = ["Plan Name", "Subscription Validity", "Price", "Subscriptions", "Status", "Action"];
-
-    const TableData = [
-        {
-            name: 'Green Mouse',
-            email: 'testmail@gmail.com',
-            number: 'ASD293038',
-            date: 'Gold Plan',
-            status: 'active'
-        },
-        {
-            name: 'Green Mouse',
-            email: 'testmail@gmail.com',
-            number: 'ASD293038',
-            date: 'Gold Plan',
-            status: 'active'
-        },
-        {
-            name: 'Green Mouse',
-            email: 'testmail@gmail.com',
-            number: 'ASD293038',
-            date: 'Gold Plan',
-            status: 'active'
-        },
-        {
-            name: 'Green Mouse',
-            email: 'testmail@gmail.com',
-            number: 'ASD293038',
-            date: 'Gold Plan',
-            status: 'active'
-        },
-    ];
-
-
-    const NewTableData = [
-        {
-            name: 'Gold Plan',
-            email: '6 Month',
-            number: 'N 20,000',
-            date: '3K',
-            status: 'active'
-        },
-        {
-            name: 'Gold Plan',
-            email: '6 Month',
-            number: 'N 20,000',
-            date: '3K',
-            status: 'active'
-        },
-        {
-            name: 'Gold Plan',
-            email: '6 Month',
-            number: 'N 20,000',
-            date: '3K',
-            status: 'active'
-        },
-    ];
+    const TableHeaders = ["Individual", "Email", "Subscription Plan", "Status", "Action"];
+    const NewTableHeaders = ["Plan Name", "Subscription Validity", "Price", "Subscriptions", "Action"];
 
     const navigate = useNavigate();
+
+
+    const getSubscriptionPlans = () => {
+        mutate({
+            url: `/api/memberships-subscriptions/subscription/plans`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setPlans(response.data.data)
+                setIsLoading(false)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+
+
+    const getSubscribers = () => {
+        mutate({
+            url: `/api/memberships-subscriptions/get/subscribers`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setSubscribers(response.data.data)
+                setIsLoading(false)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+
+
+
+    useEffect(() => {
+        getSubscriptionPlans();
+        getSubscribers();
+    }, []);
 
     return (
         <>
@@ -88,7 +80,7 @@ export default function OrgSubscriptions() {
 
                     <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                         <StatCard
-                            number={12}
+                            number={subscribers.length}
                             label="Total Subscribers"
                             iconColor="bg-mobiOrange"
                             IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px', color: 'rgba(107, 239, 215, 1)' }} />}
@@ -102,7 +94,7 @@ export default function OrgSubscriptions() {
                             colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}
                         />
                         <StatCard
-                            number={4}
+                            number={plans.length}
                             label="Subscription Plans"
                             iconColor="bg-mobiLightGreen"
                             IconComponent={<img src={calendar} alt="Events" style={{ width: '20px' }} />}
@@ -126,33 +118,47 @@ export default function OrgSubscriptions() {
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>All Subscribers</span>} exportData
                             tableHeader={TableHeaders}>
-                            {TableData.map((data, index) => (
-                                <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
-                                    <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
-                                    <td className="px-6 py-3 cursor-pointer">
-                                        <Menu placement="left">
-                                            <MenuHandler>
-                                                <span className="flex w-full cursor-pointer">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </MenuHandler>
-                                            <MenuList>
-                                                <MenuItem className="flex flex-col gap-3">
-                                                    <span className="cursor-pointer" onClick={() => navigate('/org/subscription/history/2')}>
-                                                        Subscription History
+                            {subscribers.length > 0 ?
+                                subscribers.map((data, index) => (
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{JSON.parse(data.plan).name}</td>
+                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                        <td className="px-6 py-3 cursor-pointer">
+                                            <Menu placement="left">
+                                                <MenuHandler>
+                                                    <span className="flex w-full cursor-pointer">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
                                                     </span>
-                                                </MenuItem>
-                                            </MenuList>
-                                        </Menu>
-                                    </td>
-                                </tr>
-                            ))}
+                                                </MenuHandler>
+                                                <MenuList>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate('/org/subscription/history/2')}>
+                                                            Subscription History
+                                                        </span>
+                                                    </MenuItem>
+                                                </MenuList>
+                                            </Menu>
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                            }
                         </Table>
                     </div>
 
@@ -166,37 +172,52 @@ export default function OrgSubscriptions() {
                         </div>
                     </div>
 
-                    
+
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>All Created Plans</span>} exportData
                             tableHeader={NewTableHeaders}>
-                            {NewTableData.map((data, index) => (
-                                <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
-                                    <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
-                                    <td className="px-6 py-3 cursor-pointer">
-                                        <Menu placement="left">
-                                            <MenuHandler>
-                                                <span className="flex w-full cursor-pointer">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </MenuHandler>
-                                            <MenuList>
-                                                <MenuItem className="flex flex-col gap-3">
-                                                    <span className="cursor-pointer" onClick={() => navigate('/org/subscription/editPlan/2')}>
-                                                        Edit Plan
+                            {plans.length > 0 ?
+                                plans.map((data, index) => (
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.validity} month(s)</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.price}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{0}</td>
+                                        <td className="px-6 py-3 cursor-pointer">
+                                            <Menu placement="left">
+                                                <MenuHandler>
+                                                    <span className="flex w-full cursor-pointer">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
                                                     </span>
-                                                </MenuItem>
-                                            </MenuList>
-                                        </Menu>
-                                    </td>
-                                </tr>
-                            ))}
+                                                </MenuHandler>
+                                                <MenuList>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate('/org/subscription/editPlan/2')}>
+                                                            Edit Plan
+                                                        </span>
+                                                    </MenuItem>
+                                                </MenuList>
+                                            </Menu>
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={NewTableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={NewTableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                            }
+
                         </Table>
                     </div>
 

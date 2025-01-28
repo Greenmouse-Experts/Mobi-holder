@@ -44,6 +44,10 @@ export default function Sidebar({ mobile }) {
                 {
                     path: "/org/subscriptions",
                     name: "Subscription",
+                },
+                {
+                    path: "/org/payment-gateway",
+                    name: "Payment Gateway"
                 }
             ],
             openChildren: false

@@ -1,7 +1,11 @@
+import { select } from '@material-tailwind/react';
 import React, { useState } from 'react';
 
-const RadioButtonGroup = ({ options, selectedOption, className }) => {
-    const [selected, setSelected] = useState(selectedOption);
+const RadioButtonGroup = ({ options, selectedOption, select, className }) => {
+
+    const handleSelected = (data) => {
+        select(data)
+    }
 
     return (
         <>
@@ -13,7 +17,7 @@ const RadioButtonGroup = ({ options, selectedOption, className }) => {
                                 ? 'text-white border border-purple-700'
                                 : ''
                                 }`}
-                            onClick={() => setSelected(option.slug)}
+                            onClick={() => handleSelected(option.slug)}
                         >
                             {option.name}
 
@@ -34,7 +38,7 @@ const RadioButtonGroup = ({ options, selectedOption, className }) => {
                                     value="Free"
                                     className="hidden"
                                     checked={selectedOption === option.slug}
-                                    onChange={() => setSelected(option.slug)}
+                                    onChange={() => handleSelected(option.slug)}
                                 />
                             </label>
 

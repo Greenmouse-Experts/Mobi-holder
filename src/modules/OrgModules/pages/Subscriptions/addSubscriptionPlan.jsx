@@ -7,11 +7,13 @@ import TextArea from "../../../../components/TextArea";
 import { Button } from "@material-tailwind/react";
 import SelectField from "../../../../components/SelectField";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
+import { useNavigate } from "react-router-dom";
 
 export default function AddSubscriptionPlan() {
     const user = useSelector((state) => state.orgData.orgData);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
 
@@ -19,9 +21,6 @@ export default function AddSubscriptionPlan() {
         {
             name: 'Month(s)'
         },
-        {
-            name: 'Year(s)'
-        }
     ];
 
     const createSubscription = (data) => {
