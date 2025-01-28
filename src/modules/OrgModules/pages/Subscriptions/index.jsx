@@ -12,7 +12,7 @@ import SubscriptionAnalysis from "../../OrgDashboard/layouts/SubscriptionAnalysi
 import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 
 export default function OrgSubscriptions() {
-    const user = useSelector((state) => state.userData.data);
+    const user = useSelector((state) => state.orgData.orgData);
 
     const TableHeaders = ["Individual", "Email", "Staff ID", "Subscription Plan", "Status", "Action"];
     const NewTableHeaders = ["Plan Name", "Subscription Validity", "Price", "Subscriptions", "Status", "Action"];

@@ -28,6 +28,7 @@ import OrganisationLists from '../modules/AppModules/pages/Memberships/organisat
 import Dashboard from '../modules/AppModules/Dashboard';
 import Notification from '../modules/AppModules/Notifications';
 import Settings from '../modules/AppModules/Settings';
+import SubOrganisationLists from "../modules/AppModules/pages/Subscriptions/organisationLists";
 
 const UserRoutes = [
                   <Route path="dashboard" element={<Dashboard />} />,
@@ -37,7 +38,7 @@ const UserRoutes = [
                   <Route path="add-event" element={<AddEvent />} />,
                   <Route path="view-event/:id" element={<ViewEvent />} />,
                   <Route path="subscriptions" element={<IndividualSubscriptions />} />,
-                  <Route path="add-subscription" element={<AddSubscription />} />,
+                  <Route path="add-subscription" element={<SubOrganisationLists />} />,
                   <Route path="join-organisation" element={<OrganisationLists />} />,
                   <Route path="join-organisation-form/:id" element={<JoinOrganisation />} />,
                   <Route path="view-organisation/:id" element={<ViewOrganisation />} />,

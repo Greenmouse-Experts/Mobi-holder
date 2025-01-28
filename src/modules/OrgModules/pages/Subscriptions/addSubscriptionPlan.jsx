@@ -6,11 +6,14 @@ import Input from "../../../../components/Input";
 import TextArea from "../../../../components/TextArea";
 import { Button } from "@material-tailwind/react";
 import SelectField from "../../../../components/SelectField";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function AddSubscriptionPlan() {
     const user = useSelector((state) => state.orgData.orgData);
-    const { register, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
+
+    const { mutate } = useApiMutation();
 
     const validityOptions = [
         {
@@ -20,6 +23,22 @@ export default function AddSubscriptionPlan() {
             name: 'Year(s)'
         }
     ];
+
+    const createSubscription = (data) => {
+        setIsLoading(true)
+        mutate({
+            url: "/api/memberships-subscriptions/subscription/plan/create",
+            method: "POST",
+            data: data,
+            headers: true,
+            onSuccess: (response) => {
+                navigate(-1)
+            },
+            onError: (error) => {
+                setIsLoading(false);
+            }
+        });
+    }
 
     return (
         <>
@@ -33,22 +52,23 @@ export default function AddSubscriptionPlan() {
                     </div>
 
                     <div className="w-full flex flex-grow">
-                        <div className="shadow-xl py-5 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
+                        <div className="shadow-xl py-5 px-5 md:w-3/4 lg:w-3/5 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
 
-                            <form>
+                            <form onSubmit={handleSubmit(createSubscription)}>
                                 <div className="mb-1 flex flex-col gap-10 mt-5">
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Plan Name
                                         </p>
-                                        <Input type="text" name="firstName" register={register} placeholder="Enter Subscription Plan Name" />
+                                        <Input type="text" name="name" register={register}
+                                            rules={{ required: 'Plan Name is required' }} errors={errors} placeholder="Enter Subscription Plan Name" />
                                     </div>
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Plan description
                                         </p>
-                                        <TextArea name="lastName" register={register} placeholder="Tell us about this subscription plan" />
+                                        <TextArea name="description" rules={{ required: 'Plan Description is required' }} errors={errors} register={register} placeholder="Tell us about this subscription plan" />
                                     </div>
 
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-1">
@@ -56,13 +76,13 @@ export default function AddSubscriptionPlan() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Plan Validity
                                             </p>
-                                            <Input name="phoneNumber" register={register}
-                                                type="text" placeholder="Enter Number" />
+                                            <Input name="validity" rules={{ required: 'Plan Validity is required' }} errors={errors} register={register}
+                                                type="text" placeholder="Enter Validity Period" />
                                         </div>
 
                                         <div className="flex flex-col w-full gap-6">
                                             <p className="mt-[9px]"></p>
-                                            <SelectField options={validityOptions}  />
+                                            <SelectField options={validityOptions} />
                                         </div>
                                     </div>
 
@@ -71,13 +91,13 @@ export default function AddSubscriptionPlan() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Price
                                             </p>
-                                            <Input type="text" name="dateOfBirth" register={register} placeholder="Enter price" />
+                                            <Input type="text" name="price" rules={{ required: 'Price is required' }} errors={errors} register={register} placeholder="Enter price" />
                                         </div>
                                     </div>
 
                                     <div className="flex">
                                         <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
-                                            {isLoading ? 'Updating...' : 'Add Subscription Plan'}
+                                            {isLoading ? 'Adding Plan...' : 'Add Subscription Plan'}
                                         </Button>
                                     </div>
                                 </div>
