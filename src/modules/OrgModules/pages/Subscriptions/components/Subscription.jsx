@@ -2,14 +2,68 @@ import React, { useContext } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { ThemeContext } from '../../../../../context/ThemeContext';
+import { useMemo } from 'react';
+
+
+
+
+function generateChartData(subscribers) {
+    const currentDate = new Date();
+
+    // Generate labels for the next 6 months starting from the current month
+    const labels = [];
+    for (let i = 0; i < 12; i++) {
+        const date = new Date(currentDate.getFullYear(), currentDate.getMonth() + i);
+        labels.push(date.toLocaleString('default', { month: 'short', year: 'numeric' }));
+    }
+
+    // Count subscribers joined in each of the next 6 months
+    const subscriberCountPerMonth = Array(6).fill(0);
+
+    subscribers.forEach((subscriber) => {
+        const joinedDate = new Date(subscriber.createdAt);
+        const joinedMonth = joinedDate.getMonth();
+        const joinedYear = joinedDate.getFullYear();
+
+        for (let i = 0; i < 12; i++) {
+            const labelDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + i);
+            const labelMonth = labelDate.getMonth();
+            const labelYear = labelDate.getFullYear();
+
+            if (joinedMonth === labelMonth && joinedYear === labelYear) {
+                subscriberCountPerMonth[i]++;
+            }
+        }
+    });
+
+    // Chart data
+    return {
+        labels,
+        datasets: [
+            {
+                label: 'Newly Added subscribers',
+                data: subscriberCountPerMonth,
+                backgroundColor: 'rgba(198, 0, 249, 1)', // Purple color for the bars
+                borderRadius: 5,
+                barThickness: 6,
+            },
+        ],
+    };
+}
+
+
+
+
+
+
+
 
 // Register components in ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function Subscription() {
+export default function Subscription({ subscribers }) {
 
     const { theme } = useContext(ThemeContext);
-
 
     const options = {
         responsive: true,
@@ -29,11 +83,11 @@ export default function Subscription() {
                 ticks: {
                     color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
                     beginAtZero: true,
-                    callback: (value) => `${value / 1000}K`, // Adjust tick values for 'K' format
+                    stepSize: 1, // Ensure Y-axis ticks increment by 1
                 },
                 grid: {
                     color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)'
-                   // display: false
+                    // display: false
                 },
             },
         },
@@ -49,25 +103,16 @@ export default function Subscription() {
         },
     };
 
-    const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        datasets: [
-            {
-                label: 'Monthly Sales',
-                data: [20000, 45000, 35000, 60000, 70000, 15000, 30000, 10000, 5000, 40000, 20000, 30000],
-                backgroundColor: 'rgba(198, 0, 249, 1)', // Purple color for the bars
-                borderRadius: 5,
-                barThickness: 6
-            },
-        ],
-    };
+
+    const data = useMemo(() => generateChartData(subscribers), [subscribers]);
+
 
     return (
         <div className="md:px-5 px-2 py-7 md:rounded-lg border border-mobiBorderFray bg-mobiSearchDark">
             <p className="text-mobiTable font-[500px] mb-4">Today</p>
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Subscriptions</h3>
-                <div className="flex space-x-2">
+                {/*<div className="flex space-x-2">
                     <button className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
                         <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="0.921631" y="1.76648" width="12.3818" height="12.4521" rx="1.3652" stroke="#AEB9E1" strokeWidth="1.09216" />
@@ -82,7 +127,7 @@ export default function Subscription() {
                             </g>
                         </svg>
                     </button>
-                </div>
+                </div>*/}
             </div>
             <div className="py-1 mt-5 rounded-lg border border-mobiBorderTable px-3">
                 <div className='chartColor' style={{ width: '100%', minHeight: '300px' }}>

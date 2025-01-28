@@ -87,7 +87,7 @@ export default function OrgSubscriptions() {
                             colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                         />
                         <StatCard
-                            number={21}
+                            number={subscribers.filter(item => item.status === "active").length}
                             label="Active Subscribers"
                             iconColor="bg-mobiSkyCloud"
                             IconComponent={<img src={organisation} alt="ID Cards" style={{ width: '22px' }} />}
@@ -165,10 +165,10 @@ export default function OrgSubscriptions() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <div className="lg:w-[63%] md:w-[63%] w-full flex flex-col gap-5">
-                            <Subscription />
+                            <Subscription subscribers={subscribers} />
                         </div>
                         <div className="lg:w-[37%] md:w-[37%] w-full flex-grow h-full flex flex-col gap-5">
-                            <SubscriptionAnalysis />
+                            <SubscriptionAnalysis subscribers={subscribers} plans={plans} />
                         </div>
                     </div>
 
