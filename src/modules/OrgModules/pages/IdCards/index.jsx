@@ -85,7 +85,7 @@ export default function OrgIDCardsPage() {
                             colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}
                         />
 
-                        <Link to={'/org/add-card'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between">
+                        <Link to={'/org/cards/structure'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between">
                             <div className="flex flex-col items-center w-full gap-3">
                                 <span className={`flex gap-1`}>
                                     Create ID Card

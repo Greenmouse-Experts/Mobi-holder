@@ -5,6 +5,7 @@ import { useState } from "react";
 import Input from "../../../../components/Input";
 import DropZone from "../../../../components/DropZone";
 import { Button } from "@material-tailwind/react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function AddCard() {
     const user = useSelector((state) => state.userData.data);
@@ -12,6 +13,8 @@ export default function AddCard() {
     const [isLoading, setIsLoading] = useState(false);
     const [fileLoading, setFileLoading] = useState(false);
     const [files, setFiles] = useState([]);
+
+    const { mutate } = useApiMutation();
 
     return (
         <>

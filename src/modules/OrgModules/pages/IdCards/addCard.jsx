@@ -3,11 +3,22 @@ import Header from "../../../../components/Header";
 import { Button } from "@material-tailwind/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function OrgAddCard() {
     const user = useSelector((state) => state.orgData.orgData);
-    const [categorySet, setCategorySet] = useState('');
+    const [categorySet, setCategorySet] = useState(null);
     const navigate = useNavigate();
+
+    const validateCategorySelection = () => {
+        if (categorySet) {
+            localStorage.setItem('cardStructure', JSON.stringify(categorySet));
+            navigate('/org/cards/structure')
+        }
+        else {
+            toast.error('Select Card Template', { duration: 5000 });
+        }
+    }
 
     return (
         <>
@@ -20,7 +31,7 @@ export default function OrgAddCard() {
                             <p className="text-base">All your create ID Card for your different categories</p>
                         </div>
                         <div className="flex md:w-2/5 w-full justify-end">
-                            <Button className="bg-mobiPink rounded-full" onClick={() => navigate('/org/cards/structure')}>
+                            <Button className="bg-mobiPink rounded-full" onClick={() => validateCategorySelection()}>
                                 Create New ID Category
                             </Button>
                         </div>
@@ -48,10 +59,10 @@ export default function OrgAddCard() {
                             </div>
                         </div>
                     </div>
-                    
+
 
                 </div>
-                </div>
+            </div>
         </>
     )
 }
