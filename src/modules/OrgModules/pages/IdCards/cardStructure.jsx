@@ -8,6 +8,7 @@ import { Button } from "@material-tailwind/react";
 import StaffCard from "../../../../components/StaffCardPortrait";
 import { FaTimes } from "react-icons/fa";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
+import { useNavigate } from "react-router-dom";
 
 const RoundedCards = ({ bgColor, selectBg }) => {
     const handleBg = (data) => {
@@ -29,6 +30,7 @@ export default function CardStructure() {
     const [selectedTextColor, setTextColor] = useState('rgba(216, 201, 254, 1)');
     const [files, setFiles] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
 
@@ -77,7 +79,7 @@ export default function CardStructure() {
 
     const createTemplate = (data) => {
         setIsLoading(true);
-        const payload = { ...data, fontSize: [12], backgroundColor: selectedBgColor, textColor: selectedTextColor, logo: files[0], layout: selectedLayout };
+        const payload = { ...data, fontSize: [12], backgroundColor: selectedBgColor, textColor: selectedTextColor, logo: user.photo ? user.photo : files[0], layout: selectedLayout };
         mutate({
             url: "/api/idcards/template",
             method: "POST",
@@ -123,14 +125,14 @@ export default function CardStructure() {
                                     </p>
                                     <div className="flex md:flex-row flex-col gap-3">
                                         <div className="md:w-1/3 sm:w-1/2 w-full p-3 rounded-md cursor-pointer bGmobiGrayDark"
-                                            onClick={() => setLayout('Landscape')}
-                                            data-category={selectedLayout === 'Landscape' ? 'selected' : null}
+                                            onClick={() => setLayout('horizontal')}
+                                            data-category={selectedLayout === 'horizontal' ? 'selected' : null}
                                         >
                                             <img src="/card-frame-landscape.png" />
                                         </div>
                                         <div className="md:w-1/3 sm:w-1/2 w-full p-3 rounded-md cursor-pointer bGmobiGrayDark"
-                                            onClick={() => setLayout('Portrait')}
-                                            data-category={selectedLayout === 'Portrait' ? 'selected' : null}
+                                            onClick={() => setLayout('vertical')}
+                                            data-category={selectedLayout === 'vertical' ? 'selected' : null}
                                         >
                                             <img src="/card-frame-portrait.png" />
                                         </div>
@@ -177,32 +179,33 @@ export default function CardStructure() {
                                 </div>
 
 
-                                <div className="w-full flex flex-col gap-2">
-                                    <div className="flex flex-col md:w-1/2 w-full gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Company Logo
-                                        </p>
-                                        <DropZone text="Upload Company Logo" onUpload={handleDrop} />
-                                    </div>
+                                {!user.photo &&
+                                    <div className="w-full flex flex-col gap-2">
+                                        <div className="flex flex-col md:w-1/2 w-full gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Company Logo
+                                            </p>
+                                            <DropZone text="Upload Company Logo" onUpload={handleDrop} />
+                                        </div>
 
-                                    <div className="grid grid-cols-3 gap-4 mt-4">
-                                        {files.map((fileObj, index) => (
-                                            <div key={index} className="relative">
-                                                <img
-                                                    src={fileObj}
-                                                    alt="preview"
-                                                    className="w-full h-24 object-cover rounded"
-                                                />
-                                                <button
-                                                    onClick={() => removeImage(index)}
-                                                    className="absolute top-1 right-1 bg-white shadow-lg text-black rounded-full p-1"
-                                                >
-                                                    <FaTimes className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                        <div className="grid grid-cols-3 gap-4 mt-4">
+                                            {files.map((fileObj, index) => (
+                                                <div key={index} className="relative">
+                                                    <img
+                                                        src={fileObj}
+                                                        alt="preview"
+                                                        className="w-full h-24 object-cover rounded"
+                                                    />
+                                                    <button
+                                                        onClick={() => removeImage(index)}
+                                                        className="absolute top-1 right-1 bg-white shadow-lg text-black rounded-full p-1"
+                                                    >
+                                                        <FaTimes className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>}
 
                                 <div className="flex">
                                     <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/2 w-full p-3 rounded-full">

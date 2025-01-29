@@ -19,8 +19,6 @@ export default function EditSubscriptionPlan() {
 
     const planObj = JSON.parse(localStorage.getItem('viewPlan'));
 
-    console.log(planObj);
-
     const validityOptions = [
         {
             name: 'Month(s)'

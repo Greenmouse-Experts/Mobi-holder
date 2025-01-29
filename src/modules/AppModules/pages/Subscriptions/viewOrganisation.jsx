@@ -155,7 +155,9 @@ export default function ViewOrganisation() {
                         <div className="shadow-xl py-5 px-5 md:w-[30%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-6">
                             <div className="w-full flex justify-center">
                                 {orgInfo.photo ?
-                                    <img src={paramsData.photo} className="w-3/4 h-full rounded-full object-cover" />
+                                    <div className="w-3/4 h-[200px] rounded-full">
+                                        <img src={orgInfo.photo} className="w-full h-full rounded-full object-cover" />
+                                    </div>
                                     :
                                     <AvatarInitials name={`${orgInfo.companyName}`} size="44" />
                                 }
@@ -195,13 +197,18 @@ export default function ViewOrganisation() {
                             </div> */}
 
                             <div className="w-full flex flex-col gap-10">
+                                {arrayOptions.length === 0 && <div className="w-full flex h-full mt-10 justify-center">
+                                    <p className="text-mobiRomanSilver text-lg">No subscription plans available</p>
+                                </div>}
                                 <RadioButtonGroup options={arrayOptions} selectedOption={selectedPlan} select={handleSelect} className="flex flex-col gap-10" />
                             </div>
 
                             <div className="w-full flex my-2">
-                                <Button onClick={() => subscribePlan()} disabled={selectedPlan === '' || loader} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                                    Subscribe Now
-                                </Button>
+                                {arrayOptions.length > 0 &&
+                                    <Button onClick={() => subscribePlan()} disabled={selectedPlan === '' || loader} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
+                                        Subscribe Now
+                                    </Button>
+                                }
                             </div>
                         </div>
 

@@ -7,10 +7,15 @@ import Badge from "../../../../components/Badge";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { dateFormat } from "../../../../helpers/dateHelper";
+import Loader from "../../../../components/Loader";
 
 export default function IDCardsPage() {
     const user = useSelector((state) => state.userData.data);
+    const [orgCards, setOrgCards] = useState([]);
+    const [organisations, setOrganisations] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
@@ -22,7 +27,24 @@ export default function IDCardsPage() {
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                console.log(response.data)
+                setOrgCards(response.data.data);
+                setIsLoading(false);
+            },
+            onError: () => {
+            }
+        });
+    }
+
+    const getOrganisations = (params) => {
+        mutate({
+            url: `/api/memberships-subscriptions/individual/membership${params}`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                if (params === "") {
+                    setOrganisations(response.data.data)
+                }
             },
             onError: () => {
             }
@@ -31,6 +53,7 @@ export default function IDCardsPage() {
 
     useEffect(() => {
         getIDCards();
+        getOrganisations("");
     }, []);
 
     const TableHeaders = ["Organisation", "ID Card", "Card Number", "Role", "Expiry Date", "Status", "Action"];
@@ -81,7 +104,7 @@ export default function IDCardsPage() {
                     <div className="md:w-3/4 w-full md:px-0 px-3 md:flex-row flex flex-col gap-5">
                         <StatCard
                             cronTop
-                            number={TableData.length}
+                            number={orgCards.length}
                             label="Total ID Cards"
                             iconColor="bg-mobiLightGreen"
                             IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px', color: 'rgba(107, 239, 215, 1)' }} />}
@@ -89,7 +112,7 @@ export default function IDCardsPage() {
                         />
                         <StatCard
                             cronTop
-                            number={0}
+                            number={organisations.length}
                             label="Joined Organisations"
                             iconColor="bg-mobiOrange"
                             IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px' }} />}
@@ -113,14 +136,14 @@ export default function IDCardsPage() {
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Manage ID Cards</span>} exportData
                             tableHeader={TableHeaders}>
-                            {TableData.length > 0 ?
-                                TableData.map((data, index) => (
+                            {orgCards.length > 0 ?
+                                orgCards.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
                                         <td className="px-3 py-3 text-center text-mobiTableText"><img width={50} src="/id-card.png" /></td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3 cursor-pointer">
                                             <Menu placement="left">
@@ -143,6 +166,13 @@ export default function IDCardsPage() {
                                     </tr>
                                 ))
                                 :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
                                 <tr>
                                     <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
                                         NO ID Cards Available

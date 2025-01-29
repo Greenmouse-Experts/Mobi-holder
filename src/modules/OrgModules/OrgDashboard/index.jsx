@@ -62,6 +62,8 @@ export default function OrgDashboard() {
     document.documentElement.style.position = null;
     const user = useSelector((state) => state.orgData.orgData);
     const [allMembers, setAllMembers] = useState([]);
+    const [subscribers, setSubscribers] = useState([]);
+    const [plans, setPlans] = useState([]);
     const { mutate } = useApiMutation();
     const [stampTime, setTimeStaamp] = useState(new Date().getTime());
 
@@ -83,8 +85,46 @@ export default function OrgDashboard() {
         });
     }
 
+
+    const getSubscribers = () => {
+        mutate({
+            url: `/api/memberships-subscriptions/get/subscribers`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setSubscribers(response.data.data)
+                setIsLoading(false)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+
+
+    const getSubscriptionPlans = () => {
+        mutate({
+            url: `/api/memberships-subscriptions/subscription/plans`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setPlans(response.data.data)
+                setIsLoading(false)
+            },
+            onError: () => {
+            }
+        });
+    }
+
+
+
+
     useEffect(() => {
-        getOrganisationsMember('')
+        getOrganisationsMember('');
+        getSubscribers();
+        getSubscriptionPlans();
     }, [stampTime]);
 
 
@@ -129,7 +169,7 @@ export default function OrgDashboard() {
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
 
                         <div className="lg:w-[35%] md:w-[35%] w-full flex flex-col gap-5">
-                            <SubscriptionAnalysis />
+                        <SubscriptionAnalysis subscribers={subscribers} plans={plans} />
                         </div>
 
                         <div className="lg:w-[65%] md:w-[65%] w-full flex flex-col gap-5">

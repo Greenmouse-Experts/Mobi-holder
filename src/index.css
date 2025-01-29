@@ -134,6 +134,10 @@ input {
   font-family: "Montserrat", sans-serif !important;
 }
 
+select {
+  font-family: "Montserrat", sans-serif !important;
+}
+
 input::placeholder {
   opacity: 1;
   color: rgba(153, 151, 151, 1);
@@ -342,4 +346,8 @@ input[type="range"]::-ms-thumb {
 
 .dialog-mobi {
   background-color: var(--bs-bg) !important;
+}
+
+select option {
+  color: #000000 !important;
 }
