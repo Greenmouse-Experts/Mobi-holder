@@ -34,7 +34,7 @@ const UserRoutes = [
                   <Route path="dashboard" element={<Dashboard />} />,
                   <Route path="id-cards" element={<IDCardsPage />} />,
                   <Route path="add-card" element={<AddCard />} />,
-                  <Route path="view-card" element={<ViewCard />} />,
+                  <Route path="view-card/:id" element={<ViewCard />} />,
                   <Route path="add-event" element={<AddEvent />} />,
                   <Route path="view-event/:id" element={<ViewEvent />} />,
                   <Route path="subscriptions" element={<IndividualSubscriptions />} />,

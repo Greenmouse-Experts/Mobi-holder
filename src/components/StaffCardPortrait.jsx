@@ -1,7 +1,7 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa"; // Profile placeholder
 
-const StaffCard = () => {
+const StaffCardPortrait = () => {
   return (
     <div className="w-[320px] rounded-2xl shadow-lg border border-gray-300 bg-white overflow-hidden">
       {/* Header with profile image */}
@@ -42,4 +42,4 @@ const StaffCard = () => {
   );
 };
 
-export default StaffCard;
+export default StaffCardPortrait;

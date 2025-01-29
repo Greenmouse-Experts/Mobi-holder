@@ -56,7 +56,7 @@ const OrgRoutes = [
     <Route path="add-card" element={<OrgAddCard />} />,
     <Route path="cards/structure" element={<CardStructure />} />,
     <Route path="cards/createUser/:id" element={<CreateUserCard />} />,
-    <Route path="card/viewCard" element={<PreviewCard />} />,
+    <Route path="card/viewCard/:id" element={<PreviewCard />} />,
     <Route path="membership/updateMember/:id" element={<UpdateMember />} />,
     <Route path="membership/add" element={<InviteMember />} />,
     <Route path="notification" element={<OrgNotification />} />,

@@ -57,37 +57,6 @@ export default function IDCardsPage() {
     }, []);
 
     const TableHeaders = ["Organisation", "ID Card", "Card Number", "Role", "Expiry Date", "Status", "Action"];
-    const TableData = [
-        /*   {
-               name: 'Green Mouse',
-               email: 'EWR-234567',
-               number: 'Product Manager',
-               date: '20-11-2024',
-               status: 'active'
-           },
-           {
-               name: 'Green Mouse',
-               email: 'EWR-234567',
-               number: 'Product Manager',
-               date: '20-11-2024',
-               status: 'active'
-           },
-           {
-               name: 'Green Mouse',
-               email: 'EWR-234567',
-               number: 'Product Manager',
-               date: '20-11-2024',
-               status: 'active'
-           },
-           {
-               name: 'Green Mouse',
-               email: 'EWR-234567',
-               number: 'Product Manager',
-               date: '20-11-2024',
-               status: 'active'
-           }, */
-    ];
-
 
     return (
         <>
@@ -156,7 +125,7 @@ export default function IDCardsPage() {
                                                 </MenuHandler>
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate('/app/view-card')}>
+                                                        <span className="cursor-pointer" onClick={() => navigate(`/app/view-card/${data.id}`)}>
                                                             View Card
                                                         </span>
                                                     </MenuItem>
