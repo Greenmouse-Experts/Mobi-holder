@@ -25,41 +25,6 @@ export default function OrgIDCardsPage() {
     const TableHeaders = ["Name", "Staff ID", "Role", "Expiry Date", "Status", "Action"];
     const NewTableHeaders = ["Template Name", "Layout", "Background Color", "Text Color", "Status", "Action"];
 
-    const TableData = [
-        {
-            name: 'Green Mouse',
-            email: 'EWR-234567',
-            number: 'Product Manager',
-            category: 'Senior',
-            date: '20-11-2024',
-            status: 'active'
-        },
-        {
-            name: 'Green Mouse',
-            email: 'EWR-234567',
-            number: 'Product Manager',
-            category: 'Senior',
-            date: '20-11-2024',
-            status: 'active'
-        },
-        {
-            name: 'Green Mouse',
-            email: 'EWR-234567',
-            number: 'Product Manager',
-            category: 'Senior',
-            date: '20-11-2024',
-            status: 'active'
-        },
-        {
-            name: 'Green Mouse',
-            email: 'EWR-234567',
-            number: 'Product Manager',
-            category: 'Senior',
-            date: '20-11-2024',
-            status: 'active'
-        },
-    ];
-
 
 
     const getTemplates = () => {
