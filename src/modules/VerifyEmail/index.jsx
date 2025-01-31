@@ -8,21 +8,18 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../api/apiFactory";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
 export default function VerifyEmail() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const userData = useSelector((state) => state.userData.data);
-    const orgData = useSelector((state) => state.orgData.orgData);
 
     const navigate = useNavigate();
 
     const mutation = useMutation({
         mutationFn: (userData) => apiClient.post('/api/users/auth/verify/email', userData),
         onSuccess: (data) => {
-           toast.success(data.data.message);
-          //  dispatch(setUser(data.data.data));
-          navigate('/login');
+            toast.success(data.data.message);
+            localStorage.removeItem('email');
+            navigate('/login');
         },
         onError: (error) => {
             toast.error(error.response.data.message);
@@ -31,9 +28,9 @@ export default function VerifyEmail() {
 
     const verifyAccount = (data) => {
         const payload = {
-            email: orgData ? orgData.email : userData.email,
+            email: JSON.parse(localStorage.getItem('email')),
             ...data
-        }
+        };
         mutation.mutate(payload);
     };
 
@@ -49,7 +46,7 @@ export default function VerifyEmail() {
 
     const verifyLink = () => {
         const payload = {
-            email: orgData ? orgData.email : userData.email,
+            email: JSON.parse(localStorage.getItem('email')),
         }
         resend.mutate(payload);
     }
