@@ -7,13 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthSideBar from "../../../components/AuthSideBar";
 import Theme from "../../../components/Theme";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOrg } from "../../../reducers/organisationSlice";
 import Checkbox from "../../../components/CheckBox";
 import MultipleSelect from "../../../components/MultipleSelect";
 import useFileUpload from "../../../api/hooks/useFileUpload";
+import { Camera } from "lucide-react";
 
 export default function OrgInfoSetUp({ moveNext }) {
+    const user = useSelector((state) => state.orgData.orgData);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [payload, setPayload] = useState({});
@@ -61,13 +63,6 @@ export default function OrgInfoSetUp({ moveNext }) {
     }
 
 
-    const handleButtonClick = () => {
-        // Simulate a click on the hidden file input
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-
     const handleFileChange = async (event) => {
         const files = event.target.files;
         setDisabled(true);
@@ -78,6 +73,13 @@ export default function OrgInfoSetUp({ moveNext }) {
             });
         }
     };
+
+
+    useEffect(() => {
+        if (user)
+            setUploadedPhoto(user.photo);
+        setDisabled(false)
+    }, [user]);
 
 
     return (
@@ -123,24 +125,15 @@ export default function OrgInfoSetUp({ moveNext }) {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Company Name
                                         </p>
-                                        <Input icon="company.svg" type="text" name="companyName" register={register}
+                                        <Input icon="company.svg" type="text" value={user?.companyName} name="companyName" register={register}
                                             rules={{ required: 'Company Name is required' }} errors={errors} placeholder="Enter your company name" />
-                                    </div>
-
-
-                                    <div className="flex flex-col gap-6">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Company Phone Number
-                                        </p>
-                                        <Input icon="phone.svg" type="tel" name="phoneNumber" register={register}
-                                            rules={{ required: 'Phone Number is required' }} errors={errors} placeholder="Enter company phone number" />
                                     </div>
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Address
                                         </p>
-                                        <Input icon="address.svg" type="text" name="street" register={register}
+                                        <Input icon="address.svg" type="text" value={user?.companyAddress.street} name="street" register={register}
                                             rules={{ required: 'Company Address is required' }} errors={errors} placeholder="Enter your address" />
                                     </div>
 
@@ -149,7 +142,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Country
                                             </p>
-                                            <Input icon="human.svg" type="text" name="country" register={register}
+                                            <Input icon="human.svg" type="text" name="country" value={user?.companyAddress.country} register={register}
                                                 rules={{ required: 'Country is required' }} errors={errors} placeholder="Choose your country" />
                                         </div>
 
@@ -157,7 +150,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 State
                                             </p>
-                                            <Input icon="human.svg" type="text" name="state" register={register}
+                                            <Input icon="human.svg" type="text" name="state" value={user?.companyAddress.state} register={register}
                                                 rules={{ required: 'State is required' }} errors={errors} placeholder="Choose your state" />
                                         </div>
                                     </div>
@@ -166,7 +159,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Company Email (Optional)
                                         </p>
-                                        <Input icon="email.svg" type="email" name="companyEmail" register={register}
+                                        <Input icon="email.svg" type="email" value={user?.companyEmail} name="companyEmail" register={register}
                                             placeholder="Enter organisation email" />
                                     </div>
 
@@ -175,7 +168,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                         <p className="-mb-3 text-mobiFormGray">
                                             About Company (Optional)
                                         </p>
-                                        <Input type="text" name="aboutCompany" register={register}
+                                        <Input type="text" name="aboutCompany" value={user?.aboutCompany} register={register}
                                             placeholder="Tell us about your company" />
                                     </div>
 
@@ -192,30 +185,22 @@ export default function OrgInfoSetUp({ moveNext }) {
                                     </div>
 
                                     <div className="flex flex-col gap-6 my-1">
-                                        <p className="-mb-3 text-mobiFormGray">
-                                            Upload Profile Photo
-                                        </p>
-                                        <div className="flex md:flex-row flex-col gap-3">
-                                            {uploadedPhoto &&
-                                                <div className="flex w-32 h-32">
-                                                    <img src={`${uploadedPhoto}`} className="w-full h-full object-cover rounded-full" />
+
+                                        <div className="flex flex-col items-center gap-3">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Upload Profile Photo
+                                            </p>
+                                            <label htmlFor="profile-upload" className="relative cursor-pointer">
+                                                <div className="w-28 h-28 rounded-full border-2 border-gray-600 flex items-center justify-center overflow-hidden bg-gray-900 hover:opacity-80 transition">
+                                                    {uploadedPhoto ? (
+                                                        <img src={uploadedPhoto} alt="Profile" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <Camera className="text-white w-8 h-8" />
+                                                    )}
                                                 </div>
-                                            }
-                                            <div className="flex flex-col justify-center md:mx-3">
-                                                <input
-                                                    type="file"
-                                                    ref={fileInputRef}
-                                                    onChange={handleFileChange}
-                                                    style={{ display: "none" }}
-                                                    multiple
-                                                />
-                                                <Button className="bg-transparent px-7 rounded-full border-[0.5px] border-gray-700"
-                                                    onClick={handleButtonClick}
-                                                    disabled={isLoadingUpload}
-                                                >
-                                                    {isLoadingUpload ? 'Uploading Picture' : 'Click to Set Profile Picture'}
-                                                </Button>
-                                            </div>
+                                                <input id="profile-upload" type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
+                                            </label>
+                                            <p className="text-gray-400 text-sm">{!isLoadingUpload ? 'Click to set profile picture' : 'Uploading profile picture'}</p>
                                         </div>
                                     </div>
 

@@ -9,13 +9,17 @@ export default function OrganisationSignUp() {
         setCurrentPage(prevPage => prevPage + 1);
     }
 
+    const reversePaginate = () => {
+        setCurrentPage(prevPage => prevPage - 1);
+    }
+
     return (
         <>
             {
                 currentPage === 1 ?
                     <OrgInfoSetUp moveNext={handlePaginate} />
                     :
-                    <OrgAdminSetUp />
+                    <OrgAdminSetUp moveBack={reversePaginate} />
             }
         </>
     )

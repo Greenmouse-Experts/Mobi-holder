@@ -13,7 +13,7 @@ import apiClient from "../../../api/apiFactory";
 import { setOrg } from "../../../reducers/organisationSlice";
 import { toast } from "react-toastify";
 
-export default function OrgAdminSetUp() {
+export default function OrgAdminSetUp({ moveBack }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const orgData = useSelector((state) => state.orgData.orgData);
@@ -108,6 +108,14 @@ export default function OrgAdminSetUp() {
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
+                                            Phone Number
+                                        </p>
+                                        <Input icon="phone.svg" type="tel" name="phoneNumber" register={register}
+                                            rules={{ required: 'Phone Number is required' }} errors={errors} placeholder="Enter company phone number" />
+                                    </div>
+
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
                                             Password
                                         </p>
                                         <Input icon="padlock.svg" name="password" register={register}
@@ -128,8 +136,16 @@ export default function OrgAdminSetUp() {
                                         </div>
                                     </div>
 
-                                    <div className="flex">
-                                        <Button type="submit" className="bg-mobiPink w-full p-5 rounded-full">Sign Up As Organisation</Button>
+                                    <div className="flex items-center justify-between w-full gap-4">
+                                        {/* Previous Button on the Left */}
+                                        <Button onClick={() => moveBack()} className="bg-transparent border border-gray-300 px-6 py-3 rounded-full text-gray-500">
+                                            Previous
+                                        </Button>
+
+                                        {/* Sign Up Button on the Right */}
+                                        <Button type="submit" className="bg-mobiPink px-6 py-3 rounded-full text-white ml-auto">
+                                            Sign Up As Organisation
+                                        </Button>
                                     </div>
                                 </div>
                             </form>

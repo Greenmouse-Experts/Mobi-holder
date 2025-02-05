@@ -27,7 +27,9 @@ export default function JoinOrganisation() {
             method: "POST",
             data: payload,
             headers: true,
-            onSuccess: () => { },
+            onSuccess: () => { 
+                setIsLoading(false)
+            },
             onError: () => {
                 setIsLoading(false);
             }
