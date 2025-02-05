@@ -11,17 +11,20 @@ import SelectField from "../../../../components/SelectField";
 import { toast } from "react-toastify";
 import useFileUpload from "../../../../api/hooks/useFileUpload";
 import { FaTimes } from "react-icons/fa";
+import Loader from "../../../../components/Loader";
 
 
 export default function ProfileInfo() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { register: registerUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
+    const { register: registerUpload, setValue: setValueUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
     const fileInputRef = useRef(null);
     const { uploadFiles, isLoadingUpload } = useFileUpload();
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingDocuments, setIsLoadingDocuments] = useState(false);
+    const [pageLoader, setLoader] = useState(true);
     const [files, setFiles] = useState([]);
     const [documentSelected, setSelectedDocument] = useState(null);
+    const [uploadedIDData, setUploadedIDData] = useState(null);
     const [customError, setCustomError] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.userData.data);
@@ -35,17 +38,13 @@ export default function ProfileInfo() {
         }
     ];
 
-    useEffect(() => {
-        getUploadedIDCards()
-    }, []);
-
 
     const handleSelectedDocument = (data) => {
         setSelectedDocument(data)
     }
 
     const handleDrop = (data) => {
-        setFiles((prevFiles) => [...prevFiles, data]);
+        setFiles((prevFiles) => [data]);
     }
 
     const handleButtonClick = () => {
@@ -110,8 +109,8 @@ export default function ProfileInfo() {
             setIsLoadingDocuments(true);
             const payload = {
                 name: documentSelected,
-                front: files[0],
-                back: files[1],
+                governmentIdCardFront: files[0],
+                governmentIdCardBack: files[1],
                 ...data
             }
             mutate({
@@ -133,23 +132,51 @@ export default function ProfileInfo() {
     }
 
     const getUploadedIDCards = () => {
+        setLoader(true);
         mutate({
             url: "/api/users/upload/verified/IDCard",
             method: "GET",
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                console.log(response.data)
+                const data = response.data.data;
+                if (data) {
+                    setUploadedIDData(data);
+                    setSelectedDocument(data.name);
+                    setFiles([data.governmentIdCardFront, data.governmentIdCardBack]);
+                    setLoader(false)
+                }
+                else {
+                    setLoader(false)
+                }
             },
             onError: () => {
+                setLoader(false)
             }
         });
     }
 
+
+    useEffect(() => {
+        getUploadedIDCards()
+    }, []);
+
+
+    if (pageLoader) {
+        return (
+            <>
+                <div className="w-full h-full">
+                    <Loader size={20} />
+                </div>
+            </>
+        )
+    }
+
+
     return (
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
-                <div className="mb-1 flex flex-col gap-5 mt-5">
+                <div className="mb-1 flex flex-col gap-5">
                     <div className="flex md:flex-row flex-col gap-3">
                         {user.photo ?
                             <div className="flex w-32 h-32">
@@ -240,7 +267,7 @@ export default function ProfileInfo() {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Select Card/Document to Upload
                                 </p>
-                                <SelectField options={documentOptions} label="Document" errors={customError} selectedOption={handleSelectedDocument} />
+                                <SelectField options={documentOptions} value={uploadedIDData?.name} label="Document" errors={customError} selectedOption={handleSelectedDocument} />
                             </div>
                         </div>
 
@@ -248,7 +275,7 @@ export default function ProfileInfo() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Card/Document Number
                             </p>
-                            <Input type="text" name="cardNumber" register={registerUpload} errors={errorsUpload} rules={{ required: 'Document Number is required' }} placeholder="Enter card Number" />
+                            <Input type="text" name="cardNumber" value={uploadedIDData?.cardNumber} register={registerUpload} errors={errorsUpload} rules={{ required: 'Document Number is required' }} placeholder="Enter card Number" />
                         </div>
 
 
@@ -257,14 +284,14 @@ export default function ProfileInfo() {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Issue Date
                                 </p>
-                                <Input name="issueDate" register={registerUpload} errors={errorsUpload} rules={{ required: 'Issue Date is required' }} type="date" placeholder="Choose the issue date" />
+                                <Input name="issueDate" register={registerUpload} value={uploadedIDData?.issueDate} errors={errorsUpload} rules={{ required: 'Issue Date is required' }} type="date" placeholder="Choose the issue date" />
                             </div>
 
                             <div className="flex flex-col w-full gap-6">
                                 <p className="-mb-3 text-mobiFormGray">
                                     Expiry Date
                                 </p>
-                                <Input name="expiryDate" register={registerUpload} errors={errorsUpload} rules={{ required: 'Expiry Date is required' }} type="date" placeholder="Choose the expiry date" />
+                                <Input name="expiryDate" register={registerUpload} value={uploadedIDData?.expiryDate} errors={errorsUpload} rules={{ required: 'Expiry Date is required' }} type="date" placeholder="Choose the expiry date" />
                             </div>
                         </div>
 

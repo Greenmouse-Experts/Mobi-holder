@@ -27,7 +27,8 @@ export default function IndividualSignUp() {
             navigateTo: "/verify-email",
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
-            },
+                localStorage.setItem('email', JSON.stringify(data.email));
+           },
             onError: () => {
                 setIsLoading(false)
             }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Input({
     icon,
@@ -8,19 +8,36 @@ export default function Input({
     name,
     disabled,
     disableFutureDates,
-    value,
-    options = [], // For select input
     register,
     rules,
     errors,
-    onChange
+    watch, // Watch all form values
+    setValue, // Set value manually
+    options = [], // For select input
+    value = "", // Default value if nothing is passed
+    onChange,
 }) {
+    const [inputValue, setInputValue] = useState(value); // Local state for input value
     const [passwordOpen, setPasswordOpen] = useState(false);
-    const [inputValue, setInputValue] = useState(value || "");
+
+    // Update input value if "watch" is passed
+    const watchAll = watch ? watch() : {}; // Ensure watch is optional
+    const inputWatchValue = watchAll?.[name]; // Get the value for this specific input
+
+    useEffect(() => {
+        if (inputWatchValue !== undefined) {
+            setInputValue(inputWatchValue); // Sync value with form state
+        }
+    }, [inputWatchValue]);
 
     const handleChange = (e) => {
-        setInputValue(e.target.value);
-        if (onChange) onChange(e.target.value);
+        const newValue = e.target.value;
+        if (setValue) {
+            setValue(name, newValue); // Update form state if setValue is passed
+        } else {
+            setInputValue(newValue); // Update local state if no setValue
+        }
+        if (onChange) onChange(newValue); // Trigger onChange if provided
     };
 
     return (
@@ -32,7 +49,7 @@ export default function Input({
                     <select
                         className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all text-base px-3 py-3 rounded-[7px]"
                         {...register(name, rules)}
-                        value={inputValue}
+                        value={inputValue} // Controlled value for select input
                         onChange={handleChange}
                         disabled={disabled}
                     >
@@ -45,13 +62,12 @@ export default function Input({
                     </select>
                 ) : (
                     <input
-                        type={type === "password" ? (passwordOpen ? "text" : type) : type}
+                        type={type === "password" ? (passwordOpen ? "text" : "password") : type}
                         max={disableFutureDates ? new Date().toISOString().split("T")[0] : null}
                         placeholder={placeholder}
                         className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
-                        style={{ borderColor: "transparent", border: "0px !important" }}
                         {...register(name, rules)}
-                        value={value}
+                        value={inputValue} // Controlled value for the input field
                         onChange={handleChange}
                         autoComplete="off"
                         disabled={disabled}
@@ -67,6 +83,7 @@ export default function Input({
                     />
                 )}
             </div>
+
             {errors?.[name] && <p style={{ color: "red" }} className="-mt-2">{errors[name]?.message}</p>}
         </>
     );

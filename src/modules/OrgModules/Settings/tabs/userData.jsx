@@ -7,9 +7,17 @@ import { Button } from "@material-tailwind/react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function UserData() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [isLoading, setIsLoading] = useState(false);
     const user = useSelector((state) => state.orgData.orgData);
+    const { register, handleSubmit, setValue, watch, formState: { errors } } =
+        useForm({
+            defaultValues: {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
+                email: user.email,
+            },
+        });
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { mutate } = useApiMutation();
 
@@ -51,7 +59,9 @@ export default function UserData() {
                         <p className="-mb-3 text-mobiFormGray">
                             First Name
                         </p>
-                        <Input type="text" value={user.firstName} name="firstName" register={register}
+                        <Input type="text" name="firstName" register={register}
+                            watch={watch}
+                            setValue={setValue}
                             rules={{ required: 'firstName is required' }} errors={errors} placeholder="First Name" />
                     </div>
 
@@ -59,7 +69,9 @@ export default function UserData() {
                         <p className="-mb-3 text-mobiFormGray">
                             Last Name
                         </p>
-                        <Input type="text" value={user.lastName} name="lastName" register={register}
+                        <Input type="text" name="lastName" register={register}
+                            watch={watch}
+                            setValue={setValue}
                             rules={{ required: 'Last Name is required' }} errors={errors} placeholder="Last Name" />
                     </div>
                 </div>
@@ -67,17 +79,21 @@ export default function UserData() {
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
-                           User Phone Number
+                            User Phone Number
                         </p>
-                        <Input name="phoneNumber" value={user.phoneNumber} register={register}
+                        <Input name="phoneNumber" register={register}
+                            watch={watch}
+                            setValue={setValue}
                             rules={{ required: 'Phone Number is required' }} errors={errors} type="text" placeholder="Phone Number" />
                     </div>
 
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
-                           User Email
+                            User Email
                         </p>
-                        <Input type="text" name="email" value={user.email} register={register}
+                        <Input type="text" name="email" register={register}
+                            watch={watch}
+                            setValue={setValue}
                             rules={{ required: 'Email is required' }} errors={errors} placeholder="Email" />
                     </div>
                 </div>

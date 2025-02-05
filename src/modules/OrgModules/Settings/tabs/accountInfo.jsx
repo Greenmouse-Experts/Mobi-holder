@@ -9,10 +9,16 @@ import { Button } from "@material-tailwind/react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function AccountInfo() {
-    const { register } = useForm();
+    const user = useSelector((state) => state.orgData.orgData);
+    const { register, setValue, watch, formState: { errors } } =
+        useForm({
+            defaultValues: {
+                mobiholderId: user.mobiHolderId,
+                dateJoined: dateFormat(user.createdAt, "dd-MM-yyyy"),
+            },
+        });
     const [isLoading, setIsLoading] = useState(false);
     const [errorAccess, setErrorAccess] = useState(false);
-    const user = useSelector((state) => state.orgData.orgData);
     const dispatch = useDispatch();
     const { mutate } = useApiMutation();
     const [payload, setPayload] = useState(user);
@@ -51,7 +57,7 @@ export default function AccountInfo() {
                     <p className="-mb-3 text-mobiFormGray">
                         MobiHolder ID
                     </p>
-                    <Input type="text" value={user.mobiHolderId} register={register} name="mobiholderId" disabled placeholder="MobiHolder ID" />
+                    <Input type="text" register={register} name="mobiholderId" disabled placeholder="MobiHolder ID" />
                 </div>
             </div>
 
@@ -71,7 +77,7 @@ export default function AccountInfo() {
                     <p className="-mb-3 text-mobiFormGray">
                         Date Joined
                     </p>
-                    <Input disabled name="dateJoined" value={dateFormat(user.createdAt, "dd-MM-yyyy")} register={register} type="text" placeholder="Email" />
+                    <Input disabled name="dateJoined" register={register} type="text" placeholder="Email" />
                 </div>
             </div>
             <div className="flex">

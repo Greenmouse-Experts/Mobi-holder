@@ -28,6 +28,7 @@ export default function OrgAdminSetUp() {
         onSuccess: (data) => {
             dispatch(setOrg(data.data.data));
             toast.success(data.data.message);
+            localStorage.setItem('email', JSON.stringify(userData.email));
             navigate('/verify-email');
         },
         onError: (error) => {

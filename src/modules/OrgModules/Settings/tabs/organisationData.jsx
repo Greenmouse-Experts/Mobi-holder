@@ -9,20 +9,35 @@ import SelectField from "../../../../components/SelectField";
 import { toast } from "react-toastify";
 import MultipleSelect from "../../../../components/MultipleSelect";
 import { setOrg } from "../../../../reducers/organisationSlice";
+import Loader from "../../../../components/Loader";
 
 export default function OrganisationData() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { register: registerUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
+    let user = useSelector((state) => state.orgData.orgData);
+
+    const { register, handleSubmit, setValue, watch, formState: { errors } } =
+        useForm({
+            defaultValues: {
+                companyName: user.companyName,
+                phoneNumber: user.phoneNumber,
+                companyEmail: user.companyEmail,
+                address: typeof user.companyAddress === "string" ? JSON.parse(user.companyAddress).street : user.companyAddress.street,
+                country: typeof user.companyAddress === "string" ? JSON.parse(user.companyAddress).country : user.companyAddress.country,
+                state: typeof user.companyAddress === "string" ? JSON.parse(user.companyAddress).state : user.companyAddress.state,
+            },
+        });
+    const { register: registerUpload, setValue: setValueUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
+    const [pageLoader, setLoader] = useState(true);
     const [isLoadingDocuments, setIsLoadingDocuments] = useState(false);
     const [files, setFiles] = useState([]);
     const [documentSelected, setSelectedDocument] = useState(null);
     const [customError, setCustomError] = useState(false);
     const dispatch = useDispatch();
-    let user = useSelector((state) => state.orgData.orgData);
     const { mutate } = useApiMutation();
     const [payload, setPayload] = useState({ natureOfOrganization: user.natureOfOrganization });
     const [errorAccess, setErrorAccess] = useState(false);
+    const [uploadedIDData, setUploadedIDData] = useState(null);
+
 
     let userCopy = { ...user };
     if (typeof userCopy.companyAddress === "string") {
@@ -33,11 +48,8 @@ export default function OrganisationData() {
 
     const documentOptions = [
         {
-            name: 'NIN'
+            name: 'Company Registration Document'
         },
-        {
-            name: 'Drivers Licence'
-        }
     ];
 
 
@@ -51,7 +63,7 @@ export default function OrganisationData() {
     }
 
     const handleDrop = (data) => {
-        setFiles((prevFiles) => [...prevFiles, data]);
+        setFiles((prevFiles) => [data]);
     }
 
 
@@ -96,8 +108,7 @@ export default function OrganisationData() {
             setIsLoadingDocuments(true);
             const payload = {
                 name: documentSelected,
-                front: files[0],
-                back: files[1],
+                documentUrl: files[0],
                 ...data
             }
             mutate({
@@ -125,9 +136,19 @@ export default function OrganisationData() {
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                console.log(response.data)
+                const data = response.data.data;
+                if (data) {
+                    setUploadedIDData(data);
+                    setSelectedDocument(uploadedIDData.name)
+                    setFiles([uploadedIDData.documentUrl]);
+                    setLoader(false)
+                }
+                else {
+                    setLoader(false)
+                }
             },
             onError: () => {
+                setLoader(false)
             }
         });
     }
@@ -141,6 +162,19 @@ export default function OrganisationData() {
     }
 
 
+
+
+    if (pageLoader) {
+        return (
+            <>
+                <div className="w-full h-full">
+                    <Loader size={20} />
+                </div>
+            </>
+        )
+    }
+
+
     return (
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
@@ -149,7 +183,9 @@ export default function OrganisationData() {
                         <p className="-mb-3 text-mobiFormGray">
                             Company Name
                         </p>
-                        <Input type="text" value={user.companyName} name="companyName" register={register}
+                        <Input type="text" name="companyName" register={register}
+                            watch={watch}
+                            setValue={setValue}
                             rules={{ required: 'Company Name is required' }} errors={errors} placeholder="Company Name" />
                     </div>
 
@@ -158,7 +194,10 @@ export default function OrganisationData() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Company Phone Number
                             </p>
-                            <Input type="text" value={user.phoneNumber} name="phoneNumber" register={register}
+                            <Input type="text"
+                                watch={watch}
+                                setValue={setValue}
+                                name="phoneNumber" register={register}
                                 rules={{ required: 'Phone Number is required' }} errors={errors} placeholder="Phone Number" />
                         </div>
 
@@ -166,7 +205,10 @@ export default function OrganisationData() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Company Email
                             </p>
-                            <Input type="text" name="companyEmail" value={user.companyEmail} register={register}
+                            <Input type="text" name="companyEmail"
+                                watch={watch}
+                                setValue={setValue}
+                                register={register}
                                 rules={{ required: 'Company Email is required' }} errors={errors} placeholder="Email" />
                         </div>
                     </div>
@@ -176,7 +218,10 @@ export default function OrganisationData() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Company Address
                             </p>
-                            <Input type="text" name="address" value={user.companyAddress.street} register={register}
+                            <Input type="text" name="address"
+                                watch={watch}
+                                setValue={setValue}
+                                register={register}
                                 rules={{ required: 'Company Address is required' }} errors={errors} placeholder="Enter your address" />
                         </div>
                     </div>
@@ -186,7 +231,10 @@ export default function OrganisationData() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Country
                             </p>
-                            <Input icon="human.svg" type="text" value={user.companyAddress.country} name="country" register={register}
+                            <Input icon="human.svg" type="text"
+                                watch={watch}
+                                setValue={setValue}
+                                name="country" register={register}
                                 rules={{ required: 'Country is required' }} errors={errors} placeholder="Choose your country" />
                         </div>
 
@@ -194,12 +242,14 @@ export default function OrganisationData() {
                             <p className="-mb-3 text-mobiFormGray">
                                 State
                             </p>
-                            <Input icon="human.svg" type="text" name="state" value={user.companyAddress.state} register={register}
+                            <Input icon="human.svg" type="text" name="state"
+                                watch={watch}
+                                setValue={setValue} register={register}
                                 rules={{ required: 'State is required' }} errors={errors} placeholder="Choose your state" />
                         </div>
                     </div>
 
-                    
+
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Access Type
@@ -232,7 +282,7 @@ export default function OrganisationData() {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Select Card/Document to Upload
                                 </p>
-                                <SelectField options={documentOptions} label="Document" errors={customError} selectedOption={handleSelectedDocument} />
+                                <SelectField value={uploadedIDData?.name} options={documentOptions} label="Document" errors={customError} selectedOption={handleSelectedDocument} />
                             </div>
                         </div>
 
@@ -240,31 +290,25 @@ export default function OrganisationData() {
                             <p className="-mb-3 text-mobiFormGray">
                                 Card/Document Number
                             </p>
-                            <Input type="text" name="cardNumber" register={registerUpload} errors={errorsUpload} rules={{ required: 'Document Number is required' }} placeholder="Enter card Number" />
+                            <Input type="text" name="registrationNumber"
+                                value={uploadedIDData?.registrationNumber} register={registerUpload} errors={errorsUpload} rules={{ required: 'Document Number is required' }} placeholder="Enter card Number" />
                         </div>
 
 
                         <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                             <div className="flex flex-col w-full gap-6">
                                 <p className="-mb-3 text-mobiFormGray">
-                                    Issue Date
+                                    Company Registration Date
                                 </p>
-                                <Input name="issueDate" register={registerUpload} errors={errorsUpload} rules={{ required: 'Issue Date is required' }} type="date" placeholder="Choose the issue date" />
-                            </div>
-
-                            <div className="flex flex-col w-full gap-6">
-                                <p className="-mb-3 text-mobiFormGray">
-                                    Expiry Date
-                                </p>
-                                <Input name="expiryDate" register={registerUpload} errors={errorsUpload} rules={{ required: 'Expiry Date is required' }} type="date" placeholder="Choose the expiry date" />
+                                <Input name="registrationDate" value={uploadedIDData?.registrationDate} register={registerUpload} errors={errorsUpload} rules={{ required: 'Issue Date is required' }} type="date" placeholder="Choose the issue date" />
                             </div>
                         </div>
 
 
                         <div className="w-full flex flex-col gap-2">
-                            <div className="flex flex-col md:w-1/2 w-full gap-6">
+                            <div className="flex flex-col w-full gap-6">
                                 <p className="-mb-3 text-mobiFormGray">
-                                    Upload Documents
+                                    Upload Company Registration Document(s)
                                 </p>
                                 <DropZone onUpload={handleDrop} />
                             </div>
