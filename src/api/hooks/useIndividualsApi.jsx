@@ -1,0 +1,20 @@
+import useApiMutation from "./useApiMutation";
+
+export const useIndividualApi = () => {
+    const { mutate } = useApiMutation();
+
+    const getIndividualsData = () => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/users/all/individuals`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => resolve(response.data.data),
+                onError: (error) => reject(error)
+            });
+        });
+    };
+
+    return { getIndividualsData };
+};

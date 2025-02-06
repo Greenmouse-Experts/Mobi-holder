@@ -19,6 +19,7 @@ export default function AdminLogin() {
         mutationFn: (userData) => apiClient.post('/api/admins/login?URL=https://mobiholder.victornwadinobi.com', userData),
         onSuccess: (data) => {
             dispatch(setUser(data.data.data));
+            localStorage.setItem("userToken", data.data.token);
             toast.success(data.data.message);
             navigate('/superadmin/dashboard');
         },
