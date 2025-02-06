@@ -14,6 +14,7 @@ import Loader from "../../../../components/Loader";
 export default function IDCardsPage() {
     const user = useSelector((state) => state.userData.data);
     const [orgCards, setOrgCards] = useState([]);
+    const [personalCards, setPersonalCards] = useState([]);
     const [organisations, setOrganisations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
@@ -35,6 +36,23 @@ export default function IDCardsPage() {
         });
     }
 
+
+    const getPersonalCards = () => {
+        mutate({
+            url: "/api/idcards/personal/cards",
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setPersonalCards(response.data.data);
+                setIsLoading(false);
+            },
+            onError: () => {
+            }
+        });
+    }
+
+
     const getOrganisations = (params) => {
         mutate({
             url: `/api/memberships-subscriptions/individual/membership${params}`,
@@ -53,10 +71,12 @@ export default function IDCardsPage() {
 
     useEffect(() => {
         getIDCards();
+        getPersonalCards();
         getOrganisations("");
     }, []);
 
     const TableHeaders = ["Organisation", "ID Card", "Card Number", "Role", "Expiry Date", "Status", "Action"];
+    const NewTableHeaders = ["Organisation", "Card Number", "Role", "Issued Date", "Expiry Date", "Action"];
 
     return (
         <>
@@ -90,7 +110,7 @@ export default function IDCardsPage() {
                         <Link to={'/app/add-card'} className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between">
                             <div className="flex flex-col items-center w-full gap-3">
                                 <span className={`flex gap-1`}>
-                                    Add ID Card
+                                    Add Your Card
                                 </span>
                                 <svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="27" cy="27" r="27" fill="#2A2D4B" />
@@ -142,15 +162,55 @@ export default function IDCardsPage() {
                                         </td>
                                     </tr>
                                     :
-                                <tr>
-                                    <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
-                                        NO ID Cards Available
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            NO ID Cards Available
+                                        </td>
+                                    </tr>
                             }
                         </Table>
                     </div>
 
+
+
+
+
+                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                        <Table title="Today" filter subTitle={<span>Personal ID Cards</span>} exportData
+                            tableHeader={NewTableHeaders}>
+                            {personalCards.length > 0 ?
+                                personalCards.map((data, index) => (
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.issuingOrganization}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.issuedDate, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</td>
+                                        <td className="px-6 py-3 cursor-pointer">
+                                            <span className="flex w-full cursor-pointer">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={NewTableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={NewTableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                            NO ID Cards Available
+                                        </td>
+                                    </tr>
+                            }
+                        </Table>
+                    </div>
                 </div>
             </div>
         </>

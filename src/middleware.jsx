@@ -16,4 +16,15 @@ const ScrollToTop = ({ children }) => {
     return children;
 };
 
+{/*
+                {
+                    path: "/app/id-cards",
+                    name: "All ID Cards"
+                },
+                {
+                    path: "/app/id-cards/generate-card",
+                    name: "Generate ID Card"
+                }
+                    */}
+
 export default ScrollToTop; 

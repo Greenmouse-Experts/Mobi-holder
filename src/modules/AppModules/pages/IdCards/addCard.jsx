@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "../../../../components/Input";
 import DropZone from "../../../../components/DropZone";
 import { Button } from "@material-tailwind/react";
@@ -12,72 +12,12 @@ export default function AddCard() {
     const user = useSelector((state) => state.userData.data);
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
-    const [fileLoading, setFileLoading] = useState(false);
     const [files, setFiles] = useState([]);
     const [backFiles, setBackFiles] = useState([]);
-    const [organisations, setOrganisations] = useState([]);
-    const [backUpOrganisation, setBackUp] = useState([]);
-    const [designation, setDesignation] = useState("");
-    const [templates, setTemplates] = useState([]);
 
     const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
-
-
-    const getAllOrganisations = () => {
-        mutate({
-            url: `/api/memberships-subscriptions/individual/membership`,
-            method: "GET",
-            headers: true,
-            hideToast: true,
-            onSuccess: (response) => {
-                setBackUp(response.data.data);
-                const orgs = response.data.data.map((org) => {
-                    return {
-                        label: org.organization.companyName,
-                        value: org.organization.id
-                    }
-                });
-                setOrganisations(orgs);
-            },
-            onError: () => {
-            }
-        });
-    }
-
-
-    useEffect(() => {
-        getAllOrganisations();
-    }, []);
-
-
-    const handleSelectedOrganisation = (value) => {
-        const member = backUpOrganisation.find(m => m.organizationId === value);
-        if (member) {
-            setDesignation(member.designation);
-            setValue("designation", member.designation, { shouldValidate: true });
-        } else {
-            setDesignation("");
-            setValue("designation", "", { shouldValidate: true });
-        }
-         mutate({
-            url: `/api/idcards/get/default/template?organizationId=${value}`,
-            method: "GET",
-            headers: true,
-            hideToast: true,
-            onSuccess: (response) => {
-                const templates = [{
-                    label: response.data.data.name,
-                    value: response.data.data.id
-                }];
-                setTemplates(templates);
-            },
-            onError: () => {
-            }
-        });
-    }
-
 
 
     const handleDrop = (data) => {
@@ -93,11 +33,12 @@ export default function AddCard() {
 
     const createCard = (data) => {
         setIsLoading(true);
+        const payload = { ...data, scanIDCard: { frontIdCard: files[0], backIdCard: backFiles[0] } }
         mutate({
-            url: "/api/idcards/create/card",
+            url: "/api/idcards/personal/cards",
             method: "POST",
             headers: true,
-            data: data,
+            data: payload,
             onSuccess: (response) => {
                 navigate(-1);
                 setIsLoading(false);
@@ -119,7 +60,7 @@ export default function AddCard() {
                     <Header mobile data={user} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Add New Card</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Add A Card</p>
                             <p className="text-base">Make your existing card digital</p>
                         </div>
                     </div>
@@ -131,28 +72,39 @@ export default function AddCard() {
                                 <div className="mb-1 flex flex-col gap-10 mt-5">
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            Organisation
+                                            Issuing Organisation
                                         </p>
-                                        <Input type="select" name="organizationId"
+                                        <Input type="text" name="issuingOrganization"
                                             register={register}
-                                            rules={{ required: 'Organization is required' }} errors={errors} onChange={(value) => handleSelectedOrganisation(value)} options={organisations} placeholder="Select Organisation" />
+                                            rules={{ required: 'Organization is required' }} errors={errors} placeholder="Enter Organisation Name" />
                                     </div>
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Role
                                         </p>
-                                        <Input type="text" name="designation" register={register} disabled value={designation}
+                                        <Input type="text" name="designation" register={register}
                                             rules={{ required: 'Role in Organisation is required' }} errors={errors} placeholder="Role in Organisation" />
                                     </div>
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
-                                            Card Template
+                                            Card Number
                                         </p>
-                                        <Input type="select" name="templateId"
+                                        <Input type="text" name="cardNumber"
                                             register={register}
-                                            rules={{ required: 'Card Template is required' }} errors={errors} options={templates} placeholder="Select Template" />
+                                            rules={{ required: 'Card Number is required' }} errors={errors} placeholder="Enter Card Number" />
+                                    </div>
+
+                                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                        <div className="flex flex-col w-full gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Issued Date
+                                            </p>
+                                            <Input type="date" name="issuedDate"
+                                                register={register}
+                                                rules={{ required: 'Expiry Date is required' }} errors={errors} placeholder="Enter expiry date" />
+                                        </div>
                                     </div>
 
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">

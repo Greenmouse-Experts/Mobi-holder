@@ -29,6 +29,7 @@ import Dashboard from '../modules/AppModules/Dashboard';
 import Notification from '../modules/AppModules/Notifications';
 import Settings from '../modules/AppModules/Settings';
 import SubOrganisationLists from "../modules/AppModules/pages/Subscriptions/organisationLists";
+import AddNewCard from "../modules/AppModules/pages/IdCards/newCard";
 
 const UserRoutes = [
                   <Route path="dashboard" element={<Dashboard />} />,
@@ -59,7 +60,8 @@ const UserRoutes = [
                   <Route path="ticket-requests/:id" element={<TicketRequests />} />,
                   <Route path="event-gallery" element={<EventGallery />} />,
                   <Route path="order-tickets/:id" element={<BuyTickets />} />,
-                  <Route path="event-history" element={<EventHistory />} />
+                  <Route path="event-history" element={<EventHistory />} />,
+                  <Route path="id-cards/generate-card" element={<AddNewCard />} />
 ];
 
 export default UserRoutes
