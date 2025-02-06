@@ -10,17 +10,17 @@ import { FaTimes } from "react-icons/fa";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { useNavigate } from "react-router-dom";
 
-const RoundedCards = ({ bgColor, selectBg }) => {
-    const handleBg = (data) => {
-        selectBg(data)
-    };
-
+const RoundedCards = ({ bgColor, selectBg, isSelected }) => {
     return (
-        <div className="p-3 rounded-full cursor-pointer"
-            onClick={() => handleBg(`${bgColor}`)}
-            style={{ backgroundColor: bgColor }}></div>
-    )
-}
+        <div
+            className={`p-3 rounded-full border cursor-pointer border-2 transition-transform ${isSelected ? "border-black scale-110" : " border-gray-400"
+                }`}
+            onClick={() => selectBg(bgColor)}
+            style={{ backgroundColor: bgColor }}
+        ></div>
+    );
+};
+
 
 export default function CardStructure() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -145,17 +145,36 @@ export default function CardStructure() {
                                     </p>
                                 </div>
                                 <div className="flex gap-6">
-                                    <div className={`flex p-5 w-1/12 h-[60px] rounded-lg`} style={{ backgroundColor: selectedBgColor }}>
+                                    <div className={`flex p-5 w-1/12 h-[60px] border rounded-lg`} style={{ backgroundColor: selectedBgColor }}>
 
                                     </div>
                                     <div className="flex gap-5 px-4">
-                                        {colorsArray.map((color, index) => (
-                                            <div className="flex flex-col gap-2" key={index}>
-                                                <RoundedCards bgColor={color.color1} selectBg={handleSelectedBg} />
-                                                <RoundedCards bgColor={color.color2} selectBg={handleSelectedBg} />
+                                        <div className="flex flex-col gap-4">
+                                            {/* Selected Color Preview */}
+                                            <div className="flex gap-5">
+                                                {colorsArray.map((color, index) => (
+                                                    <div className="flex flex-col gap-2" key={index}>
+                                                        <RoundedCards
+                                                            bgColor={color.color1}
+                                                            selectBg={handleSelectedBg}
+                                                            isSelected={selectedBgColor === color.color1}
+                                                        />
+                                                        <RoundedCards
+                                                            bgColor={color.color2}
+                                                            selectBg={handleSelectedText}
+                                                            isSelected={selectedBgColor === color.color2}
+                                                        />
+                                                    </div>
+                                                ))}
+                                                {/* Custom Color Picker */}
+                                                <input
+                                                    type="color"
+                                                    value={selectedBgColor}
+                                                    onChange={(e) => handleSelectedBg(e.target.value)}
+                                                    className="w-8 h-8 border cursor-pointer"
+                                                />
                                             </div>
-                                        ))}
-                                    </div>
+                                        </div>                                    </div>
                                 </div>
 
 
@@ -165,17 +184,36 @@ export default function CardStructure() {
                                     </p>
                                 </div>
                                 <div className="flex gap-6">
-                                    <div className={`flex p-5 w-1/12 h-[60px] rounded-lg`} style={{ backgroundColor: selectedTextColor }}>
+                                    <div className={`flex p-5 w-1/12 h-[60px] border rounded-lg`} style={{ backgroundColor: selectedTextColor }}>
 
                                     </div>
                                     <div className="flex gap-5 px-4">
-                                        {colorsArray.map((color, index) => (
-                                            <div className="flex flex-col gap-2" key={index}>
-                                                <RoundedCards bgColor={color.color1} selectBg={handleSelectedText} />
-                                                <RoundedCards bgColor={color.color2} selectBg={handleSelectedText} />
+                                        <div className="flex flex-col gap-4">
+                                            {/* Selected Color Preview */}
+                                            <div className="flex gap-5">
+                                                {colorsArray.map((color, index) => (
+                                                    <div className="flex flex-col gap-2" key={index}>
+                                                        <RoundedCards
+                                                            bgColor={color.color1}
+                                                            selectBg={handleSelectedText}
+                                                            isSelected={selectedTextColor === color.color1}
+                                                        />
+                                                        <RoundedCards
+                                                            bgColor={color.color2}
+                                                            selectBg={handleSelectedText}
+                                                            isSelected={selectedTextColor === color.color2}
+                                                        />
+                                                    </div>
+                                                ))}
+                                                {/* Custom Color Picker */}
+                                                <input
+                                                    type="color"
+                                                    value={selectedTextColor}
+                                                    onChange={(e) => handleSelectedText(e.target.value)}
+                                                    className="w-8 h-8 border cursor-pointer"
+                                                />
                                             </div>
-                                        ))}
-                                    </div>
+                                        </div>                                    </div>
                                 </div>
 
 

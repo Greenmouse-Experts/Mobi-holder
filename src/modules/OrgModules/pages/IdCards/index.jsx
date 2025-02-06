@@ -106,7 +106,7 @@ export default function OrgIDCardsPage() {
         if (card) {
             return <Badge status={card.status} />
         }
-        return <Button className="bg-mobiPink w-full px-1 rounded-full text-xs" onClick={() => navigate(`/org/cards/createUser/${card.individual.id}`)} >
+        return <Button className="bg-mobiPink w-full px-1 rounded-full text-xs" onClick={() => navigate(`/org/cards/createUser/${id}`)} >
             <span className="text-xs normal-case">Create ID</span>
         </Button>
     }
@@ -284,7 +284,7 @@ export default function OrgIDCardsPage() {
                                         <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.memberId}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.dateJoined, "dd-MM-yyyy")}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.dateJoined ? dateFormat(data.dateJoined, "dd-MM-yyyy") : '---'}</td>
                                         <td className="px-3 py-3 text-mobiTableText">
                                             {renderCardStatus(data.individual.id)}
                                         </td>
