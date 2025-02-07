@@ -188,7 +188,7 @@ export default function OrgInfoSetUp({ moveNext }) {
 
                                         <div className="flex flex-col items-center gap-3">
                                             <p className="-mb-3 text-mobiFormGray">
-                                                Upload Profile Photo
+                                                Upload Organization Logo
                                             </p>
                                             <label htmlFor="profile-upload" className="relative cursor-pointer">
                                                 <div className="w-28 h-28 rounded-full border-2 border-gray-600 flex items-center justify-center overflow-hidden bg-gray-900 hover:opacity-80 transition">
@@ -200,7 +200,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                                 </div>
                                                 <input id="profile-upload" type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
                                             </label>
-                                            <p className="text-gray-400 text-sm">{!isLoadingUpload ? 'Click to set profile picture' : 'Uploading profile picture'}</p>
+                                            <p className="text-gray-400 text-sm">{!isLoadingUpload ? 'Click to set organization logo' : 'Uploading organization logo'}</p>
                                         </div>
                                     </div>
 
