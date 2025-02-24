@@ -7,9 +7,14 @@ import Badge from "../../../../components/Badge";
 import organisation from "../../../../assets/organisation.svg";
 import calendar from "../../../../assets/calendar.svg";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function IndividualSubscriptions() {
     const user = useSelector((state) => state.userData.data);
+    const [organisations, setOrganisations] = useState([]);
+
+    const { mutate } = useApiMutation();
 
     const TableHeaders = ["Organisation", "Plan Name", "Validity", "Due Date", "Status", "Action"];
     const TableData = [
@@ -42,6 +47,14 @@ export default function IndividualSubscriptions() {
             status: 'active'
         },
     ];
+
+
+    const getSubscriptions = () => {}
+
+
+    useEffect(() => {
+        getSubscriptions();
+    }, []);
 
 
     return (

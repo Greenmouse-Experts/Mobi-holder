@@ -29,6 +29,7 @@ import AddSubscriptionPlan from '../modules/OrgModules/pages/Subscriptions/addSu
 import EditSubscriptionPlan from '../modules/OrgModules/pages/Subscriptions/editSubscriptionPlan';
 import SubscriptionHistory from '../modules/OrgModules/pages/Subscriptions/subscriptionHistory';
 import PaymentGateway from "../modules/OrgModules/pages/Subscriptions/paymentGateway";
+import UpdateCard from "../modules/OrgModules/pages/IdCards/updateCard";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -57,6 +58,7 @@ const OrgRoutes = [
     <Route path="cards/structure" element={<CardStructure />} />,
     <Route path="cards/createUser/:id" element={<CreateUserCard />} />,
     <Route path="card/viewCard/:id" element={<PreviewCard />} />,
+    <Route path="card/updateCard/:id" element={<UpdateCard />} />,
     <Route path="membership/updateMember/:id" element={<UpdateMember />} />,
     <Route path="membership/add" element={<InviteMember />} />,
     <Route path="notification" element={<OrgNotification />} />,

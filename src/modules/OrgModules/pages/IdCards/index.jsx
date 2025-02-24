@@ -135,14 +135,14 @@ export default function OrgIDCardsPage() {
                         />
                         <StatCard
                             cronTop
-                            number={12}
+                            number={memberCards.length}
                             label="Total ID Cards"
                             iconColor="bg-mobiOrange"
                             IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px' }} />}
                             colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                         />
                         <StatCard
-                            number={21}
+                            number={templates.length}
                             label="ID Card Category"
                             iconColor="bg-mobiSkyCloud"
                             IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px' }} />}

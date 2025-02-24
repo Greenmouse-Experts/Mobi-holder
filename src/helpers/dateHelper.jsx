@@ -16,3 +16,9 @@ export const todayDate = () => {
 
     return formattedDate;
 };
+
+export const dateInput = (dateVal) => {
+    const formattedDate = dateVal.split("T")[0];
+
+    return formattedDate
+}
