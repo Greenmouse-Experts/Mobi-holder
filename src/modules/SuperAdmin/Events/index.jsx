@@ -1,11 +1,101 @@
-import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import Badge from "../../../components/Badge";
 import Table from "../../../components/Tables";
 import Header from "../header";
 import { useNavigate } from "react-router-dom";
+import useModal from "../../../hooks/modal";
+import ReusableModal from "../../../components/ReusableModal";
+import { useForm } from "react-hook-form";
+import useApiMutation from "../../../api/hooks/useApiMutation";
+import { useEffect, useState } from "react";
+import Input from "../../../components/Input";
+
+
+
+
+
+
+
+
+
+const EventCategoryForm = ({ closeModal, reload }) => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { mutate } = useApiMutation();
+
+
+    const createCategory = (data) => {
+        mutate({
+            url: "/api/admins/event/category/create",
+            method: "PUT",
+            headers: true,
+            data: data,
+            onSuccess: (response) => {
+                closeModal();
+                reload();
+                setIsLoading(false);
+            },
+            onError: () => {
+                setIsLoading(false);
+            }
+        });
+    }
+
+
+
+    return (
+        <>
+            <div className="w-full flex max-h-[90vh] flex-col px-3 py-6 gap-3 -mt-3">
+                <div className="flex gap-5">
+                    <div className="flex flex-col justify-start">
+                        <h2 className="font-[500]">Create Event Category</h2>
+                    </div>
+                </div>
+                <form onSubmit={handleSubmit(createCategory)}>
+                    <div className="flex flex-col gap-4 mt-7">
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Name of Category
+                            </p>
+                            <Input type="text" name="name" errors={errors} register={register}
+                                placeholder="Enter name of category" />
+                        </div>
+                        <div className="w-full flex justify-center mt-5">
+                            <Button type="submit"
+                                disabled={isLoading}
+                                className="bg-mobiPink p-3 rounded-lg"
+                            >
+                                Create Category
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default function Events() {
     const navigate = useNavigate();
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
+    const { mutate } = useApiMutation();
+    const [eventCategories, setEventCategories] = useState([]);
+
     const TableHeaders = ["Event ID", "Event Name", "Organisers", "Entity Type", "Date Created", "Ticket Type", "Access Type", "Status", "Action"];
     const TableData = [
         {
@@ -50,6 +140,32 @@ export default function Events() {
         },
     ];
 
+
+
+    const handleReload = () => {
+        mutate({
+            url: `/api/admins/event/categories`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setEventCategories(response.data.data);
+            },
+            onError: () => {
+            }
+        });
+    }
+
+
+    const handleCreateCategory = (data) => {
+        openModal({
+            size: "sm",
+            content: <EventCategoryForm closeModal={closeModal} reload={handleReload} />
+        })
+    }
+
+
+
     return (
         <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
@@ -58,13 +174,29 @@ export default function Events() {
                     <Table title="" subTitle={<span>Created Events</span>} exportData
                         hasNumber
                         tableBtn={
-                            <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
-                                <span className="text-xs text-white">Newest First</span>
-                                <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M0.909424 6.9082L5.00033 10.9991L9.09124 6.9082" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </button>
+                            <>
+                                <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
+                                    <span className="text-xs text-white">Newest First</span>
+                                    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M0.909424 6.9082L5.00033 10.9991L9.09124 6.9082" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <Menu placement="bottom">
+                                    <MenuHandler>
+                                        <Button className="bg-mobiPink p-2 rounded-lg">
+                                            Event Category
+                                        </Button>
+                                    </MenuHandler>
+                                    <MenuList>
+                                        <MenuItem className="flex flex-col gap-3">
+                                            <span className="cursor-pointer" onClick={() => handleCreateCategory()}>
+                                                Create Categories
+                                            </span>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu>
+                            </>
                         }
                         tableHeader={TableHeaders}>
                         {TableData.map((data, index) => (
@@ -112,6 +244,18 @@ export default function Events() {
                     </Table>
                 </div>
             </div>
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
+
+
         </div>
     )
 }

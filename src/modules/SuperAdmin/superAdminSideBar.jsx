@@ -46,7 +46,7 @@ export default function SuperAdminSidebar({ mobile }) {
             openChildren: false
         },
         {
-            path: "/superadmin/events",
+            path: "",
             slug: "eventsVerification",
             name: "Events & Verification Logs",
             icon: <i className="mr-3">
@@ -55,7 +55,16 @@ export default function SuperAdminSidebar({ mobile }) {
                         stroke={`${activeNav === 'eventsVerification' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             </i>,
-            children: [],
+            children: [
+                {
+                    path: "/superadmin/events/categories",
+                    name: "Event Categories"
+                },
+                {
+                    path: "/superadmin/events",
+                    name: "View Events"
+                }
+            ],
             openChildren: false
         },
         {

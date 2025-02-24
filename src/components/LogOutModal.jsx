@@ -19,7 +19,7 @@ const LogOutModal = ({ closeModal }) => {
             onSuccess: (response) => {
                 dispatch(setUser(null));
                 dispatch(setOrg(null));
-                localStorage.removeItem('userToken');
+                localStorage.clear();
                 navigate('/login');
             },
         });
