@@ -22,3 +22,11 @@ export const dateInput = (dateVal) => {
 
     return formattedDate
 }
+
+
+export const timeInput = (dateVal) => {
+    const dateObj = new Date(dateVal);
+    const time = dateObj.toISOString().split("T")[1].slice(0, 5);
+
+    return time;
+}
