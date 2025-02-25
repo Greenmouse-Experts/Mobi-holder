@@ -53,13 +53,18 @@ export default function AddEvent() {
                                 <LocationEvent next={() => [setActiveTab((prev) => activeTab + 1), window.scrollTo({
                                     top: 0,
                                     behavior: 'smooth',
-                                })]} />
+                                })]}
+                                    back={() => [setActiveTab((prev) => activeTab - 1), window.scrollTo({
+                                        top: 0,
+                                        behavior: 'smooth',
+                                    })]} />
                             }
                             {activeTab === 3 &&
-                                <TicketEvent next={() => [setActiveTab((prev) => activeTab + 1), window.scrollTo({
-                                    top: 0,
-                                    behavior: 'smooth',
-                                })]} />
+                                <TicketEvent
+                                    back={() => [setActiveTab((prev) => activeTab - 1), window.scrollTo({
+                                        top: 0,
+                                        behavior: 'smooth',
+                                    })]} />
                             }
                         </div>
                     </div>

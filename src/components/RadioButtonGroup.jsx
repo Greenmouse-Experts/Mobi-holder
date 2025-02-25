@@ -14,7 +14,7 @@ const RadioButtonGroup = ({ options, selectedOption, select, className }) => {
                     <div className="flex w-full flex-col sm:flex-row items-center sm:space-x-2 space-y-2 sm:space-y-0" key={index}>
                         <label
                             className={`cursor-pointer flex justify-between items-center px-6 py-3 w-full bg-mobiRadioBg rounded-lg transition ${selectedOption === option.slug
-                                ? 'text-white border border-purple-700'
+                                ? 'border border-purple-700'
                                 : ''
                                 }`}
                             onClick={() => handleSelected(option.slug)}

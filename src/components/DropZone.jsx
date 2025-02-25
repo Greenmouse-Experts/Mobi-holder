@@ -2,19 +2,24 @@ import React, { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import useFileUpload from '../api/hooks/useFileUpload';
 
-export default function DropZone({ text, onUpload }) {
+export default function DropZone({ text, onUpload, multiple = true }) {
     const { uploadFiles, isLoadingUpload, errors } = useFileUpload();
 
     const onDrop = async (files) => {
+        if (!multiple && files.length > 1) {
+            alert("Only one file is allowed.");
+            return;
+        }
+
         await uploadFiles(files, (uploadedUrl) => {
-            onUpload(uploadedUrl);
+            onUpload(uploadedUrl)
         });
     };
-
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
         accept: 'image/*', // customize accepted file types
+        multiple, // Controls whether multiple files can be uploaded
     });
 
 
