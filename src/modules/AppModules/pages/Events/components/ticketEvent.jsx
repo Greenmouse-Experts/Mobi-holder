@@ -252,7 +252,7 @@ export default function TicketEvent({ back }) {
                                     placeholder="Additional Number of Available Tickets" />
                             </div>
 
-                            {selectedPlan === 'paid' &&
+                            {selectedPlan === 'Paid' &&
                                 <div className="flex flex-col w-full gap-6">
                                     <p className="-mb-3 text-mobiFormGray">
                                         Price of Ticket

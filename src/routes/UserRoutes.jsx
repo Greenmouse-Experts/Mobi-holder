@@ -6,7 +6,6 @@ import AddCard from '../modules/AppModules/pages/IdCards/addCard';
 import ViewCard from '../modules/AppModules/pages/IdCards/viewCard';
 import AddEvent from '../modules/AppModules/pages/Events/addEvent';
 import ViewEvent from '../modules/AppModules/pages/Events/viewEvent';
-import AddSubscription from '../modules/AppModules/pages/Memberships/organisationLists';
 import ViewOrganisation from '../modules/AppModules/pages/Subscriptions/viewOrganisation';
 import Membership from '../modules/AppModules/pages/Memberships';
 import JoinOrganisation from '../modules/AppModules/pages/Memberships/joinOrganisation';
@@ -30,6 +29,7 @@ import Notification from '../modules/AppModules/Notifications';
 import Settings from '../modules/AppModules/Settings';
 import SubOrganisationLists from "../modules/AppModules/pages/Subscriptions/organisationLists";
 import AddNewCard from "../modules/AppModules/pages/IdCards/newCard";
+import ViewPublicEvents from "../modules/AppModules/pages/Events/viewPublicEvents";
 
 const UserRoutes = [
                   <Route path="dashboard" element={<Dashboard />} />,
@@ -38,6 +38,7 @@ const UserRoutes = [
                   <Route path="view-card/:id" element={<ViewCard />} />,
                   <Route path="add-event" element={<AddEvent />} />,
                   <Route path="view-event/:id" element={<ViewEvent />} />,
+                  <Route path="event/view/:id" element={<ViewPublicEvents />} />,
                   <Route path="subscriptions" element={<IndividualSubscriptions />} />,
                   <Route path="add-subscription" element={<SubOrganisationLists />} />,
                   <Route path="join-organisation" element={<OrganisationLists />} />,
