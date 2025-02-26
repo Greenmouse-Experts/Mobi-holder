@@ -8,23 +8,22 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { formatDateTime } from "../../../../helpers/dateHelper";
 import { Button } from "@material-tailwind/react";
+import { usePaystackPayment } from "react-paystack";
 
 export default function BuyTickets() {
     const user = useSelector((state) => state.userData.data);
     const navigate = useNavigate();
+    const { id } = useParams();
+    const { mutate } = useApiMutation();
+
     const [loading, setIsLoading] = useState(true);
+    const [disabled, setDisabled] = useState(true);
+    const [selectedPlan, setSelectedPlan] = useState('');
+    const [amount, setTicketAmount] = useState(null);
     const [eventDetails, setEventDetails] = useState({});
     const [arrayOptions, setArrayOptions] = useState([]);
 
-
-    const { id } = useParams();
-
-
-
-    const { mutate } = useApiMutation();
-
-
-    const getEventDetails = () => {
+    useEffect(() => {
         mutate({
             url: `/api/events/view/event?id=${id}`,
             method: "GET",
@@ -32,47 +31,103 @@ export default function BuyTickets() {
             hideToast: true,
             onSuccess: (response) => {
                 setEventDetails(response.data.data);
-                setIsLoading(false)
+                setIsLoading(false);
             },
-            onError: () => {
-            }
+            onError: () => { },
         });
-    }
-
-
-
-
-
-    useEffect(() => {
-        getEventDetails()
-    }, []);
+    }, [id]); // Ensure re-fetching when `id` changes
 
 
 
 
     useEffect(() => {
         if (eventDetails?.eventtickets?.length > 0) {
-            const ticketOptions = eventDetails.eventtickets.map((ticket) => {
-                return {
-                    name: <div className="flex flex-col gap-3">
-                        <span className="text-mobiRomanSilver text-sm uppercase">{ticket.name}</span>
-                        <span className="font-semibold">
-                            N {ticket.price}</span>
-    
+            const ticketOptions = eventDetails.eventtickets.map((ticket) => ({
+                name: (
+                    <div className="flex flex-col gap-3">
+                        <span className="text-mobiRomanSilver text-sm uppercase">
+                            {ticket.name}
+                        </span>
+                        <span className="font-semibold">N {ticket.price}</span>
                         <span className="my-3 text-xs text-mobiRomanSilver">
                             Tickets Available: {ticket.ticketsAvailable}
                         </span>
-                    </div>,
-                    slug: ticket.id
-                }
-            })
-            setArrayOptions(ticketOptions)
-        }    
+                    </div>
+                ),
+                slug: ticket.id, // Ensure this is a number if needed
+            }));
+            setArrayOptions(ticketOptions);
+        }
     }, [eventDetails]);
 
 
 
 
+    const handleBuyTicket = (reference) => {
+        setDisabled(true);
+
+        const payload = {
+            eventId: id,
+            ticketId: ticket.id,
+            ...(reference && { refID: reference.reference })
+        }
+
+        mutate({
+            url: `/api/events/claim/request/ticket`,
+            method: "POST",
+            headers: true,
+            data: payload,
+            onSuccess: (response) => {
+                navigate(-1);
+                setDisabled(false)
+            },
+            onError: () => {
+                setDisabled(false)
+            }
+        });
+    }
+
+
+
+    const onSuccess = (reference) => {
+        handleBuyTicket(reference);
+    };
+
+    const onClose = () => {
+        console.log("Payment closed");
+    };
+
+
+    const handleSelect = (data) => {
+        setSelectedPlan(data);
+        setDisabled(false);
+    };
+
+
+
+    const ticket = eventDetails?.eventtickets?.find(
+        (item) => item.id === Number(selectedPlan)
+    );
+
+    const paystackConfig = {
+        reference: new Date().getTime().toString(),
+        email: 'greenmousedev@gmail.com',
+        amount: ticket ? ticket.price * 100 : 0,
+        publicKey: "pk_test_77297b93cbc01f078d572fed5e2d58f4f7b518d7",
+        currency: 'NGN'
+    };
+
+    const initializePayment = usePaystackPayment(paystackConfig);
+
+    const handleGetTicket = () => {
+        if (eventDetails.ticketType === "Paid" && ticket) {
+            setTicketAmount(ticket.price);
+            initializePayment({onSuccess, onClose});
+        }
+        else {
+            handleBuyTicket();
+        }
+    };
 
 
 
@@ -186,12 +241,12 @@ export default function BuyTickets() {
                         <div className="shadow-xl md:py-5 md:px-8 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                                 <div className="w-full flex flex-col gap-10">
-                                    <RadioButtonGroup options={arrayOptions} selectedOption={'5000'} className="flex flex-col gap-10" />
+                                    <RadioButtonGroup options={arrayOptions} select={handleSelect} selectedOption={selectedPlan} className="flex flex-col gap-10" />
                                 </div>
                             </div>
-                        <div className="flex md:w-2/5 w-full">
-                            <Button className="bg-mobiPink">Get Ticket</Button>
-                        </div>
+                            <div className="flex md:w-2/5 w-full">
+                                <Button className="bg-mobiPink" disabled={disabled} onClick={() => handleGetTicket()}>Get Ticket</Button>
+                            </div>
                         </div>
 
                     </div>

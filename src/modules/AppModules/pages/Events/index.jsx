@@ -23,37 +23,6 @@ export default function IndividualEvents() {
 
 
     const TableHeaders = ["Event Name", "Event Image", "Category", "Ticket Type", "Start Date", "End Date", "Action"];
-    const TableData = [
-        {
-            name: 'Galaxy UI Event',
-            email: 'Education',
-            number: 'Paid',
-            date: '12-11-2024',
-            end: '12-11-2024',
-        },
-        {
-            name: 'Galaxy UI Event',
-            email: 'Education',
-            number: 'Paid',
-            date: '12-11-2024',
-            end: '12-11-2024',
-        },
-        {
-            name: 'Galaxy UI Event',
-            email: 'Education',
-            number: 'Paid',
-            date: '12-11-2024',
-            end: '12-11-2024',
-        },
-        {
-            name: 'Galaxy UI Event',
-            email: 'Education',
-            number: 'Paid',
-            date: '12-11-2024',
-            end: '12-11-2024',
-        },
-    ];
-
 
     const getEvents = () => {
         mutate({
