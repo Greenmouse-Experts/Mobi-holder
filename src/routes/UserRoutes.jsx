@@ -30,6 +30,7 @@ import Settings from '../modules/AppModules/Settings';
 import SubOrganisationLists from "../modules/AppModules/pages/Subscriptions/organisationLists";
 import AddNewCard from "../modules/AppModules/pages/IdCards/newCard";
 import ViewPublicEvents from "../modules/AppModules/pages/Events/viewPublicEvents";
+import EventInvites from "../modules/AppModules/pages/Events/eventInvites";
 
 const UserRoutes = [
                   <Route path="dashboard" element={<Dashboard />} />,
@@ -58,6 +59,7 @@ const UserRoutes = [
                   <Route path="upcoming-events" element={<UpcomingEvents />} />,
                   <Route path="view-invites/:id" element={<ViewInvites />} />,
                   <Route path="event-log/:id" element={<EventLog />} />,
+                  <Route path="event-invites" element={<EventInvites />} />,
                   <Route path="ticket-requests/:id" element={<TicketRequests />} />,
                   <Route path="event-gallery" element={<EventGallery />} />,
                   <Route path="order-tickets/:id" element={<BuyTickets />} />,

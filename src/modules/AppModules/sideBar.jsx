@@ -87,11 +87,11 @@ export default function Sidebar({ mobile }) {
               /*  {
                     path: "/app/my-tickets",
                     name: "My Tickets"
-                },
+                }, */
                 {
                     path: "/app/event-invites",
                     name: "Event Invites"
-                }, */
+                },
                 {
                     path: "/app/event-history",
                     name: "Event History"

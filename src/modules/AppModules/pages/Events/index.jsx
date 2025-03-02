@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { set } from "react-hook-form";
 
 export default function IndividualEvents() {
     const user = useSelector((state) => state.userData.data);
@@ -32,8 +33,10 @@ export default function IndividualEvents() {
             hideToast: true,
             onSuccess: (response) => {
                 setEvents(response.data.data)
+                setIsLoading(false);
             },
             onError: () => {
+                setIsLoading(false);
             }
         });
     }

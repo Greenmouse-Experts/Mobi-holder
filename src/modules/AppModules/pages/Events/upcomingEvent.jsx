@@ -22,18 +22,18 @@ export default function UpcomingEvents() {
 
     const getAllEvents = () => {
         mutate({
-            url: `/api/events/get/events`,
+            url: `/api/events/events`,
             method: "GET",
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 const today = new Date();
                 today.setUTCHours(0, 0, 0, 0);
-                
+
                 // Get tomorrow's date
                 const tomorrow = new Date(today);
                 tomorrow.setDate(tomorrow.getDate() + 1);
-                                
+
                 // Filter events starting **tomorrow or later**
                 const futureEvents = response.data.data.filter(event => {
                     const eventStartDate = new Date(event.startDate);
@@ -81,7 +81,7 @@ export default function UpcomingEvents() {
                                         <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                             <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
                                             <td className="px-3 py-3 text-center text-mobiTableText"><img width={50} src={data.image} /></td>
-                                            <td className="px-3 py-3 text-mobiTableText">{'---'}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.userId === user.id ? 'Me' : '---'}</td>
                                             <td className="px-3 py-3 text-mobiTableText">{data.ticketType}</td>
                                             <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.startDate, 'dd-MM-yyy')}</td>
                                             <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.endDate, 'dd-MM-yyy')}</td>
@@ -96,23 +96,33 @@ export default function UpcomingEvents() {
                                                     </MenuHandler>
                                                     <MenuList>
                                                         <MenuItem className="flex flex-col gap-3">
-                                                            <span className="cursor-pointer" onClick={() => navigate('/app/view-invites/2')}>
+                                                            <span className="cursor-pointer" onClick={() => navigate(`/app/view-invites/${data.eventId}`)}>
                                                                 Invites
                                                             </span>
                                                         </MenuItem>
 
-                                                        <MenuItem className="flex flex-col gap-3">
-                                                            <span className="cursor-pointer" onClick={() => navigate('/app/event-log/2')}>
-                                                                Event Log
-                                                            </span>
-                                                        </MenuItem>
+                                                        {data.userId !== user.id &&
+                                                            <MenuItem className="flex flex-col gap-3">
+                                                                <span className="cursor-pointer" onClick={() => navigate(`/app/event/view/${data.eventId}`)}>
+                                                                    View Details
+                                                                </span>
+                                                            </MenuItem>
+                                                        }
 
-                                                        <MenuItem className="flex flex-col gap-3">
-                                                            <span className="cursor-pointer" onClick={() => navigate('/app/ticket-requests/2')}>
-                                                                Ticket Requests
-                                                            </span>
-                                                        </MenuItem>
+                                                        {data.userId === user.id &&
+                                                            <>
+                                                                <MenuItem className="flex flex-col gap-3">
+                                                                    <span className="cursor-pointer" onClick={() => navigate('/app/event-log/2')}>
+                                                                        Event Log
+                                                                    </span>
+                                                                </MenuItem>
 
+                                                                <MenuItem className="flex flex-col gap-3">
+                                                                    <span className="cursor-pointer" onClick={() => navigate('/app/ticket-requests/2')}>
+                                                                        Ticket Requests
+                                                                    </span>
+                                                                </MenuItem>
+                                                            </>}
                                                     </MenuList>
                                                 </Menu>
                                             </td>
