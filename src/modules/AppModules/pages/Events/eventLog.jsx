@@ -1,11 +1,40 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import Table from "../../../../components/Tables";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
+import { useEffect, useState } from "react";
 
 export default function EventLog() {
     const user = useSelector((state) => state.userData.data);
     const navigate = useNavigate();
+    const [eventLog, setEventLog] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const {id} = useParams();
+
+    const {mutate} = useApiMutation();
+
+
+    useEffect(() => {
+        getEventLog();
+    }, []);
+
+
+    const getEventLog = () => {
+        mutate({
+            url: `/api/events/event/logs?eventId=${id}`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setEventLog(response.data.data);
+                setIsLoading(false);
+            },
+            onError: () => {
+            }
+        });
+    }
 
     const TableHeaders = ["Individual", "Email", "Verified At", "Verified By", "Action"];
     const TableData = [

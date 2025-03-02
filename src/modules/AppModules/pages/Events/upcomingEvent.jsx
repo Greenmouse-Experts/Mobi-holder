@@ -68,7 +68,7 @@ export default function UpcomingEvents() {
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Upcoming Events</p>
-                            <p className="text-base">All upcoming event; those created and invited</p>
+                            <p className="text-base">All upcoming event; those created</p>
                         </div>
                     </div>
 
@@ -112,13 +112,13 @@ export default function UpcomingEvents() {
                                                         {data.userId === user.id &&
                                                             <>
                                                                 <MenuItem className="flex flex-col gap-3">
-                                                                    <span className="cursor-pointer" onClick={() => navigate('/app/event-log/2')}>
+                                                                    <span className="cursor-pointer" onClick={() => navigate(`/app/event-log/${data.eventId}`)}>
                                                                         Event Log
                                                                     </span>
                                                                 </MenuItem>
 
                                                                 <MenuItem className="flex flex-col gap-3">
-                                                                    <span className="cursor-pointer" onClick={() => navigate('/app/ticket-requests/2')}>
+                                                                    <span className="cursor-pointer" onClick={() => navigate(`/app/ticket-requests/${data.eventId}`)}>
                                                                         Ticket Requests
                                                                     </span>
                                                                 </MenuItem>

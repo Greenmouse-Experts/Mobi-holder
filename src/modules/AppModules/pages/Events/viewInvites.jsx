@@ -256,7 +256,7 @@ export default function ViewInvites() {
                             </form>
 
 
-                            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-1">
                                 <Table title="Today" filter subTitle={<span>Invite Sent</span>} exportData
                                     tableHeader={RequetsHeaders}>
                                     {eventInvites.length > 0 ?
