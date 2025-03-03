@@ -16,6 +16,7 @@ import { set } from "react-hook-form";
 export default function IndividualEvents() {
     const user = useSelector((state) => state.userData.data);
     const [events, setEvents] = useState([]);
+    const [upcomingEvents, setUpcomingEvents] = useState([]);
     const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
@@ -32,7 +33,20 @@ export default function IndividualEvents() {
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                setEvents(response.data.data)
+                setEvents(response.data.data);
+                const today = new Date();
+                today.setUTCHours(0, 0, 0, 0);
+
+                // Get tomorrow's date
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+
+                // Filter events starting **tomorrow or later**
+                const futureEvents = response.data.data.filter(event => {
+                    const eventStartDate = new Date(event.startDate);
+                    return eventStartDate >= tomorrow;
+                });
+                setUpcomingEvents(futureEvents);
                 setIsLoading(false);
             },
             onError: () => {
@@ -67,7 +81,7 @@ export default function IndividualEvents() {
                             colorGradient={['rgba(107, 239, 215, 1)', 'rgba(52, 59, 79, 1)']}
                         />
                         <StatCard
-                            number={21}
+                            number={upcomingEvents.length}
                             label="Upcoming Events"
                             iconColor="bg-mobiOrange"
                             IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px' }} />}
