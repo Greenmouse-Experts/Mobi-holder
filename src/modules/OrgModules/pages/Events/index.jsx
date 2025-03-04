@@ -140,11 +140,6 @@ export default function OrgEvents() {
                                                                 View Details
                                                             </span>
                                                         </MenuItem>
-                                                        <MenuItem className="flex flex-col gap-3">
-                                                    <span className="cursor-pointer" onClick={() => navigate('/org/add-event-verifier/2')}>
-                                                        Add Event Verifier
-                                                    </span>
-                                                </MenuItem>
                                                     </MenuList>
                                                 </Menu>
                                             </td>

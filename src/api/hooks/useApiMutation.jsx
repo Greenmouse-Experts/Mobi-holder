@@ -7,10 +7,20 @@ import apiClient from "../apiFactory";
 const useApiMutation = () => {
     const navigate = useNavigate();
     const handleError = useErrorHandler();
-    const token = localStorage.getItem("userToken");
+
+
+    const logoutUser = () => {
+        toast.error("Session expired, please login again");
+        localStorage.clear();
+        navigate("/login");
+    };
+
 
     const mutation = useMutation({
         mutationFn: ({ url, data = null, method = "POST", headers = false }) => {
+
+            const token = localStorage.getItem("userToken");
+
             const config = headers ? {
                 headers: {
                     Authorization: `Bearer ${token}`, // Add the token dynamically
@@ -53,6 +63,12 @@ const useApiMutation = () => {
             }
         },
         onError: (error, variables) => {
+            // Check if error is a 401 response
+            if (error.response && error.response.status === 401) {
+                logoutUser();
+                return;
+            }
+
             if (!variables.hideToast) {
                 handleError(error);
             }

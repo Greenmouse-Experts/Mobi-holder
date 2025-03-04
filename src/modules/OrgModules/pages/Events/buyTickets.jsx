@@ -10,8 +10,8 @@ import { formatDateTime } from "../../../../helpers/dateHelper";
 import { Button } from "@material-tailwind/react";
 import { usePaystackPayment } from "react-paystack";
 
-export default function BuyTickets() {
-    const user = useSelector((state) => state.userData.data);
+export default function OrgBuyTickets() {
+    const user = useSelector((state) => state.orgData.orgData);
     const navigate = useNavigate();
     const { id } = useParams();
     const { mutate } = useApiMutation();
@@ -122,7 +122,7 @@ export default function BuyTickets() {
     const handleGetTicket = () => {
         if (eventDetails.ticketType === "Paid" && ticket) {
             setTicketAmount(ticket.price);
-            initializePayment({onSuccess, onClose});
+            initializePayment({ onSuccess, onClose });
         }
         else {
             handleBuyTicket();
@@ -191,7 +191,7 @@ export default function BuyTickets() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile data={user} />
+                    <Header mobile organisation data={user} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Ticket Requests</p>
