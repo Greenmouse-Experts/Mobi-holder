@@ -70,7 +70,7 @@ export default function OrgUpcomingEvents() {
                     </div>
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                        <Table title="" filter subTitle={<span></span>} exportData
+                        <Table title="" filter subTitle={<span>Upcoming Events</span>} exportData
                             tableHeader={TableHeaders}>
                             {allEvents.length > 0 ?
                                 allEvents
@@ -106,11 +106,13 @@ export default function OrgUpcomingEvents() {
                                                                     </span>
                                                                 </MenuItem>
 
-                                                                <MenuItem className="flex flex-col gap-3">
-                                                                    <span className="cursor-pointer" onClick={() => navigate('/org/add-event-verifier/2')}>
-                                                                        Add Event Verifier
-                                                                    </span>
-                                                                </MenuItem>
+                                                                {data.allowVerifierRequests > 0 &&
+                                                                    <MenuItem className="flex flex-col gap-3">
+                                                                        <span className="cursor-pointer" onClick={() => navigate(`/org/add-event-verifier/${data.eventId}`)}>
+                                                                            Add Event Verifier
+                                                                        </span>
+                                                                    </MenuItem>
+                                                                }
 
                                                                 <MenuItem className="flex flex-col gap-3">
                                                                     <span className="cursor-pointer" onClick={() => navigate(`/org/ticket-requests/${data.eventId}`)}>

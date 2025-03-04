@@ -131,8 +131,6 @@ export default function OrgTicketRequests() {
 
 
 
-    console.log(ticketRequests)
-
 
 
 
