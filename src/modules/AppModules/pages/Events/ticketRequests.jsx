@@ -185,11 +185,11 @@ export default function TicketRequests() {
                             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                                 <Table title="Today" filter subTitle={<span>Ticket Requests</span>} exportData
                                     tableHeader={TableHeaders}>
-                                    {ticketRequests > 0
+                                    {ticketRequests.length > 0
                                         ?
                                         ticketRequests.map((data, index) => (
                                             <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                                <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
+                                                <td className="px-3 py-3 text-mobiTableText">{data.user.firstName} {data.user.lastName}</td>
                                                 <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
                                                 <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
                                                 <td className="px-3 py-3 text-mobiTableText">
