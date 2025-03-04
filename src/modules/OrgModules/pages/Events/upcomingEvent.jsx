@@ -93,7 +93,7 @@ export default function OrgUpcomingEvents() {
                                                     </MenuHandler>
                                                     <MenuList>
                                                         <MenuItem className="flex flex-col gap-3">
-                                                            <span className="cursor-pointer" onClick={() => navigate('/org/view-invites/2')}>
+                                                            <span className="cursor-pointer" onClick={() => navigate(`/org/view-invites/${data.eventId}`)}>
                                                                 Invites
                                                             </span>
                                                         </MenuItem>

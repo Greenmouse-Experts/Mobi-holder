@@ -110,12 +110,12 @@ export default function ViewEvent() {
         {
             icon: <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" fill="#A6A6A6" />
-                <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M1 4.82031H13.9993V7.11431C13.0244 7.11431 12.0494 7.87898 12.0494 9.21715C12.0494 10.5553 13.0244 11.7023 13.9993 11.7023V13.9963H1V11.7023C1.97495 11.7023 2.9499 10.9377 2.9499 9.40832C2.9499 7.87898 1.97495 7.11431 1 7.11431V4.82031Z" fill="#A6A6A6" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M1 4.82031H13.9993V7.11431C13.0244 7.11431 12.0494 7.87898 12.0494 9.21715C12.0494 10.5553 13.0244 11.7023 13.9993 11.7023V13.9963H1V11.7023C1.97495 11.7023 2.9499 10.9377 2.9499 9.40832C2.9499 7.87898 1.97495 7.11431 1 7.11431V4.82031Z" fill="#A6A6A6" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M5.22656 8.41406H7.17646H5.22656Z" fill="#A6A6A6" />
-                <path d="M5.22656 8.41406H7.17646" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" />
+                <path d="M5.22656 8.41406H7.17646" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" />
                 <path d="M5.22656 10.7031H9.77633H5.22656Z" fill="#A6A6A6" />
-                <path d="M5.22656 10.7031H9.77633" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" />
+                <path d="M5.22656 10.7031H9.77633" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" />
             </svg>,
             name: `${eventDetails.ticketType}`
         }

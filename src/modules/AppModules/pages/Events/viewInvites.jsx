@@ -235,7 +235,6 @@ export default function ViewInvites() {
                                             register={register} placeholder="Enter User(s) email or ID" />
                                     </div>
 
-                                    {eventDetails.ticketType === 'Paid' && (
                                         <div className="flex flex-col w-full gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Assign Ticket to Invitee
@@ -244,7 +243,6 @@ export default function ViewInvites() {
                                                 rules={{ required: 'Event Ticket is required' }}
                                                 type="select" placeholder="Select Ticket" />
                                         </div>
-                                    )}
 
                                     <div className="flex">
                                         <Button type="submit" disabled={disabled} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
