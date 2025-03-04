@@ -143,7 +143,7 @@ export default function TicketEvent({ back }) {
             data: reformedPayload,
             onSuccess: (response) => {
                 navigate(-1);
-                localStorage.clear('eventPayload');
+                localStorage.removeItem('eventPayload');
                 setIsLoading(false)
             },
             onError: () => {
@@ -277,7 +277,7 @@ export default function TicketEvent({ back }) {
                         </Button>
 
                         <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                            {isLoading ? 'Updating...' : 'Next'}
+                            {isLoading ? 'Creating...' : 'Create'}
                         </Button>
                     </div>
 

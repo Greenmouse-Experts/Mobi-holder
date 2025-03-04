@@ -6,7 +6,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
-import { formatDateTime } from "../../../../helpers/dateHelper";
+import { dateFormat, formatDateTime } from "../../../../helpers/dateHelper";
+import useModal from "../../../../hooks/modal";
+import AlertModal from "../../../../components/AlertModal";
+import ReusableModal from "../../../../components/ReusableModal";
 
 export default function TicketRequests() {
     const user = useSelector((state) => state.userData.data);
@@ -18,6 +21,8 @@ export default function TicketRequests() {
     const [eventDetails, setEventDetails] = useState({});
     const [ticketRequests, setTicketRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
 
 
@@ -63,6 +68,42 @@ export default function TicketRequests() {
             }
         });
     }
+
+
+
+
+
+
+    const handleDecline = (id) => {
+        openModal({
+            size: "sm",
+            content: <AlertModal closeModal={closeModal} title={'Decline Ticket Request'}
+                text='Are you sure you want to decline this ticket request?'
+                api='/api/events/event/ticket/request/status'
+                body={{ requestId: id, action: 'decline' }}
+                method="POST"
+                redirect={getTicketRequests} />
+        });
+    }
+
+
+
+
+
+
+
+    const handleAccept = (id) => {
+        openModal({
+            size: "sm",
+            content: <AlertModal closeModal={closeModal} title={'Accept Ticket Request'}
+                text='Are you sure you want to accept this ticket request?'
+                api='/api/events/event/ticket/request/status'
+                body={{ requestId: id, action: 'approve' }}
+                method="POST"
+                redirect={getTicketRequests} />
+        });
+    }
+
 
 
 
@@ -125,7 +166,7 @@ export default function TicketRequests() {
 
 
 
-    const TableHeaders = ["Individual", "MobiHolder ID", "Requested On", "Action"];
+    const TableHeaders = ["Individual", "MobiHolder ID", "Requested On", "Status"];
 
 
 
@@ -189,18 +230,26 @@ export default function TicketRequests() {
                                         ?
                                         ticketRequests.map((data, index) => (
                                             <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                                <td className="px-3 py-3 text-mobiTableText">{data.user.firstName} {data.user.lastName}</td>
-                                                <td className="px-3 py-3 text-mobiTableText">{data.email}</td>
-                                                <td className="px-3 py-3 text-mobiTableText">{data.number}</td>
                                                 <td className="px-3 py-3 text-mobiTableText">
-                                                    <span className="flex gap-2">
-                                                        <span className="flex py-2 px-3 rounded-full border border-[rgba(247,77,27,1)]">
-                                                            <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
-                                                        </span>
-                                                        <span className="flex py-2 px-3 rounded-full bg-mobiPink">
-                                                            <p className="text-white text-xs font-[500]">Accept</p>
-                                                        </span>
-                                                    </span>
+                                                    {data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}
+                                                </td>
+                                                <td className="px-3 py-3 text-mobiTableText">{data.user.mobiHolderId}</td>
+                                                <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, "dd MM yyyy")}</td>
+                                                <td className="px-3 py-3 text-mobiTableText">
+                                                    {data.status === 'pending' ?
+                                                        <>
+                                                            <span className="flex gap-2">
+                                                                <span onClick={() => handleDecline(data.id)} className="flex w-full py-2 cursor-pointer px-5 rounded-full border border-[rgba(247,77,27,1)]">
+                                                                    <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
+                                                                </span>
+                                                                <span onClick={() => handleAccept(data.id)} className="flex w-full py-2 cursor-pointer px-5 rounded-full bg-mobiPink">
+                                                                    <p className="text-white text-xs font-[500]">Accept</p>
+                                                                </span>
+                                                            </span>
+                                                        </>
+                                                        :
+                                                        <Badge status={data.status} color={'bg-green-500 text-green-100'} />
+                                                    }
                                                 </td>
                                             </tr>
                                         ))
@@ -229,6 +278,15 @@ export default function TicketRequests() {
                 </div>
 
             </div>
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
 
         </>
     )

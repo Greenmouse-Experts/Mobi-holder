@@ -84,7 +84,7 @@ export default function ViewPublicEvents() {
                 <circle cx="5.3125" cy="3.5" r="3" stroke="#A1A1A1" />
                 <path d="M10.875 10.8791C10.875 11.3681 10.7117 11.5721 10.516 11.6888C10.2692 11.836 9.8701 11.9024 9.30842 11.8855C8.76695 11.8693 8.16005 11.7805 7.5328 11.6887L7.50601 11.6848C6.88756 11.5943 6.23931 11.5 5.6875 11.5C5.13569 11.5 4.48744 11.5943 3.86899 11.6848L3.8422 11.6887C3.21494 11.7805 2.60805 11.8693 2.06658 11.8855C1.5049 11.9024 1.10579 11.836 0.858968 11.6888C0.663345 11.5721 0.5 11.3681 0.5 10.8791C0.5 9.86163 1.25066 8.85053 2.37039 8.05817C3.48088 7.27234 4.80361 6.8125 5.6875 6.8125C6.57139 6.8125 7.89412 7.27234 9.00461 8.05817C10.1243 8.85053 10.875 9.86163 10.875 10.8791Z" stroke="#A1A1A1" />
             </svg>,
-            name: `Organiser : ${userDetails.firstName} ${userDetails.lastName}`
+            name: `Organiser : ${userDetails.companyName ? userDetails.companyName : `${userDetails.firstName} ${userDetails.lastName}`}`
         },
         {
             icon: <svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
