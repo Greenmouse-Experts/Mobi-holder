@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
-import { set } from "react-hook-form";
 
 export default function IndividualEvents() {
     const user = useSelector((state) => state.userData.data);
@@ -133,10 +132,15 @@ export default function IndividualEvents() {
                                                     </MenuHandler>
                                                     <MenuList>
                                                         <MenuItem className="flex flex-col gap-3">
-                                                            <span className="cursor-pointer" onClick={() => navigate(`/app/view-event/${data.id}`)}>
+                                                            <span className="cursor-pointer" onClick={() => navigate(`/app/view-event/${data.eventId}`)}>
                                                                 View Details
                                                             </span>
                                                         </MenuItem>
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                    <span className="cursor-pointer" onClick={() => navigate('/org/add-event-verifier/2')}>
+                                                        Add Event Verifier
+                                                    </span>
+                                                </MenuItem>
                                                     </MenuList>
                                                 </Menu>
                                             </td>
