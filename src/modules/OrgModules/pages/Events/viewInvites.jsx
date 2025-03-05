@@ -39,7 +39,7 @@ export default function OrgViewInvites() {
             hideToast: true,
             onSuccess: (response) => {
                 setEventDetails(response.data.data);
-                getEventInvitees();
+                getEventInvitees(response.data.data.id);
             },
             onError: () => {
             }
@@ -49,14 +49,15 @@ export default function OrgViewInvites() {
 
 
 
-    const getEventInvitees = () => {
+    const getEventInvitees = (eventId) => {
         mutate({
             url: `/api/events/event/invitees`,
             method: "GET",
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                setEventInvites(response.data.data)
+                const invites = response.data.data.filter((data) => data.eventtickets.eventId === eventId);
+                setEventInvites(invites)
                 setIsLoading(false);
             },
             onError: () => {
