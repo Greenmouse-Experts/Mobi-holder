@@ -48,7 +48,7 @@ export const useOrganizationApi = () => {
   const getOrganisationsAdmin = (params) => {
     return new Promise((resolve, reject) => {
       mutate({
-        url: `/api/admins/organizations`,
+        url: `/api/admins/organizations${params}`,
         method: "GET",
         headers: true,
         hideToast: true,
