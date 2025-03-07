@@ -8,6 +8,88 @@ import { Button } from "@material-tailwind/react";
 import Loader from "../../../components/Loader";
 import { useForm } from "react-hook-form";
 import { dateFormat } from "../../../helpers/dateHelper";
+import useModal from "../../../hooks/modal";
+import useApiMutation from "../../../api/hooks/useApiMutation";
+import ReusableModal from "../../../components/ReusableModal";
+
+
+
+
+
+
+const DeclineForm = ({ closeModal, verificationData, reload }) => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [isLoading, setIsLoading] = useState(false);
+    const { mutate } = useApiMutation();
+
+
+    const updateStatus = (data) => {
+        setIsLoading(true)
+        const payload = {
+            id: verificationData.verifiedIdCard.id,
+            userId: verificationData.verifiedIdCard.userId,
+            action: 'reject',
+            adminNote: data.adminNote
+        }
+        mutate({
+            url: "/api/admins/updateIdCardStatus",
+            method: "POST",
+            data: payload,
+            headers: true,
+            onSuccess: (response) => {
+                setIsLoading(false);
+                closeModal();
+                reload();
+            },
+            onError: () => {
+                setIsLoading(false);
+                closeModal();
+            }
+        });
+    };
+
+
+
+    return (
+        <>
+            <div className="w-full flex max-h-[95vh] overflow-auto flex-col px-3 py-6 gap-3 -mt-3">
+                <form onSubmit={handleSubmit(updateStatus)}>
+                    <div className="flex flex-col gap-4 mt-7">
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Reason for Decline
+                            </p>
+                            <Input type="text" name="adminNote" register={register}
+                                placeholder="Reason for Decline" rules={{ required: 'Reason for decline is required' }} errors={errors} />
+                        </div>
+                        <div className="w-full flex md:flex-row flex-col justify-center gap-5 mt-5">
+                            <Button type="submit"
+                                disabled={isLoading}
+                                className="bg-red-500 md:w-1/3 w-full p-3 rounded-full"
+                            >
+                                Decline
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+
+            </div></>
+    )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default function ViewUserAdmin() {
     // const [params, setParams] = useSearchParams();
@@ -17,8 +99,12 @@ export default function ViewUserAdmin() {
 
     const [individual, setIndividual] = useState({});
     const [loadingIndividuals, setLoadingIndividuals] = useState(true);
+    const [disabled, setIsDisabled] = useState(false);
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const { id } = useParams();
+
+    const { mutate } = useApiMutation();
 
     const { getSingleIndividualAdmin } = useIndividualApi();
 
@@ -53,6 +139,50 @@ export default function ViewUserAdmin() {
 
 
 
+    const handleReload = () => {
+        getUserData(id);
+    }
+
+
+
+    const handleDeclineVerification = () => {
+        openModal({
+            size: "sm",
+            content: <DeclineForm closeModal={closeModal} verificationData={individual} reload={handleReload} />
+        })
+    }
+
+
+
+    const handleVerification = () => {
+        setIsDisabled(true)
+        const payload = {
+            id: individual.verifiedIdCard.id,
+            userId: individual.verifiedIdCard.userId,
+            action: 'approve',
+            adminNote: ''
+        }
+        mutate({
+            url: "/api/admins/updateIdCardStatus",
+            method: "POST",
+            data: payload,
+            headers: true,
+            onSuccess: (response) => {
+                setIsDisabled(false);
+                getUserData(id);
+            },
+            onError: () => {
+                setIsDisabled(false);
+            }
+        });
+    }
+
+
+
+
+
+
+
 
 
     if (loadingIndividuals) {
@@ -64,6 +194,8 @@ export default function ViewUserAdmin() {
         )
 
     }
+
+
 
 
 
@@ -177,6 +309,11 @@ export default function ViewUserAdmin() {
         },
     ]; */}
 
+
+
+
+
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -185,7 +322,7 @@ export default function ViewUserAdmin() {
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">User Overview</p>
-                            <p className="text-base">Overview for: <span className="text-mobiBlue">Chukka Victor</span></p>
+                            <p className="text-base">Overview for: <span className="text-mobiBlue">{individual.firstName} {individual.lastName}</span></p>
                         </div>
                     </div>
                     {/* <div className="w-full flex lg:flex-row md:flex-row flex-col h-full gap-5 md:px-0 px-3">
@@ -199,7 +336,7 @@ export default function ViewUserAdmin() {
                                 </div>
                             </div>
                             <div className="w-full flex justify-center">
-                                {!individual.photo ?
+                                {individual.photo ?
                                     <img src={`${individual.photo}`} className="w-36 rounded-full object-cover h-36" />
                                     :
                                     <div className="w-36 rounded-full bg-gray-500 object-cover h-36" />
@@ -248,7 +385,7 @@ export default function ViewUserAdmin() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Type of Card/Document Uploaded
                                             </p>
-                                            <Input type="text" name="name" register={register} disabled value={individual.verifiedIdCard.name} placeholder="Enter card Number" />
+                                            <Input type="text" name="name" register={register} disabled value={individual.verifiedIdCard?.name} placeholder="No Data Available" />
                                         </div>
                                     </div>
 
@@ -256,7 +393,7 @@ export default function ViewUserAdmin() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Card/Document Number
                                         </p>
-                                        <Input type="text" name="cardNumber" register={register} disabled value={individual.verifiedIdCard.cardNumber} placeholder="Enter card Number" />
+                                        <Input type="text" name="cardNumber" register={register} disabled value={individual.verifiedIdCard?.cardNumber} placeholder="No Data Available" />
                                     </div>
 
 
@@ -265,14 +402,14 @@ export default function ViewUserAdmin() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Issue Date
                                             </p>
-                                            <Input name="issueDate" register={register} disabled value={individual.verifiedIdCard.issueDate} placeholder="Choose the issue date" />
+                                            <Input name="issueDate" register={register} disabled value={individual.verifiedIdCard?.issueDate} placeholder="No Data Available" />
                                         </div>
 
                                         <div className="flex flex-col w-full gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Expiry Date
                                             </p>
-                                            <Input name="expiryDate" register={register} disabled value={individual.verifiedIdCard.expiryDate} placeholder="Choose the expiry date" />
+                                            <Input name="expiryDate" register={register} disabled value={individual.verifiedIdCard?.expiryDate} placeholder="No Data Available" />
                                         </div>
                                     </div>
 
@@ -283,28 +420,35 @@ export default function ViewUserAdmin() {
                                                 Uploaded Documents
                                             </p>
                                         </div>
-                                        <div className="grid grid-cols-3 gap-4 mt-4">
-                                            <div className="relative">
-                                                <img
-                                                    src={individual.verifiedIdCard.governmentIdCardFront}
-                                                    alt="preview"
-                                                    className="w-full h-30 object-cover rounded"
-                                                />
+                                        {individual.verifiedIdCard ?
+                                            <div className="grid grid-cols-3 gap-4 mt-4">
+                                                <div className="relative">
+                                                    <img
+                                                        src={individual.verifiedIdCard?.governmentIdCardFront}
+                                                        alt="Empty ID Card"
+                                                        className="w-full h-30 object-cover rounded"
+                                                    />
+                                                </div>
+                                                <div className="relative">
+                                                    <img
+                                                        src={individual.verifiedIdCard?.governmentIdCardBack}
+                                                        alt="Empty ID Card"
+                                                        className="w-full h-30 object-cover rounded"
+                                                    />
+                                                </div>
                                             </div>
-                                            <div className="relative">
-                                                <img
-                                                    src={individual.verifiedIdCard.governmentIdCardBack}
-                                                    alt="preview"
-                                                    className="w-full h-30 object-cover rounded"
-                                                />
-                                            </div>
-                                        </div>
+                                            :
+                                            <></>
+                                        }
                                     </div>
                                 </div>
 
-                                <div className="flex px-8">
-                                    <Button type="submit" className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
+                                <div className="flex px-8 gap-5">
+                                    <Button type="submit" onClick={() => handleVerification()} disabled={!individual.verifiedIdCard || disabled} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
                                         Verify User
+                                    </Button>
+                                    <Button type="submit" onClick={() => handleDeclineVerification()} disabled={!individual.verifiedIdCard || disabled} className="bg-red-500 md:w-1/3 w-full p-3 rounded-full">
+                                        Decline Verification
                                     </Button>
                                 </div>
 
@@ -316,6 +460,15 @@ export default function ViewUserAdmin() {
                 </div>
 
             </div >
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
 
         </>
     )

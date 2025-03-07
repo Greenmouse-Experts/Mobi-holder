@@ -26,8 +26,6 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [blackList, setBlackList] = useState(false);
 
-    console.log(userInfo)
-
     const { mutate } = useApiMutation();
 
     const updateMember = (data) => {
