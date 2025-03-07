@@ -1,6 +1,11 @@
+import { Button } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 
-function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, children, tableHeader, hasNumber }) {
+function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, children, tableHeader, hasNumber,
+    currentPage = 1,
+    totalPages = 1,
+    onPageChange,
+}) {
     const [isExportDataVisible, setIsExportDataVisible] = useState(false);
     const [updatedTableHeader, setUpdatedTableHeader] = useState(tableHeader);
 
@@ -14,7 +19,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, c
         } else {
             setUpdatedTableHeader(tableHeader);
         }
-    }, [hasNumber, tableHeader]); 
+    }, [hasNumber, tableHeader]);
 
     return (
         <div className={`md:px-5 px-3 py-7 w-full md:rounded-lg ${transparentBg ? 'bg-transparent' : 'bg-mobiSearchDark border border-mobiBorderFray'}`}>
@@ -42,23 +47,83 @@ function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, c
                 </div>
             </div>
 
-            <div className="overflow-x-auto border py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
-                <table className={`table-auto table-fixed min-w-full text-mobiSkyBlue`}>
-                    {updatedTableHeader ?
+            <div className="overflow-x-auto border w-full py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
+                <table className="table-auto table-responsive w-full text-mobiSkyBlue">
+                    {updatedTableHeader && (
                         <thead>
                             <tr>
                                 {updatedTableHeader.map((header, index) => (
-                                    <th className="px-3 text-left py-2" key={index}>{ header }</th>
+                                    <th className="px-3 text-left py-2" key={index}>{header}</th>
                                 ))}
                             </tr>
                         </thead>
-                        :
-                        <></>
-                    }
+                    )}
                     <tbody>
                         {children}
                     </tbody>
                 </table>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                    <div className="flex items-center justify-between border-t px-4 py-3">
+                        <div className="flex flex-1 justify-between sm:hidden">
+                            <Button
+                                onClick={() => onPageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                                variant="outlined"
+                                size="sm"
+                            >
+                                Previous
+                            </Button>
+                            <Button
+                                onClick={() => onPageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                                variant="outlined"
+                                size="sm"
+                                className="ml-3"
+                            >
+                                Next
+                            </Button>
+                        </div>
+                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                            <p className="text-sm text-gray-700">
+                                Page <span className="font-medium">{currentPage}</span> of{" "}
+                                <span className="font-medium">{totalPages}</span>
+                            </p>
+                            <div>
+                                <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm">
+                                    <Button
+                                        onClick={() => onPageChange(currentPage - 1)}
+                                        disabled={currentPage === 1}
+                                        variant="text"
+                                        size="sm"
+                                    >
+                                        &lt;
+                                    </Button>
+                                    {Array.from({ length: totalPages }, (_, i) => (
+                                        <Button
+                                            key={i + 1}
+                                            onClick={() => onPageChange(i + 1)}
+                                            variant={currentPage === i + 1 ? "filled" : "text"}
+                                            size="sm"
+                                            className="mx-1"
+                                        >
+                                            {i + 1}
+                                        </Button>
+                                    ))}
+                                    <Button
+                                        onClick={() => onPageChange(currentPage + 1)}
+                                        disabled={currentPage === totalPages}
+                                        variant="text"
+                                        size="sm"
+                                    >
+                                        &gt;
+                                    </Button>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

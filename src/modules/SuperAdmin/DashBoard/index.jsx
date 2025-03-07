@@ -5,48 +5,61 @@ import Events from "../layouts/Events";
 import Badge from "../../../components/Badge"
 import Header from "../header";
 import Greeting from "../greetings";
-import organisation from "../../../assets/organisation.svg";
-import calendar from "../../../assets/calendar.svg";
-import subscriptions from "../../../assets/subscriptions.svg";
-import users from "../../../assets/users.svg";
-import plusSign from "../../../assets/plus-sign.svg";
-import star from "../../../assets/star.svg";
 import { useEffect, useState } from "react";
 import { useOrganizationApi } from "../../../api/hooks/useOrganizationApi";
 import { useIndividualApi } from "../../../api/hooks/useIndividualsApi";
+import { dateFormat } from "../../../helpers/dateHelper";
+import Loader from "../../../components/Loader";
 
 export default function Dashboard() {
     const [organisations, setOrganisations] = useState([]);
     const [individuals, setIndividuals] = useState([]);
+    const [userData, setUsersData] = useState([]);
+    const [loadingOrganisations, setLoadingOrganisations] = useState(false);
+    const [loadingIndividuals, setLoadingIndividuals] = useState(false);
 
-    const { getOrganisationsData } = useOrganizationApi();
-    const { getIndividualsData } = useIndividualApi();
+    const { getOrganisationsAdmin } = useOrganizationApi();
+    const { getIndividualsAdmin } = useIndividualApi();
 
     const getOrganisations = async () => {
+        setLoadingOrganisations(true); // Start loading
         try {
-            const data = await getOrganisationsData("");
-            setOrganisations(data);
+            const data = await getOrganisationsAdmin("");
+            setOrganisations(data.data);
+            getUsers();
         } catch (error) {
             console.error("Error fetching organizations:", error);
-            throw error;
+            getUsers();
+        } finally {
+            setLoadingOrganisations(false); // Stop loading
+        }
+    };
+
+    const getUsers = async () => {
+        setLoadingIndividuals(true); // Start loading
+        try {
+            const data = await getIndividualsAdmin("");
+            setIndividuals(data.data);
+        } catch (error) {
+            console.error("Error fetching individuals:", error);
+        } finally {
+            setLoadingIndividuals(false); // Stop loading
         }
     };
 
 
-    const getUsers = async () => {
-        try {
-            const data = await getIndividualsData("");
-            setIndividuals(data);
-        } catch (error) {
-            console.error("Error fetching individuals:", error);
-            throw error;
-        }
-    }
-
     useEffect(() => {
-        getUsers();
         getOrganisations();
     }, []);
+
+
+
+    useEffect(() => {
+        const mergedData = [...individuals, ...organisations];
+        setUsersData(getNewestUsers(mergedData));
+    }, [individuals, organisations]);
+
+
 
     const TableHeaders = ["Name", "User Type", "Date", "Action"];
     const NewTableHeaders = ["Event Name", "Type", "Date", "Action"];
@@ -69,40 +82,26 @@ export default function Dashboard() {
         },
     ];
 
-    const TableData = [
-        {
-            name: 'Chukka Uzo',
-            role: 'Individual',
-            date: '12-10-24',
-        },
-        {
-            name: 'Chukka Uzo',
-            role: 'Individual',
-            date: '12-10-24',
-        },
-        {
-            name: 'Chukka Uzo',
-            role: 'Individual',
-            date: '12-10-24',
-        },
-        {
-            name: 'Chukka Uzo',
-            role: 'Individual',
-            date: '12-10-24',
-        },
-    ];
+
+
+    const getNewestUsers = (users, count = 4) => {
+        return users
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by createdAt (latest first)
+            .slice(0, count); // Get the first 'count' users
+    }
+
+
+
 
     const statsData = [
         {
-            cronTop: true,
+            cronTop: false,
             cronTopIcon: <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0.119537 14.7127C0.119537 12.2108 2.14771 10.1826 4.64958 10.1826H9.72116C12.223 10.1826 14.2512 12.2108 14.2512 14.7127V14.7127C14.2512 15.5466 13.5751 16.2227 12.7412 16.2227H1.62955C0.795595 16.2227 0.119537 15.5466 0.119537 14.7127V14.7127Z" fill="#AEB9E1" />
                 <path d="M7.18805 9.03192C9.41194 9.03192 11.2148 7.22911 11.2148 5.00522C11.2148 2.78133 9.41194 0.978516 7.18805 0.978516C4.96416 0.978516 3.16135 2.78133 3.16135 5.00522C3.16135 7.22911 4.96416 9.03192 7.18805 9.03192Z" fill="#AEB9E1" />
             </svg>,
-            cronAnalytics: <span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                28.4%
-            </span>,
-            value: 3023,
+            cronAnalytics: null,
+            value: individuals.length,
             label: "Total Users",
             iconColor: "bg-mobiOrange",
             icon: <svg width="20" height="27" viewBox="0 0 28 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -127,14 +126,12 @@ export default function Dashboard() {
             </svg>,
         },
         {
-            cronTop: true,
+            cronTop: false,
             cronTopIcon: <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" clipRule="evenodd" d="M16.5197 9.11149C16.5197 13.6218 12.8634 17.2782 8.35307 17.2782C3.84274 17.2782 0.186401 13.6218 0.186401 9.11149C0.186401 4.60117 3.84274 0.944824 8.35307 0.944824C12.8634 0.944824 16.5197 4.60117 16.5197 9.11149ZM8.3549 4.44481C8.79463 4.44481 9.15111 4.80129 9.15111 5.24102V8.31614H12.2218C12.6616 8.31614 13.018 8.67261 13.018 9.11234C13.018 9.55208 12.6616 9.90855 12.2218 9.90855H9.15111V12.9819C9.15111 13.4217 8.79463 13.7781 8.3549 13.7781C7.91516 13.7781 7.55869 13.4217 7.55869 12.9819V9.90855H4.48092C4.04118 9.90855 3.68471 9.55208 3.68471 9.11234C3.68471 8.67261 4.04118 8.31614 4.48092 8.31614H7.55869V5.24102C7.55869 4.80129 7.91516 4.44481 8.3549 4.44481Z" fill="#AEB9E1" />
             </svg>,
-            cronAnalytics: <span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                28.4%
-            </span>,
-            value: 139,
+            cronAnalytics: null,
+            value: organisations.length,
             label: "Total Organisations",
             iconColor: "bg-mobiSkyCloud",
             icon: <svg width="25" height="25" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -157,6 +154,8 @@ export default function Dashboard() {
             </svg>,
         }
     ];
+
+
 
     return (
         <>
@@ -181,21 +180,36 @@ export default function Dashboard() {
                                     </button>
                                 }
                                 tableHeader={TableHeaders}>
-                                {TableData.map((data, index) => (
-                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-5 text-mobiTableText">{index + 1}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.role}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
-                                        <td className="px-3 py-3">
-                                            <span className="flex w-full">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {userData.length > 0 ?
+                                    userData.map((data, index) => (
+                                        <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                            <td className="px-3 py-5 text-mobiTableText">{index + 1}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.companyName ? `${data.companyName}` : `${data.firstName} ${data.lastName}`}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.accountType}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd MMM yyyy')}</td>
+                                            <td className="px-3 py-3">
+                                                <span className="flex w-full">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    :
+                                    loadingIndividuals ?
+                                        <tr>
+                                            <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                                <Loader size={20} />
+                                            </td>
+                                        </tr>
+                                        :
+                                        <tr>
+                                            <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                                No Data Available
+                                            </td>
+                                        </tr>
+                                }
                             </Table>
                         </div>
 

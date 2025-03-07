@@ -44,5 +44,20 @@ export const useOrganizationApi = () => {
       });  
   }
 
-  return { getOrganisations, getOrganisationsMember, getOrganisationsData };
+
+  const getOrganisationsAdmin = (params) => {
+    return new Promise((resolve, reject) => {
+      mutate({
+        url: `/api/admins/organizations`,
+        method: "GET",
+        headers: true,
+        hideToast: true,
+        onSuccess: (response) => resolve(response.data),
+        onError: (error) => reject(error)
+      });
+    });  
+  }
+
+
+  return { getOrganisations, getOrganisationsMember, getOrganisationsAdmin, getOrganisationsData };
 };

@@ -29,5 +29,34 @@ export const useIndividualApi = () => {
         });
     };
 
-    return { getIndividualsData, getSingleIndividual };
+
+    const getIndividualsAdmin = (params) => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/admins/individuals${params}`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => resolve(response.data),
+                onError: (error) => reject(error)
+            });
+        });
+    };
+
+
+    const getSingleIndividualAdmin = (params) => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/admins/view/user${params}`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => resolve(response.data.data),
+                onError: (error) => reject(error)
+            });
+        });
+    };
+
+
+    return { getIndividualsData, getSingleIndividual, getIndividualsAdmin, getSingleIndividualAdmin };
 };
