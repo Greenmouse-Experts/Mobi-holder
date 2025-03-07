@@ -100,11 +100,11 @@ export default function OrgUpcomingEvents() {
 
                                                         {data.userId === user.id &&
                                                             <>
-                                                                <MenuItem className="flex flex-col gap-3">
+                                                                {/*<MenuItem className="flex flex-col gap-3">
                                                                     <span className="cursor-pointer" onClick={() => navigate(`/org/event-log/${data.eventId}`)}>
                                                                         Event Log
                                                                     </span>
-                                                                </MenuItem>
+                                                                </MenuItem>*/}
 
                                                                 {data.allowVerifierRequests > 0 &&
                                                                     <MenuItem className="flex flex-col gap-3">

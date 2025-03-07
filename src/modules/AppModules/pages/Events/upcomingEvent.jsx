@@ -111,11 +111,11 @@ export default function UpcomingEvents() {
 
                                                         {data.userId === user.id &&
                                                             <>
-                                                                <MenuItem className="flex flex-col gap-3">
+                                                               {/* <MenuItem className="flex flex-col gap-3">
                                                                     <span className="cursor-pointer" onClick={() => navigate(`/app/event-log/${data.eventId}`)}>
                                                                         Event Log
                                                                     </span>
-                                                                </MenuItem>
+                                                                </MenuItem> */}
 
                                                                 <MenuItem className="flex flex-col gap-3">
                                                                     <span className="cursor-pointer" onClick={() => navigate(`/app/ticket-requests/${data.eventId}`)}>
