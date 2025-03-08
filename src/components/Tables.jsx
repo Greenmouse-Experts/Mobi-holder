@@ -65,7 +65,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, c
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                    <div className="flex items-center justify-between border-t px-4 py-3">
+                    <div className="flex items-center justify-between px-4 py-3">
                         <div className="flex flex-1 justify-between sm:hidden">
                             <Button
                                 onClick={() => onPageChange(currentPage - 1)}
@@ -86,7 +86,7 @@ function Table({ title, subTitle, filter, exportData, tableBtn, transparentBg, c
                             </Button>
                         </div>
                         <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm">
                                 Page <span className="font-medium">{currentPage}</span> of{" "}
                                 <span className="font-medium">{totalPages}</span>
                             </p>
