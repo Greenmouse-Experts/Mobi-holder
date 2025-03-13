@@ -262,6 +262,9 @@ export default function TicketEvent({ back }) {
                                         placeholder="Price of Ticket" />
                                 </div>
                             }
+                            <Button onClick={() => addTicketTypes(index)} className="md:w-1/3 w-full p-4 bg-red rounded-lg">
+                                Remove Ticket Type
+                            </Button>
                         </>
                     ))}
 

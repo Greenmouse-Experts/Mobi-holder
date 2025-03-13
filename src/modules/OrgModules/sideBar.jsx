@@ -88,6 +88,10 @@ export default function Sidebar({ mobile }) {
                     path: "/org/event-gallery",
                     name: "Event Gallery"
                 },
+                {
+                    path: "/org/event-history",
+                    name: "Event History"
+                },
                 /*  {
                       path: "/org/my-tickets",
                       name: "My Tickets"

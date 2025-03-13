@@ -32,6 +32,7 @@ import PaymentGateway from "../modules/OrgModules/pages/Subscriptions/paymentGat
 import UpdateCard from "../modules/OrgModules/pages/IdCards/updateCard";
 import ViewOrgPublicEvents from "../modules/OrgModules/pages/Events/viewPublicEvents";
 import OrgBuyTickets from "../modules/OrgModules/pages/Events/buyTickets";
+import OrgEventHistory from "../modules/OrgModules/pages/Events/eventHistory";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -52,6 +53,7 @@ const OrgRoutes = [
     <Route path="event-log/:id" element={<OrgEventLog />} />,
     <Route path="event-gallery" element={<OrgEventGallery />} />,
     <Route path="add-event-verifier/:id" element={<OrgAddEventVerifier />} />,
+    <Route path="event-history" element={<OrgEventHistory />} />,
     <Route path="id-cards" element={<OrgIDCardsPage />} />,
     <Route path="membership" element={<OrgMembership />} />,
     <Route path="subscriptions" element={<OrgSubscriptions />} />,
