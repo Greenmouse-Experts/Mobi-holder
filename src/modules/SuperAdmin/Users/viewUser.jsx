@@ -443,14 +443,18 @@ export default function ViewUserAdmin() {
                                     </div>
                                 </div>
 
-                                <div className="flex px-8 gap-5">
-                                    <Button type="submit" onClick={() => handleVerification()} disabled={!individual.verifiedIdCard || disabled} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
-                                        Verify User
-                                    </Button>
-                                    <Button type="submit" onClick={() => handleDeclineVerification()} disabled={!individual.verifiedIdCard || disabled} className="bg-red-500 md:w-1/3 w-full p-3 rounded-full">
-                                        Decline Verification
-                                    </Button>
-                                </div>
+                                {!individual.isVerified ?
+                                    <div className="flex px-8 gap-5">
+                                        <Button type="submit" onClick={() => handleVerification()} disabled={!individual.verifiedIdCard || disabled} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
+                                            Verify User
+                                        </Button>
+                                        <Button type="submit" onClick={() => handleDeclineVerification()} disabled={!individual.verifiedIdCard || disabled} className="bg-red-500 md:w-1/3 w-full p-3 rounded-full">
+                                            Decline Verification
+                                        </Button>
+                                    </div>
+                                    :
+                                    <></>
+                                }
 
                             </div>
                         </div>

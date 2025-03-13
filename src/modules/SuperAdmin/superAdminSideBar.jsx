@@ -35,6 +35,10 @@ export default function SuperAdminSidebar({ mobile }) {
             </i>,
             children: [
                 {
+                    path: "/superadmin/staffs",
+                    name: "Staffs"
+                },
+                {
                     path: "/superadmin/individuals",
                     name: "Individuals"
                 },

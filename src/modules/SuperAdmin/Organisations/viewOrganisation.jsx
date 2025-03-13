@@ -32,7 +32,7 @@ const DeclineForm = ({ closeModal, verificationData, reload }) => {
             adminNote: data.adminNote
         }
         mutate({
-            url: "/api/admins/updateIdCardStatus",
+            url: "/api/admins/updateBusinessInformationStatus",
             method: "POST",
             data: payload,
             headers: true,
@@ -163,7 +163,7 @@ export default function ViewOrgAdmin() {
             adminNote: ''
         }
         mutate({
-            url: "/api/admins/updateIdCardStatus",
+            url: "/api/admins/updateBusinessInformationStatus",
             method: "POST",
             data: payload,
             headers: true,
@@ -351,14 +351,18 @@ export default function ViewOrgAdmin() {
                                     </div>
                                 </div>
 
-                                <div className="flex px-8 gap-5">
-                                    <Button type="submit" onClick={() => handleVerification()} disabled={!individual.businessinformation || disabled} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
-                                        Verify User
-                                    </Button>
-                                    <Button type="submit" onClick={() => handleDeclineVerification()} disabled={!individual.businessinformation || disabled} className="bg-red-500 md:w-1/3 w-full p-3 rounded-full">
-                                        Decline Verification
-                                    </Button>
-                                </div>
+                                {!individual.isVerified ?
+                                    <div className="flex px-8 gap-5">
+                                        <Button type="submit" onClick={() => handleVerification()} disabled={!individual.businessinformation || disabled} className="bg-mobiPink md:w-1/3 w-full p-3 rounded-full">
+                                            Verify User
+                                        </Button>
+                                        <Button type="submit" onClick={() => handleDeclineVerification()} disabled={!individual.businessinformation || disabled} className="bg-red-500 md:w-1/3 w-full p-3 rounded-full">
+                                            Decline Verification
+                                        </Button>
+                                    </div>
+                                    :
+                                    <></>
+                                }
 
                             </div>
                         </div>
