@@ -111,7 +111,7 @@ export default function UpcomingEvents() {
 
                                                         {data.userId === user.id &&
                                                             <>
-                                                               {/* <MenuItem className="flex flex-col gap-3">
+                                                                {/* <MenuItem className="flex flex-col gap-3">
                                                                     <span className="cursor-pointer" onClick={() => navigate(`/app/event-log/${data.eventId}`)}>
                                                                         Event Log
                                                                     </span>
@@ -123,6 +123,14 @@ export default function UpcomingEvents() {
                                                                     </span>
                                                                 </MenuItem>
                                                             </>}
+
+                                                        {data.allowVerifierRequests > 0 &&
+                                                            <MenuItem className="flex flex-col gap-3">
+                                                                <span className="cursor-pointer" onClick={() => navigate(`/app/add-event-verifier/${data.eventId}`)}>
+                                                                    Add Event Verifier
+                                                                </span>
+                                                            </MenuItem>
+                                                        }
                                                     </MenuList>
                                                 </Menu>
                                             </td>

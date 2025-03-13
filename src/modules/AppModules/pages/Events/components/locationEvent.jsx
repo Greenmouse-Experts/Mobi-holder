@@ -42,8 +42,6 @@ export default function LocationEvent({ next, back }) {
          next(true);
     }
 
-    console.log(event.startDate)
-
     return (
         <>
             <form onSubmit={handleSubmit(createEvent)}>
@@ -115,7 +113,7 @@ export default function LocationEvent({ next, back }) {
                         </div>
                     </div>
 
-                    <div className="w-full my-10 border border-2 h-[1px]" />
+                    <div className="w-full mt-10 border border-2 h-[1px]" />
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                         <div className="flex flex-col w-full gap-6">

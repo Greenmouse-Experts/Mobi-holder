@@ -117,7 +117,7 @@ export default function OrgUpcomingEvents() {
                                                                 <MenuItem className="flex flex-col gap-3">
                                                                     <span className="cursor-pointer" onClick={() => navigate(`/org/ticket-requests/${data.eventId}`)}>
                                                                         Ticket Requests
-                                                                    </span>
+                                                                 </span>
                                                                 </MenuItem>
                                                             </>}
 
