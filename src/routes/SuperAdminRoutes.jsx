@@ -12,6 +12,7 @@ import EventLog from "../modules/SuperAdmin/Events/modules/eventLog";
 import EventTickets from "../modules/SuperAdmin/Events/modules/eventTickets";
 import EventsCategories from "../modules/SuperAdmin/Events/eventsCategories";
 import Staffs from "../modules/SuperAdmin/Staffs";
+import AddStaff from "../modules/SuperAdmin/Staffs/addStaff";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -27,6 +28,7 @@ const SuperAdminRoutes = [
     <Route path="events/event-log/:id" element={<EventLog />} />,
     <Route path="events/event-ticket/:id" element={<EventTickets />} />,
     <Route path="staffs" element={<Staffs />} />,
+    <Route path="staffs/create" element={<AddStaff />} />,
 ];
 
 export default SuperAdminRoutes;

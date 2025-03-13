@@ -67,20 +67,9 @@ export default function Staffs() {
                                         <path d="M0.909424 6.9082L5.00033 10.9991L9.09124 6.9082" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
-                                <Menu placement="bottom">
-                                    <MenuHandler>
-                                        <Button className="bg-mobiPink p-2 rounded-lg">
-                                            Event Category
+                                        <Button className="bg-mobiPink p-2 rounded-lg" onClick={() => navigate('create')}>
+                                            Add New Staff
                                         </Button>
-                                    </MenuHandler>
-                                    <MenuList>
-                                        <MenuItem className="flex flex-col gap-3">
-                                            <span className="cursor-pointer" onClick={() => handleCreateCategory()}>
-                                                Create Categories
-                                            </span>
-                                        </MenuItem>
-                                    </MenuList>
-                                </Menu>
                             </>
                         }
                         tableHeader={TableHeaders}>
