@@ -18,6 +18,7 @@ export default function AllUsers() {
 
     const getUsers = async (params) => {
         setLoadingIndividuals(true); // Start loading
+        setIndividuals([]);
         try {
             const data = await getIndividualsAdmin(`?page=${params}`);
             setIndividuals(data.data);

@@ -11,7 +11,7 @@ export default function TicketEvent({ back }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, trigger, handleSubmit, formState: { errors } } = useForm();
     const [selectedPlan, setSelectedPlan] = useState('Free');
     const [isLoading, setIsLoading] = useState(false);
     const [isRecurring, setIsRecurring] = useState(false);
@@ -30,12 +30,40 @@ export default function TicketEvent({ back }) {
     }
 
 
-    const addTicketTypes = () => {
-        setTicketsArray(prevTickets => [
-            ...prevTickets,
-            { name: null, ticketsAvailable: null, plusAllowed: null, price: null }
-        ]);
+    const addTicketTypes = async () => {
+        // Validate existing fields before adding new ticket type
+        const currentTicketCount = ticketsArray.length;
+        const fieldsToValidate = [];
+
+        // Collect all field names for existing tickets
+        for (let i = 0; i < currentTicketCount; i++) {
+            fieldsToValidate.push(`ticketName${i}`);
+            fieldsToValidate.push(`ticketsAvailable${i}`);
+            fieldsToValidate.push(`plusAllowed${i}`);
+            if (selectedPlan === 'Paid') fieldsToValidate.push(`price${i}`);
+        }
+
+        // Trigger validation for all existing fields
+        const isValid = await trigger(fieldsToValidate);
+
+        // Only add new ticket type if validation passes
+        if (isValid) {
+            setTicketsArray(prevTickets => [
+                ...prevTickets,
+                { name: null, ticketsAvailable: null, plusAllowed: null, price: null }
+            ]);
+        }
+    };
+
+
+
+    const removeTicketTypes = (index) => {
+        if (typeof index === 'number' && index > 0) {
+            setTicketsArray(prevTickets => prevTickets.filter((_, i) => i !== index));
+        }
     }
+
+
 
     const frequencyOptions = [
         {
@@ -162,7 +190,7 @@ export default function TicketEvent({ back }) {
                         <RadioButtonGroup options={arrayOptions} select={handleSelect} selectedOption={selectedPlan} />
                     </div>
 
-                    <div className="w-full mt-10 border-dashed border-2 h-[1px]" />
+                    <div className="w-full mt-4 border-dashed border-2 h-[1px]" />
 
                     <div className="flex justify-start">
                         <div className="flex gap-1">
@@ -223,8 +251,8 @@ export default function TicketEvent({ back }) {
                         </>
                     }
 
-                    {ticketsArray.map((tickets, index) => (
-                        <>
+{ticketsArray.map((tickets, index) => (
+                        <div className="w-full flex flex-col rounded-lg gap-8 -mt-1 p-3 border-2 border-dashed">
                             <div className="flex flex-col w-full gap-6" key={index}>
                                 <p className="-mb-3 text-mobiFormGray">
                                     Ticket Name
@@ -262,17 +290,21 @@ export default function TicketEvent({ back }) {
                                         placeholder="Price of Ticket" />
                                 </div>
                             }
-                            <Button onClick={() => addTicketTypes(index)} className="md:w-1/3 w-full p-4 bg-red rounded-lg">
-                                Remove Ticket Type
-                            </Button>
-                        </>
+
+                            {index > 0 &&
+                                <Button onClick={() => removeTicketTypes(index)} className="md:w-1/3 w-full -mt-2 p-2 bg-red-500 rounded-lg">
+                                    Remove Ticket Type
+                                </Button>
+                            }
+                        </div>
                     ))}
 
                     <div className="flex gap-8 mb-8">
-                        <Button onClick={() => addTicketTypes()} className="md:w-1/3 w-full p-4 rounded-lg">
+                        <Button onClick={async () => await addTicketTypes()} className="md:w-1/3 w-full p-4 rounded-lg">
                             Add Another Ticket Type
                         </Button>
                     </div>
+
 
                     <div className="flex gap-8">
                         <Button onClick={() => handleBack()} className="md:w-1/4 w-full p-3 rounded-full">

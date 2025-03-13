@@ -18,6 +18,7 @@ export default function Organisations() {
 
     const getUsers = async (params) => {
         setLoadingOrganisations(true); // Start loading
+        setOrganisations([]);
         try {
             const data = await getOrganisationsAdmin(`?page=${params}`);
             setOrganisations(data.data);
