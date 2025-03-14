@@ -1,11 +1,13 @@
-import { parseISO, format } from 'date-fns';
+import { parseISO } from 'date-fns';
+import { format } from 'date-fns-tz';
 
 export const dateFormat = (dateString, formatType) => {
+    // Parse in UTC mode
     const parsedDate = parseISO(dateString);
-    const formattedDate = format(parsedDate, formatType);
-
-    return formattedDate;
-}
+    
+    // Format using UTC time zone
+    return format(parsedDate, formatType, { timeZone: 'UTC' });
+};
 
 export const todayDate = () => {
     // Get today's date

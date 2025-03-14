@@ -80,14 +80,14 @@ export default function Sidebar({ mobile }) {
                     path: "/app/upcoming-events",
                     name: "Upcoming Event"
                 },
-               {
+                {
                     path: "/app/event-gallery",
                     name: "Event Gallery"
                 },
-              /*  {
+                {
                     path: "/app/my-tickets",
                     name: "My Tickets"
-                }, */
+                },
                 {
                     path: "/app/event-invites",
                     name: "Event Invites"

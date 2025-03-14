@@ -31,6 +31,7 @@ import AddNewCard from "../modules/AppModules/pages/IdCards/newCard";
 import ViewPublicEvents from "../modules/AppModules/pages/Events/viewPublicEvents";
 import EventInvites from "../modules/AppModules/pages/Events/eventInvites";
 import AddEventVerifier from "../modules/AppModules/pages/Events/addEventVerifier";
+import MyTickets from "../modules/AppModules/pages/Events/myTickets";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -62,6 +63,7 @@ const UserRoutes = [
     <Route path="event-invites" element={<EventInvites />} />,
     <Route path="ticket-requests/:id" element={<TicketRequests />} />,
     <Route path="event-gallery" element={<EventGallery />} />,
+    <Route path="my-tickets" element={<MyTickets />} />,
     <Route path="order-tickets/:id" element={<BuyTickets />} />,
     <Route path="event-history" element={<EventHistory />} />,
     <Route path="id-cards/generate-card" element={<AddNewCard />} />
