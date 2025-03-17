@@ -34,6 +34,7 @@ import ViewOrgPublicEvents from "../modules/OrgModules/pages/Events/viewPublicEv
 import OrgBuyTickets from "../modules/OrgModules/pages/Events/buyTickets";
 import OrgEventHistory from "../modules/OrgModules/pages/Events/eventHistory";
 import OrgTickets from "../modules/OrgModules/pages/Events/myTickets";
+import OrgEventTicket from "../modules/OrgModules/pages/Events/viewTicket";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -52,6 +53,7 @@ const OrgRoutes = [
     <Route path="ticket-requests/:id" element={<OrgTicketRequests />} />,
     <Route path="order-tickets/:id" element={<OrgBuyTickets />} />,
     <Route path="event-log/:id" element={<OrgEventLog />} />,
+    <Route path="event/view-ticket/:id" element={<OrgEventTicket />} />,
     <Route path="event-gallery" element={<OrgEventGallery />} />,
     <Route path="my-tickets" element={<OrgTickets />} />,
     <Route path="add-event-verifier/:id" element={<OrgAddEventVerifier />} />,
