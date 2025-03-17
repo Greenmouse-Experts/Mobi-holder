@@ -4,7 +4,7 @@ import { format } from 'date-fns-tz';
 export const dateFormat = (dateString, formatType) => {
     // Parse in UTC mode
     const parsedDate = parseISO(dateString);
-    
+
     // Format using UTC time zone
     return format(parsedDate, formatType, { timeZone: 'UTC' });
 };
@@ -103,4 +103,13 @@ export const formatDateTime = (dateString) => {
     };
 
     return `${day}${suffix(day)} ${formattedDate.split(" ")[1]} ${date.getFullYear()} (${formattedTime})`;
+}
+
+
+export const amPmTimeFormat = (dateString) => {
+    const date = new Date(dateString);
+    const timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
+    const formattedTime = date.toLocaleTimeString("en-GB", timeOptions).toLowerCase();
+
+    return formattedTime;
 }

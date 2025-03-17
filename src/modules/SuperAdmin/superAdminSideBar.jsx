@@ -163,7 +163,7 @@ export default function SuperAdminSidebar({ mobile }) {
 
             {/* Footer */}
             <div className="px-4 py-6">
-                <Link to={'#'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg transition`}>
+                <Link to={'settings'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg transition`}>
                     <i className={`fas fa-cog mr-3`}></i>
                     <span>Settings</span>
                 </Link>

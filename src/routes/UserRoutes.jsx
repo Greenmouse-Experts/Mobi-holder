@@ -32,6 +32,7 @@ import ViewPublicEvents from "../modules/AppModules/pages/Events/viewPublicEvent
 import EventInvites from "../modules/AppModules/pages/Events/eventInvites";
 import AddEventVerifier from "../modules/AppModules/pages/Events/addEventVerifier";
 import MyTickets from "../modules/AppModules/pages/Events/myTickets";
+import EventTicket from "../modules/AppModules/pages/Events/viewTicket";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -64,6 +65,7 @@ const UserRoutes = [
     <Route path="ticket-requests/:id" element={<TicketRequests />} />,
     <Route path="event-gallery" element={<EventGallery />} />,
     <Route path="my-tickets" element={<MyTickets />} />,
+    <Route path="event/view-ticket/:id" element={<EventTicket />} />,
     <Route path="order-tickets/:id" element={<BuyTickets />} />,
     <Route path="event-history" element={<EventHistory />} />,
     <Route path="id-cards/generate-card" element={<AddNewCard />} />

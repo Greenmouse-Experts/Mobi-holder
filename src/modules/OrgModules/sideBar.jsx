@@ -92,14 +92,14 @@ export default function Sidebar({ mobile }) {
                     path: "/org/event-history",
                     name: "Event History"
                 },
-                /*  {
-                      path: "/org/my-tickets",
-                      name: "My Tickets"
-                  },
-                  {
-                      path: "/org/event-invites",
-                      name: "Event Invites"
-                  }, */
+                {
+                    path: "/org/my-tickets",
+                    name: "My Tickets"
+                },
+                /* {
+                    path: "/org/event-invites",
+                    name: "Event Invites"
+                }, */
             ],
             openChildren: false
         },
