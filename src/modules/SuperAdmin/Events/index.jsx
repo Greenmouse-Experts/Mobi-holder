@@ -129,7 +129,7 @@ export default function Events() {
                 setEvents(response.data.data);
                 setPagination(response.data.pagination);
                 setLoading(false);
-                window.scrollTo({top: 0, behavior: 'smooth'})
+                window.scrollTo({ top: 0, behavior: 'smooth' })
             },
             onError: () => {
                 setLoading(false);
@@ -206,20 +206,22 @@ export default function Events() {
                                                 </MenuHandler>
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate('/superadmin/events/verifiers/2')}>
-                                                            View Verifiers
+                                                        <span className="cursor-pointer" onClick={() => navigate(`/superadmin/events/view/${data.id}`)}>
+                                                            View Event
                                                         </span>
                                                     </MenuItem>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate('/superadmin/events/event-log/2')}>
-                                                            Event Log
+                                                        <span className="cursor-pointer" onClick={() => navigate(`/superadmin/events/event-attendees/${data.id}/${data.eventId}`)}>
+                                                            View Event Attendees
                                                         </span>
                                                     </MenuItem>
-                                                    <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate('/superadmin/events/event-ticket/2')}>
-                                                            Event Tickets
-                                                        </span>
-                                                    </MenuItem>
+                                                    {data.ticketType === 'Paid' &&
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => navigate(`/superadmin/events/event-payments/${data.eventId}`)}>
+                                                                Event Payments
+                                                            </span>
+                                                        </MenuItem>
+                                                    }
                                                 </MenuList>
                                             </Menu>
                                         </td>
