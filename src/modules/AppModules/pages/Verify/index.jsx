@@ -12,9 +12,12 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { useEffect, useState } from "react";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
+import { useVerifiersApi } from "../../../../api/hooks/useVerifiersApi";
 
 export default function VerificationDashboard() {
     const user = useSelector((state) => state.userData.data);
+
+    const { getInitiatedRequests } = useVerifiersApi();
 
     const navigate = useNavigate();
 
@@ -22,6 +25,7 @@ export default function VerificationDashboard() {
 
     const [allEvents, setAllEvents] = useState([]);
     const [allVerifiers, setAllVerifiers] = useState([]);
+    const [requests, setAllRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingVerifiers, setIsLoadingVerifiers] = useState(true);
 
@@ -81,10 +85,21 @@ export default function VerificationDashboard() {
 
 
     useEffect(() => {
-        getAllEvents();
-        getAllVerifiers();
-    }, []);
+        const fetchData = async () => {
+            getAllEvents();
+            getAllVerifiers();
 
+            try {
+                const data = await getInitiatedRequests();
+                const filteredRequests = data.filter((data) => data.issuedBy === user.id);
+                setAllRequests(filteredRequests);
+            } catch (error) {
+                console.error("Error fetching received requests:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
 
 
@@ -117,7 +132,7 @@ export default function VerificationDashboard() {
                         colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                     />
                     <StatCard
-                        number={21}
+                        number={requests.length}
                         label="Verification Requests"
                         iconColor="bg-mobiSkyCloud"
                         IconComponent={<img src={organisation} alt="ID Cards" style={{ width: '22px' }} />}
@@ -163,8 +178,13 @@ export default function VerificationDashboard() {
                                                 </MenuHandler>
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate('/app/view-verifiers/2')}>
+                                                        <span className="cursor-pointer" onClick={() => navigate(`/app/view-verifiers/${data.id}`)}>
                                                             View Verifiers
+                                                        </span>
+                                                    </MenuItem>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate(`/app/view-event/${data.id}`)}>
+                                                            View Event
                                                         </span>
                                                     </MenuItem>
                                                 </MenuList>
@@ -200,10 +220,9 @@ export default function VerificationDashboard() {
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                         <td className="px-3 py-3 text-mobiTableText">{data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.user.email}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{'---'}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.event.name}</td>
                                         <td className="px-3 py-3 text-mobiTableText">
-                                            {'---'}
-                                            {/*<img width={50} src="/event-xs.png" />*/}
+                                            {<img width={50} src={data.event.image} />}
                                         </td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3">

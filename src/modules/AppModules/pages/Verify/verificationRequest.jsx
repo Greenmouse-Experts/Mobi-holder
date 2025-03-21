@@ -122,28 +122,7 @@ export default function VerificationRequest() {
     const RequetsHeaders = ["Individual", "Email", "Event", "Request On", "Response", "Action"];
     const RequetsHeaders1 = ["Individual", "Email", "Event", "Request On", "Status", "Action"];
 
-    const NewTableData = [
-        {
-            name: 'Chukka Uzo',
-            email: 'testmail@gmail.com',
-            event: 'Google UI Event',
-            number: '12-11-2024',
-            status: 'active'
-        }, {
-            name: 'Chukka Uzo',
-            email: 'testmail@gmail.com',
-            event: 'Google UI Event',
-            number: '12-11-2024',
-            status: 'active'
-        },
-        {
-            name: 'Chukka Uzo',
-            email: 'testmail@gmail.com',
-            event: 'Google UI Event',
-            number: '12-11-2024',
-            status: 'active'
-        },
-    ];
+
     return (
         <>   <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
