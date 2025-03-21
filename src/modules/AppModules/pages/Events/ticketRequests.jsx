@@ -166,7 +166,7 @@ export default function TicketRequests() {
 
 
 
-    const TableHeaders = ["Individual", "MobiHolder ID", "Requested On", "Status"];
+    const TableHeaders = ["Individual", "MobiHolder ID", "Ticket ID", "Requested On", "Status"];
 
 
 
@@ -234,6 +234,7 @@ export default function TicketRequests() {
                                                     {data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}
                                                 </td>
                                                 <td className="px-3 py-3 text-mobiTableText">{data.user.mobiHolderId}</td>
+                                                <td className="px-3 py-3 text-mobiTableText">{data.ticketId}</td>
                                                 <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, "dd MM yyyy")}</td>
                                                 <td className="px-3 py-3 text-mobiTableText">
                                                     {data.status === 'pending' ?

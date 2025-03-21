@@ -2,17 +2,20 @@ import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import SearchInput from "../../../../components/SearchInput";
 import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
+import Loader from "../../../../components/Loader";
+import { compareEventDate, formatDateTime, formatEventDate } from "../../../../helpers/dateHelper";
 
-const Card = ({ logo, category }) => {
+const Card = ({ logo, startDate, endDate, name, ticketType }) => {
     return (
         <div className="bg-gray-800 text-white rounded-lg shadow-lg flex flex-col relative">
             <span className="absolute w-auto py-1 px-2 top-[8px] left-[10px] rounded-md bg-[rgba(0,0,0,0.7)]">
-                <p className="text-white text-xs font-semibold">18 Jun</p>
-                <p className="text-white text-xs mt-1">Today</p>
+                <p className="text-white text-xs font-semibold">{formatEventDate(startDate)}</p>
+                <p className="text-white text-xs mt-1">{compareEventDate(startDate)}</p>
             </span>
             <div className="mb-1 w-full h-[200px] rounded-lg">{logo}</div>
-            <p className="text-xs text-mobiBlue text-left p-3">{category}</p>
-            <p className="text-sm text-white px-3 font-semibold">Google UI Event</p>
+            <p className="text-sm text-white px-3 font-semibold">{name}</p>
             <div className="w-full flex gap-3 px-3 my-1">
                 <div className="rounded-lg max-h-[30px] mt-[1px] flex items-center">
                     <span className="bs-mobiCeramaic">
@@ -28,83 +31,77 @@ const Card = ({ logo, category }) => {
                         </svg>
                     </span>
                 </div>
-                <span className="bs-mobiCeramic flex flex-col items-center mt-1">7:30 - 1:00PM</span>
+                <span className="bs-mobiCeramic flex flex-col items-center mt-1">{`${formatDateTime(startDate)} - ${formatDateTime(endDate)}`}</span>
             </div>
             <div className="w-full flex gap-3 px-3 mb-3">
                 <div className="rounded-lg max-h-[30px] mt-[1px] flex items-center">
                     <span className="bs-mobiCeramaic">
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" fill="#A6A6A6" />
-                            <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M1 4.82031H13.9993V7.11431C13.0244 7.11431 12.0494 7.87898 12.0494 9.21715C12.0494 10.5553 13.0244 11.7023 13.9993 11.7023V13.9963H1V11.7023C1.97495 11.7023 2.9499 10.9377 2.9499 9.40832C2.9499 7.87898 1.97495 7.11431 1 7.11431V4.82031Z" fill="#A6A6A6" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M1 4.82031H13.9993V7.11431C13.0244 7.11431 12.0494 7.87898 12.0494 9.21715C12.0494 10.5553 13.0244 11.7023 13.9993 11.7023V13.9963H1V11.7023C1.97495 11.7023 2.9499 10.9377 2.9499 9.40832C2.9499 7.87898 1.97495 7.11431 1 7.11431V4.82031Z" fill="#A6A6A6" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
                             <path d="M5.22656 8.41406H7.17646H5.22656Z" fill="#A6A6A6" />
-                            <path d="M5.22656 8.41406H7.17646" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" />
+                            <path d="M5.22656 8.41406H7.17646" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" />
                             <path d="M5.22656 10.7031H9.77633H5.22656Z" fill="#A6A6A6" />
-                            <path d="M5.22656 10.7031H9.77633" stroke="#15171E" stroke-width="0.7" stroke-linecap="round" />
+                            <path d="M5.22656 10.7031H9.77633" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" />
                         </svg>
                     </span>
                 </div>
-                <span className="bs-mobiCeramic flex flex-col items-center mt-1">Free</span>
+                <span className="bs-mobiCeramic flex flex-col items-center mt-1">{ticketType}</span>
             </div>
         </div>
     );
 };
 
 
+
 export default function ScanEvents() {
     const user = useSelector((state) => state.userData.data);
-    const { id } = useParams();
 
-    const cards = [
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-        {
-            logo: <div className="w-full h-full rounded-lg">
-                <img src="/google-ui-event.png" className="w-full h-full rounded-t-lg object-cover" />
-            </div>,
-            category: "Education",
-        },
-    ];
+    const [allEvents, setAllEvents] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const { mutate } = useApiMutation();
+
+
+        const getAllEvents = () => {
+            mutate({
+                url: `/api/events/get/events`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => {
+                    setAllEvents(response.data.data);
+                    setIsLoading(false);
+                },
+                onError: () => {
+                    setIsLoading(false);
+                }
+            });
+        }
+    
+    
+        useEffect(() => {
+            getAllEvents();
+        }, []);
+    
+    
+    
+    
+    
+    
+        if (isLoading) {
+            return (
+                <div className="w-full h-screen flex items-center justify-center">
+                    <Loader />
+                </div>
+            )
+        }
+    
+
+
+
 
 
     return <>
@@ -128,14 +125,25 @@ export default function ScanEvents() {
                 <div className="w-full flex md:px-0 px-3 flex-grow">
                     <div className="shadow-xl py-5 px-5 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                         <div className="py-5">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                {cards.map((card, index) => (
-                                    <Link to='/app/verify-event/:id'>
-                                        <Card key={index} {...card} />
-                                    </Link>
-                                ))}
-                            </div>
-                        </div>
+                            {allEvents.length > 0 ?
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                    {allEvents.map((event, index) => (
+                                        <Link to={`/app/verify-event/${event.eventId}`}>
+                                            <Card key={index}
+                                                {...event}
+                                                logo={<div className="w-full h-full rounded-lg">
+                                                    <img src={event.image} className="w-full h-full rounded-t-lg object-cover" />
+                                                </div>}
+                                            />
+                                        </Link>
+                                    ))}
+                                </div>
+                                :
+                                <div className="w-full h-screen flex items-center justify-center">
+                                    <p className="text-xl font-semibold">NO AVAILABLE EVENTS TO DISPLAY</p>
+                                </div>
+                            }
+                       </div>
                     </div>
                 </div>
             </div>

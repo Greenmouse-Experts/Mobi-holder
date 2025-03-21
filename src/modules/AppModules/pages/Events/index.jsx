@@ -136,6 +136,11 @@ export default function IndividualEvents() {
                                                                 View Details
                                                             </span>
                                                         </MenuItem>
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => navigate(`/app/ticket-requests/${data.eventId}`)}>
+                                                                Ticket Requests
+                                                            </span>
+                                                        </MenuItem>
                                                         {/* <MenuItem className="flex flex-col gap-3">
                                                     <span className="cursor-pointer" onClick={() => navigate('/org/add-event-verifier/2')}>
                                                         Add Event Verifier
