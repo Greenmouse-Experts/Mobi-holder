@@ -14,7 +14,7 @@ export default function LocationEvent({ next, back }) {
 
 
     const handleBack = () => {
-        back(true)
+        back()
     }
 
 
