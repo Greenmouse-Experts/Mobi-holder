@@ -22,7 +22,7 @@ export default function ViewEvent() {
 
     const getEventDetails = () => {
         mutate({
-            url: `/api/events/event/details?id=${id}`,
+            url: `/api/events/view/event?id=${id}`,
             method: "GET",
             headers: true,
             hideToast: true,

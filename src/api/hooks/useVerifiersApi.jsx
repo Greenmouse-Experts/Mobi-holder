@@ -31,5 +31,34 @@ export const useVerifiersApi = () => {
     };
 
 
-    return { getReceivedRequests, getInitiatedRequests };
+
+
+    const getReceivedOrgRequests = () => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/verifications/organization/verification/requests?requestType=received`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => resolve(response.data.data),
+                onError: (error) => reject(error)
+            });
+        });
+    };
+
+
+    const getInitiatedOrgRequests = () => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/verifications/organization/verification/requests?requestType=initiated`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => resolve(response.data.data),
+                onError: (error) => reject(error)
+            });
+        });
+    };
+
+    return { getReceivedRequests, getInitiatedRequests, getReceivedOrgRequests, getInitiatedOrgRequests };
 }

@@ -15,6 +15,7 @@ export default function ViewVerifiers() {
     const [userDetails, setUserDetails] = useState({});
     const [loading, setIsLoading] = useState(true);
     const [allVerifiers, setAllVerifiers] = useState([]);
+    const [isLoadingVerifiers, setIsLoadingVerifiers] = useState(true);
 
 
     const { id } = useParams();

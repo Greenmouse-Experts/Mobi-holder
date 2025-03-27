@@ -1,29 +1,31 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import Badge from "../../../../components/Badge";
+import Table from "../../../../components/Tables";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
-import { formatDateTime } from "../../../../helpers/dateHelper";
+import { dateFormat, formatDateTime } from "../../../../helpers/dateHelper";
 
-export default function OrgViewEvent() {
+export default function ViewVerifiers() {
     const user = useSelector((state) => state.orgData.orgData);
     const navigate = useNavigate();
-
     const [eventDetails, setEventDetails] = useState({});
     const [userDetails, setUserDetails] = useState({});
     const [loading, setIsLoading] = useState(true);
+    const [allVerifiers, setAllVerifiers] = useState([]);
+    const [isLoadingVerifiers, setIsLoadingVerifiers] = useState(true);
+
 
     const { id } = useParams();
 
     const { mutate } = useApiMutation();
 
 
-
     const getEventDetails = () => {
         mutate({
-            url: `/api/events/view/event?id=${id}`,
+            url: `/api/events/event/details?id=${id}`,
             method: "GET",
             headers: true,
             hideToast: true,
@@ -55,17 +57,33 @@ export default function OrgViewEvent() {
 
 
 
+
+
+    const getAllVerifiers = () => {
+        mutate({
+            url: `/api/verifications/verifiers`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                const filteredData = response.data.data.filter((data) => data.eventOwnerId === user.id);
+                setAllVerifiers(filteredData);
+                setIsLoadingVerifiers(false);
+            },
+            onError: () => {
+                setIsLoadingVerifiers(false);
+            }
+        });
+    };
+
+
+
+
+
     useEffect(() => {
         getEventDetails();
+        getAllVerifiers();
     }, []);
-
-
-
-
-
-
-
-
 
 
 
@@ -82,13 +100,14 @@ export default function OrgViewEvent() {
 
 
 
+
     const eventDetailsBlock = [
         {
             icon: <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="5.3125" cy="3.5" r="3" stroke="#A1A1A1" />
                 <path d="M10.875 10.8791C10.875 11.3681 10.7117 11.5721 10.516 11.6888C10.2692 11.836 9.8701 11.9024 9.30842 11.8855C8.76695 11.8693 8.16005 11.7805 7.5328 11.6887L7.50601 11.6848C6.88756 11.5943 6.23931 11.5 5.6875 11.5C5.13569 11.5 4.48744 11.5943 3.86899 11.6848L3.8422 11.6887C3.21494 11.7805 2.60805 11.8693 2.06658 11.8855C1.5049 11.9024 1.10579 11.836 0.858968 11.6888C0.663345 11.5721 0.5 11.3681 0.5 10.8791C0.5 9.86163 1.25066 8.85053 2.37039 8.05817C3.48088 7.27234 4.80361 6.8125 5.6875 6.8125C6.57139 6.8125 7.89412 7.27234 9.00461 8.05817C10.1243 8.85053 10.875 9.86163 10.875 10.8791Z" stroke="#A1A1A1" />
             </svg>,
-            name: `Organiser : ${userDetails.companyName}`
+            name: `Organiser : ${userDetails.firstName} ${userDetails.lastName}`
         },
         {
             icon: <svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -117,77 +136,122 @@ export default function OrgViewEvent() {
         {
             icon: <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" fill="#A6A6A6" />
-                <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M1 4.82031H13.9993V7.11431C13.0244 7.11431 12.0494 7.87898 12.0494 9.21715C12.0494 10.5553 13.0244 11.7023 13.9993 11.7023V13.9963H1V11.7023C1.97495 11.7023 2.9499 10.9377 2.9499 9.40832C2.9499 7.87898 1.97495 7.11431 1 7.11431V4.82031Z" fill="#A6A6A6" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2.625 4.82334L10.7496 1L12.0495 4.82334" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M1 4.82031H13.9993V7.11431C13.0244 7.11431 12.0494 7.87898 12.0494 9.21715C12.0494 10.5553 13.0244 11.7023 13.9993 11.7023V13.9963H1V11.7023C1.97495 11.7023 2.9499 10.9377 2.9499 9.40832C2.9499 7.87898 1.97495 7.11431 1 7.11431V4.82031Z" fill="#A6A6A6" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M5.22656 8.41406H7.17646H5.22656Z" fill="#A6A6A6" />
-                <path d="M5.22656 8.41406H7.17646" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" />
+                <path d="M5.22656 8.41406H7.17646" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" />
                 <path d="M5.22656 10.7031H9.77633H5.22656Z" fill="#A6A6A6" />
-                <path d="M5.22656 10.7031H9.77633" stroke="#15171E" strokeWidth="0.7" strokeLinecap="round" />
+                <path d="M5.22656 10.7031H9.77633" stroke="#15171E" strokeWidthidth="0.7" strokeLinecap="round" />
             </svg>,
             name: `${eventDetails.ticketType}`
         }
-    ]
+    ];
+
+
+
+
+    const TableHeaders = ["Verifier", "Email", "Date Added", "Action"];
 
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile organisation data={user} />
-                    <div className="w-full md:w-3/4 flex justify-between items-center gap-8 md:my-5 my-2 px-3">
+                    <Header mobile data={user} />
+                    <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Event Details</p>
-                            <p className="text-base">Event details for : <span className="text-mobiBlue">{eventDetails.name}</span></p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Manage Verifiers</p>
+                            <p className="text-base">Manage Verifiers for: <span className="text-mobiBlue">{eventDetails.name}</span></p>
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-grow">
-                        <div className="shadow-xl py-2 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
-
-                            <form>
-                                <div className="mb-1 flex flex-col gap-8 mt-5">
-                                    <img src={eventDetails.image} className="w-full rounded-xl" />
-                                    <div className="flex flex-col w-full mt-1 gap-3">
-                                        <div className="w-1/4">
-                                            <Badge status={eventDetails.status} />
-                                        </div>
-                                        <p>
-                                            {eventDetails.description}
-                                        </p>
-                                    </div>
-
-                                    <div className="flex flex-col w-full gap-6">
-                                        {eventDetailsBlock.map((details, index) => (
-                                            <div className="w-full flex gap-3" key={index}>
-                                                <div className="p-2 rounded-lg bGmobiGrayDark flex items-center">
-                                                    <span className="bs-mobiCeramaic">
-                                                        {details.icon}
-                                                    </span>
-                                                </div>
-                                                <span className="bs-mobiCeramic flex flex-col items-center mt-1">{details.name}</span>
-                                            </div>
-                                        ))}
-
-                                        <p>Location Photos</p>
-
-                                        <div className="flex gap-4 overflow-x-auto p-4">
-                                            {JSON.parse(eventDetails.venueImage).map((src, index) => (
-                                                <img
-                                                    key={index}
-                                                    src={src}
-                                                    alt={`Venue ${index + 1}`}
-                                                    className="w-48 h-32 object-cover rounded-xl shadow-md"
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-
+                    <div className="w-full flex flex-grow md:flex-row flex-col md:px-0 px-3 justify-between items-start gap-8">
+                        <div className="shadow-xl py-5 px-5 md:w-[30%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-6">
+                            <div className="w-full flex justify-center">
+                                <img src={eventDetails.image} className="w-full rounded-xl" />
+                            </div>
+                            <div className="w-full flex flex-col mt-3 gap-2">
+                                <div className="w-1/3">
+                                    <Badge status={eventDetails.status} />
                                 </div>
-                            </form>
+                                <div className="w-full my-2 text-mobiRomanSilver">
+                                    <span className="text-sm">
+                                        {eventDetails.description}
+                                    </span>
+                                </div>
+                                <div className="flex w-full flex-col gap-5 mt-3">
+                                    {eventDetailsBlock.map((details, index) => (
+                                        <div className="w-full flex gap-3">
+                                            <div className="p-2 rounded-lg max-h-[30px] mt-[1px] bGmobiGrayDark flex items-center">
+                                                <span className="bs-mobiCeramaic">
+                                                    {details.icon}
+                                                </span>
+                                            </div>
+                                            <span className="bs-mobiCeramic flex flex-col items-center mt-1">{details.name}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <p>Location Photos</p>
+
+                                <div className="flex gap-4 overflow-x-auto p-4">
+                                    {JSON.parse(eventDetails.venueImage).map((src, index) => (
+                                        <img
+                                            key={index}
+                                            src={src}
+                                            alt={`Venue ${index + 1}`}
+                                            className="w-48 h-32 object-cover rounded-xl shadow-md"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="shadow-xl md:py-5 md:px-2 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
+                            <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5">
+                                <Table title="Today" filter subTitle={<span>Event Verifiers</span>} exportData
+                                    tableHeader={TableHeaders}
+                                >
+                                    {allVerifiers.length > 0 ?
+                                        allVerifiers
+                                            .map((data, index) => (
+                                                <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                                    <td className="px-3 py-3 text-mobiTableText">{data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}</td>
+                                                    <td className="px-3 py-3 text-mobiTableText">{data.user.email}</td>
+                                                    <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.updatedAt, 'dd-MM-yyy')}</td>
+                                                    <td className="px-6 py-3">
+                                                        <span className="flex w-full">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </svg>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        :
+                                        isLoadingVerifiers ?
+                                            <tr>
+                                                <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                                    <Loader size={20} />
+                                                </td>
+                                            </tr>
+                                            :
+                                            <tr>
+                                                <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                                    No Data Available
+                                                </td>
+                                            </tr>
+                                    }
+
+                                </Table>
+                            </div>
 
                         </div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </>
     )
 }
