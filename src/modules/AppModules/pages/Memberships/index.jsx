@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import UserPhoto from "../../../../components/UserPhoto";
+import { set } from "date-fns";
 
 
 
@@ -242,7 +243,24 @@ export default function Membership() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>All Organisations</span>} exportData
-                        tableHeader={TableHeaders}>
+                        tableHeader={TableHeaders}
+                        sortFunc={(field, order) => {
+                            const sortedOrganisations = [...organisations].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    return order === "ASC"
+                                        ? a.organization.companyName.localeCompare(b.organization.companyName)
+                                        : b.organization.companyName.localeCompare(a.organization.companyName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setOrganisations(sortedOrganisations);
+                        }}
+                    >
                         {organisations.length > 0 ?
                             organisations
                                 .map((data, index) => (
@@ -281,7 +299,24 @@ export default function Membership() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Pending Requests (Received)</span>} exportData
-                        tableHeader={RequetsHeaders1}>
+                        tableHeader={RequetsHeaders1}
+                        sortFunc={(field, order) => {
+                            const sortedPending = [...pendingOrganisations].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    return order === "ASC"
+                                        ? a.organization.companyName.localeCompare(b.organization.companyName)
+                                        : b.organization.companyName.localeCompare(a.organization.companyName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setPendingOrganisations(sortedPending);
+                        }}
+                    >
                         {pendingOrganisations.length > 0 ?
                             pendingOrganisations.map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -323,7 +358,24 @@ export default function Membership() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Pending Requests (Initiated) </span>} exportData
-                        tableHeader={RequetsHeaders2}>
+                        tableHeader={RequetsHeaders2}
+                        sortFunc={(field, order) => {
+                            const sortedInitiated = [...pendingInitiated].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    return order === "ASC"
+                                        ? a.organization.companyName.localeCompare(b.organization.companyName)
+                                        : b.organization.companyName.localeCompare(a.organization.companyName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setPendingInitiated(sortedInitiated);
+                        }}
+                    >
                         {pendingInitiated.length > 0 ?
                             pendingInitiated.map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>

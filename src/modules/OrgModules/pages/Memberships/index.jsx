@@ -128,7 +128,7 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
                             {type !== 'Accept' &&
                                 <Button type="submit"
                                 onClick={() => handleBlackList()}
-                                    className={'bg-transparent border md:w-1/2 text-black dark:text-white w-full p-3 rounded-full'}
+                                    className={'bg-transparent border md:w-1/2 montserrat w-full p-3 rounded-full'}
                                 >
                                     Blacklist Member
                                 </Button>
@@ -276,7 +276,8 @@ export default function OrgMembership() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>All Members</span>} exportData
-                        tableHeader={TableHeaders}>
+                        tableHeader={TableHeaders}
+                        >
                         {allMembers.filter(item => item.status === 'active').length > 0 ?
                             allMembers.filter(item => item.status === 'active').map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -297,7 +298,7 @@ export default function OrgMembership() {
                                             <MenuList>
                                                 <MenuItem className="flex flex-col gap-3">
                                                     <span className="cursor-pointer" onClick={() => navigate(`/org/membership/updateMember/${data.individual.id}`)}>
-                                                        Update Member Details
+                                                        View Member Details
                                                     </span>
                                                 </MenuItem>
                                                 <MenuItem className="flex flex-col gap-3">

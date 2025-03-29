@@ -124,7 +124,25 @@ export default function IDCardsPage() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Manage ID Cards</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedOrgCards = [...orgCards].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.expiryDate) - new Date(b.expiryDate)
+                                            : new Date(b.expiryDate) - new Date(a.expiryDate);
+                                    } else if (field === "name") {
+                                        return order === "ASC"
+                                            ? a.organization.companyName.localeCompare(b.organization.companyName)
+                                            : b.organization.companyName.localeCompare(a.organization.companyName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+                            
+                                setOrgCards(sortedOrgCards);
+                            }}                            
+
+                        >
                             {orgCards.length > 0 ?
                                 orgCards.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -177,7 +195,24 @@ export default function IDCardsPage() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Personal ID Cards</span>} exportData
-                            tableHeader={NewTableHeaders}>
+                            tableHeader={NewTableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedCards = [...personalCards].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.issuedDate) - new Date(b.issuedDate)
+                                            : new Date(b.issuedDate) - new Date(a.issuedDate);
+                                    } else if (field === "name") {
+                                        return order === "ASC"
+                                            ? a.issuingOrganization.localeCompare(b.issuingOrganization)
+                                            : b.issuingOrganization.localeCompare(a.issuingOrganization);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+
+                                setPersonalCards(sortedCards);
+                            }}
+                        >
                             {personalCards.length > 0 ?
                                 personalCards.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
