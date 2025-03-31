@@ -156,7 +156,24 @@ export default function VerificationDashboard() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Upcoming Events</span>} exportData
-                        tableHeader={TableHeaders}>
+                        tableHeader={TableHeaders}
+                        sortFunc={(field, order) => {
+                            const sortedEvents = [...allEvents].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.startDate) - new Date(b.startDate)
+                                        : new Date(b.startDate) - new Date(a.startDate);
+                                } else if (field === "name") {
+                                    return order === "ASC"
+                                        ? a.name.localeCompare(b.name)
+                                        : b.name.localeCompare(a.name);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setAllEvents(sortedEvents);
+                        }
+                        }>
                         {allEvents.length > 0 ?
                             allEvents
                                 .map((data, index) => (
@@ -213,7 +230,33 @@ export default function VerificationDashboard() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>All Your Verifiers</span>} exportData
-                        tableHeader={RequetsHeaders1}>
+                        tableHeader={RequetsHeaders1}
+                        sortFunc={(field, order) => {
+                            const sortedVerifiers = [...allVerifiers].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.
+                                            createdAt
+                                        ) - new Date(b.
+                                            createdAt
+                                        )
+                                        : new Date(b.
+                                            createdAt
+                                        ) - new Date(a.
+                                            createdAt
+                                        );
+                                } else if (field === "name") {
+                                    return order === "ASC"
+                                        ? a.user.companyName.localeCompare(b.user.companyName)
+                                        : b.user.companyName.localeCompare(a.user.companyName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setAllVerifiers(sortedVerifiers);
+                        }
+                        }
+                    >
                         {allVerifiers.length > 0 ?
                             allVerifiers
                                 .map((data, index) => (

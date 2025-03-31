@@ -157,7 +157,27 @@ export default function VerificationRequest() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Received Requests</span>} exportData
-                        tableHeader={RequetsHeaders}>
+                        tableHeader={RequetsHeaders}
+                        sortFunc={(field, order) => {
+                            const sortedRequests = [...receivedRequests].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    const aName = a.eventOwner.companyName || `${a.eventOwner.firstName} ${a.eventOwner.lastName}`;
+                                    const bName = b.eventOwner.companyName || `${b.eventOwner.firstName} ${b.eventOwner.lastName}`;
+
+                                    return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setReceivedRequests(sortedRequests);
+                        }}
+                    >
                         {receivedRequests.length > 0 ?
                             receivedRequests
                                 .map((data, index) => (
@@ -180,7 +200,7 @@ export default function VerificationRequest() {
                                             }
                                         </td>
                                         <td className="px-6 py-3">
-                                        <Menu placement="left">
+                                            <Menu placement="left">
                                                 <MenuHandler>
                                                     <span className="flex w-full cursor-pointer">
                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -219,7 +239,25 @@ export default function VerificationRequest() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Initiated Requests</span>} exportData
-                        tableHeader={RequetsHeaders1}>
+                        tableHeader={RequetsHeaders1}
+                        sortFunc={(field, order) => {
+                            const sortedRequests = [...initiatedRequests].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    return order === "ASC"
+                                        ? a.event.name.localeCompare(b.event.name)
+                                        : b.event.name.localeCompare(a.event.name);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setInitiatedRequests(sortedRequests);
+                        }
+                    }
+                        >
                         {initiatedRequests.length > 0 ?
                             initiatedRequests
                                 .map((data, index) => (
@@ -230,7 +268,7 @@ export default function VerificationRequest() {
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3">
-                                        <Menu placement="left">
+                                            <Menu placement="left">
                                                 <MenuHandler>
                                                     <span className="flex w-full cursor-pointer">
                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

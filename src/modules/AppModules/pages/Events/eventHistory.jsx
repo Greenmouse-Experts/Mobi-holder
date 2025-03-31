@@ -49,7 +49,6 @@ export default function EventHistory() {
 
     const TableHeaders = ["Event Name", "Location", "Event Date", "Status", "Action"];
 
-    console.log(events)
 
     return (
         <>
@@ -65,7 +64,24 @@ export default function EventHistory() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Event History</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedEvents = [...events].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.startDate) - new Date(b.startDate)
+                                            : new Date(b.startDate) - new Date(a.startDate);
+                                    } else if (field === "name") {
+                                        return order === "ASC"
+                                            ? a.name.localeCompare(b.name)
+                                            : b.name.localeCompare(a.name);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+
+                                setEvents(sortedEvents);
+                            }}
+                            >
                             {events.length > 0 ?
                                 events
                                     .map((data, index) => (
