@@ -142,10 +142,14 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
 }
 
 
+
+
+
 export default function OrgMembership() {
     const user = useSelector((state) => state.orgData.orgData);
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
     const [allMembers, setAllMembers] = useState([]);
+    const [blackListedMembers, setBlackListedMembers] = useState([]);
     const [initiatedMembers, setInitiatedMembers] = useState([]);
     const [pendingMembers, setPendingMembers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -192,7 +196,8 @@ export default function OrgMembership() {
             hideToast: true,
             onSuccess: (response) => {
                 if (params === '') {
-                    setAllMembers(response.data.data)
+                    setAllMembers(response.data.data);
+                    setBlackListedMembers(response.data.data.filter(item => item.status === 'inactive'));
                 }
                 else if (params === '?filter=pendingFromOrganization') {
                     setInitiatedMembers(response.data.data)
@@ -277,6 +282,25 @@ export default function OrgMembership() {
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>All Members</span>} exportData
                         tableHeader={TableHeaders}
+                        sortFunc={(field, order) => {
+                            const sortedMembers = [...allMembers.filter(item => item.status === 'active')].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                    const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+
+                                    return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setAllMembers(sortedMembers);
+                        }}
                         >
                         {allMembers.filter(item => item.status === 'active').length > 0 ?
                             allMembers.filter(item => item.status === 'active').map((data, index) => (
@@ -331,7 +355,28 @@ export default function OrgMembership() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>BlackListed Members</span>} exportData
-                        tableHeader={TableHeaders}>
+                        tableHeader={TableHeaders}
+                        sortFunc={(field, order) => {
+                            const sortedMembers = [...blackListedMembers].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "ASC"
+                                        ? new Date(a.createdAt) - new Date(b.createdAt)
+                                        : new Date(b.createdAt) - new Date(a.createdAt);
+                                } else if (field === "name") {
+                                    const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                    const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+
+                                    return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setBlackListedMembers(sortedMembers);
+                        }
+                    }
+                        >
                         {allMembers.filter(item => item.status === 'inactive').length > 0 ?
                             allMembers.filter(item => item.status === 'inactive').map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -382,7 +427,27 @@ export default function OrgMembership() {
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <div className="lg:w-[63%] md:w-[63%] w-full flex flex-col gap-5">
                         <Table title="Today" filter subTitle={<span>Pending Requests (Initiated)</span>} exportData
-                            tableHeader={RequetsHeaders1}>
+                            tableHeader={RequetsHeaders1}
+                            sortFunc={(field, order) => {
+                                const sortedMembers = [...initiatedMembers].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.createdAt) - new Date(b.createdAt)
+                                            : new Date(b.createdAt) - new Date(a.createdAt);
+                                    } else if (field === "name") {
+                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+
+                                        return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+
+                            setInitiatedMembers(sortedMembers);
+                        }}
+                            >
                             {initiatedMembers.length > 0 ?
                                 initiatedMembers.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -427,7 +492,26 @@ export default function OrgMembership() {
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <div className="w-full flex flex-col gap-5">
                         <Table title="Today" filter subTitle={<span>Pending Requests (Received)</span>} exportData
-                            tableHeader={RequetsHeaders2}>
+                            tableHeader={RequetsHeaders2}
+                            sortFunc={(field, order) => {
+                                const sortedMembers = [...pendingMembers].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.createdAt) - new Date(b.createdAt)
+                                            : new Date(b.createdAt) - new Date(a.createdAt);
+                                    } else if (field === "name") {
+                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+
+                                        return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0; // Default case if field is not recognized
+                            });
+                            setPendingMembers(sortedMembers);
+                        }}
+                        >
                             {pendingMembers.length > 0 ?
                                 pendingMembers.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>

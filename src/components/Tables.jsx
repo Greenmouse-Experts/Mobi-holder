@@ -37,7 +37,7 @@ function Table({ title, subTitle, filter, exportData, sortFunc, tableBtn, transp
                                 </button>
                             </MenuHandler>
                             <MenuList>
-                                <p className="mb-2 montserrat font-bold text-sm">Sort By:</p>
+                                <p className="mb-2 !text-black montserrat font-bold text-sm">Sort By:</p>
 
                                 <MenuItem className="flex flex-col gap-3">
                                     <span className="cursor-pointer" onClick={() => sortFunc("name", "ASC")}>
