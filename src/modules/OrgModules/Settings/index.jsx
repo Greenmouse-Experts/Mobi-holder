@@ -28,10 +28,10 @@ export default function OrgSettings() {
             slug: 'Security',
             name: 'Security'
         },
-        {
+       /* {
             slug: 'Support',
             name: 'Support'
-        }
+        } */
     ];
 
     document.documentElement.style.position = null;

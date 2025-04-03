@@ -23,10 +23,10 @@ export default function Settings() {
             slug: 'Security',
             name: 'Security'
         },
-        {
+       /* {
             slug: 'Support',
             name: 'Support'
-        }
+        } */
     ];
 
     document.documentElement.style.position = null;

@@ -10,6 +10,9 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { useEffect, useState } from "react";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
+import DeleteModal from "../../../../components/DeleteModal";
+import ReusableModal from "../../../../components/ReusableModal";
+import useModal from "../../../../hooks/modal";
 
 export default function IDCardsPage() {
     const user = useSelector((state) => state.userData.data);
@@ -18,6 +21,7 @@ export default function IDCardsPage() {
     const [organisations, setOrganisations] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const { mutate } = useApiMutation();
 
@@ -74,6 +78,26 @@ export default function IDCardsPage() {
         getPersonalCards();
         getOrganisations("");
     }, []);
+
+
+
+
+    const handleReload = () => {
+        getPersonalCards();
+    }
+
+
+
+
+
+    const handleDeleteCard = (data) => {
+        openModal({
+            size: "sm",
+            content: <DeleteModal api={`/api/idcards/personal/cards?id=${data.id}`} title={'Do you wish to delete this ID Card?'} closeModal={closeModal} redirect={handleReload} />
+        })
+    }
+
+
 
     const TableHeaders = ["Organisation", "ID Card", "Card Number", "Role", "Expiry Date", "Status", "Action"];
     const NewTableHeaders = ["Organisation", "Card Number", "Role", "Issued Date", "Expiry Date", "Action"];
@@ -138,9 +162,9 @@ export default function IDCardsPage() {
                                     }
                                     return 0; // Default case if field is not recognized
                                 });
-                            
+
                                 setOrgCards(sortedOrgCards);
-                            }}                            
+                            }}
 
                         >
                             {orgCards.length > 0 ?
@@ -222,7 +246,7 @@ export default function IDCardsPage() {
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.issuedDate, 'dd-MM-yyyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</td>
                                         <td className="px-6 py-3 cursor-pointer">
-                                        <Menu placement="left">
+                                            <Menu placement="left">
                                                 <MenuHandler>
                                                     <span className="flex w-full cursor-pointer">
                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -234,6 +258,11 @@ export default function IDCardsPage() {
                                                     <MenuItem className="flex flex-col gap-3">
                                                         <span className="cursor-pointer" onClick={() => navigate(`/app/view-personal-card/${data.id}`)}>
                                                             View/Edit Card
+                                                        </span>
+                                                    </MenuItem>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => handleDeleteCard(data)}>
+                                                            Delete Card
                                                         </span>
                                                     </MenuItem>
                                                 </MenuList>
@@ -259,6 +288,17 @@ export default function IDCardsPage() {
                     </div>
                 </div>
             </div>
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
+
         </>
     )
 }
