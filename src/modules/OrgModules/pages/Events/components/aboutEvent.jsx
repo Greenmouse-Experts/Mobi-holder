@@ -7,12 +7,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import useApiMutation from "../../../../../api/hooks/useApiMutation";
 
-export default function AboutEvent({ next }) {
+export default function AboutEvent({ next, data }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [files, setFiles] = useState(event ? [event.image] : []);
+    const [files, setFiles] = useState(event ? [event.image] : data ? [data.image] : []);
     const [eventCategories, setEventCategories] = useState([]);
     const [aboutEvents] = useState(event);
 
@@ -71,21 +71,21 @@ export default function AboutEvent({ next }) {
                         <p className="-mb-3 text-mobiFormGray">
                             Event Name
                         </p>
-                        <Input type="text" name="name" value={aboutEvents?.name} rules={{ required: 'Event Name is required' }} errors={errors} register={register} placeholder="Event Name" />
+                        <Input type="text" name="name" value={aboutEvents?.name || data?.name} rules={{ required: 'Event Name is required' }} errors={errors} register={register} placeholder="Event Name" />
                     </div>
 
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Description
                         </p>
-                        <TextArea name="description" value={aboutEvents?.description} errors={errors} rules={{ required: 'Event Description is required' }} register={register} placeholder="Tell us about your event" />
+                        <TextArea name="description" value={aboutEvents?.description || data?.description} errors={errors} rules={{ required: 'Event Description is required' }} register={register} placeholder="Tell us about your event" />
                     </div>
 
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Event Category
                         </p>
-                        <Input name="category" value={aboutEvents?.category} options={eventCategories} rules={{ required: 'Event Category is required' }} type='select' register={register}
+                        <Input name="category" value={aboutEvents?.category || data?.category?.id} options={eventCategories} rules={{ required: 'Event Category is required' }} type='select' register={register}
                             placeholder="Event Category" />
                     </div>
 
@@ -93,7 +93,7 @@ export default function AboutEvent({ next }) {
                         <p className="-mb-3 text-mobiFormGray">
                             Access Type
                         </p>
-                        <Input name="accessType" value={aboutEvents?.accessType} register={register} rules={{ required: 'Event access type is required' }}
+                        <Input name="accessType" value={aboutEvents?.accessType || data?.accessType} register={register} rules={{ required: 'Event access type is required' }}
                             type="select" options={accessType} placeholder="Choose your Event Access Type" />
                     </div>
 
@@ -105,7 +105,7 @@ export default function AboutEvent({ next }) {
                                 </p>
                                 <DropZone text="Upload Event Image" onUpload={handleDrop} multiple={false} />
                             </div>
-                            <div className="grid grid-cols-3 gap-4 mt-4">
+                            <div className="grid md:grid-cols-2 grod-cols-1 gap-4 mt-4">
                                 {files.map((fileObj, index) => (
                                     <div key={index} className="relative">
                                         <img
@@ -127,7 +127,7 @@ export default function AboutEvent({ next }) {
                                     label="Mark Event as Open for Verifiers"
                                     register={register}
                                     errors={errors}
-                                    value={event?.allowVerifierRequests}
+                                    value={event?.allowVerifierRequests || data?.allowVerifierRequests}
                                 />
                             </span>
                         </div>

@@ -1,24 +1,44 @@
 import { useForm } from "react-hook-form";
 import Input from "../../../../../components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@material-tailwind/react";
 import RadioButtonGroup from "../../../../../components/RadioButtonGroup";
 import Checkbox from "../../../../../components/CheckBox";
 import useApiMutation from "../../../../../api/hooks/useApiMutation";
 import { useNavigate } from "react-router-dom";
 
-export default function TicketEvent({ back }) {
+export default function TicketEvent({ back, data }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
     const { register, trigger, handleSubmit, formState: { errors } } = useForm();
-    const [selectedPlan, setSelectedPlan] = useState('Free');
+    const [selectedPlan, setSelectedPlan] = useState(data ? data.ticketType : 'Free');
     const [isLoading, setIsLoading] = useState(false);
-    const [isRecurring, setIsRecurring] = useState(false);
-    const [recurrenceType, setRecurrenceType] = useState(null);
-    const [ticketsArray, setTicketsArray] = useState([
-        { name: null, ticketsAvailable: null, plusAllowed: null, price: null }
-    ]);
+    const [isRecurring, setIsRecurring] = useState(data ? data.isRecurring : false);
+    const [recurrenceType, setRecurrenceType] = useState(data ? data.recurrenceType : null);
+    const [ticketsArray, setTicketsArray] = useState(data ?
+        data.eventtickets.map(ticket => ({
+            name: ticket.name,
+            ticketsAvailable: ticket.ticketsAvailable ?? null,
+            plusAllowed: null,
+            price: ticket.price ?? null
+        }))
+        :
+        [
+            { name: null, ticketsAvailable: null, plusAllowed: null, price: null }
+        ]
+    );
+
+
+
+    const dateTimeLocal = (value) => {
+        const dateTime = new Date(`${value}`)
+            .toISOString()
+            .slice(0, 16);
+
+        return dateTime
+    }
+
 
     const { mutate } = useApiMutation();
 
@@ -122,40 +142,66 @@ export default function TicketEvent({ back }) {
 
     const transformPayload = (input) => {
         const tickets = Object.keys(input)
-            .filter((key) => key.startsWith("ticketName"))
+            .filter((key) => key.startsWith("ticketName") && input[key]) // Ensure ticketName exists
             .map((key) => {
-                const index = key.match(/\d+/)[0]; // Extract the number from the key
+                const index = key.match(/\d+/)[0]; // Extract the ticket index
+                
+                // Ensure the ticket exists in ticketsArray before adding
+                if (!ticketsArray[index]) return null;
+    
                 return {
                     name: input[`ticketName${index}`] || null,
-                    ticketsAvailable: Number(input[`ticketsAvailable${index}`]) || null,
-                    plusAllowed: Number(input[`plusAllowed${index}`]) || null,
-                    price: Number(input[`price${index}`]) || null,
+                    ticketsAvailable: input[`ticketsAvailable${index}`] 
+                        ? Number(input[`ticketsAvailable${index}`]) 
+                        : null,
+                    plusAllowed: input[`plusAllowed${index}`] 
+                        ? Number(input[`plusAllowed${index}`]) 
+                        : null,
+                    price: input[`price${index}`] 
+                        ? String(input[`price${index}`]) // Ensure price is a string
+                        : null,
                 };
-            });
-
-        // Remove ticketName, ticketsAvailable, plusAllowed, and price fields
+            })
+            .filter(ticket => ticket && ticket.name); // Remove null/empty tickets
+    
+        // Remove ticket-related fields from the input object
         const cleanedInput = { ...input };
         Object.keys(input).forEach((key) => {
-            if (key.startsWith("ticketName") || key.startsWith("ticketsAvailable") || key.startsWith("plusAllowed") || key.startsWith("price")) {
+            if (key.startsWith("ticketName") || 
+                key.startsWith("ticketsAvailable") || 
+                key.startsWith("plusAllowed") || 
+                key.startsWith("price")) {
                 delete cleanedInput[key];
             }
         });
-
+    
         return {
             ...cleanedInput,
-            tickets, // Replacing the separate ticket fields with an array
+            tickets, // Only visible tickets
         };
     };
+    
 
 
+    const createEvent = (dataEvent) => {
+        let payload = {};
+        setIsLoading(true);
 
-    const createEvent = (data) => {
-        setIsLoading(true)
-        const payload = {
-            ...event,
-            ...data,
-            ticketType: selectedPlan
-        };
+        if (data.id) {
+            payload = {
+                eventId: data.id,
+                ...event,
+                ...dataEvent,
+                ticketType: selectedPlan
+            };
+        }
+        else {
+            payload = {
+                ...event,
+                ...dataEvent,
+                ticketType: selectedPlan
+            };
+        }
         delete payload.city;
         delete payload.country;
         delete payload.state;
@@ -164,8 +210,8 @@ export default function TicketEvent({ back }) {
         const reformedPayload = transformPayload(payload);
 
         mutate({
-            url: `/api/events/event/create`,
-            method: "POST",
+            url: data.eventId ? `/api/events/event/update` : `/api/events/event/create`,
+            method: data.eventId ? "PUT" : "POST",
             headers: true,
             data: reformedPayload,
             onSuccess: (response) => {
@@ -198,6 +244,7 @@ export default function TicketEvent({ back }) {
                                     name="isRecurring"
                                     label="Event Occurs more than once"
                                     register={register}
+                                    value={isRecurring}
                                     errors={errors}
                                     onChange={(checked) => setIsRecurring(checked)}
                                 />
@@ -211,7 +258,7 @@ export default function TicketEvent({ back }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Event Frequency
                                 </p>
-                                <Input name="frequency" options={frequencyOptions} register={register} errors={errors}
+                                <Input name="frequency" value={data?.frequency} options={frequencyOptions} register={register} errors={errors}
                                     rules={{ required: 'Event Frequency is required' }}
                                     type="select" placeholder="Select Frequency" />
                             </div>
@@ -220,7 +267,7 @@ export default function TicketEvent({ back }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Event Recurrence End Type
                                 </p>
-                                <Input name="recurrenceEndType" options={recurrenceOptions} register={register} errors={errors}
+                                <Input name="recurrenceEndType" value={data?.recurrenceEndType} options={recurrenceOptions} register={register} errors={errors}
                                     rules={{ required: 'Event Frequency is required' }}
                                     onChange={handleRecurrence}
                                     type="select" placeholder="Select End Type" />
@@ -231,7 +278,7 @@ export default function TicketEvent({ back }) {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Number of Recurrencies
                                     </p>
-                                    <Input type="text" name="recurrenceCount"
+                                    <Input type="text" name="recurrenceCount" value={data?.recurrenceCount}
                                         rules={{ required: 'Number of Recurrencies is required' }} errors={errors} register={register}
                                         placeholder="Number of Recurrencies" />
                                 </div>
@@ -242,7 +289,7 @@ export default function TicketEvent({ back }) {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Recurrence End Date
                                     </p>
-                                    <Input type="datetime-local" name="recurrenceEndDate"
+                                    <Input type="datetime-local" name="recurrenceEndDate" value={dateTimeLocal(data?.recurrenceEndDate)}
                                         rules={{ required: 'Recurrency end date is required' }} errors={errors} register={register}
                                         placeholder="Recurrency End Date" />
                                 </div>
@@ -256,7 +303,7 @@ export default function TicketEvent({ back }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Ticket Name
                                 </p>
-                                <Input type="text" name={`ticketName${index}`}
+                                <Input type="text" value={tickets?.name} name={`ticketName${index}`}
                                     rules={{ required: 'Ticket Name is required' }} errors={errors} register={register}
                                     placeholder="Ticket Name" />
                             </div>
@@ -265,7 +312,7 @@ export default function TicketEvent({ back }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Number of Tickets Available
                                 </p>
-                                <Input type="text" name={`ticketsAvailable${index}`}
+                                <Input type="text" value={tickets?.ticketsAvailable} name={`ticketsAvailable${index}`}
                                     rules={{ required: 'Number of Available Tickets is required' }} errors={errors} register={register}
                                     placeholder="Number of Available Tickets" />
                             </div>
@@ -274,7 +321,7 @@ export default function TicketEvent({ back }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Additional Number of Tickets Available
                                 </p>
-                                <Input type="text" name={`plusAllowed${index}`}
+                                <Input type="text" value={tickets?.plusAllowed} name={`plusAllowed${index}`}
                                     rules={{ required: 'Additional Number of Available Tickets is required' }} errors={errors} register={register}
                                     placeholder="Additional Number of Available Tickets" />
                             </div>
@@ -284,7 +331,7 @@ export default function TicketEvent({ back }) {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Price of Ticket
                                     </p>
-                                    <Input type="text" name={`price${index}`}
+                                    <Input type="text" value={tickets?.price} name={`price${index}`}
                                         rules={{ required: 'Price of Ticket is required' }} errors={errors} register={register}
                                         placeholder="Price of Ticket" />
                                 </div>
@@ -311,7 +358,7 @@ export default function TicketEvent({ back }) {
                         </Button>
 
                         <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                            {isLoading ? 'Creating...' : 'Create'}
+                            {isLoading ? (data ? "Updating..." : "Creating...") : data ? "Update" : "Create"}
                         </Button>
                     </div>
 

@@ -4,13 +4,29 @@ import Input from "../../../../../components/Input";
 import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import { FaTimes } from "react-icons/fa";
+import { dateInput } from "../../../../../helpers/dateHelper";
 
-export default function LocationEvent({ next, back }) {
+export default function LocationEvent({ next, back, data }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [files, setFiles] = useState(event.venueImage ? event.venueImage : []);
+    const [files, setFiles] = useState(() => {
+        return event.venueImage
+            || (data?.venueImage ? JSON.parse(data.venueImage) : [])
+            || [];
+    });
+
+    const venueLocation = data ? JSON.parse(data?.venue) : null;
+
+
+    const dateTimeLocal = (value) => {
+        const dateTime = new Date(`${value}`)
+        .toISOString()
+        .slice(0, 16);
+
+        return dateTime
+    }
 
 
     const handleBack = () => {
@@ -30,19 +46,18 @@ export default function LocationEvent({ next, back }) {
 
     const createEvent = (data) => {
         const payload = {
-             ...event,
-             ...data,
+            ...event,
+            ...data,
             venue: {
                 name: data.venueName,
-                address: `${data.street} ${data.city} ${data.state}, ${data.country}`
+                address: `${data.street}`
             },
             venueImage: files
-         }; 
-         localStorage.setItem('eventPayload', JSON.stringify(payload));
-         next(true);
+        };
+        localStorage.setItem('eventPayload', JSON.stringify(payload));
+        next(true);
     }
 
-    console.log(event.startDate)
 
     return (
         <>
@@ -52,21 +67,21 @@ export default function LocationEvent({ next, back }) {
                         <p className="-mb-3 text-mobiFormGray">
                             Name of Venue
                         </p>
-                        <Input type="text" name="venueName" value={event?.venueName} register={register} rules={{ required: 'Name of Venue is required' }} placeholder="Enter the name of the venue of your event" />
+                        <Input type="text" name="venueName" value={event?.venueName || venueLocation?.name} register={register} rules={{ required: 'Name of Venue is required' }} placeholder="Enter the name of the venue of your event" />
                     </div>
 
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Venue (Address)
                         </p>
-                        <Input type="text" name="street" value={event?.street} rules={{ required: 'Address is required' }} register={register} placeholder="Enter the address of the venue of your event" />
+                        <Input type="text" name="street" value={event?.street || venueLocation?.address} rules={{ required: 'Address is required' }} register={register} placeholder="Enter the address of the venue of your event" />
                     </div>
 
-                    <div className="flex flex-col w-full gap-6">
+                   {/* <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Country
                         </p>
-                        <Input type="text" value={event?.country} rules={{ required: 'Country is required' }} errors={errors} name="country" register={register} placeholder="Enter country" />
+                        <Input type="text" value={event?.country || venueLocation?.address.split(',')[1].split(',')[1]} rules={{ required: 'Country is required' }} errors={errors} name="country" register={register} placeholder="Enter country" />
                     </div>
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
@@ -84,8 +99,8 @@ export default function LocationEvent({ next, back }) {
                             </p>
                             <Input name="city" value={event?.city} rules={{ required: 'City is required' }} errors={errors} register={register}
                                 type="text" placeholder="Enter City" />
-                        </div>
-                    </div>
+                        </div> 
+                    </div> */}
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                         <div className="w-full md:w-1/2 flex flex-col gap-2">
@@ -122,7 +137,7 @@ export default function LocationEvent({ next, back }) {
                             <p className="-mb-3 text-mobiFormGray">
                                 Start Date
                             </p>
-                            <Input name="startDate" value={event?.startDate} rules={{ required: 'Start Date is required' }} errors={errors} register={register}
+                            <Input name="startDate" value={event?.startDate || dateTimeLocal(data?.startDate)} rules={{ required: 'Start Date is required' }} errors={errors} register={register}
                                 type="datetime-local" placeholder="Choose the Start date" />
                         </div>
 
@@ -130,7 +145,7 @@ export default function LocationEvent({ next, back }) {
                             <p className="-mb-3 text-mobiFormGray">
                                 End Date
                             </p>
-                            <Input name="endDate" value={event?.endDate} rules={{ required: 'End Date is required' }} errors={errors} register={register}
+                            <Input name="endDate" value={event?.endDate || dateTimeLocal(data?.endDate)} rules={{ required: 'End Date is required' }} errors={errors} register={register}
                                 type="datetime-local" placeholder="Choose the End date" />
                         </div>
                     </div>
