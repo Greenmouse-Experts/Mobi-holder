@@ -33,12 +33,14 @@ import EventInvites from "../modules/AppModules/pages/Events/eventInvites";
 import AddEventVerifier from "../modules/AppModules/pages/Events/addEventVerifier";
 import MyTickets from "../modules/AppModules/pages/Events/myTickets";
 import EventTicket from "../modules/AppModules/pages/Events/viewTicket";
+import ViewPersonalCard from "../modules/AppModules/pages/IdCards/viewPersonalCard";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
     <Route path="id-cards" element={<IDCardsPage />} />,
     <Route path="add-card" element={<AddCard />} />,
     <Route path="view-card/:id" element={<ViewCard />} />,
+    <Route path="view-personal-card/:id" element={<ViewPersonalCard />} />,
     <Route path="add-event" element={<AddEvent />} />,
     <Route path="view-event/:id" element={<ViewEvent />} />,
     <Route path="event/view/:id" element={<ViewPublicEvents />} />,
