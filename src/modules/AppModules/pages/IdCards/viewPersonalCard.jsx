@@ -161,7 +161,7 @@ export default function ViewPersonalCard() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Expiry Date
                                             </p>
-                                            <Input type="date" value={dateInput(idCard.expiryDate)} name="expiryDate"
+                                            <Input type="date" value={idCard.expiryDate ? dateInput(idCard.expiryDate) : ''} name="expiryDate"
                                                 register={register}
                                                 rules={{ required: 'Expiry Date is required' }} errors={errors} placeholder="Enter expiry date" />
                                         </div>
