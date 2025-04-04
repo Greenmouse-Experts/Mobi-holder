@@ -102,6 +102,7 @@ export default function IDCardsPage() {
     const TableHeaders = ["Organisation", "ID Card", "Card Number", "Role", "Expiry Date", "Status", "Action"];
     const NewTableHeaders = ["Organisation", "Card Number", "Role", "Issued Date", "Expiry Date", "Action"];
 
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -153,8 +154,8 @@ export default function IDCardsPage() {
                                 const sortedOrgCards = [...orgCards].sort((a, b) => {
                                     if (field === "date") {
                                         return order === "ASC"
-                                            ? new Date(a.expiryDate) - new Date(b.expiryDate)
-                                            : new Date(b.expiryDate) - new Date(a.expiryDate);
+                                            ? new Date(a?.expiryDate) - new Date(b?.expiryDate)
+                                            : new Date(b?.expiryDate) - new Date(a?.expiryDate);
                                     } else if (field === "name") {
                                         return order === "ASC"
                                             ? a.organization.companyName.localeCompare(b.organization.companyName)
@@ -174,7 +175,7 @@ export default function IDCardsPage() {
                                         <td className="px-3 py-3 text-center text-mobiTableText"><img width={50} src="/id-card.png" /></td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data?.expiryDate ? dateFormat(data?.expiryDate, 'dd-MM-yyyy') : '---'}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3 cursor-pointer">
                                             <Menu placement="left">
@@ -244,7 +245,7 @@ export default function IDCardsPage() {
                                         <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.issuedDate, 'dd-MM-yyyy')}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data?.expiryDate ? dateFormat(data?.expiryDate, 'dd-MM-yyyy') : '---'}</td>
                                         <td className="px-6 py-3 cursor-pointer">
                                             <Menu placement="left">
                                                 <MenuHandler>
