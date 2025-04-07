@@ -167,7 +167,26 @@ export default function OrgIDCardsPage() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Manage ID Templates</span>} exportData
-                            tableHeader={NewTableHeaders}>
+                            tableHeader={NewTableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedTemplates = [...templates].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.createdAt) - new Date(b.createdAt)
+                                            : new Date(b.createdAt) - new Date(a.createdAt);
+                                    } else if (field === "name") {
+                                        const aName = `${a.name}`;
+                                        const bName = `${b.name}`;
+    
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+    
+                                setTemplates(sortedTemplates);
+                            }}>
                             {templates.length > 0 ?
                                 templates.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -222,7 +241,26 @@ export default function OrgIDCardsPage() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Manage ID Cards</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedMembers = [...memberCards].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.expiryDate) - new Date(b.expiryDate)
+                                            : new Date(b.expiryDate) - new Date(a.expiryDate);
+                                    } else if (field === "name") {
+                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+    
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+    
+                                setMemberCards(sortedMembers);
+                            }}>
                             {memberCards.length > 0 ?
                                 memberCards.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -277,7 +315,26 @@ export default function OrgIDCardsPage() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>All Members</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedMembers = [...allMembers].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.dateJoined) - new Date(b.dateJoined)
+                                            : new Date(b.dateJoined) - new Date(a.dateJoined);
+                                    } else if (field === "name") {
+                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+    
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+    
+                                setAllMembers(sortedMembers);
+                            }}>
                             {allMembers.length > 0 ?
                                 allMembers.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
