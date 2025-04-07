@@ -297,9 +297,9 @@ export default function ProfileInfo() {
 
 
                         <div className="w-full flex flex-col gap-2">
-                            <div className="flex flex-col md:w-1/2 w-full gap-6">
+                            <div className="flex flex-col w-full gap-6">
                                 <p className="-mb-3 text-mobiFormGray">
-                                    Upload Documents
+                                    Upload Documents (Select front and back view of document)
                                 </p>
                                 <DropZone onUpload={handleDrop} />
                             </div>

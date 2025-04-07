@@ -140,7 +140,7 @@ export default function OrganisationData() {
                 if (data) {
                     setUploadedIDData(data);
                     setSelectedDocument(uploadedIDData.name)
-                    setFiles([uploadedIDData.documentUrl]);
+                    setFiles([data.documentUrl]);
                     setLoader(false)
                 }
                 else {
