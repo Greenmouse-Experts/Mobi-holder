@@ -3,10 +3,15 @@ import { useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Theme from "../../../components/Theme"
+import { useSelector } from "react-redux";
 
 export default function Header() {
 
     const location = useLocation(); // React Router Hook to access the URL
+
+    const user = useSelector((state) => state.userData.data);
+
+    const organization = useSelector((state) => state.orgData.orgData);
 
     useEffect(() => {
         if (location.hash) {
@@ -72,7 +77,7 @@ export default function Header() {
         }
     }, []); // Run this effect
 
-    
+
     const { theme } = useContext(ThemeContext);
 
     const [open, setOpen] = useState(false);
@@ -111,18 +116,29 @@ export default function Header() {
                 </div>
 
                 <div className="md:flex hidden h-full w-1/4">
-                    <div className="flex w-full gap-2 justify-end">
-                        <Button className="bg-transparent rounded-full border border-white text-white">
-                            <Link className="w-full h-full flex" to={'/login'}>
-                                <span className="font-semibold capitalize">Login</span>
-                            </Link>
-                        </Button>
-                        <Button className="bg-mobiPink rounded-full text-white">
-                            <Link className="w-full h-full flex flex-col justify-center" to={'/signup'}>
-                                <span className="font-semibold normal-case">Sign up</span>
+                    {user || organization ? (
+                        <div className="flex w-full gap-2 justify-end">
+                            <Button className="bg-mobiPink rounded-full text-white">
+                                <Link className="w-full h-full flex" to={user ? '/app/dashboard' : '/org/dashboard'}>
+                                    <span className="font-semibold capitalize">Dashboard</span>
                                 </Link>
-                        </Button>
-                    </div>
+                            </Button>
+                        </div>
+                    )
+                        :
+                        <div className="flex w-full gap-2 justify-end">
+                            <Button className="bg-transparent rounded-full border border-white text-white">
+                                <Link className="w-full h-full flex" to={'/login'}>
+                                    <span className="font-semibold capitalize">Login</span>
+                                </Link>
+                            </Button>
+                            <Button className="bg-mobiPink rounded-full text-white">
+                                <Link className="w-full h-full flex flex-col justify-center" to={'/signup'}>
+                                    <span className="font-semibold normal-case">Sign up</span>
+                                </Link>
+                            </Button>
+                        </div>
+                    }
                 </div>
 
                 <div className="lg:hidden md:hidden flex p-2 bg-mobiSearchDark rounded-md flex-col justify-center">

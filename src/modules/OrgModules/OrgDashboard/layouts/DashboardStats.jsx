@@ -4,15 +4,12 @@ import organisation from "../../../../assets/organisation.svg";
 import subscriptions from "../../../../assets/subscriptions.svg";
 import calendar from "../../../../assets/calendar.svg";
 
-const DashboardStats = () => {
+const DashboardStats = ({members, subscriptionData, eventsData}) => {
     return (
         <div className="flex w-full lg:flex-row md:flex-row flex-col gap-4">
             <StatCard
                 cronTop
-                number={12}
-                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                    28.4%
-                </span>}
+                number={members.length}
                 label="Total Members"
                 iconColor="bg-mobiOrange"
                 IconComponent={<img src={cards} alt="ID Cards" style={{ width: '22px' }} />}
@@ -20,10 +17,7 @@ const DashboardStats = () => {
             />
             <StatCard
                 cronTop
-                number={21}
-                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                    28.4%
-                </span>}
+                number={members.filter(member => member.status === 'active').length}
                 label="Active Members"
                 iconColor="bg-mobiSkyCloud"
                 IconComponent={<img src={organisation} alt="Organisations" style={{ width: '20px' }} />}
@@ -31,10 +25,7 @@ const DashboardStats = () => {
             />
             <StatCard
                 cronTop
-                number={16}
-                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                    28.4%
-                </span>}
+                number={subscriptionData}
                 label="Total Subscriptions"
                 iconColor="bg-mobiSubPurple"
                 IconComponent={<img src={subscriptions} alt="Subscriptions" style={{ width: '20px' }} />}
@@ -42,10 +33,7 @@ const DashboardStats = () => {
             />
             <StatCard
                 cronTop
-                number={16}
-                cronAnalytics={<span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
-                    28.4%
-                </span>}
+                number={eventsData.length}
                 label="Upcoming Events"
                 iconColor="bg-mobiLightGreen"
                 IconComponent={<img src={calendar} alt="Events" style={{ width: '20px' }} />}
