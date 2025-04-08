@@ -63,7 +63,26 @@ export default function OrgEventHistory() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>Event History</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedEvents = [...events].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.startDate) - new Date(b.startDate)
+                                            : new Date(b.startDate) - new Date(a.startDate);
+                                    } else if (field === "name") {
+                                        const aName = `${a.name}`;
+                                        const bName = `${b.name}`;
+    
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+    
+                                setEvents(sortedEvents);
+                            }}>
                             {events.length > 0 ?
                                 events
                                     .map((data, index) => (

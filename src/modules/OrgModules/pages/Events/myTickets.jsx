@@ -66,7 +66,26 @@ export default function OrgTickets() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                         <Table title="Today" filter subTitle={<span>All Tickets</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedEvents = [...eventTickets].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "asc" ? new Date(a.event.startDate) - new Date(b.event.startDate) : new Date(b.event.startDate) - new Date(a.event.startDate);
+                                    }
+                                    else if (field === "name") {
+                                        const aName = `${a.event.name}`;
+                                        const bName = `${b.event.name}`;
+    
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0;
+                                });
+                                setEventTickets(sortedEvents);
+                            }
+                            }
+                            >
                             {eventTickets.length > 0 ?
                                 eventTickets.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
