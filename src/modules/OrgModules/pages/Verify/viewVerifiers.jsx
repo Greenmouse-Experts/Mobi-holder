@@ -209,6 +209,30 @@ export default function ViewVerifiers() {
                             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5">
                                 <Table title="Today" filter subTitle={<span>Event Verifiers</span>} exportData
                                     tableHeader={TableHeaders}
+                                    sortFunc={(field, order) => {
+                                        const sortedEvents = [...allVerifiers].sort((a, b) => {
+                                            if (field === "date") {
+                                                return order === "ASC"
+                                                    ? new Date(a.updatedAt) - new Date(b.updatedAt)
+                                                    : new Date(b.updatedAt) - new Date(a.updatedAt);
+                                            } else if (field === "name") {
+                                                const aName = a.user.companyName
+                                                    ? a.user.companyName
+                                                    : `${a.user.firstName} ${a.user.lastName}`;
+                                                const bName = b.user.companyName
+                                                    ? b.user.companyName
+                                                    : `${b.user.firstName} ${b.user.lastName}`;
+
+                                                return order === "ASC"
+                                                    ? aName.localeCompare(bName)
+                                                    : bName.localeCompare(aName);
+                                            }
+                                            return 0; // Default case if field is not recognized
+                                        });
+
+                                        setAllVerifiers(sortedEvents);
+                                    }
+                                    }
                                 >
                                     {allVerifiers.length > 0 ?
                                         allVerifiers

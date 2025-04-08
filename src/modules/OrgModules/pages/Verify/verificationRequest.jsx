@@ -158,7 +158,29 @@ export default function OrgVerificationRequest() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Received Requests</span>} exportData
-                        tableHeader={RequetsHeaders}>
+                        tableHeader={RequetsHeaders}
+                        sortFunc={(field, order) => {
+                            const sortedRequests = [...receivedRequests].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "asc" ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
+                                }
+                                else if (field === "name") {
+                                    const aName = a.eventOwner.companyName 
+                                        ? a.eventOwner.companyName 
+                                        : `${a.eventOwner.firstName} ${a.eventOwner.lastName}`;
+                                    const bName = b.eventOwner.companyName 
+                                        ? b.eventOwner.companyName 
+                                        : `${b.eventOwner.firstName} ${b.eventOwner.lastName}`;
+
+                                    return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0;
+                            });
+                            setReceivedRequests(sortedRequests);
+                        }
+                        }>
                         {receivedRequests.length > 0 ?
                             receivedRequests
                                 .map((data, index) => (
@@ -220,7 +242,28 @@ export default function OrgVerificationRequest() {
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>Initiated Requests</span>} exportData
-                        tableHeader={RequetsHeaders1}>
+                        tableHeader={RequetsHeaders1}
+                        sortFunc={(field, order) => {
+                            const sortedRequests = [...initiatedRequests].sort((a, b) => {
+                                if (field === "date") {
+                                    return order === "asc" ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
+                                }
+                                else if (field === "name") {
+                                    const aName = a.user.companyName 
+                                        ? a.user.companyName 
+                                        : `${a.user.firstName} ${a.user.lastName}`;
+                                    const bName = b.user.companyName 
+                                        ? b.user.companyName 
+                                        : `${b.user.firstName} ${b.user.lastName}`;
+
+                                    return order === "ASC"
+                                        ? aName.localeCompare(bName)
+                                        : bName.localeCompare(aName);
+                                }
+                                return 0;
+                            });
+                            setInitiatedRequests(sortedRequests);
+                        }}>
                         {initiatedRequests.length > 0 ?
                             initiatedRequests
                                 .map((data, index) => (
