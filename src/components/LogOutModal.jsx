@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { setUser } from '../reducers/userSlice';
 import { setOrg } from '../reducers/organisationSlice';
 
-const LogOutModal = ({ closeModal }) => {
+const LogOutModal = ({ closeModal, admin = false }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ const LogOutModal = ({ closeModal }) => {
                 dispatch(setUser(null));
                 dispatch(setOrg(null));
                 localStorage.clear();
-                navigate('/login');
+                admin ? navigate('/admin') : navigate('/login');
             },
         });
     }

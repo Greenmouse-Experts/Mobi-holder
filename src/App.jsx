@@ -15,6 +15,7 @@ import UserRoutes from './routes/UserRoutes';
 import OrgRoutes from './routes/OrgRoutes';
 import SuperAdminRoutes from './routes/SuperAdminRoutes';
 import ProtectedRoute from './routes/ProtectedRoutes';
+import AdminProtectedRoute from './routes/AdminProtectedRoute';
 
 function App() {
   const [splash, setSplash] = useState(true);
@@ -63,9 +64,9 @@ function App() {
                 <Route
                   path="/superadmin"
                   element={
-                    <ProtectedRoute>
+                    <AdminProtectedRoute>
                       <SuperAdmin />
-                    </ProtectedRoute>
+                    </AdminProtectedRoute>
                   }
                 >
                   {SuperAdminRoutes}
