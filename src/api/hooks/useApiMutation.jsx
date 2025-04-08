@@ -12,7 +12,7 @@ const useApiMutation = () => {
     const logoutUser = () => {
         toast.error("Session expired, please login again");
         localStorage.clear();
-        navigate("/login");
+       window.location.pathname.includes('superadmin') ? navigate('/admin') : navigate("/login");
     };
 
 
