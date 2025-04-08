@@ -1,7 +1,6 @@
 import Table from "../../../components/Tables";
 import DashboardStats from "../layouts/DashboardStats";
 import UserAnalysis from "../layouts/UserAnalysis";
-import Events from "../layouts/Events";
 import Badge from "../../../components/Badge"
 import Header from "../header";
 import Greeting from "../greetings";
@@ -10,21 +9,32 @@ import { useOrganizationApi } from "../../../api/hooks/useOrganizationApi";
 import { useIndividualApi } from "../../../api/hooks/useIndividualsApi";
 import { dateFormat } from "../../../helpers/dateHelper";
 import Loader from "../../../components/Loader";
+import { useEventsApi } from "../../../api/hooks/useEventsApi";
+import SubscriptionAnalysis from "../layouts/Subscriptions";
 
 export default function Dashboard() {
     const [organisations, setOrganisations] = useState([]);
     const [individuals, setIndividuals] = useState([]);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const [totalOrganisations, setTotalOrganisations] = useState(0);
+    const [totalEvents, setTotalEvents] = useState(0);
     const [userData, setUsersData] = useState([]);
+    const [eventsData, setEventsData] = useState([]);
     const [loadingOrganisations, setLoadingOrganisations] = useState(false);
     const [loadingIndividuals, setLoadingIndividuals] = useState(false);
+    const [loadingEvents, setLoadingEvents] = useState(false);
+
 
     const { getOrganisationsAdmin } = useOrganizationApi();
     const { getIndividualsAdmin } = useIndividualApi();
+    const { getAllEvents } = useEventsApi();
+
 
     const getOrganisations = async () => {
         setLoadingOrganisations(true); // Start loading
         try {
             const data = await getOrganisationsAdmin("");
+            setTotalUsers(data.pagination.total);
             setOrganisations(data.data);
             getUsers();
         } catch (error) {
@@ -39,6 +49,7 @@ export default function Dashboard() {
         setLoadingIndividuals(true); // Start loading
         try {
             const data = await getIndividualsAdmin("");
+            setTotalOrganisations(data.pagination.total);
             setIndividuals(data.data);
         } catch (error) {
             console.error("Error fetching individuals:", error);
@@ -48,8 +59,38 @@ export default function Dashboard() {
     };
 
 
+    const getEvents = async () => {
+        setLoadingEvents(true); // Start loading
+        try {
+            const data = await getAllEvents();
+            setTotalEvents(data.pagination.total);
+            const today = new Date();
+            today.setUTCHours(0, 0, 0, 0);
+
+            // Get tomorrow's date
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            // Filter events starting **tomorrow or later**
+            const futureEvents = data.data.filter(event => {
+                const eventStartDate = new Date(event.startDate);
+                return eventStartDate >= tomorrow;
+            });
+
+            console.log(futureEvents)
+
+            setEventsData(futureEvents);
+        } catch (error) {
+            console.error("Error fetching events:", error);
+        } finally {
+            setLoadingEvents(false); // Stop loading
+        }
+    };
+
+
     useEffect(() => {
         getOrganisations();
+        getEvents();
     }, []);
 
 
@@ -101,7 +142,7 @@ export default function Dashboard() {
                 <path d="M7.18805 9.03192C9.41194 9.03192 11.2148 7.22911 11.2148 5.00522C11.2148 2.78133 9.41194 0.978516 7.18805 0.978516C4.96416 0.978516 3.16135 2.78133 3.16135 5.00522C3.16135 7.22911 4.96416 9.03192 7.18805 9.03192Z" fill="#AEB9E1" />
             </svg>,
             cronAnalytics: null,
-            value: individuals.length,
+            value: totalUsers,
             label: "Total Users",
             iconColor: "bg-mobiOrange",
             icon: <svg width="20" height="27" viewBox="0 0 28 35" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -131,7 +172,7 @@ export default function Dashboard() {
                 <path fillRule="evenodd" clipRule="evenodd" d="M16.5197 9.11149C16.5197 13.6218 12.8634 17.2782 8.35307 17.2782C3.84274 17.2782 0.186401 13.6218 0.186401 9.11149C0.186401 4.60117 3.84274 0.944824 8.35307 0.944824C12.8634 0.944824 16.5197 4.60117 16.5197 9.11149ZM8.3549 4.44481C8.79463 4.44481 9.15111 4.80129 9.15111 5.24102V8.31614H12.2218C12.6616 8.31614 13.018 8.67261 13.018 9.11234C13.018 9.55208 12.6616 9.90855 12.2218 9.90855H9.15111V12.9819C9.15111 13.4217 8.79463 13.7781 8.3549 13.7781C7.91516 13.7781 7.55869 13.4217 7.55869 12.9819V9.90855H4.48092C4.04118 9.90855 3.68471 9.55208 3.68471 9.11234C3.68471 8.67261 4.04118 8.31614 4.48092 8.31614H7.55869V5.24102C7.55869 4.80129 7.91516 4.44481 8.3549 4.44481Z" fill="#AEB9E1" />
             </svg>,
             cronAnalytics: null,
-            value: organisations.length,
+            value: totalOrganisations,
             label: "Total Organisations",
             iconColor: "bg-mobiSkyCloud",
             icon: <svg width="25" height="25" viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,7 +187,7 @@ export default function Dashboard() {
             cronAnalytics: <span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
                 28.4%
             </span>,
-            value: 329,
+            value: totalEvents,
             label: "Total Event",
             iconColor: "bg-mobiLightGreen",
             icon: <svg width="22" height="25" viewBox="0 0 30 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,17 +209,8 @@ export default function Dashboard() {
                     </div>
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
                         <div className="lg:w-[65%] md:w-[65%] w-full flex flex-col gap-5">
-                            <Table title="" subTitle={<span>New Users</span>} exportData
+                            <Table title="" subTitle={<span>New Users</span>}
                                 hasNumber
-                                tableBtn={
-                                    <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
-                                        <span className="text-xs text-white">Newest First</span>
-                                        <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M0.909424 6.9082L5.00033 10.9991L9.09124 6.9082" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </button>
-                                }
                                 tableHeader={TableHeaders}>
                                 {userData.length > 0 ?
                                     userData.map((data, index) => (
@@ -214,33 +246,49 @@ export default function Dashboard() {
                         </div>
 
                         <div className="lg:w-[35%] md:w-[35%] w-full flex-grow h-full flex flex-col gap-5">
-                            <UserAnalysis />
+                            <UserAnalysis individuals={totalUsers} organisations={totalOrganisations} />
                         </div>
                     </div>
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
 
                         <div className="lg:w-[50%] md:w-[50%] w-full flex flex-col gap-5">
-                            <Events />
+                            <SubscriptionAnalysis />
                         </div>
 
                         <div className="lg:w-[50%] md:w-[50%] w-full flex flex-col gap-5">
                             <Table subTitle={<span>Upcoming Events</span>} exportData
                                 tableHeader={NewTableHeaders}>
-                                {NewTableData.map((data, index) => (
-                                    <tr key={index} className="py-5">
-                                        <td className="px-3 py-5 text-mobiTableText">{data.organization}</td>
-                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.type} /></td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.date}</td>
-                                        <td className="px-3 py-3">
-                                            <span className="flex w-full justify-center">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {eventsData.length > 0 ?
+                                    eventsData
+                                        .map((data, index) => (
+                                            <tr key={index} className="py-5">
+                                                <td className="px-3 py-5 text-mobiTableText">{data.name}</td>
+                                                <td className="px-3 py-3 text-mobiTableText">{data.accessType}</td>
+                                                <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyy')}</td>
+                                                <td className="px-3 py-3">
+                                                    <span className="flex w-full justify-center">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                        </svg>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    :
+                                    loadingEvents ?
+                                        <tr>
+                                            <td colSpan={NewTableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                                <Loader size={20} />
+                                            </td>
+                                        </tr>
+                                        :
+                                        <tr>
+                                            <td colSpan={NewTableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
+                                                No Data Available
+                                            </td>
+                                        </tr>
+                                }
                             </Table>
                         </div>
                     </div>
