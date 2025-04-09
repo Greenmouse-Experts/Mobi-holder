@@ -178,10 +178,10 @@ export default function SuperAdminSidebar({ mobile }) {
 
             {/* Footer */}
             <div className="px-4 py-6">
-              {/*}  <Link to={'settings'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg transition`}>
+                <Link to={'/superadmin/settings'} className={`flex items-center py-2 px-4 h-[57px] rounded-lg transition`}>
                     <i className={`fas fa-cog mr-3`}></i>
                     <span>Settings</span>
-                </Link> */}
+                </Link>
                 <a onClick={() => handleLogOut()} className={`flex cursor-pointer items-center py-2 px-4 h-[57px] rounded-lg text-red-500 hover:bg-mobiBlueFade transition`}>
                     <i className="fas fa-sign-out-alt mr-3"></i>
                     Logout

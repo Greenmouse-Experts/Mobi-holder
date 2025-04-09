@@ -12,6 +12,17 @@ const LogOutModal = ({ closeModal, admin = false }) => {
     const { mutate } = useApiMutation();
 
     const logOutUser = () => {
+        admin ? mutate({
+            url: "/api/admins/logout",
+            method: "GET",
+            headers: true,
+            onSuccess: (response) => {
+                dispatch(setUser(null));
+                dispatch(setOrg(null));
+                localStorage.clear();
+                navigate('/admin');
+            },
+        }) :
         mutate({
             url: "/api/users/logout",
             method: "GET",
@@ -20,7 +31,7 @@ const LogOutModal = ({ closeModal, admin = false }) => {
                 dispatch(setUser(null));
                 dispatch(setOrg(null));
                 localStorage.clear();
-                admin ? navigate('/admin') : navigate('/login');
+                navigate('/login');
             },
         });
     }

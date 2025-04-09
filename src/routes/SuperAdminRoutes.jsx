@@ -15,6 +15,7 @@ import Staffs from "../modules/SuperAdmin/Staffs";
 import AddStaff from "../modules/SuperAdmin/Staffs/addStaff";
 import ViewEvent from "../modules/SuperAdmin/Events/modules/viewEvent";
 import EventAttendees from "../modules/SuperAdmin/Events/modules/eventAttendees";
+import AdminSettings from "../modules/SuperAdmin/Settings";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -24,7 +25,7 @@ const SuperAdminRoutes = [
     <Route path="view-org/:id" element={<ViewOrgAdmin />} />,
     <Route path="events" element={<Events />} />,
     <Route path="events/categories" element={<EventsCategories />} />,
-    <Route path="subscriptions" element={<Subscriptions />} />,
+    <Route path="subscription-individual" element={<Subscriptions />} />,
     <Route path="id-cards" element={<IDCards />} />,
     <Route path="events/verifiers/:id" element={<VerifiersList />} />,
     <Route path="events/event-log/:id" element={<EventLog />} />,
@@ -33,6 +34,7 @@ const SuperAdminRoutes = [
     <Route path="events/event-attendees/:id/:eventId" element={<EventAttendees />} />,
     <Route path="staffs" element={<Staffs />} />,
     <Route path="staffs/create" element={<AddStaff />} />,
+    <Route path="settings" element={<AdminSettings />} />,
 ];
 
 export default SuperAdminRoutes;
