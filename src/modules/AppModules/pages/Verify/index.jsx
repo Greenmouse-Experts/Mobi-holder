@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
 import { useVerifiersApi } from "../../../../api/hooks/useVerifiersApi";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function VerificationDashboard() {
     const user = useSelector((state) => state.userData.data);
@@ -173,7 +174,21 @@ export default function VerificationDashboard() {
 
                             setAllEvents(sortedEvents);
                         }
-                        }>
+                        }
+                        handleExportDataClick={() => exportToExcel(
+                            TableHeaders,
+                            allEvents.map(item => ([
+                                item.name,
+                                item.image,
+                                item.userId === user.id ? 'Me' : '---',
+                                item.ticketType,
+                                dateFormat(item.startDate, "dd MMM yyyy"),
+                                dateFormat(item.endDate, "dd MMM yyyy"),
+                            ])),
+                            "Upcoming Events.xlsx"
+                        )
+                        }
+                        >
                         {allEvents.length > 0 ?
                             allEvents
                                 .map((data, index) => (
@@ -255,6 +270,18 @@ export default function VerificationDashboard() {
 
                             setAllVerifiers(sortedVerifiers);
                         }
+                        }
+                        handleExportDataClick={() => exportToExcel(
+                            RequetsHeaders1,
+                            allVerifiers.map(item => ([
+                                item.user.companyName ? item.user.companyName : `${item.user.firstName} ${item.user.lastName}`,
+                                item.user.email,
+                                item.event.name,
+                                item.event.image,
+                                item.status,
+                            ])),
+                            "All Verifiers.xlsx"
+                        )
                         }
                     >
                         {allVerifiers.length > 0 ?

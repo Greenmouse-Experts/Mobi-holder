@@ -149,7 +149,7 @@ export default function Dashboard() {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
                         <div className="lg:w-[65%] md:w-[65%] w-full flex flex-col gap-5">
-                            <Table title="" subTitle={<span>Organization IDs</span>} filter exportData
+                            <Table title="" subTitle={<span>Organization IDs</span>}
                                 tableHeader={TableHeaders}>
                                 {orgCards.length > 0 ?
                                     orgCards.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -226,7 +226,7 @@ export default function Dashboard() {
                         </div>
 
                         <div className="lg:w-[50%] md:w-[50%] w-full flex flex-col gap-5">
-                            <Table title="" subTitle={<span>Organisations Joined</span>} filter exportData
+                            <Table title="" subTitle={<span>Organisations Joined</span>}
                                 tableHeader={NewTableHeaders}>
                                 {organisations.length > 0 ?
                                     organisations
