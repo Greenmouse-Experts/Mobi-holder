@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function UpcomingEvents() {
     const user = useSelector((state) => state.userData.data);
@@ -90,7 +91,19 @@ export default function UpcomingEvents() {
                                 });
                             
                                 setAllEvents(sortedEvents);
-                            }}                            
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                allEvents.map(item => ([
+                                    item.name,
+                                    item.image,
+                                    item.userId === user.id ? 'Me' : '---',
+                                    item.ticketType,
+                                    dateFormat(item.startDate, 'dd-MM-yyyy'),
+                                    dateFormat(item.endDate, 'dd-MM-yyyy'),
+                                ])),
+                                "Upcoming Events.xlsx"
+                            )}                           
                             >
                             {allEvents.length > 0 ?
                                 allEvents

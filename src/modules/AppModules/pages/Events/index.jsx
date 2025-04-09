@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function IndividualEvents() {
     const user = useSelector((state) => state.userData.data);
@@ -124,9 +125,21 @@ export default function IndividualEvents() {
                                     }
                                     return 0; // Default case if field is not recognized
                                 });
-                            
+
                                 setEvents(sortedEvents);
-                            }}                            
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                events.map(item => ([
+                                    item.name,
+                                    item.image,
+                                    item.category.name,
+                                    item.ticketType,
+                                    dateFormat(item.startDate, 'dd-MM-yyyy'),
+                                    dateFormat(item.endDate, 'dd-MM-yyyy'),
+                                ])),
+                                "All Events.xlsx"
+                            )}
                         >
                             {events.length > 0 ?
                                 events

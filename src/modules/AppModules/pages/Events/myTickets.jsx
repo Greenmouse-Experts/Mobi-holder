@@ -8,6 +8,7 @@ import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import { setTicket } from "../../../../reducers/userSlice";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 
 export default function MyTickets() {
@@ -84,6 +85,18 @@ export default function MyTickets() {
 
                                 setEventTickets(sortedEvents);
                             }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                eventTickets.map(item => ([
+                                    item.event.name,
+                                    item.event.image,
+                                    item.event.ticketType,
+                                    item.ticket.price,
+                                    dateFormat(item.event.startDate, 'dd-MM-yyyy'),
+                                    dateFormat(item.event.endDate, 'dd-MM-yyyy'),
+                                ])),
+                                "All Tickets.xlsx"
+                            )}                           
                         >
                             {eventTickets.length > 0 ?
                                 eventTickets.map((data, index) => (

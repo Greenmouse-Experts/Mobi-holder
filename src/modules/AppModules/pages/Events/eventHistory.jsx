@@ -8,6 +8,7 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { daysInYear } from "date-fns/constants";
 import Loader from "../../../../components/Loader";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function EventHistory() {
     const user = useSelector((state) => state.userData.data);
@@ -81,6 +82,16 @@ export default function EventHistory() {
 
                                 setEvents(sortedEvents);
                             }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                events.map(item => ([
+                                    item.name,
+                                    `${JSON.parse(item.venue).name} ${JSON.parse(item.venue).address}`,
+                                    `${dateFormat(item.startDate, "dd MMM yyyy")} - ${dateFormat(item.endDate, "dd MMM yyyy")}`,
+                                    'Concluded',
+                                ])),
+                                "Event History.xlsx"
+                            )}                           
                             >
                             {events.length > 0 ?
                                 events
