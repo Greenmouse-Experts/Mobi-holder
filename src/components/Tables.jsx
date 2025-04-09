@@ -1,17 +1,12 @@
 import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 
-function Table({ title, subTitle, filter, exportData, sortFunc, tableBtn, transparentBg, children, tableHeader, hasNumber,
+function Table({ title, subTitle, filter, exportData, handleExportDataClick, sortFunc, tableBtn, transparentBg, children, tableHeader, hasNumber,
     currentPage = 1,
     totalPages = 1,
     onPageChange,
 }) {
-    const [isExportDataVisible, setIsExportDataVisible] = useState(false);
     const [updatedTableHeader, setUpdatedTableHeader] = useState(tableHeader);
-
-    const handleExportDataClick = () => {
-        setIsExportDataVisible(!isExportDataVisible);
-    };
 
     useEffect(() => {
         if (hasNumber) {
@@ -65,7 +60,7 @@ function Table({ title, subTitle, filter, exportData, sortFunc, tableBtn, transp
                         </Menu>
                     )}
                     {exportData && (
-                        <button className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
+                        <button onClick={handleExportDataClick} className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
                             <span className="text-xs text-white">Export data</span>
                             <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />

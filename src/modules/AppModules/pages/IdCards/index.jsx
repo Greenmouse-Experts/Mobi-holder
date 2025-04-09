@@ -13,6 +13,7 @@ import Loader from "../../../../components/Loader";
 import DeleteModal from "../../../../components/DeleteModal";
 import ReusableModal from "../../../../components/ReusableModal";
 import useModal from "../../../../hooks/modal";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function IDCardsPage() {
     const user = useSelector((state) => state.userData.data);
@@ -166,7 +167,18 @@ export default function IDCardsPage() {
 
                                 setOrgCards(sortedOrgCards);
                             }}
-
+                        handleExportDataClick={() => exportToExcel(
+                            TableHeaders,
+                            orgCards.map(item => ([
+                                item.organization.companyName,
+                                '<img width={50} src="/id-card.png" />',
+                                item.cardNumber,
+                                item.designation,
+                                dateFormat(item.expiryDate, 'dd-MM-yyyy'),
+                                item.status,
+                            ])),
+                            "Manage ID Cards.xlsx"
+                        )}
                         >
                             {orgCards.length > 0 ?
                                 orgCards.map((data, index) => (
@@ -237,6 +249,17 @@ export default function IDCardsPage() {
 
                                 setPersonalCards(sortedCards);
                             }}
+                            handleExportDataClick={() => exportToExcel(
+                                NewTableHeaders,
+                                personalCards.map(item => ([
+                                    item.issuingOrganization,
+                                    item.cardNumber,
+                                    item.designation,
+                                    dateFormat(item.issuedDate, 'dd-MM-yyyy'),
+                                    item?.expiryDate ? dateFormat(item?.expiryDate, 'dd-MM-yyyy') : '---',
+                                ])),
+                                "Personal ID Cards.xlsx"
+                            )}
                         >
                             {personalCards.length > 0 ?
                                 personalCards.map((data, index) => (

@@ -19,6 +19,7 @@ import { Button } from "@material-tailwind/react";
 import UserPhoto from "../../../../components/UserPhoto";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import OrganisationInfo from "./modal/orgInfo";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 
 
@@ -270,6 +271,17 @@ export default function Membership() {
 
                             setOrganisations(sortedOrganisations);
                         }}
+                        handleExportDataClick={() => exportToExcel(
+                            TableHeaders,
+                            organisations.map(item => ([
+                                item.organization.companyName,
+                                item.designation,
+                                item.id,
+                                item.organization.companyEmail,
+                                item.status,
+                            ])),
+                            "Organisations.xlsx"
+                        )}
                     >
                         {organisations.length > 0 ?
                             organisations
@@ -338,6 +350,16 @@ export default function Membership() {
 
                             setPendingOrganisations(sortedPending);
                         }}
+                        handleExportDataClick={() => exportToExcel(
+                            RequetsHeaders1,
+                            pendingOrganisations.map(item => ([
+                                item.organization.companyName,
+                                item.designation,
+                                item.id,
+                                item.createdAt,
+                            ])),
+                            "Pending Organisations.xlsx"
+                        )}
                     >
                         {pendingOrganisations.length > 0 ?
                             pendingOrganisations.map((data, index) => (
@@ -397,6 +419,17 @@ export default function Membership() {
 
                             setPendingInitiated(sortedInitiated);
                         }}
+                        handleExportDataClick={() => exportToExcel(
+                            RequetsHeaders1,
+                            pendingInitiated.map(item => ([
+                                item.organization.companyName,
+                                item.id,
+                                item.designation,
+                                dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                                'Pending'
+                            ])),
+                            "Pending Initiated Organisations.xlsx"
+                        )}
                     >
                         {pendingInitiated.length > 0 ?
                             pendingInitiated.map((data, index) => (

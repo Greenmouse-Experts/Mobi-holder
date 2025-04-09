@@ -13,6 +13,9 @@ export default function Header() {
 
     const organization = useSelector((state) => state.orgData.orgData);
 
+    console.log(user);
+    console.log(organization);
+
     useEffect(() => {
         if (location.hash) {
             const elementId = location.hash.substring(1); // Remove the "#" from hash
@@ -119,7 +122,7 @@ export default function Header() {
                     {user || organization ? (
                         <div className="flex w-full gap-2 justify-end">
                             <Button className="bg-mobiPink rounded-full text-white">
-                                <Link className="w-full h-full flex" to={user ? '/app/dashboard' : '/org/dashboard'}>
+                                <Link className="w-full h-full flex" to={user ? user?.role?.name === 'superadmin' ? '/superadmin/dashboard' : '/app/dashboard' : '/org/dashboard'}>
                                     <span className="font-semibold capitalize">Dashboard</span>
                                 </Link>
                             </Button>
