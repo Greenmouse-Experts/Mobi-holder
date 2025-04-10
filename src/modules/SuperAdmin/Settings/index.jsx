@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../header';
 import DropdownMenu from '../../../components/DropdownMenu';
+import AccountInfo from './tabs/accountInfo';
+import Security from './tabs/security';
 
 export default function AdminSettings() {
     const [activeTab, setActiveTab] = useState('Account Info');
@@ -14,10 +16,10 @@ export default function AdminSettings() {
             slug: 'Security',
             name: 'Security'
         },
-       /* {
-            slug: 'Support',
-            name: 'Support'
-        } */
+        /* {
+             slug: 'Support',
+             name: 'Support'
+         } */
     ];
 
     return (
@@ -51,11 +53,8 @@ export default function AdminSettings() {
 
                             <div className="w-full flex flex-grow">
                                 <div className="shadow-xl py-7 px-5 md:w-[77%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-3">
-                                   {/* {activeTab === 'Organisation Data' && <OrganisationData />}
-                                    {activeTab === 'User Data' && <UserData />}
                                     {activeTab === 'Account Info' && <AccountInfo />}
                                     {activeTab === 'Security' && <Security />}
-                                    {activeTab === 'Support' && <Support />} */}
                                 </div>
                             </div>
                         </div>
