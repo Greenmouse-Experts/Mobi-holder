@@ -19,6 +19,7 @@ import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
 import UserPhoto from "../../../../components/UserPhoto";
 import UpdateMembershipStatusModal from "./updateModal";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 
 const UserDetails = ({ closeModal, userInfo, type, reload }) => {
@@ -301,6 +302,17 @@ export default function OrgMembership() {
 
                             setAllMembers(sortedMembers);
                         }}
+                        handleExportDataClick={() => exportToExcel(
+                            TableHeaders,
+                            allMembers.map(item => ([
+                                `${item.individual.firstName} ${item.individual.lastName}`,
+                                item.designation,
+                                item.memberId ? item.memberId : '---',
+                                item.individual.email,
+                                item.status
+                            ])),
+                            "All Members.xlsx"
+                        )}
                         >
                         {allMembers.filter(item => item.status === 'active').length > 0 ?
                             allMembers.filter(item => item.status === 'active').map((data, index) => (
@@ -376,6 +388,17 @@ export default function OrgMembership() {
                             setBlackListedMembers(sortedMembers);
                         }
                     }
+                    handleExportDataClick={() => exportToExcel(
+                        TableHeaders,
+                        allMembers.filter(item => item.status === 'inactive').map(item => ([
+                            `${item.individual.firstName} ${item.individual.lastName}`,
+                            item.designation,
+                            item.memberId ? item.memberId : '---',
+                            item.individual.email,
+                            item.status
+                    ])),
+                        "Blacklisted Members.xlsx"
+                    )}
                         >
                         {allMembers.filter(item => item.status === 'inactive').length > 0 ?
                             allMembers.filter(item => item.status === 'inactive').map((data, index) => (
@@ -447,6 +470,16 @@ export default function OrgMembership() {
 
                             setInitiatedMembers(sortedMembers);
                         }}
+                        handleExportDataClick={() => exportToExcel(
+                            RequetsHeaders1,
+                            initiatedMembers.map(item => ([
+                                `${item.individual.firstName} ${item.individual.lastName}`,
+                                item.individual.email,
+                                dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                                item.status
+                        ])),
+                            "Initiated Pending Requests.xlsx"
+                        )}    
                             >
                             {initiatedMembers.length > 0 ?
                                 initiatedMembers.map((data, index) => (
@@ -511,6 +544,15 @@ export default function OrgMembership() {
                             });
                             setPendingMembers(sortedMembers);
                         }}
+                        handleExportDataClick={() => exportToExcel(
+                            RequetsHeaders2,
+                            pendingMembers.map(item => ([
+                                `${item.individual.firstName} ${item.individual.lastName}`,
+                                item.individual.email,
+                                dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                        ])),
+                            "Received Pending Requests.xlsx"
+                        )}    
                         >
                             {pendingMembers.length > 0 ?
                                 pendingMembers.map((data, index) => (

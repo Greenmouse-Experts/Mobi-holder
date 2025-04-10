@@ -58,7 +58,7 @@ const NewTableData = [
 
 const TableHeaders = ["Organisation", "Card Number", "Expiry Date", "Status", "Action"];
 
-const NewTableHeaders = ["Organisations", "Renewal Date", "Current Status", "Action"];
+const NewTableHeaders = ["Organisations", "Date Joined", "Current Status", "Action"];
 
 
 export default function Dashboard() {
@@ -94,6 +94,7 @@ export default function Dashboard() {
                 setIsLoading(false);
             },
             onError: () => {
+                setIsLoading(false)
             }
         });
     }
@@ -235,7 +236,7 @@ export default function Dashboard() {
                                         .map((data, index) => (
                                     <tr key={index}>
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.dateJoined, 'dd-MM-yyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.dateJoined ? dateFormat(data.dateJoined, 'dd-MM-yyy') : '---'}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-3 py-3">
                                             <span className="flex w-full justify-center">
