@@ -72,6 +72,10 @@ export default function SuperAdminSidebar({ mobile }) {
                 {
                     path: "/superadmin/events",
                     name: "View Events"
+                },
+                {
+                    path: "/superadmin/verifiers",
+                    name: "View Verifiers"
                 }
             ],
             openChildren: false
