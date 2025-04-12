@@ -10,6 +10,7 @@ import { dateFormat, formatDateTime } from "../../../../helpers/dateHelper";
 import useModal from "../../../../hooks/modal";
 import ReusableModal from "../../../../components/ReusableModal";
 import AlertModal from "../../../../components/AlertModal";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function OrgTicketRequests() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -236,7 +237,35 @@ export default function OrgTicketRequests() {
                         <div className="shadow-xl md:py-5 md:px-8 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                                 <Table title="Today" filter subTitle={<span>Ticket Requests</span>} exportData
-                                    tableHeader={TableHeaders}>
+                                    tableHeader={TableHeaders}
+                            sortFunc={(field, order) => {
+                                const sortedEvents = [...ticketRequests].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "asc" ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
+                                    }
+                                    else if (field === "name") {
+                                        const aName = `${a.user.firstName} ${a.user.lastName}`;
+                                        const bName = `${b.user.firstName} ${b.user.lastName}`;
+    
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0;
+                                });
+                                setTicketRequests(sortedEvents);
+                            }
+                            }
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                ticketRequests.map(item => ([
+                                    `${item.user.firstName} ${item.user.lastName}`,
+                                    item.user.mobiHolderId,
+                                    dateFormat(item.createdAt, 'dd-MM-yyyy'),
+                                    item.status
+                                ])),
+                                "Ticket Requests.xlsx"
+                            )}>
                                     {ticketRequests.length > 0
                                         ?
                                         ticketRequests.map((data, index) => (

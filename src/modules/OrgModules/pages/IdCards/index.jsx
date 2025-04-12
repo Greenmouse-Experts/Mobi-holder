@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function OrgIDCardsPage() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -177,16 +178,28 @@ export default function OrgIDCardsPage() {
                                     } else if (field === "name") {
                                         const aName = `${a.name}`;
                                         const bName = `${b.name}`;
-    
+
                                         return order === "ASC"
                                             ? aName.localeCompare(bName)
                                             : bName.localeCompare(aName);
                                     }
                                     return 0; // Default case if field is not recognized
                                 });
-    
+
                                 setTemplates(sortedTemplates);
-                            }}>
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                NewTableHeaders,
+                                templates.map(item => ([
+                                    item.name,
+                                    item.layout,
+                                    item.backgroundColor,
+                                    item.textColor,
+                                    `${item.is_default ? 'Default' : '---'}`
+                                ])),
+                                "ID Templates.xlsx"
+                            )}
+                        >
                             {templates.length > 0 ?
                                 templates.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -251,16 +264,27 @@ export default function OrgIDCardsPage() {
                                     } else if (field === "name") {
                                         const aName = `${a.individual.firstName} ${a.individual.lastName}`;
                                         const bName = `${b.individual.firstName} ${b.individual.lastName}`;
-    
+
                                         return order === "ASC"
                                             ? aName.localeCompare(bName)
                                             : bName.localeCompare(aName);
                                     }
                                     return 0; // Default case if field is not recognized
                                 });
-    
+
                                 setMemberCards(sortedMembers);
-                            }}>
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                memberCards.map(item => ([
+                                    `${item.individual.firstName} ${item.individual.lastName}`,
+                                    '---',
+                                    item.designation,
+                                    `${dateFormat(item.expiryDate, 'dd-MM-yyyy')}`,
+                                    `${item.status}`
+                                ])),
+                                "ID Cards.xlsx"
+                            )}>
                             {memberCards.length > 0 ?
                                 memberCards.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -325,16 +349,28 @@ export default function OrgIDCardsPage() {
                                     } else if (field === "name") {
                                         const aName = `${a.individual.firstName} ${a.individual.lastName}`;
                                         const bName = `${b.individual.firstName} ${b.individual.lastName}`;
-    
+
                                         return order === "ASC"
                                             ? aName.localeCompare(bName)
                                             : bName.localeCompare(aName);
                                     }
                                     return 0; // Default case if field is not recognized
                                 });
-    
+
                                 setAllMembers(sortedMembers);
-                            }}>
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                allMembers.map(item => ([
+                                    `${item.individual.firstName} ${item.individual.lastName}`,
+                                    item.memberId,
+                                    item.designation,
+                                    `${item.dateJoined ? dateFormat(item.dateJoined, 'dd-MM-yyyy') : '---'}`,
+                                    `${item.status}`
+                                ])),
+                                "Members ID Cards.xlsx"
+                            )}>
+
                             {allMembers.length > 0 ?
                                 allMembers.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>

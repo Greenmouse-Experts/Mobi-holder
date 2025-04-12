@@ -8,6 +8,7 @@ import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import { setOrgTicket } from "../../../../reducers/organisationSlice";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 
 export default function OrgTickets() {
@@ -85,7 +86,18 @@ export default function OrgTickets() {
                                 setEventTickets(sortedEvents);
                             }
                             }
-                            >
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                eventTickets.map(item => ([
+                                    item.event.name,
+                                    item.event.image,
+                                    item.event.ticketType,
+                                    item.ticket.price,
+                                    dateFormat(item.event.startDate, 'dd-MM-yyyy'),
+                                    dateFormat(item.event.endDate, 'dd-MM-yyyy')
+                                ])),
+                                "All Tickets.xlsx"
+                            )}>
                             {eventTickets.length > 0 ?
                                 eventTickets.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>

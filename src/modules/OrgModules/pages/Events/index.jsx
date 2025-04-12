@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function OrgEvents() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -133,7 +134,19 @@ export default function OrgEvents() {
                                 });
     
                                 setEvents(sortedEvents);
-                            }}>
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                events.map(item => ([
+                                    item.name,
+                                    item.image,
+                                    item.category.name,
+                                    item.ticketType,
+                                    dateFormat(item.startDate, 'dd-MM-yyy'),
+                                    dateFormat(item.endDate, 'dd-MM-yyy')
+                                ])),
+                                "All Events.xlsx"
+                            )}>
                             {events.length > 0 ?
                                 events
                                     .map((data, index) => (

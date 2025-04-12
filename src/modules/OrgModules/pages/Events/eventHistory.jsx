@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function OrgEventHistory() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -82,7 +83,17 @@ export default function OrgEventHistory() {
                                 });
     
                                 setEvents(sortedEvents);
-                            }}>
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                events.map(item => ([
+                                    item.name,
+                                    `${JSON.parse(item.venue).name} ${JSON.parse(item.venue).address}`,
+                                    `${dateFormat(item.startDate, "dd MMM yyyy")} - ${dateFormat(item.endDate, "dd MMM yyyy")}`,
+                                    'Concluded',
+                                ])),
+                                "Event History.xlsx"
+                            )}>
                             {events.length > 0 ?
                                 events
                                     .map((data, index) => (
