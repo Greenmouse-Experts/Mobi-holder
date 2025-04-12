@@ -13,6 +13,7 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function OrgVerificationDashboard() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -251,7 +252,19 @@ export default function OrgVerificationDashboard() {
                                 return 0;
                             });
                             setAllVerifiers(sortedVerifiers);
-                        }}>
+                        }}
+                            handleExportDataClick={() => exportToExcel(
+                                RequetsHeaders1,
+                                allVerifiers.map(item => ([
+                                    `${item.user.companyName ? item.user.companyName : `${item.user.firstName} ${item.user.lastName}`}`,
+                                    item.user.email,
+                                    item.event.name,
+                                    item.event.image,
+                                    item.status
+                                ])),
+                                "All Verifiers.xlsx"
+                            )}
+                        >
                         {allVerifiers.length > 0 ?
                             allVerifiers
                                 .map((data, index) => (

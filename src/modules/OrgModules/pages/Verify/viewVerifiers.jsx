@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { dateFormat, formatDateTime } from "../../../../helpers/dateHelper";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function ViewVerifiers() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -233,6 +234,15 @@ export default function ViewVerifiers() {
                                         setAllVerifiers(sortedEvents);
                                     }
                                     }
+                                    handleExportDataClick={() => exportToExcel(
+                                        TableHeaders,
+                                        allVerifiers.map(item => ([
+                                            `${item.user.companyName ? item.user.companyName : `${item.user.firstName} ${item.user.lastName}`}`,
+                                            item.user.email,
+                                            `${dateFormat(item.updatedAt, 'dd-MM-yyy')}`,
+                                        ])),
+                                        "Event Verifiers.xlsx"
+                                    )}
                                 >
                                     {allVerifiers.length > 0 ?
                                         allVerifiers

@@ -14,6 +14,7 @@ import AlertModal from "../../../../components/AlertModal";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { useNavigate } from "react-router-dom";
+import { exportToExcel } from "../../../../helpers/exportToExcel";
 
 export default function OrgVerificationRequest() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -180,7 +181,18 @@ export default function OrgVerificationRequest() {
                             });
                             setReceivedRequests(sortedRequests);
                         }
-                        }>
+                        }
+                            handleExportDataClick={() => exportToExcel(
+                                RequetsHeaders,
+                                receivedRequests.map(item => ([
+                                    `${item.eventOwner.companyName ? item.eventOwner.companyName : `${item.eventOwner.firstName} ${item.eventOwner.lastName}`}`,
+                                    item.eventOwner.email,
+                                    `${dateFormat(item.createdAt, 'dd-MM-yyy')}`,
+                                    item.status
+                                ])),
+                                "Recieved Requests.xlsx"
+                            )}
+                        >
                         {receivedRequests.length > 0 ?
                             receivedRequests
                                 .map((data, index) => (
@@ -263,7 +275,18 @@ export default function OrgVerificationRequest() {
                                 return 0;
                             });
                             setInitiatedRequests(sortedRequests);
-                        }}>
+                        }}
+                        handleExportDataClick={() => exportToExcel(
+                            RequetsHeaders1,
+                            initiatedRequests.map(item => ([
+                                `${item.user.companyName ? item.user.companyName : `${item.user.firstName} ${item.user.lastName}`}`,
+                                item.user.email,
+                                `${dateFormat(item.createdAt, 'dd-MM-yyy')}`,
+                                item.status
+                            ])),
+                            "Initiated Requests.xlsx"
+                        )}
+                        >
                         {initiatedRequests.length > 0 ?
                             initiatedRequests
                                 .map((data, index) => (
