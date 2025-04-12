@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import Badge from "../../../../components/Badge";
 import Table from "../../../../components/Tables";
 import Header from "../../header";
-import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { useParams } from "react-router-dom";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { dateFormat, formatDateTime } from "../../../../helpers/dateHelper";
 
-export default function EventAttendees() {
+export default function EventVerifiers() {
+
     const [eventDetails, setEventDetails] = useState({});
-    const [eventAttendees, setEventAttendees] = useState([]);
+    const [eventVerifiers, setEventVerifiers] = useState([]);
 
     const [loading, setIsLoading] = useState(true);
 
@@ -27,7 +28,7 @@ export default function EventAttendees() {
             hideToast: true,
             onSuccess: (response) => {
                 setEventDetails(response.data.data);
-                getEventAttendees();
+                getEventVerifiers();
             },
             onError: () => {
             }
@@ -36,14 +37,14 @@ export default function EventAttendees() {
 
 
 
-    const getEventAttendees = () => {
+    const getEventVerifiers = () => {
         mutate({
-            url: `/api/admins/event/attendees?eventId=${id}`,
+            url: `/api/admins/event/verifiers?eventId=${id}`,
             method: "GET",
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                setEventAttendees(response.data.data);
+                setEventVerifiers(response.data.data);
                 setIsLoading(false);
             },
             onError: () => {
@@ -117,7 +118,7 @@ export default function EventAttendees() {
 
 
 
-    const TableHeaders = ["Name", "Ticket", "Amount Paid", "Date Registered"];
+    const TableHeaders = ["Name", "Email", "Date Requested", "Status"];
 
 
     return (
@@ -127,7 +128,7 @@ export default function EventAttendees() {
                     <Header mobile superAdmin />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Attendees List</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Event Verifiers</p>
                             <p className="text-base">Event Details for: <span className="text-mobiBlue">{eventDetails.name}</span></p>
                         </div>
                     </div>
@@ -171,23 +172,24 @@ export default function EventAttendees() {
                                         />
                                     ))}
                                 </div>
-
-
                             </div>
                         </div>
                         <div className="shadow-xl px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5">
-                                <Table title="" subTitle={<span>Attendees List</span>} exportData
+                                <Table title="Today" subTitle={<span>Event Verifiers</span>} exportData
                                     hasNumber
                                     tableHeader={TableHeaders}
-                                    >
-                                    {eventAttendees.length > 0 ? eventAttendees.map((data, index) => (
+                                >
+                                    {eventVerifiers.length > 0 ? eventVerifiers.map((data, index) => (
                                         <tr key={index}>
                                             <td className="px-3 py-5 text-mobiTableText whitespace-normal">{index + 1}</td>
-                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}</td>
-                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.ticket.name}</td>
-                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.payments ? `${JSON.parse(data.payments.paymentDetails).currency} ${JSON.parse(data.payments.paymentDetails).amount}` : 'Free'}</td>
-                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{dateFormat(data.payments.createdAt, 'dd-MM-yyy')}</td>
+                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.user.companyName ? data.user.companyName
+                                                : `${data.user.firstName} ${data.user.lastName}`}</td>
+                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.user.email}</td>
+                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{dateFormat(data.dateRequested, 'dd-MM-yyy')}</td>
+                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">
+                                                <Badge status={data.status} />
+                                            </td>
                                         </tr>
                                     ))
                                         :

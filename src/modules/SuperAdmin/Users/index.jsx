@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useIndividualApi } from "../../../api/hooks/useIndividualsApi";
 import Loader from "../../../components/Loader";
+import useModal from "../../../hooks/modal";
+import ReusableModal from "../../../components/ReusableModal";
+import SuspendModal from "./modal/SuspendModal";
 
 export default function AllUsers() {
     const navigate = useNavigate();
@@ -15,6 +18,7 @@ export default function AllUsers() {
 
     const { getIndividualsAdmin } = useIndividualApi();
 
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const getUsers = async (params) => {
         setLoadingIndividuals(true); // Start loading
@@ -34,6 +38,16 @@ export default function AllUsers() {
     useEffect(() => {
         getUsers(1);
     }, []);
+
+
+
+
+    const handleSuspend = (id, status) => {
+        openModal({
+            size: "sm",
+            content: <SuspendModal id={id} status={status} closeModal={closeModal} reload={() => getUsers(paginationData.page)} />
+        })
+    }
 
 
 
@@ -86,6 +100,19 @@ export default function AllUsers() {
                                                             View
                                                         </span>
                                                     </MenuItem>
+                                                    {data.status === 'active' ?
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => handleSuspend(data.id, 'suspend')}>
+                                                                Suspend
+                                                            </span>
+                                                        </MenuItem>
+                                                        :
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => handleSuspend(data.id, 'unsuspend')}>
+                                                                UnSuspend
+                                                            </span>
+                                                        </MenuItem>
+                                                    }
                                                 </MenuList>
                                             </Menu>
                                         </td>
@@ -109,6 +136,18 @@ export default function AllUsers() {
                     </div>
                 </div>
             </div>
+
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
+
         </>
     )
 }

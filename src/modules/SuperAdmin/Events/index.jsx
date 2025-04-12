@@ -215,13 +215,18 @@ export default function Events() {
                                                             View Event Attendees
                                                         </span>
                                                     </MenuItem>
-                                                    {data.ticketType === 'Paid' &&
+                                                    {/*data.ticketType === 'Paid' &&
                                                         <MenuItem className="flex flex-col gap-3">
                                                             <span className="cursor-pointer" onClick={() => navigate(`/superadmin/events/event-payments/${data.eventId}`)}>
                                                                 Event Payments
                                                             </span>
                                                         </MenuItem>
-                                                    }
+                                                    */}
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate(`/superadmin/events/verifiers/${data.id}/${data.eventId}`)}>
+                                                            View Event Verifiers
+                                                        </span>
+                                                    </MenuItem>
                                                 </MenuList>
                                             </Menu>
                                         </td>

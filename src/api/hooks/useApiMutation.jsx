@@ -12,7 +12,7 @@ const useApiMutation = () => {
     const logoutUser = () => {
         toast.error("Session expired, please login again");
         localStorage.clear();
-       window.location.pathname.includes('superadmin') ? navigate('/admin') : navigate("/login");
+        window.location.pathname.includes('superadmin') ? navigate('/admin') : navigate("/login");
     };
 
 
@@ -33,7 +33,7 @@ const useApiMutation = () => {
                 case "GET":
                     return apiClient.get(url, { params: data, ...config });
                 case "POST":
-                    return apiClient.post(url, data, config);
+                    return data !== null ? apiClient.post(url, data, config) : apiClient.post(url, undefined, config);
                 case "PUT":
                     return apiClient.put(url, data, config);
                 case "DELETE":
