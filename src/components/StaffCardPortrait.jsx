@@ -1,41 +1,49 @@
 import React from "react";
 import { FaUserCircle } from "react-icons/fa"; // Profile placeholder
+import { dateFormat } from "../helpers/dateHelper";
 
-const StaffCardPortrait = () => {
+const StaffCardPortrait = ({ data, background, company, textColor }) => {
+  const cardData = data.individual ?? data.member;
   return (
-    <div className="w-[320px] rounded-2xl shadow-lg border border-gray-300 bg-white overflow-hidden">
+    <div className="w-full rounded-2xl shadow-lg border border-gray-300 bg-white overflow-hidden" style={{ backgroundColor : `${background}`, color: `${textColor}`}}>
       {/* Header with profile image */}
-      <div className="bg-green-300 h-24 flex flex-col items-center justify-end pb-6 relative">
+      <div className="h-24 flex flex-col items-center justify-end pb-6 relative">
         <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center border-4 border-gray-300 absolute bottom-[-30px]">
-          <FaUserCircle className="text-gray-400 text-5xl" />
+          {cardData.photo ? (
+            <img src={`${cardData.photo}`} className="w-full h-full rounded-full object-cover" />
+          ) : (
+            <FaUserCircle className="text-gray-400 text-5xl" />
+          )}
         </div>
       </div>
 
       {/* Body */}
       <div className="p-4 text-center mt-8">
-        <p className="text-gray-500 font-medium">Name</p>
-        <p className="text-black font-semibold text-lg">-----</p>
-
-        <p className="text-gray-500 font-medium mt-2">Staff ID</p>
-        <p className="text-black font-semibold text-lg">-----</p>
-
-        <p className="text-gray-500 font-medium mt-2">Category</p>
-        <p className="text-black font-semibold text-lg">VIP</p>
+        <p className="font-medium">Name</p>
+        <p className="font-semibold text-lg">{cardData.firstName} {cardData.lastName}</p>
       </div>
 
       {/* Details Section */}
       <div className="p-4 space-y-3 border-t border-gray-300">
         <div className="flex justify-between text-sm">
-          <p className="text-gray-500">Date Issued</p>
-          <p className="text-black">-----</p>
+          <p className="font-semibold">Date Issued</p>
+          <p className="">{dateFormat(data.dateIssued, 'dd-MM-yyyy')}</p>
         </div>
         <div className="flex justify-between text-sm">
-          <p className="text-gray-500">Role</p>
-          <p className="text-black">-----</p>
+          <p className="font-semibold">Role</p>
+          <p className="">{data.designation}</p>
         </div>
         <div className="flex justify-between text-sm">
-          <p className="text-gray-500">Card Number</p>
-          <p className="text-black">-----</p>
+          <p className="font-semibold">Card Number</p>
+          <p className="uppercase"> {data.cardNumber.split('-')[0]} </p>
+          </div>
+        <div className="flex justify-between text-sm">
+          <p className="font-semibold">Organisation</p>
+          <p className="">{company}</p>
+        </div>
+        <div className="flex justify-between text-sm">
+          <p className="font-semibold">Expiry Date</p>
+          <p className="">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</p>
         </div>
       </div>
     </div>

@@ -5,12 +5,14 @@ import { dateFormat } from "../../../helpers/dateHelper";
 import Table from "../../../components/Tables";
 import useApiMutation from "../../../api/hooks/useApiMutation";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 export default function IDCards() {
     const [allIDCards, setAllIDCards] = useState([]);
     const [paginationData, setPagination] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const { mutate } = useApiMutation();
+    const navigate = useNavigate();
 
 
     const RequetsHeaders = ["Card Holder", "Account Type", "Card Number", "Date Issued", "Expiry Date", "Actions"];
