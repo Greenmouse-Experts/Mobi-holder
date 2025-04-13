@@ -4,7 +4,7 @@ import Organisations from "../modules/SuperAdmin/Organisations";
 import Events from "../modules/SuperAdmin/Events";
 import AllUsers from '../modules/SuperAdmin/Users';
 import Subscriptions from '../modules/SuperAdmin/Subscriptions';
-import IDCards from '../modules/SuperAdmin/Users/modules/idCards';
+import IDCards from '../modules/SuperAdmin/IDCards';
 import ViewOrgAdmin from '../modules/SuperAdmin/Organisations/viewOrganisation';
 import ViewUserAdmin from '../modules/SuperAdmin/Users/viewUser';
 //import EventLog from "../modules/SuperAdmin/Events/modules/eventLog";
@@ -18,10 +18,12 @@ import AdminSettings from "../modules/SuperAdmin/Settings";
 import EventVerifiers from "../modules/SuperAdmin/Events/modules/eventVerifiers";
 import AllVerifiers from "../modules/SuperAdmin/Verifiers";
 import Members from "../modules/SuperAdmin/Membership";
+import OrgMembers from "../modules/SuperAdmin/Organisations/modules/Members";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
     <Route path="organisation" element={<Organisations />} />,
+    <Route path="organisation/members/:id" element={<OrgMembers />} />,
     <Route path="individuals" element={<AllUsers />} />,
     <Route path="view-individual/:id" element={<ViewUserAdmin />} />,
     <Route path="view-org/:id" element={<ViewOrgAdmin />} />,

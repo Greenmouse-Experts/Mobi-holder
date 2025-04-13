@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Theme from "../../../components/Theme"
 import { useSelector } from "react-redux";
+import { isTokenValid } from "../../../helpers/tokenValidator";
 
 export default function Header() {
 
@@ -13,8 +14,7 @@ export default function Header() {
 
     const organization = useSelector((state) => state.orgData.orgData);
 
-    console.log(user);
-    console.log(organization);
+    const tokenValidity = isTokenValid();
 
     useEffect(() => {
         if (location.hash) {
@@ -119,10 +119,10 @@ export default function Header() {
                 </div>
 
                 <div className="md:flex hidden h-full w-1/4">
-                    {user || organization ? (
+                    {tokenValidity ? (
                         <div className="flex w-full gap-2 justify-end">
                             <Button className="bg-mobiPink rounded-full text-white">
-                                <Link className="w-full h-full flex" to={user ? user?.role?.name === 'superadmin' ? '/superadmin/dashboard' : '/app/dashboard' : '/org/dashboard'}>
+                                <Link className="w-full h-full flex" to={user ? user.name === 'Administrator' ? '/superadmin/dashboard' : '/app/dashboard' : '/org/dashboard'}>
                                     <span className="font-semibold capitalize">Dashboard</span>
                                 </Link>
                             </Button>
