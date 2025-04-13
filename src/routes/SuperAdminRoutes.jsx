@@ -17,6 +17,7 @@ import EventAttendees from "../modules/SuperAdmin/Events/modules/eventAttendees"
 import AdminSettings from "../modules/SuperAdmin/Settings";
 import EventVerifiers from "../modules/SuperAdmin/Events/modules/eventVerifiers";
 import AllVerifiers from "../modules/SuperAdmin/Verifiers";
+import Members from "../modules/SuperAdmin/Membership";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -24,6 +25,7 @@ const SuperAdminRoutes = [
     <Route path="individuals" element={<AllUsers />} />,
     <Route path="view-individual/:id" element={<ViewUserAdmin />} />,
     <Route path="view-org/:id" element={<ViewOrgAdmin />} />,
+    <Route path="membership" element={<Members />} />,
     <Route path="events" element={<Events />} />,
     <Route path="events/categories" element={<EventsCategories />} />,
     <Route path="subscription-individual" element={<Subscriptions />} />,

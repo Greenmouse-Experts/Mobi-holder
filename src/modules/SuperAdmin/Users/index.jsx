@@ -24,7 +24,7 @@ export default function AllUsers() {
         setLoadingIndividuals(true); // Start loading
         setIndividuals([]);
         try {
-            const data = await getIndividualsAdmin(`?page=${params}`);
+            const data = await getIndividualsAdmin(`?page=${params}&limit=20`);
             setIndividuals(data.data);
             setPagination(data.pagination)
         } catch (error) {

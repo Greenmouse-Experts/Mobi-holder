@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
 import { useOrganizationApi } from "../../../api/hooks/useOrganizationApi";
+import SuspendModal from "./modal/SuspendModal";
+import ReusableModal from "../../../components/ReusableModal";
+import useModal from "../../../hooks/modal";
 
 export default function Organisations() {
     const navigate = useNavigate();
@@ -13,14 +16,27 @@ export default function Organisations() {
     const [paginationData, setPagination] = useState({});
     const [loadingOrganisations, setLoadingOrganisations] = useState(false);
 
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
+
     const { getOrganisationsAdmin } = useOrganizationApi();
+
+
+
+    const handleSuspend = (id, status) => {
+        openModal({
+            size: "sm",
+            content: <SuspendModal id={id} status={status} closeModal={closeModal} reload={() => getUsers(paginationData.page)} />
+        })
+    }
+
+
 
 
     const getUsers = async (params) => {
         setLoadingOrganisations(true); // Start loading
         setOrganisations([]);
         try {
-            const data = await getOrganisationsAdmin(`?page=${params}`);
+            const data = await getOrganisationsAdmin(`?page=${params}&limit=20`);
             setOrganisations(data.data);
             setPagination(data.pagination)
         } catch (error) {
@@ -88,6 +104,19 @@ export default function Organisations() {
                                                             View
                                                         </span>
                                                     </MenuItem>
+                                                    {data.status === 'active' ?
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => handleSuspend(data.id, 'suspend')}>
+                                                                Suspend
+                                                            </span>
+                                                        </MenuItem>
+                                                        :
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => handleSuspend(data.id, 'unsuspend')}>
+                                                                UnSuspend
+                                                            </span>
+                                                        </MenuItem>
+                                                    }
                                                 </MenuList>
                                             </Menu>
                                         </td>
@@ -111,6 +140,19 @@ export default function Organisations() {
                     </div>
                 </div>
             </div>
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
+
+
+
         </>
     )
 }

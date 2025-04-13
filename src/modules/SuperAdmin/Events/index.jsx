@@ -121,7 +121,7 @@ export default function Events() {
         setLoading(true);
         setEvents([]);
         mutate({
-            url: `/api/admins/events?page=${page}`,
+            url: `/api/admins/events?page=${page}&limit=20`,
             method: "GET",
             headers: true,
             hideToast: true,
