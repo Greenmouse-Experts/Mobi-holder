@@ -24,13 +24,13 @@ export default function AddStaff() {
                     <div className="w-full flex flex-grow">
                         <div className="shadow-xl py-5 px-5 md:w-3/4 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
 
-                            <form>
+                            <form onSubmit={handleSubmit(createStaff)}>
                                 <div className="mb-1 flex flex-col gap-10 mt-5">
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Staff Full Name
                                         </p>
-                                        <Input type="text" name="fullName"
+                                        <Input type="text" name="fullname"
                                             register={register}
                                             rules={{ required: 'Staff Name is required' }} errors={errors} placeholder="Enter Staff Name" />
                                     </div>
@@ -66,13 +66,26 @@ export default function AddStaff() {
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                                         <div className="flex flex-col w-full gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
-                                                Department
+                                                BirthDate
                                             </p>
-                                            <Input type="text" name="department"
+                                            <Input type="date" name="birthdate" disableFutureDates
                                                 register={register}
-                                                rules={{ required: 'Department is required' }} errors={errors} placeholder="Enter department" />
+                                                rules={{ required: 'BirthDate is required' }} errors={errors} placeholder="Enter your date of birth" />
                                         </div>
                                     </div>
+
+
+                                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                        <div className="flex flex-col w-full gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Employment Date
+                                            </p>
+                                            <Input type="date" name="employmentDate" disableFutureDates
+                                                register={register}
+                                                rules={{ required: 'BirthDate is required' }} errors={errors} placeholder="Enter your date of birth" />
+                                        </div>
+                                    </div>
+
 
                                     <div className="flex">
                                         <Button type="submit" className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
