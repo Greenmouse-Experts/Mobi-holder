@@ -180,13 +180,32 @@ export default function EventAttendees() {
                                 <Table title="" subTitle={<span>Attendees List</span>} exportData
                                     hasNumber
                                     tableHeader={TableHeaders}
-                                    >
+                                >
                                     {eventAttendees.length > 0 ? eventAttendees.map((data, index) => (
                                         <tr key={index}>
                                             <td className="px-3 py-5 text-mobiTableText whitespace-normal">{index + 1}</td>
                                             <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}</td>
                                             <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.ticket.name}</td>
-                                            <td className="px-3 py-5 text-mobiTableText whitespace-normal">{data.payments ? `${JSON.parse(data.payments.paymentDetails).currency} ${JSON.parse(data.payments.paymentDetails).amount}` : 'Free'}</td>
+                                            {(() => {
+                                                let currency = '---';
+                                                let amount = '---';
+
+                                                if (data.payments?.paymentDetails) {
+                                                    try {
+                                                        const payment = JSON.parse(data.payments.paymentDetails);
+                                                        currency = payment.currency || '---';
+                                                        amount = payment.amount || '---';
+                                                    } catch (e) {
+                                                        console.error('Invalid JSON in paymentDetails:', e);
+                                                    }
+                                                }
+
+                                                return (
+                                                    <td className="px-3 py-5 text-mobiTableText whitespace-normal">
+                                                        {data.payments ? `${currency} ${amount}` : 'Free'}
+                                                    </td>
+                                                );
+                                            })()}
                                             <td className="px-3 py-5 text-mobiTableText whitespace-normal">{dateFormat(data.payments.createdAt, 'dd-MM-yyy')}</td>
                                         </tr>
                                     ))
