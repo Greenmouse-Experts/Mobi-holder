@@ -19,6 +19,9 @@ export default function IDCards() {
 
 
     const getAllIDCards = (page) => {
+        setIsLoading(true);
+        setAllIDCards([]);
+
         mutate({
             url: `/api/admins/idcards?page=${page}&limit=20`,
             method: "GET",
@@ -50,16 +53,6 @@ export default function IDCards() {
 
 
 
-
-
-    if (isLoading) {
-        return (
-            <div className="w-full h-screen flex items-center justify-center">
-                <Loader size={30} />
-            </div>
-        )
-
-    }
 
 
 

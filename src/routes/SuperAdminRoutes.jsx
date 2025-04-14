@@ -20,6 +20,9 @@ import AllVerifiers from "../modules/SuperAdmin/Verifiers";
 import Members from "../modules/SuperAdmin/Membership";
 import OrgMembers from "../modules/SuperAdmin/Organisations/modules/Members";
 import AdminViewCard from "../modules/SuperAdmin/IDCards/viewCard";
+import AllTemplates from "../modules/SuperAdmin/IDCards/allTemplates";
+import AllPersonalIDCards from "../modules/SuperAdmin/IDCards/personalIDCards";
+import ViewPersonalCard from "../modules/SuperAdmin/IDCards/modules/viewPersonalIDCard";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -32,6 +35,9 @@ const SuperAdminRoutes = [
     <Route path="events" element={<Events />} />,
     <Route path="events/categories" element={<EventsCategories />} />,
     <Route path="subscription-individual" element={<Subscriptions />} />,
+    <Route path="personal-idCards" element={<AllPersonalIDCards />} />,
+    <Route path="personal-idCards/view-personal-card/:id" element={<ViewPersonalCard />} />,
+    <Route path="idCardsTemplate" element={<AllTemplates />} />,
     <Route path="id-cards" element={<IDCards />} />,
     <Route path="id-cards/view/:id" element={<AdminViewCard />} />,
     <Route path="events/verifiers/:id/:eventId" element={<EventVerifiers />} />,
