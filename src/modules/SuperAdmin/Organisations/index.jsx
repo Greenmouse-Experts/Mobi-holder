@@ -109,6 +109,11 @@ export default function Organisations() {
                                                              View Members
                                                         </span>
                                                     </MenuItem>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate(`templates/${data.id}`)}>
+                                                             View Card Templates
+                                                        </span>
+                                                    </MenuItem>
                                                     {data.status === 'active' ?
                                                         <MenuItem className="flex flex-col gap-3">
                                                             <span className="cursor-pointer" onClick={() => handleSuspend(data.id, 'suspend')}>

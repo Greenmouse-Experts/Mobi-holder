@@ -23,11 +23,13 @@ import AdminViewCard from "../modules/SuperAdmin/IDCards/viewCard";
 import AllTemplates from "../modules/SuperAdmin/IDCards/allTemplates";
 import AllPersonalIDCards from "../modules/SuperAdmin/IDCards/personalIDCards";
 import ViewPersonalCard from "../modules/SuperAdmin/IDCards/modules/viewPersonalIDCard";
+import OrgTemplates from "../modules/SuperAdmin/Organisations/modules/Templates";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
     <Route path="organisation" element={<Organisations />} />,
     <Route path="organisation/members/:id" element={<OrgMembers />} />,
+    <Route path="organisation/templates/:id" element={<OrgTemplates />} />,
     <Route path="individuals" element={<AllUsers />} />,
     <Route path="view-individual/:id" element={<ViewUserAdmin />} />,
     <Route path="view-org/:id" element={<ViewOrgAdmin />} />,
