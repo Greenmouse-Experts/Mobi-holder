@@ -60,16 +60,12 @@ export default function Staffs() {
                         hasNumber
                         tableBtn={
                             <>
-                                <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
-                                    <span className="text-xs text-white">Newest First</span>
-                                    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M0.909424 6.9082L5.00033 10.9991L9.09124 6.9082" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                                        <Button className="bg-mobiPink p-2 rounded-lg" onClick={() => navigate('create')}>
-                                            Add New Staff
-                                        </Button>
+                                <Button onClick={() => navigate('roles')} className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
+                                    <span className="text-xs text-white">View Roles</span>
+                              </Button>
+                                <Button className="bg-mobiPink p-2 rounded-lg" onClick={() => navigate('create')}>
+                                    Add New Staff
+                                </Button>
                             </>
                         }
                         tableHeader={TableHeaders}>
