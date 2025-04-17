@@ -1,17 +1,19 @@
 import { useForm } from "react-hook-form";
 import { Button } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../header";
 import Input from "../../../components/Input";
 import { useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
 import useApiMutation from "../../../api/hooks/useApiMutation";
 
-export default function AddStaff() {
+export default function UpdateStaff() {
     const [roles, setRoles] = useState([]);
+    const [staffDetail, setStaffDetail] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [disabled, setDisabled] = useState(false);
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { id } = useParams();
 
     const navigate = useNavigate();
     const { mutate } = useApiMutation();
@@ -19,6 +21,7 @@ export default function AddStaff() {
 
     useEffect(() => {
         getRoles();
+        getStaff();
     }, [])
 
 
@@ -36,6 +39,27 @@ export default function AddStaff() {
                         label: data.name
                     }
                 }));
+                getStaff();
+            },
+            onError: () => {
+                getStaff();
+            }
+        })
+    }
+
+
+
+
+
+
+    const getStaff = () => {
+        mutate({
+            url: `/api/admins/staffs`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setStaffDetail(response.data.data.find(x => x.id === id))
                 setIsLoading(false);
             },
             onError: () => {
@@ -47,13 +71,16 @@ export default function AddStaff() {
 
 
 
+
+
+
     const createStaff = (data) => {
         setDisabled(true);
         mutate({
-            url: `/api/admins/staff/create`,
-            method: "POST",
+            url: `/api/admins/staff/update`,
+            method: "PUT",
             headers: true,
-            data: data,
+            data: { ...data, id: id },
             onSuccess: (response) => {
                 navigate(-1);
                 setDisabled(false);
@@ -77,6 +104,11 @@ export default function AddStaff() {
 
 
 
+
+
+
+
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -84,7 +116,7 @@ export default function AddStaff() {
                     <Header mobile superAdmin />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Add New Staff</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Update Staff</p>
                         </div>
                     </div>
 
@@ -99,6 +131,7 @@ export default function AddStaff() {
                                         </p>
                                         <Input type="text" name="fullname"
                                             register={register}
+                                            value={staffDetail.admin.name}
                                             rules={{ required: 'Staff Name is required' }} errors={errors} placeholder="Enter Staff Name" />
                                     </div>
 
@@ -106,7 +139,7 @@ export default function AddStaff() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Staff Email
                                         </p>
-                                        <Input type="text" name="email" register={register}
+                                        <Input type="text" name="email" value={staffDetail.email} register={register}
                                             rules={{ required: 'Staff Email is required' }} errors={errors} placeholder="Email" />
                                     </div>
 
@@ -114,7 +147,7 @@ export default function AddStaff() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Phone Number
                                         </p>
-                                        <Input type="text" name="phoneNumber"
+                                        <Input type="text" name="phoneNumber" value={staffDetail.phoneNumber}
                                             register={register}
                                             rules={{ required: 'Phone Number is required' }} errors={errors} placeholder="Enter Phone Number" />
                                     </div>
@@ -124,7 +157,7 @@ export default function AddStaff() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Staff Designation
                                             </p>
-                                            <Input type="text" name="designation"
+                                            <Input type="text" name="designation" value={staffDetail.designation}
                                                 register={register}
                                                 rules={{ required: 'Designation is required' }} errors={errors} placeholder="Enter Designation" />
                                         </div>
@@ -136,6 +169,7 @@ export default function AddStaff() {
                                                 Department
                                             </p>
                                             <Input type="text" name="department"
+                                                value={staffDetail.department}
                                                 register={register}
                                                 rules={{ required: 'Department is required' }} errors={errors} placeholder="Enter Department" />
                                         </div>
@@ -146,7 +180,7 @@ export default function AddStaff() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 BirthDate
                                             </p>
-                                            <Input type="date" name="birthdate" disableFutureDates
+                                            <Input type="date" name="birthdate" value={staffDetail.birthdate} disableFutureDates
                                                 register={register}
                                                 rules={{ required: 'BirthDate is required' }} errors={errors} placeholder="Enter your date of birth" />
                                         </div>
@@ -158,9 +192,9 @@ export default function AddStaff() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Employment Date
                                             </p>
-                                            <Input type="date" name="employmentDate" disableFutureDates
+                                            <Input type="date" name="employmentDate" value={staffDetail.employmentDate} disableFutureDates
                                                 register={register}
-                                                rules={{ required: 'BirthDate is required' }} errors={errors} placeholder="Enter your date of birth" />
+                                                rules={{ required: 'Employment Date is required' }} errors={errors} placeholder="Enter your date of birth" />
                                         </div>
                                     </div>
 
@@ -169,14 +203,14 @@ export default function AddStaff() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Assign a Role
                                             </p>
-                                            <Input name="roleId" register={register} errors={errors} rules={{ required: 'Role is required' }}
+                                            <Input name="roleId" register={register} value={staffDetail.admin.role.id} errors={errors} rules={{ required: 'Role is required' }}
                                                 type="select" options={roles} placeholder="Assign a Role" />
                                         </div>
                                     </div>
 
                                     <div className="flex">
                                         <Button type="submit" disabled={disabled} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                                            Add New Staff
+                                            Update Staff
                                         </Button>
                                     </div>
                                 </div>

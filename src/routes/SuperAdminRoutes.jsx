@@ -26,6 +26,7 @@ import ViewPersonalCard from "../modules/SuperAdmin/IDCards/modules/viewPersonal
 import OrgTemplates from "../modules/SuperAdmin/Organisations/modules/Templates";
 import ViewTemplate from "../modules/SuperAdmin/IDCards/modules/viewTemplate";
 import ViewRoles from "../modules/SuperAdmin/Staffs/roles";
+import UpdateStaff from "../modules/SuperAdmin/Staffs/updateStaff";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -52,6 +53,7 @@ const SuperAdminRoutes = [
     <Route path="verifiers" element={<AllVerifiers />} />,
     <Route path="staffs" element={<Staffs />} />,
     <Route path="staffs/create" element={<AddStaff />} />,
+    <Route path="staffs/update/:id" element={<UpdateStaff />} />,
     <Route path="staffs/roles" element={<ViewRoles />} />,
     <Route path="settings" element={<AdminSettings />} />,
 ];
