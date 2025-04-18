@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import Input from "../../../components/Input";
 import ViewPermissions from "./modals/viewPermissions";
 import AddPermissions from "./modals/addPermissions";
+import UpdateRoleForm from "./modals/updateRole";
 
 
 
@@ -150,6 +151,13 @@ export default function ViewRoles() {
     }
 
 
+    const handleUpdateRole = (data) => {
+        openModal({
+            size: "sm",
+            content: <UpdateRoleForm role={data} closeModal={closeModal} reload={handleReload} />
+        })
+    }
+
 
     const handleAddPermission = (id) => {
         openModal({
@@ -172,7 +180,7 @@ export default function ViewRoles() {
             <div className="w-full flex flex-col gap-5 h-full">
                 <Header mobile superAdmin />
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
-                    <Table title="" subTitle={<span>All Rows</span>} exportData
+                    <Table title="" subTitle={<span>All Roles</span>} exportData
                         hasNumber
                         tableBtn={
                             <>
@@ -197,6 +205,11 @@ export default function ViewRoles() {
                                             </span>
                                         </MenuHandler>
                                         <MenuList>
+                                            <MenuItem className="flex flex-col gap-3">
+                                                <span className="cursor-pointer" onClick={() => handleUpdateRole(data)}>
+                                                    Update Role
+                                                </span>
+                                            </MenuItem>
                                             <MenuItem className="flex flex-col gap-3">
                                                 <span className="cursor-pointer" onClick={() => handleAddPermission(data.id)}>
                                                     Add Permissions
