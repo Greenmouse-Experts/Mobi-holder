@@ -130,7 +130,7 @@ export default function IndividualSignUp() {
                                             <span className="flex">
                                                 <Checkbox
                                                     name="acceptedTnC"
-                                                    label="I agree to the Terms & Conditions and Privacy Policy"
+                                                    label={<><span>I agree to the</span>{' '}<Link to={'/legal#Terms'} className="underline">Terms & Conditions</Link>{' '}<span>and</span>{' '}<Link to={'/legal'} className="underline">Privacy Policy</Link></>}
                                                     register={register}
                                                     rules={{ required: 'Terms & Conditions is required' }}
                                                     errors={errors}

@@ -18,6 +18,7 @@ export default function TicketEvent({ back, data }) {
     const [recurrenceType, setRecurrenceType] = useState(data ? data.recurrenceType : null);
     const [ticketsArray, setTicketsArray] = useState(data ?
         data.eventtickets.map(ticket => ({
+            id: ticket.id,
             name: ticket.name,
             ticketsAvailable: ticket.ticketsAvailable ?? null,
             plusAllowed: null,
@@ -141,46 +142,46 @@ export default function TicketEvent({ back, data }) {
 
 
     const transformPayload = (input) => {
-        const tickets = Object.keys(input)
-            .filter((key) => key.startsWith("ticketName") && input[key]) // Ensure ticketName exists
-            .map((key) => {
-                const index = key.match(/\d+/)[0]; // Extract the ticket index
-                
-                // Ensure the ticket exists in ticketsArray before adding
-                if (!ticketsArray[index]) return null;
-    
-                return {
-                    name: input[`ticketName${index}`] || null,
-                    ticketsAvailable: input[`ticketsAvailable${index}`] 
-                        ? Number(input[`ticketsAvailable${index}`]) 
-                        : null,
-                    plusAllowed: input[`plusAllowed${index}`] 
-                        ? Number(input[`plusAllowed${index}`]) 
-                        : null,
-                    price: input[`price${index}`] 
-                        ? String(input[`price${index}`]) // Ensure price is a string
-                        : null,
-                };
-            })
-            .filter(ticket => ticket && ticket.name); // Remove null/empty tickets
-    
-        // Remove ticket-related fields from the input object
+        const tickets = ticketsArray.map((ticketRef, index) => {
+            const name = input[`ticketName${index}`];
+            const ticketsAvailable = input[`ticketsAvailable${index}`];
+            const plusAllowed = input[`plusAllowed${index}`];
+            const price = input[`price${index}`];
+
+            const ticket = {
+                name: name || null,
+                ticketsAvailable: ticketsAvailable ? Number(ticketsAvailable) : null,
+                plusAllowed: plusAllowed ? Number(plusAllowed) : null,
+                price: price ? String(price) : null,
+            };
+
+            // Include ID if it exists in the reference array
+            if (ticketRef.id) {
+                ticket.id = ticketRef.id;
+            }
+
+            return ticket;
+        }).filter(ticket => ticket.name); // Remove tickets with no name
+
+        // Clean up input by removing ticket-related keys
         const cleanedInput = { ...input };
         Object.keys(input).forEach((key) => {
-            if (key.startsWith("ticketName") || 
-                key.startsWith("ticketsAvailable") || 
-                key.startsWith("plusAllowed") || 
-                key.startsWith("price")) {
+            if (
+                key.startsWith("ticketName") ||
+                key.startsWith("ticketsAvailable") ||
+                key.startsWith("plusAllowed") ||
+                key.startsWith("price")
+            ) {
                 delete cleanedInput[key];
             }
         });
-    
+
         return {
             ...cleanedInput,
-            tickets, // Only visible tickets
+            tickets,
         };
     };
-    
+
 
 
     const createEvent = (dataEvent) => {
@@ -210,19 +211,19 @@ export default function TicketEvent({ back, data }) {
         const reformedPayload = transformPayload(payload);
 
         mutate({
-            url: data.eventId ? `/api/events/event/update` : `/api/events/event/create`,
-            method: data.eventId ? "PUT" : "POST",
-            headers: true,
-            data: reformedPayload,
-            onSuccess: (response) => {
-                navigate(-1);
-                localStorage.removeItem('eventPayload');
-                setIsLoading(false)
-            },
-            onError: () => {
-                setIsLoading(false)
-            }
-        });
+             url: data.eventId ? `/api/events/event/update` : `/api/events/event/create`,
+             method: data.eventId ? "PUT" : "POST",
+             headers: true,
+             data: reformedPayload,
+             onSuccess: (response) => {
+                 navigate(-1);
+                 localStorage.removeItem('eventPayload');
+                 setIsLoading(false)
+             },
+             onError: () => {
+                 setIsLoading(false)
+             }
+         });
 
     }
 

@@ -122,29 +122,43 @@ export default function TicketEvent({ back }) {
 
 
     const transformPayload = (input) => {
-        const tickets = Object.keys(input)
-            .filter((key) => key.startsWith("ticketName"))
-            .map((key) => {
-                const index = key.match(/\d+/)[0]; // Extract the number from the key
-                return {
-                    name: input[`ticketName${index}`] || null,
-                    ticketsAvailable: Number(input[`ticketsAvailable${index}`]) || null,
-                    plusAllowed: Number(input[`plusAllowed${index}`]) || null,
-                    price: Number(input[`price${index}`]) || null,
-                };
-            });
+        const tickets = ticketsArray.map((ticketRef, index) => {
+            const name = input[`ticketName${index}`];
+            const ticketsAvailable = input[`ticketsAvailable${index}`];
+            const plusAllowed = input[`plusAllowed${index}`];
+            const price = input[`price${index}`];
 
-        // Remove ticketName, ticketsAvailable, plusAllowed, and price fields
+            const ticket = {
+                name: name || null,
+                ticketsAvailable: ticketsAvailable ? Number(ticketsAvailable) : null,
+                plusAllowed: plusAllowed ? Number(plusAllowed) : null,
+                price: price ? String(price) : null,
+            };
+
+            // Include ID if it exists in the reference array
+            if (ticketRef.id) {
+                ticket.id = ticketRef.id;
+            }
+
+            return ticket;
+        }).filter(ticket => ticket.name); // Remove tickets with no name
+
+        // Clean up input by removing ticket-related keys
         const cleanedInput = { ...input };
         Object.keys(input).forEach((key) => {
-            if (key.startsWith("ticketName") || key.startsWith("ticketsAvailable") || key.startsWith("plusAllowed") || key.startsWith("price")) {
+            if (
+                key.startsWith("ticketName") ||
+                key.startsWith("ticketsAvailable") ||
+                key.startsWith("plusAllowed") ||
+                key.startsWith("price")
+            ) {
                 delete cleanedInput[key];
             }
         });
 
         return {
             ...cleanedInput,
-            tickets, // Replacing the separate ticket fields with an array
+            tickets,
         };
     };
 

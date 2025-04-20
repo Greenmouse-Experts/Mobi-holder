@@ -3,10 +3,12 @@ import Footer from "../layouts/Footer";
 import Privacy from "./components/privacy";
 import { useState } from "react";
 import Terms from "./components/terms";
+import { useLocation } from "react-router-dom";
 
 
 export default function Legal() {
-    const [active, setActive] = useState('Privacy');
+    const location = useLocation();
+    const [active, setActive] = useState(location.hash ? location.hash : '#Privacy');
 
     return (
         <>
@@ -31,11 +33,11 @@ export default function Legal() {
                                 <div className="w-full flex flex-col items-center md:items-start gap-1 p-4">
                                     {/* Privacy Policy Tab */}
                                     <div
-                                        className={`w-full md:w-auto py-2 px-4 my-2 h-12 flex justify-center items-center ${active === 'Privacy'
+                                        className={`w-full md:w-auto py-2 px-4 my-2 h-12 flex justify-center items-center ${active === '#Privacy'
                                             ? 'border-b-4 md:border-l-4 md:border-b-0 border-lBlue'
                                                 : ''
                                             }`}
-                                        onClick={() => setActive('Privacy')}
+                                        onClick={() => setActive('#Privacy')}
                                     >
                                         <span
                                             className={`${active === 'Privacy' ? 'text-mobiBlue font-semibold' : 'text-gray-600'
@@ -47,11 +49,11 @@ export default function Legal() {
 
                                     {/* Terms & Conditions Tab */}
                                     <div
-                                        className={`w-full md:w-auto py-2 px-4 my-2 h-12 flex justify-center items-center cursor-pointer ${active === 'Terms'
+                                        className={`w-full md:w-auto py-2 px-4 my-2 h-12 flex justify-center items-center cursor-pointer ${active === '#Terms'
                                                 ? 'border-b-4 md:border-b-0 md:border-l-4 border-lBlue'
                                                 : ''
                                             }`}
-                                        onClick={() => setActive('Terms')}
+                                        onClick={() => setActive('#Terms')}
                                     >
                                         <span
                                             className={`${active === 'Terms' ? 'text-mobiBlue font-semibold' : 'text-gray-600'
@@ -65,10 +67,10 @@ export default function Legal() {
 
                             {/* Main Content */}
                             <main className="md:w-3/4 w-full px-6 md:ml-6 md:mt-0 mt-10">
-                                {active === 'Privacy' &&
+                                {active === '#Privacy' &&
                                     <Privacy />
                                 }
-                                {active === 'Terms' &&
+                                {active === '#Terms' &&
                                     <Terms />
                                 }
                             </main>
