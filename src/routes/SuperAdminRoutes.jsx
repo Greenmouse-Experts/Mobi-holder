@@ -27,6 +27,8 @@ import OrgTemplates from "../modules/SuperAdmin/Organisations/modules/Templates"
 import ViewTemplate from "../modules/SuperAdmin/IDCards/modules/viewTemplate";
 import ViewRoles from "../modules/SuperAdmin/Staffs/roles";
 import UpdateStaff from "../modules/SuperAdmin/Staffs/updateStaff";
+import IndividualPlan from "../modules/SuperAdmin/Subscriptions/IndividualPlan";
+import CreatePlan from "../modules/SuperAdmin/Subscriptions/modules/createPlan";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -40,6 +42,8 @@ const SuperAdminRoutes = [
     <Route path="events" element={<Events />} />,
     <Route path="events/categories" element={<EventsCategories />} />,
     <Route path="subscription-individual" element={<Subscriptions />} />,
+    <Route path="subscription-individual/plans" element={<IndividualPlan />} />,
+    <Route path="subscription-individual/plans/create" element={<CreatePlan />} />,
     <Route path="personal-idCards" element={<AllPersonalIDCards />} />,
     <Route path="personal-idCards/view-personal-card/:id" element={<ViewPersonalCard />} />,
     <Route path="idCardsTemplate" element={<AllTemplates />} />,
