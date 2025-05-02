@@ -86,7 +86,7 @@ export default function Organisations() {
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{data.email}</td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{data.phoneNumber}</td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">
-                                            {JSON.parse(data.companyAddress).state} {JSON.parse(data.companyAddress).country}
+                                            {data.companyAddress.state} {data.companyAddress.country}
                                             </td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal"><Badge status={data.status} /></td>
                                         <td className="px-3 py-3">

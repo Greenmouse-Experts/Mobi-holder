@@ -7,6 +7,10 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { useEffect, useState } from "react";
 import Loader from "../../../../components/Loader";
 import { formatDateTime } from "../../../../helpers/dateHelper";
+import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import useModal from "../../../../hooks/modal";
+import AlertModal from "../../../../components/AlertModal";
+import ReusableModal from "../../../../components/ReusableModal";
 
 export default function ViewPublicEvents() {
     const user = useSelector((state) => state.userData.data);
@@ -15,6 +19,7 @@ export default function ViewPublicEvents() {
     const [eventDetails, setEventDetails] = useState({});
     const [userDetails, setUserDetails] = useState({});
     const [loading, setIsLoading] = useState(true);
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const { id } = useParams();
 
@@ -58,6 +63,19 @@ export default function ViewPublicEvents() {
     useEffect(() => {
         getEventDetails();
     }, []);
+
+
+
+
+
+
+    const handleVerificationRequest = (id) => {
+        openModal({
+            size: "sm",
+            content: <AlertModal redirect={() => { }} title={'Send Verification Request'} api={`/api/events/event/verification/request`}
+                method={'POST'} closeModal={closeModal} body={{ eventId: id }} text={'Do you wish to send a verification request to the organisers of this event?'} />
+        })
+    }
 
 
 
@@ -135,13 +153,25 @@ export default function ViewPublicEvents() {
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
                     <Header mobile data={user} />
-                    <div className="w-full md:w-3/4 flex justify-between items-center gap-8 md:my-5 my-2 px-3">
+                    <div className="w-full flex md:flex-row flex-col gap-5 justify-between items-center md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Event Details</p>
                             <p className="text-base">Event details for : <span className="text-mobiBlue">{eventDetails.name}</span></p>
                         </div>
-                        <div className="flex md:w-2/5 w-full justify-end">
-                            <Button className="bg-mobiPink" onClick={() => navigate(`/app/order-tickets/${id}`)}>Ticket Request</Button>
+                        <div className="flex md:justify-end md:w-2/5 w-full flex-col md:flex-row gap-2">
+                            <Menu placement="bottom">
+                                <MenuHandler>
+                                    <Button className="bg-mobiPink w-3/5">Request Actions</Button>
+                                </MenuHandler>
+                                <MenuList>
+                                    <MenuItem className="flex flex-col gap-3">
+                                        <span onClick={() => navigate(`/app/order-tickets/${id}`)}>Ticket Request</span>
+                                    </MenuItem>
+                                    <MenuItem className="flex flex-col gap-3">
+                                        <span onClick={() => handleVerificationRequest(id)}>Verification Request</span>
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
                         </div>
                     </div>
 
@@ -192,6 +222,19 @@ export default function ViewPublicEvents() {
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+                <ReusableModal
+                    isOpen={isOpen}
+                    size={modalOptions.size}
+                    title={modalOptions.title}
+                    content={modalOptions.content}
+                    closeModal={closeModal}
+                />
+
             </div>
         </>
     )

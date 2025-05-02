@@ -6,8 +6,8 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const UserAnalysis = ({ individuals, organisations }) => {
   const total = individuals + organisations;
-  const individualPercent = ((individuals / total) * 100).toFixed(0);
-  const organisationPercent = ((organisations / total) * 100).toFixed(0);
+  const individualPercent = individuals ? ((individuals / total) * 100).toFixed(0) : 0;
+  const organisationPercent = organisations ? ((organisations / total) * 100).toFixed(0) : 0;
 
   const isOrganisationMajority = organisations > individuals;
 

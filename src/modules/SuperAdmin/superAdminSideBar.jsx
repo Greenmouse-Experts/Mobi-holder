@@ -132,12 +132,16 @@ export default function SuperAdminSidebar({ mobile }) {
             </i>,
             children: [
                 {
-                    path: "/superadmin/subscription-individual",
-                    name: "Individual Subscription"
+                    path: "/superadmin/subscription-individual/plans",
+                    name: "Individual Subscription Plans"
                 },
                 {
-                    path: "/superadmin/subscription-organisation",
-                    name: "Organisation Subscription"
+                    path: "/superadmin/subscription-organisation/plans",
+                    name: "Organisation Subscription Plans"
+                },
+                {
+                    path: "/superadmin/subscription/logs",
+                    name: "Subscription Log"
                 }
             ],
             openChildren: false
