@@ -16,6 +16,7 @@ export default function Input({
     options = [], // For select input
     value = "", // Default value if nothing is passed
     onChange,
+    ...props
 }) {
     const [inputValue, setInputValue] = useState(value); // Local state for input value
     const [passwordOpen, setPasswordOpen] = useState(false);
@@ -70,6 +71,7 @@ export default function Input({
                         value={inputValue} // Controlled value for the input field
                         onChange={handleChange}
                         autoComplete="off"
+                        {...props} // Spread any additional props
                         disabled={disabled}
                     />
                 )}

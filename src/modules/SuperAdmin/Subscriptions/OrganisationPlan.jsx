@@ -5,7 +5,7 @@ import useApiMutation from "../../../api/hooks/useApiMutation";
 import Loader from "../../../components/Loader";
 import { Button } from "@material-tailwind/react";
 
-const IndividualPlan = () => {
+const OrganisationPlan = () => {
 
     const [subscriptionPlans, setSubscriptionPlans] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
@@ -21,7 +21,7 @@ const IndividualPlan = () => {
 
     const fetchSubscriptionPlans = () => {
         mutate({
-            url: `/api/admins/individual/subscription/plans`,
+            url: `/api/admins/organization/subscription/plans`,
             method: "GET",
             headers: true,
             hideToast: true,
@@ -58,9 +58,9 @@ const IndividualPlan = () => {
                 <div className="w-full flex flex-col gap-5 border border-mobiBorderFray card-body p-5 rounded-xl my-2">
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Subscriptions (Individual)</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Subscriptions (Organisation)</p>
                             <p className="text-base">Subscription Module for : <span className="text-mobiBlue">
-                                Individual
+                                Organisation
                             </span></p>
                         </div>
                         <div className="flex md:w-2/5 w-full justify-end">
@@ -71,7 +71,7 @@ const IndividualPlan = () => {
                         <table className="table-auto border-collapse w-full border border-gray-700 text-sm">
                             <thead>
                                 <tr className="border-b border-gray-700 text-left">
-                                    <th className="p-4 font-medium">Individuals</th>
+                                    <th className="p-4 font-medium">Organisation</th>
                                     {subscriptionPlans.slice().reverse().map((plan, index) => (
                                         <th key={index} className="p-4 font-medium border-l border-gray-700">
                                             <div className="flex items-center justify-between gap-2">
@@ -93,13 +93,21 @@ const IndividualPlan = () => {
                                         <td key={index} className="p-4 border-l border-gray-700">
                                             <ul className="list-disc ml-4 space-y-2">
                                                 <li>Duration: <b>{plan.duration} month(s)</b></li>
-                                                <li>Number of Uploadable Events : <b>{plan.eventLimit}</b></li>
-                                                <li>Access to Event Log : <b>{plan.eventLogsAccess ? 'Yes' : 'No'}</b></li>
-                                                <li>Free ticket events : <b>{plan.freeTicketEvents ? 'Yes' : 'No'}</b></li>
-                                                <li>Paid ticket events : <b>{plan.paidTicketEvents ? 'Yes' : 'No'}</b></li>
-                                                <li>Number of Self Scanned IDs : <b>{plan.selfScannedIds}</b></li>
-                                                {plan.selfVerification && <li>Self verification for events</li>}
-                                                <li>Verifiers Per Event : <b>{plan.verifiersPerEvent}</b></li>
+                                                <li>Access Private Events: <b>{plan.accessPrivateEvent ? 'Yes' : 'No'}</b></li>
+                                                <li>Access Semi-Private Events: <b>{plan.accessSemiPrivateEvent ? 'Yes' : 'No'}</b></li>
+                                                <li>Free Events Only: <b>{plan.freeEventsOnly ? 'Yes' : 'No'}</b></li>
+                                                <li>Event Upload Limit: <b>{plan.eventLimit}</b></li>
+                                                <li>Verifiers Per Event: <b>{plan.verifiersPerEvent}</b></li>
+                                                <li>Max Staff Members: <b>{plan.maxStaffs}</b></li>
+                                                <li>Organization User Limit: <b>{plan.organizationUserLimit}</b></li>
+                                                <li>Customized Templates Allowed: <b>{plan.customizedTemplateLimit}</b></li>
+                                                <li>Default Template: <b>{plan.defaultTemplate ? 'Yes' : 'No'}</b></li>
+                                                <li>Event Logs Access: <b>{plan.hasEventLogs ? 'Yes' : 'No'}</b></li>
+                                                <li>Subscription Management: <b>{plan.subscriptionManagement ? 'Yes' : 'No'}</b></li>
+                                                <li>Recurring Events: <b>{plan.recurringEvents ? 'Yes' : 'No'}</b></li>
+                                                <li>Can Appoint Verifiers: <b>{plan.canAppointVerifiers ? 'Yes' : 'No'}</b></li>
+                                                <li>Email Support Response Time: <b>{plan.emailSupport}</b></li>
+                                                <li>Dedicated Support: <b>{plan.dedicated_support ? 'Yes' : 'No'}</b></li>
                                             </ul>
                                         </td>
                                     ))}
@@ -129,4 +137,4 @@ const IndividualPlan = () => {
     );
 };
 
-export default IndividualPlan;
+export default OrganisationPlan;
