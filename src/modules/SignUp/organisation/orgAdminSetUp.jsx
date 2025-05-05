@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../../api/apiFactory";
 import { setOrg } from "../../../reducers/organisationSlice";
 import { toast } from "react-toastify";
+import useApiMutation from "../../../api/hooks/useApiMutation";
 
 export default function OrgAdminSetUp({ moveBack }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -23,22 +24,23 @@ export default function OrgAdminSetUp({ moveBack }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const mutation = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/users/auth/register/organization', userData),
-        onSuccess: (data) => {
-            dispatch(setOrg(data.data.data));
-            toast.success(data.data.message);
-            localStorage.setItem('email', JSON.stringify(userData.email));
-            navigate('/verify-email');
-        },
-        onError: (error) => {
-            toast.error(error.response.data.message);
-        },
-    });
+    const { mutate } = useApiMutation();
 
     const createOrgAccount = (data) => {
         const payload = { ...orgData, ...data };
-        mutation.mutate(payload);
+        mutate({
+            url: "/api/users/auth/register/organization",
+            method: "POST",
+            data: payload,
+            navigateTo: "/verify-email",
+            onSuccess: (response) => {
+                dispatch(setOrg(response.data.data));
+                localStorage.setItem('email', JSON.stringify(payload.email));
+            },
+            onError: () => {
+            }
+        });
+
     }
 
     return (

@@ -37,7 +37,15 @@ export default function JoinOrganisation() {
     };
 
 
-    const address = JSON.parse(paramsData.companyAddress);
+
+
+
+
+
+
+
+
+    const address = paramsData.companyAddress;
 
     const eventDetails = [
         {
