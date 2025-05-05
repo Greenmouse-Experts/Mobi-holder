@@ -54,6 +54,10 @@ export default function Sidebar({ mobile }) {
                 {
                     path: "/app/subscription/plans",
                     name: "Subscription Plans"
+                },
+                {
+                    path: "/app/subscription/log",
+                    name: "My Subscriptions"
                 }
             ],
             openChildren: false

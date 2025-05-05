@@ -33,6 +33,7 @@ import EventTicket from "../modules/AppModules/pages/Events/viewTicket";
 import ViewPersonalCard from "../modules/AppModules/pages/IdCards/viewPersonalCard";
 import IndividualPlans from "../modules/AppModules/pages/Subscriptions/plans";
 import ViewPlan from "../modules/AppModules/pages/Subscriptions/viewPlan";
+import SubscriptionLog from "../modules/AppModules/pages/Subscriptions/SubscriptionLog";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -69,6 +70,7 @@ const UserRoutes = [
     <Route path="id-cards/generate-card" element={<AddNewCard />} />,
     <Route path="subscription/plans" element={<IndividualPlans />} />,
     <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
+    <Route path="subscription/log" element={<SubscriptionLog />} />,
 ];
 
 export default UserRoutes
