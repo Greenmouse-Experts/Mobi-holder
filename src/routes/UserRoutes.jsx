@@ -1,12 +1,10 @@
 import { Route } from "react-router-dom";
 import IDCardsPage from '../modules/AppModules/pages/IdCards';
-import IndividualSubscriptions from '../modules/AppModules/pages/Subscriptions';
 import IndividualEvents from '../modules/AppModules/pages/Events';
 import AddCard from '../modules/AppModules/pages/IdCards/addCard';
 import ViewCard from '../modules/AppModules/pages/IdCards/viewCard';
 import AddEvent from '../modules/AppModules/pages/Events/addEvent';
 import ViewEvent from '../modules/AppModules/pages/Events/viewEvent';
-import ViewOrganisation from '../modules/AppModules/pages/Subscriptions/viewOrganisation';
 import Membership from '../modules/AppModules/pages/Memberships';
 import JoinOrganisation from '../modules/AppModules/pages/Memberships/joinOrganisation';
 import VerificationDashboard from '../modules/AppModules/pages/Verify';
@@ -26,7 +24,6 @@ import OrganisationLists from '../modules/AppModules/pages/Memberships/organisat
 import Dashboard from '../modules/AppModules/Dashboard';
 import Notification from '../modules/AppModules/Notifications';
 import Settings from '../modules/AppModules/Settings';
-import SubOrganisationLists from "../modules/AppModules/pages/Subscriptions/organisationLists";
 import AddNewCard from "../modules/AppModules/pages/IdCards/newCard";
 import ViewPublicEvents from "../modules/AppModules/pages/Events/viewPublicEvents";
 import EventInvites from "../modules/AppModules/pages/Events/eventInvites";
@@ -34,6 +31,8 @@ import AddEventVerifier from "../modules/AppModules/pages/Events/addEventVerifie
 import MyTickets from "../modules/AppModules/pages/Events/myTickets";
 import EventTicket from "../modules/AppModules/pages/Events/viewTicket";
 import ViewPersonalCard from "../modules/AppModules/pages/IdCards/viewPersonalCard";
+import IndividualPlans from "../modules/AppModules/pages/Subscriptions/plans";
+import ViewPlan from "../modules/AppModules/pages/Subscriptions/viewPlan";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -44,11 +43,8 @@ const UserRoutes = [
     <Route path="add-event" element={<AddEvent />} />,
     <Route path="view-event/:id" element={<ViewEvent />} />,
     <Route path="event/view/:id" element={<ViewPublicEvents />} />,
-    <Route path="subscriptions" element={<IndividualSubscriptions />} />,
-    <Route path="add-subscription" element={<SubOrganisationLists />} />,
     <Route path="join-organisation" element={<OrganisationLists />} />,
     <Route path="join-organisation-form/:id" element={<JoinOrganisation />} />,
-    <Route path="view-organisation/:id" element={<ViewOrganisation />} />,
     <Route path="membership" element={<Membership />} />,
     <Route path="events" element={<IndividualEvents />} />,
     <Route path="notification" element={<Notification />} />,
@@ -70,7 +66,9 @@ const UserRoutes = [
     <Route path="event/view-ticket/:id" element={<EventTicket />} />,
     <Route path="order-tickets/:id" element={<BuyTickets />} />,
     <Route path="event-history" element={<EventHistory />} />,
-    <Route path="id-cards/generate-card" element={<AddNewCard />} />
+    <Route path="id-cards/generate-card" element={<AddNewCard />} />,
+    <Route path="subscription/plans" element={<IndividualPlans />} />,
+    <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
 ];
 
 export default UserRoutes
