@@ -3,6 +3,7 @@ import Header from '../header';
 import DropdownMenu from '../../../components/DropdownMenu';
 import AccountInfo from './tabs/accountInfo';
 import Security from './tabs/security';
+import PaymentGateway from './tabs/paymentGateway';
 
 export default function AdminSettings() {
     const [activeTab, setActiveTab] = useState('Account Info');
@@ -15,6 +16,10 @@ export default function AdminSettings() {
         {
             slug: 'Security',
             name: 'Security'
+        },
+        {
+            slug: 'Payment Gateway',
+            name: 'Payment Gateway'
         },
         /* {
              slug: 'Support',
@@ -55,6 +60,7 @@ export default function AdminSettings() {
                                 <div className="shadow-xl py-7 px-5 md:w-[77%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-3">
                                     {activeTab === 'Account Info' && <AccountInfo />}
                                     {activeTab === 'Security' && <Security />}
+                                    {activeTab === 'Payment Gateway' && <PaymentGateway />}
                                 </div>
                             </div>
                         </div>

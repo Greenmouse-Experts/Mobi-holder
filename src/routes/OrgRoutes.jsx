@@ -28,7 +28,6 @@ import OrgSettings from '../modules/OrgModules/Settings';
 import AddSubscriptionPlan from '../modules/OrgModules/pages/Subscriptions/addSubscriptionPlan';
 import EditSubscriptionPlan from '../modules/OrgModules/pages/Subscriptions/editSubscriptionPlan';
 import SubscriptionHistory from '../modules/OrgModules/pages/Subscriptions/subscriptionHistory';
-import PaymentGateway from "../modules/OrgModules/pages/Subscriptions/paymentGateway";
 import UpdateCard from "../modules/OrgModules/pages/IdCards/updateCard";
 import ViewOrgPublicEvents from "../modules/OrgModules/pages/Events/viewPublicEvents";
 import OrgBuyTickets from "../modules/OrgModules/pages/Events/buyTickets";
@@ -47,7 +46,6 @@ const OrgRoutes = [
     <Route path="verify-event/:id" element={<OrgVerifyEvent />} />,
     <Route path="verification-request" element={<OrgVerificationRequest />} />,
     <Route path="events" element={<OrgEvents />} />,
-    <Route path="payment-gateway" element={<PaymentGateway />} />,
     <Route path="add-event" element={<OrgAddEvent />} />,
     <Route path="edit-event/:id" element={<OrgEditEvent />} />,
     <Route path="upcoming-events" element={<OrgUpcomingEvents />} />,
