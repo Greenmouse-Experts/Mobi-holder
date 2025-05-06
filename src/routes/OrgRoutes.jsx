@@ -34,6 +34,7 @@ import ViewVerifiers from "../modules/OrgModules/pages/Verify/viewVerifiers";
 import OrgEditEvent from "../modules/OrgModules/pages/Events/editEvent";
 import OrganisationPlans from "../modules/OrgModules/pages/Subscription/plans";
 import ViewPlan from "../modules/OrgModules/pages/Subscription/viewPlan";
+import SubscriptionLog from "../modules/OrgModules/pages/Subscription/SubscriptionLog";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -71,6 +72,8 @@ const OrgRoutes = [
     <Route path="settings" element={<OrgSettings />} />,
     <Route path="subscription/plans" element={<OrganisationPlans />} />,
     <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
+    <Route path="subscription/log" element={<SubscriptionLog />} />,
+    <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
 ];
 
 export default OrgRoutes;

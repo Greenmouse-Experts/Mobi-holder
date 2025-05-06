@@ -83,7 +83,7 @@ const OrganisationPlans = () => {
                                                         <span>{plan.name}</span>
                                                         <button
                                                             onClick={() => navigate(`view/${plan.id}`)}
-                                                            className="flex items-center gap-1 underline text-mobiBlue hover:text-mobiPink"
+                                                            className="flex items-center gap-1 text-mobiBlue hover:text-mobiPink"
                                                         >
                                                             <FaEye className="text-sm" />
                                                             <span className="text-sm">View</span>

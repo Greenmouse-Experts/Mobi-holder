@@ -18,7 +18,7 @@ const ViewPlan = () => {
     const { mutate } = useApiMutation();
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const { id, status } = useParams();
 
 
     useEffect(() => {
@@ -132,7 +132,16 @@ const ViewPlan = () => {
                             </span></p>
                         </div>
                         <div className="flex md:w-2/5 w-full justify-end">
-                            <Button disabled={disabled} className="bg-mobiPink" onClick={() => handlePayment()}>Subscribe</Button>
+                            {status !== 'active' ? (
+                                subscriptionPlan.name !== 'Free Plan' ? (
+                                    <Button disabled={disabled} className="bg-mobiPink" onClick={() => handlePayment()}>Subscribe</Button>
+                                )
+                                    :
+                                    (<></>)
+                            ) :
+                                (
+                                    <Button className="bg-green-500">Active Plan</Button>
+                                )}
                         </div>
                     </div>
                     <div className="overflow-x-auto">
@@ -142,7 +151,7 @@ const ViewPlan = () => {
                                     <th className="p-4 font-medium whitespace-nowrap">Plan</th>
                                     <th className="p-4 font-medium border-l border-gray-700 whitespace-nowrap">
                                         <div className="flex items-center justify-between gap-2">
-                                            <span>{subscriptionPlan.name}</span>
+                                            <span className="md:text-lg font-bold">{subscriptionPlan.name}</span>
                                         </div>
                                     </th>
                                 </tr>
