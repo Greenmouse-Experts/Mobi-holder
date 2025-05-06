@@ -16,7 +16,6 @@ import OrgEventGallery from '../modules/OrgModules/pages/Events/eventGallery';
 import OrgAddEventVerifier from '../modules/OrgModules/pages/Events/addEventVerifier';
 import OrgIDCardsPage from '../modules/OrgModules/pages/IdCards';
 import OrgMembership from '../modules/OrgModules/pages/Memberships';
-import OrgSubscriptions from '../modules/OrgModules/pages/Subscriptions';
 import OrgAddCard from '../modules/OrgModules/pages/IdCards/addCard';
 import CardStructure from '../modules/OrgModules/pages/IdCards/cardStructure';
 import CreateUserCard from '../modules/OrgModules/pages/IdCards/createUserCard';
@@ -25,9 +24,6 @@ import UpdateMember from '../modules/OrgModules/pages/Memberships/updateMember';
 import InviteMember from '../modules/OrgModules/pages/Memberships/inviteMember';
 import OrgNotification from '../modules/OrgModules/Notifications';
 import OrgSettings from '../modules/OrgModules/Settings';
-import AddSubscriptionPlan from '../modules/OrgModules/pages/Subscriptions/addSubscriptionPlan';
-import EditSubscriptionPlan from '../modules/OrgModules/pages/Subscriptions/editSubscriptionPlan';
-import SubscriptionHistory from '../modules/OrgModules/pages/Subscriptions/subscriptionHistory';
 import UpdateCard from "../modules/OrgModules/pages/IdCards/updateCard";
 import ViewOrgPublicEvents from "../modules/OrgModules/pages/Events/viewPublicEvents";
 import OrgBuyTickets from "../modules/OrgModules/pages/Events/buyTickets";
@@ -36,6 +32,8 @@ import OrgTickets from "../modules/OrgModules/pages/Events/myTickets";
 import OrgEventTicket from "../modules/OrgModules/pages/Events/viewTicket";
 import ViewVerifiers from "../modules/OrgModules/pages/Verify/viewVerifiers";
 import OrgEditEvent from "../modules/OrgModules/pages/Events/editEvent";
+import OrganisationPlans from "../modules/OrgModules/pages/Subscription/plans";
+import ViewPlan from "../modules/OrgModules/pages/Subscription/viewPlan";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -62,10 +60,6 @@ const OrgRoutes = [
     <Route path="event-history" element={<OrgEventHistory />} />,
     <Route path="id-cards" element={<OrgIDCardsPage />} />,
     <Route path="membership" element={<OrgMembership />} />,
-    <Route path="subscriptions" element={<OrgSubscriptions />} />,
-    <Route path="add-subscription" element={<AddSubscriptionPlan />} />,
-    <Route path="subscription/editPlan/:id" element={<EditSubscriptionPlan />} />,
-    <Route path="subscription/history/:id" element={<SubscriptionHistory />} />,
     <Route path="add-card" element={<OrgAddCard />} />,
     <Route path="cards/structure" element={<CardStructure />} />,
     <Route path="cards/createUser/:id" element={<CreateUserCard />} />,
@@ -74,7 +68,9 @@ const OrgRoutes = [
     <Route path="membership/updateMember/:id" element={<UpdateMember />} />,
     <Route path="membership/add" element={<InviteMember />} />,
     <Route path="notification" element={<OrgNotification />} />,
-    <Route path="settings" element={<OrgSettings />} />
+    <Route path="settings" element={<OrgSettings />} />,
+    <Route path="subscription/plans" element={<OrganisationPlans />} />,
+    <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
 ];
 
 export default OrgRoutes;
