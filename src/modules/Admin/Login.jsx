@@ -16,7 +16,7 @@ export default function AdminLogin() {
     const navigate = useNavigate();
 
     const admin = useMutation({
-        mutationFn: (userData) => apiClient.post('/api/admins/login?URL=https://mobiholder.victornwadinobi.com', userData),
+        mutationFn: (userData) => apiClient.post('/api/admins/login', userData),
         onSuccess: (data) => {
             dispatch(setUser(data.data.data));
             localStorage.setItem("userToken", data.data.token);
