@@ -71,6 +71,7 @@ const UserRoutes = [
     <Route path="subscription/plans" element={<IndividualPlans />} />,
     <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
     <Route path="subscription/log" element={<SubscriptionLog />} />,
+    <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
 ];
 
 export default UserRoutes
