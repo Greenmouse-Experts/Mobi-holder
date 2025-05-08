@@ -32,6 +32,7 @@ import CreatePlan from "../modules/SuperAdmin/Subscriptions/modules/createPlan";
 import OrganisationPlan from "../modules/SuperAdmin/Subscriptions/OrganisationPlan";
 import OrgCreatePlan from "../modules/SuperAdmin/Subscriptions/modules/orgCreatePlan";
 import IndividualLog from "../modules/SuperAdmin/Subscriptions/IndividualLog";
+import OrganisationLog from "../modules/SuperAdmin/Subscriptions/OrganisationLog";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -52,6 +53,7 @@ const SuperAdminRoutes = [
     <Route path="subscription-individual/plans/edit/:id" element={<CreatePlan />} />,
     <Route path="subscription-organisation/plans/edit/:id" element={<OrgCreatePlan />} />,
     <Route path="subscription-log/individual" element={<IndividualLog />} />,
+    <Route path="subscription-log/organisation" element={<OrganisationLog />} />,
     <Route path="personal-idCards" element={<AllPersonalIDCards />} />,
     <Route path="personal-idCards/view-personal-card/:id" element={<ViewPersonalCard />} />,
     <Route path="idCardsTemplate" element={<AllTemplates />} />,

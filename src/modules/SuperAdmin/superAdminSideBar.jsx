@@ -142,6 +142,10 @@ export default function SuperAdminSidebar({ mobile }) {
                 {
                     path: "/superadmin/subscription-log/individual",
                     name: "Individual Subscription Log"
+                },
+                {
+                    path: "/superadmin/subscription-log/organisation",
+                    name: "Organisation Subscription Log"
                 }
             ],
             openChildren: false
