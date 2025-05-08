@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import MultipleSelect from "../../../../components/MultipleSelect";
 import { setOrg } from "../../../../reducers/organisationSlice";
 import Loader from "../../../../components/Loader";
+import useFileUpload from "../../../../api/hooks/useFileUpload";
 
 export default function OrganisationData() {
     let user = useSelector((state) => state.orgData.orgData);
@@ -27,6 +28,8 @@ export default function OrganisationData() {
         });
     const { register: registerUpload, setValue: setValueUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
+    const fileInputRef = useRef(null);
+    const { uploadFiles, isLoadingUpload } = useFileUpload();
     const [pageLoader, setLoader] = useState(true);
     const [isLoadingDocuments, setIsLoadingDocuments] = useState(false);
     const [files, setFiles] = useState([]);
@@ -164,6 +167,48 @@ export default function OrganisationData() {
 
 
 
+
+    const handleButtonClick = () => {
+        // Simulate a click on the hidden file input
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleFileChange = async (event) => {
+        const files = event.target.files;
+        if (files.length > 0) {
+            await uploadFiles(files, (uploadedUrl) => {
+                changeProfilePhoto(uploadedUrl)
+            });
+        }
+    };
+
+
+
+    const changeProfilePhoto = (uploadedUrl) => {
+        const payload = {
+            photo: uploadedUrl
+        };
+        mutate({
+            url: "/api/users/profile/photo/upload",
+            method: "PUT",
+            data: payload,
+            headers: true,
+            onSuccess: (response) => {
+                dispatch(setOrg(response.data.data));
+            },
+        });
+    }
+
+
+
+
+
+
+
+
+
     if (pageLoader) {
         return (
             <>
@@ -178,7 +223,34 @@ export default function OrganisationData() {
     return (
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
-                <div className="mb-1 flex flex-col gap-5 mt-5">
+                <div className="mb-1 flex flex-col gap-5">
+
+                    <div className="flex md:flex-row flex-col gap-3">
+                        {user.photo ?
+                            <div className="flex w-32 h-32">
+                                <img src={`${user.photo}`} className="w-full h-full object-cover rounded-full" />
+                            </div>
+                            :
+                            <AvatarInitials name={`${user.companyName}`} size="32" />
+                        }
+                        <div className="flex flex-col justify-center md:mx-3">
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                style={{ display: "none" }}
+                                multiple
+                            />
+                            <Button className="bg-transparent px-7 rounded-full chartColor border-[0.5px] border-gray-700"
+                                onClick={handleButtonClick}
+                                disabled={isLoadingUpload}
+                            >
+                                {isLoadingUpload ? 'Changing Picture' : 'Change Picture'}
+                            </Button>
+                        </div>
+                    </div>
+
+
                     <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Company Name
