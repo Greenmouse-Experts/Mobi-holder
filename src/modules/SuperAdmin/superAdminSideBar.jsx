@@ -140,8 +140,8 @@ export default function SuperAdminSidebar({ mobile }) {
                     name: "Organisation Subscription Plans"
                 },
                 {
-                    path: "/superadmin/subscription/logs",
-                    name: "Subscription Log"
+                    path: "/superadmin/subscription-log/individual",
+                    name: "Individual Subscription Log"
                 }
             ],
             openChildren: false
