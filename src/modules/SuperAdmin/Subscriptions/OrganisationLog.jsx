@@ -12,6 +12,7 @@ const OrganisationLog = () => {
     const [subscribers, setSubscribers] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const [paginationData, setPagination] = React.useState({});
 
     const { mutate } = useApiMutation();
     const navigate = useNavigate();
@@ -20,18 +21,19 @@ const OrganisationLog = () => {
 
 
     useEffect(() => {
-        fetchSubscribers();
+        fetchSubscribers(1);
     }, []);
 
 
-    const fetchSubscribers = () => {
+    const fetchSubscribers = (page) => {
         mutate({
-            url: `/api/admins/organisation/subscribers`,
+            url: `/api/admins/organization/subscribers?page=${page}&limit=10`,
             method: "GET",
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 setSubscribers(response.data.data);
+                setPagination(response.data.pagination);
                 setLoading(false);
             },
             onError: () => {
@@ -68,10 +70,14 @@ const OrganisationLog = () => {
                     </div>
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5">
                         <Table title="Today" filter subTitle={<span>Subscription Log</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            currentPage={paginationData.page}
+                            totalPages={paginationData.totalPages}
+                            onPageChange={(page) => fetchSubscribers(page)}
+    >
                             {subscribers.map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                    <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                    <td className="px-3 py-3 text-mobiTableText">{data.organization.firstName} {data.organization.lastName}</td>
                                     <td className="px-3 py-3 text-mobiTableText">{data.plan.name}</td>
                                     <td className="px-3 py-3 text-mobiTableText">{data.plan.duration} month(s)</td>
                                     <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.subscribedAt, 'dd MMM, yyy')}</td>

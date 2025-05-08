@@ -12,6 +12,7 @@ const IndividualLog = () => {
     const [subscribers, setSubscribers] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const [paginationData, setPagination] = React.useState({});
 
     const { mutate } = useApiMutation();
     const navigate = useNavigate();
@@ -20,18 +21,19 @@ const IndividualLog = () => {
 
 
     useEffect(() => {
-        fetchSubscribers();
+        fetchSubscribers(1);
     }, []);
 
 
-    const fetchSubscribers = () => {
+    const fetchSubscribers = (page) => {
         mutate({
-            url: `/api/admins/individual/subscribers`,
+            url: `/api/admins/individual/subscribers?page=${page}&limit=10`,
             method: "GET",
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
                 setSubscribers(response.data.data);
+                setPagination(response.data.pagination);
                 setLoading(false);
             },
             onError: () => {
@@ -68,7 +70,11 @@ const IndividualLog = () => {
                     </div>
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5">
                         <Table title="Today" filter subTitle={<span>Subscription Log</span>} exportData
-                            tableHeader={TableHeaders}>
+                            tableHeader={TableHeaders}
+                            currentPage={paginationData.page}
+                            totalPages={paginationData.totalPages}
+                            onPageChange={(page) => fetchSubscribers(page)}
+                            >
                             {subscribers.map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                     <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
