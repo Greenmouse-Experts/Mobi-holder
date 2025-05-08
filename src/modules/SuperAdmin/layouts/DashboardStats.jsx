@@ -11,7 +11,6 @@ const DashboardStats = ({ statsData, cronTop, activeStat }) => {
                         <StatCard
                             cronTop={cronTop}
                             cronTopIcon={statData.cronTopIcon}
-                            cronAnalytics={statData.cronAnalytics}
                             number={statData.value}
                             label={statData.label}
                             iconColor={statData.iconColor}

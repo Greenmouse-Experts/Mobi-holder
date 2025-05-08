@@ -68,8 +68,8 @@ const IndividualPlans = () => {
                     </div>
                     {subscriptionPlans.length > 0 ? (
                         <div className="overflow-x-auto">
-                            <table className="min-w-[700px] table-auto border-collapse w-full border border-gray-700 text-sm">
-                                <thead>
+                            <table className="min-w-[2200px] table-auto border-collapse border border-gray-700 text-sm">
+                            <thead>
                                     <tr className="border-b border-gray-700 text-left">
                                         <th className="p-4 font-medium whitespace-nowrap">Individuals</th>
                                         {subscriptionPlans.slice().reverse().map((plan, index) => (
@@ -78,7 +78,7 @@ const IndividualPlans = () => {
                                                     <span>{plan.name}</span>
                                                     <button
                                                         onClick={() => navigate(`view/${plan.id}`)}
-                                                        className="flex items-center gap-1 underline text-mobiBlue hover:text-mobiPink"
+                                                        className="flex items-center gap-1 text-mobiBlue hover:text-mobiPink"
                                                     >
                                                         <FaEye className="text-sm" />
                                                         <span className="text-sm">View</span>

@@ -140,7 +140,7 @@ const ViewPlan = () => {
                                     (<></>)
                             ) :
                                 (
-                                    <Button className="bg-green-500">Active Plan</Button>
+                                    <Button className="bg-green-500 cursor-auto">Active Plan</Button>
                                 )}
                         </div>
                     </div>
@@ -151,7 +151,7 @@ const ViewPlan = () => {
                                     <th className="p-4 font-medium whitespace-nowrap">Plan</th>
                                     <th className="p-4 font-medium border-l border-gray-700 whitespace-nowrap">
                                         <div className="flex items-center justify-between gap-2">
-                                            <span>{subscriptionPlan.name}</span>
+                                            <span className="md:text-lg font-bold">{subscriptionPlan.name}</span>
                                         </div>
                                     </th>
                                 </tr>

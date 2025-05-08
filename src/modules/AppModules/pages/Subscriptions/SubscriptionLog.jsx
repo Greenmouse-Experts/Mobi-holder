@@ -6,6 +6,7 @@ import Table from "../../../../components/Tables";
 import Loader from "../../../../components/Loader";
 import Badge from "../../../../components/Badge";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 export default function SubscriptionLog() {
     const user = useSelector((state) => state.userData.data);
@@ -13,6 +14,8 @@ export default function SubscriptionLog() {
     const [loading, setLoading] = useState(true);
 
     const { mutate } = useApiMutation();
+
+    const navigate = useNavigate();
 
     const TableHeaders = ["Plan Name", "Validity", "Amount", "Status", "Action"];
 
