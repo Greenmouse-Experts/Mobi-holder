@@ -35,6 +35,7 @@ import OrgEditEvent from "../modules/OrgModules/pages/Events/editEvent";
 import OrganisationPlans from "../modules/OrgModules/pages/Subscription/plans";
 import ViewPlan from "../modules/OrgModules/pages/Subscription/viewPlan";
 import SubscriptionLog from "../modules/OrgModules/pages/Subscription/SubscriptionLog";
+import Notification from "../modules/Notifications";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -74,6 +75,7 @@ const OrgRoutes = [
     <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
     <Route path="subscription/log" element={<SubscriptionLog />} />,
     <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
+    <Route path="notification" element={<Notification organisation />} />,
 ];
 
 export default OrgRoutes;

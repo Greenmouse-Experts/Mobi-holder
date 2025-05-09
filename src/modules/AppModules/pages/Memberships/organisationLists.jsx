@@ -61,13 +61,9 @@ export default function OrganisationLists() {
     return <>
         <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
-                <Header mobile data={user} />
+                <Header mobile data={user} title={'Join New Organisation'} />
                 <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                     <div className="w-full flex flex-col gap-2">
-                        <p className="lg:text-2xl md:text-xl text-lg font-semibold">
-                            Join New Organisation
-                            {/*Choose Organisation*/}
-                        </p>
                         <p className="text-base">
                             Choose an organisation you want to be a member of
                             {/*'Choose an organisation you want to subscribe to'*/}

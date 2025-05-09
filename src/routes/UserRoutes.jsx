@@ -22,7 +22,7 @@ import BuyTickets from '../modules/AppModules/pages/Events/buyTickets';
 import EventHistory from '../modules/AppModules/pages/Events/eventHistory';
 import OrganisationLists from '../modules/AppModules/pages/Memberships/organisationLists';
 import Dashboard from '../modules/AppModules/Dashboard';
-import Notification from '../modules/AppModules/Notifications';
+import Notification from '../modules/Notifications';
 import Settings from '../modules/AppModules/Settings';
 import AddNewCard from "../modules/AppModules/pages/IdCards/newCard";
 import ViewPublicEvents from "../modules/AppModules/pages/Events/viewPublicEvents";

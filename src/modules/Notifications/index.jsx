@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import notificationImg from "../../../assets/notificationImg.svg";
-import Header from "../../../components/Header";
+import Header from "../../components/Header";
 import { useSelector } from "react-redux";
-import useApiMutation from "../../../api/hooks/useApiMutation";
-import Loader from "../../../components/Loader";
-import UserPhoto from "../../../components/UserPhoto";
+import useApiMutation from "../../api/hooks/useApiMutation";
+import Loader from "../../components/Loader";
+import UserPhoto from "../../components/UserPhoto";
 import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
 
 
-export default function Notification() {
+export default function Notification({organisation}) {
 
-    const user = useSelector((state) => state.userData.data);
+    const user = organisation ? useSelector((state) => state.userData.data) : useSelector((state) => state.orgData.orgData);
     const [activeTab, setActiveTab] = useState('All');
     const [allNotifications, setAllNotifications] = useState([]);
     const [originalNotifications, setOriginalNotifications] = useState([]);
@@ -113,7 +112,7 @@ export default function Notification() {
                                 <ul className="space-y-2 flex flex-col md:p-6 p-3 gap-3">
                                     {allNotifications.map((notification, index) => (
                                         <li key={index} className={`flex items-center relative gap-2 py-3 px-3 rounded-md ${notification.read ? 'border border-mobiNotification' : 'bg-mobiUnread'}`}>
-                                            <UserPhoto data={user} />
+                                            <UserPhoto data={user} organisation={organisation} />
                                             <div className="flex-1">
                                                 <p className={`md:text-base text-sm ${notification.read ? '' : 'font-semibold'}`}>{notification.message}</p>
                                                 <p className="text-mobiSkyBlue">{notification.time}</p>
