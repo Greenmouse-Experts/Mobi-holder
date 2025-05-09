@@ -88,7 +88,7 @@ export default function IndividualEvents() {
                             colorGradient={['rgba(239, 149, 107, 1)', 'rgba(52, 59, 79, 1)']}
                         />
                         <StatCard
-                            number={4}
+                            number={0}
                             label="Ticket Sales"
                             iconColor="bg-mobiSkyCloud"
                             IconComponent={<img src={organisation} alt="Events" style={{ width: '20px' }} />}
