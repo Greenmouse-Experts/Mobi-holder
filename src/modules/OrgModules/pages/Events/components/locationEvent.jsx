@@ -17,7 +17,7 @@ export default function LocationEvent({ next, back, data }) {
             || [];
     });
 
-    const venueLocation = data ? JSON.parse(data?.venue) : null;
+    const venueLocation = data ? data?.venue : null;
 
 
     const dateTimeLocal = (value) => {
