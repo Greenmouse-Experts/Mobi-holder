@@ -69,7 +69,6 @@ const OrgRoutes = [
     <Route path="card/updateCard/:id" element={<UpdateCard />} />,
     <Route path="membership/updateMember/:id" element={<UpdateMember />} />,
     <Route path="membership/add" element={<InviteMember />} />,
-    <Route path="notification" element={<OrgNotification />} />,
     <Route path="settings" element={<OrgSettings />} />,
     <Route path="subscription/plans" element={<OrganisationPlans />} />,
     <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
