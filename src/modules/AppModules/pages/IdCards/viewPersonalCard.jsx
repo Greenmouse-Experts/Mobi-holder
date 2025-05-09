@@ -43,7 +43,7 @@ export default function ViewPersonalCard() {
             hideToast: true,
             onSuccess: (response) => {
                 setIDCard(response.data.data);
-                const images = JSON.parse(response.data.data.scanIDCard);
+                const images = response.data.data.scanIDCard;
                 setFiles([images.frontIdCard]);
                 setBackFiles([images.backIdCard]);
                 setIsLoading(false);
@@ -98,10 +98,10 @@ export default function ViewPersonalCard() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile data={user} />
+                    <Header mobile data={user} title={'Update Card'} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Update Card</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Update Card</p>
                             <p className="text-base">Update your existing card</p>
                         </div>
                     </div>
