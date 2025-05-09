@@ -13,7 +13,7 @@ import { dateFormat } from "../helpers/dateHelper";
 import UserPhoto from "./UserPhoto";
 import OrgSidebar from "../modules/OrgModules/sideBar";
 
-export default function Header({ greeting, profile, mobile, organisation, superAdmin, data }) {
+export default function Header({ greeting, profile, mobile, organisation, title, superAdmin, data }) {
     const [open, setOpen] = useState(false);
 
     const openDrawer = () => {
@@ -35,14 +35,20 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                     {/*<div className="flex md:w-3/5 w-3/4">
                         <SearchInput appendIcon="search.svg" type="text" placeholder="Enter keyword to search" />
                     </div>*/}
-                    <div className="flex md:hidden w-3/4">
-                        <div className="py-1 px-1 flex gap-6 flex-col space-x-2">
+                    <div className="flex md:w-3/5 w-3/4">
+                        <div className="py-1 px-1 flex md:hidden gap-6 flex-col space-x-2">
                             <Link to={'/'} className='flex px-3 gap-3'>
                                 <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
                                 <div className='flex flex-col justify-center'>
                                     <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
                                 </div>
                             </Link>
+                        </div>
+
+                        <div className="w-full flex flex-col mt-3 px-3">
+                            <div className="w-full flex flex-col gap-2">
+                                <p className="lg:text-2xl md:text-xl text-lg font-semibold">{title}</p>
+                            </div>
                         </div>
                     </div>
 

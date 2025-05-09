@@ -1,70 +1,65 @@
-import { Button, Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react";
+import {
+    Button,
+    Menu,
+    MenuHandler,
+    MenuItem,
+    MenuList
+} from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 
-function Table({ title, subTitle, filter, exportData, handleExportDataClick, sortFunc, tableBtn, transparentBg, children, tableHeader, hasNumber,
+function Table({
+    title,
+    subTitle,
+    filter,
+    exportData,
+    handleExportDataClick,
+    sortFunc,
+    tableBtn,
+    transparentBg,
+    children,
+    tableHeader,
+    hasNumber,
     currentPage = 1,
     totalPages = 1,
-    onPageChange,
+    onPageChange
 }) {
     const [updatedTableHeader, setUpdatedTableHeader] = useState(tableHeader);
 
     useEffect(() => {
-        if (hasNumber) {
-            setUpdatedTableHeader(["#", ...tableHeader]);
-        } else {
-            setUpdatedTableHeader(tableHeader);
-        }
+        setUpdatedTableHeader(hasNumber ? ["#", ...tableHeader] : tableHeader);
     }, [hasNumber, tableHeader]);
 
     return (
         <div className={`md:px-5 px-3 py-7 w-full md:rounded-lg ${transparentBg ? 'bg-transparent' : 'bg-mobiSearchDark border border-mobiBorderFray'}`}>
             <p className="text-mobiTable font-[500px] mb-4">{title}</p>
-            <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
+
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-3">
                 <h3 className="text-lg font-semibold">{subTitle}</h3>
                 <div className="flex space-x-2">
                     {filter && (
                         <Menu placement="left">
                             <MenuHandler>
                                 <button className="bg-gray-700 px-2 py-1 rounded-md">
-                                    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.75 0H15.25C15.4489 0 15.6397 0.0790175 15.7803 0.21967C15.921 0.360322 16 0.551088 16 0.75C16 0.948912 15.921 1.13968 15.7803 1.28033C15.6397 1.42098 15.4489 1.5 15.25 1.5H0.75C0.551088 1.5 0.360322 1.42098 0.21967 1.28033C0.0790176 1.13968 0 0.948912 0 0.75C0 0.551088 0.0790176 0.360322 0.21967 0.21967C0.360322 0.0790175 0.551088 0 0.75 0ZM3 4.75C3 4.55109 3.07902 4.36032 3.21967 4.21967C3.36032 4.07902 3.55109 4 3.75 4H12.25C12.4489 4 12.6397 4.07902 12.7803 4.21967C12.921 4.36032 13 4.55109 13 4.75C13 4.94891 12.921 5.13968 12.7803 5.28033C12.6397 5.42098 12.4489 5.5 12.25 5.5H3.75C3.55109 5.5 3.36032 5.42098 3.21967 5.28033C3.07902 5.13968 3 4.94891 3 4.75ZM6 8.75C6 8.55109 6.07902 8.36032 6.21967 8.21967C6.36032 8.07902 6.55109 8 6.75 8H9.25C9.44891 8 9.63968 8.07902 9.78033 8.21967C9.92098 8.36032 10 8.55109 10 8.75C10 8.94891 9.92098 9.13968 9.78033 9.28033C9.63968 9.42098 9.44891 9.5 9.25 9.5H6.75C6.55109 9.5 6.36032 9.42098 6.21967 9.28033C6.07902 9.13968 6 8.94891 6 8.75Z" fill="white" />
+                                    <svg width="20" height="10" viewBox="0 0 24 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1.125 0H22.875C23.1734 0 23.4595 0.108129 23.6705 0.300601C23.8815 0.493072 24 0.75412 24 1.02632C24 1.29851 23.8815 1.55956 23.6705 1.75203C23.4595 1.9445 23.1734 2.05263 22.875 2.05263H1.125C0.826631 2.05263 0.540483 1.9445 0.329505 1.75203C0.118526 1.55956 0 1.29851 0 1.02632C0 0.75412 0.118526 0.493072 0.329505 0.300601C0.540483 0.108129 0.826631 0 1.125 0ZM4.5 6.5C4.5 6.2278 4.61853 5.96676 4.8295 5.77429C5.04048 5.58181 5.32663 5.47368 5.625 5.47368H18.375C18.6734 5.47368 18.9595 5.58181 19.1705 5.77429C19.3815 5.96676 19.5 6.2278 19.5 6.5C19.5 6.7722 19.3815 7.03324 19.1705 7.22571C18.9595 7.41819 18.6734 7.52632 18.375 7.52632H5.625C5.32663 7.52632 5.04048 7.41819 4.8295 7.22571C4.61853 7.03324 4.5 6.7722 4.5 6.5ZM9 11.9737C9 11.7015 9.11853 11.4404 9.3295 11.248C9.54048 11.0555 9.82663 10.9474 10.125 10.9474H13.875C14.1734 10.9474 14.4595 11.0555 14.6705 11.248C14.8815 11.4404 15 11.7015 15 11.9737C15 12.2459 14.8815 12.5069 14.6705 12.6994C14.4595 12.8919 14.1734 13 13.875 13H10.125C9.82663 13 9.54048 12.8919 9.3295 12.6994C9.11853 12.5069 9 12.2459 9 11.9737Z" fill="white" />
                                     </svg>
                                 </button>
                             </MenuHandler>
                             <MenuList>
                                 <p className="mb-2 !text-black montserrat font-bold text-sm">Sort By:</p>
-
-                                <MenuItem className="flex flex-col gap-3">
-                                    <span className="cursor-pointer" onClick={() => sortFunc("name", "ASC")}>
-                                        Name: A - Z
-                                    </span>
-                                </MenuItem>
-                                <MenuItem className="flex flex-col gap-3">
-                                    <span className="cursor-pointer" onClick={() => sortFunc("name", "DESC")}>
-                                        Name: Z - A
-                                    </span>
-                                </MenuItem>
-
-                                {/* Add sorting by date */}
-                                <MenuItem className="flex flex-col gap-3">
-                                    <span className="cursor-pointer" onClick={() => sortFunc("date", "ASC")}>
-                                        Date: Oldest to Newest
-                                    </span>
-                                </MenuItem>
-                                <MenuItem className="flex flex-col gap-3">
-                                    <span className="cursor-pointer" onClick={() => sortFunc("date", "DESC")}>
-                                        Date: Newest to Oldest
-                                    </span>
-                                </MenuItem>
+                                <MenuItem><span onClick={() => sortFunc("name", "ASC")}>Name: A - Z</span></MenuItem>
+                                <MenuItem><span onClick={() => sortFunc("name", "DESC")}>Name: Z - A</span></MenuItem>
+                                <MenuItem><span onClick={() => sortFunc("date", "ASC")}>Date: Oldest to Newest</span></MenuItem>
+                                <MenuItem><span onClick={() => sortFunc("date", "DESC")}>Date: Newest to Oldest</span></MenuItem>
                             </MenuList>
                         </Menu>
                     )}
                     {exportData && (
-                        <button onClick={handleExportDataClick} className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
+                        <button onClick={handleExportDataClick} className="px-2 py-2 flex gap-2 rounded-md bg-[#0A1330]">
                             <span className="text-xs text-white">Export data</span>
-                            <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.00122 1V11" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M0.909424 6.9082L5.00033 10.9991L9.09124 6.9082" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6.86279 1.19531V14.8064" stroke="white" stroke-width="1.63333" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M1.29333 9.23633L6.86152 14.8045L12.4297 9.23633" stroke="white" stroke-width="1.63333" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
                     )}
@@ -72,84 +67,70 @@ function Table({ title, subTitle, filter, exportData, handleExportDataClick, sor
                 </div>
             </div>
 
-            <div className="overflow-x-auto border w-full py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
-                <table className="table-auto table-responsive w-full text-mobiSkyBlue">
-                    {updatedTableHeader && (
-                        <thead>
-                            <tr>
-                                {updatedTableHeader.map((header, index) => (
-                                    <th className="px-3 text-left py-2" key={index}>{header}</th>
-                                ))}
-                            </tr>
-                        </thead>
-                    )}
-                    <tbody>
-                        {children}
-                    </tbody>
+            {/* Desktop Table */}
+            <div className="overflow-x-auto hidden md:block border w-full py-1 md:mt-7 mt-3 rounded-lg border-mobiBorderTable">
+                <table className="table-auto w-full text-mobiSkyBlue">
+                    <thead>
+                        <tr>
+                            {updatedTableHeader.map((header, index) => (
+                                <th key={index} className="px-3 text-left py-3">{header}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>{children}</tbody>
                 </table>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3">
-                        <div className="flex flex-1 justify-between sm:hidden">
-                            <Button
-                                onClick={() => onPageChange(currentPage - 1)}
-                                disabled={currentPage === 1}
-                                variant="outlined"
-                                size="sm"
-                            >
-                                Previous
-                            </Button>
-                            <Button
-                                onClick={() => onPageChange(currentPage + 1)}
-                                disabled={currentPage === totalPages}
-                                variant="outlined"
-                                size="sm"
-                                className="ml-3"
-                            >
-                                Next
-                            </Button>
-                        </div>
-                        <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                            <p className="text-sm">
-                                Page <span className="font-medium">{currentPage}</span> of{" "}
-                                <span className="font-medium">{totalPages}</span>
-                            </p>
-                            <div>
-                                <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm">
-                                    <Button
-                                        onClick={() => onPageChange(currentPage - 1)}
-                                        disabled={currentPage === 1}
-                                        variant="text"
-                                        size="sm"
-                                    >
-                                        &lt;
-                                    </Button>
-                                    {Array.from({ length: totalPages }, (_, i) => (
-                                        <Button
-                                            key={i + 1}
-                                            onClick={() => onPageChange(i + 1)}
-                                            variant={currentPage === i + 1 ? "filled" : "text"}
-                                            size="sm"
-                                            className="mx-1"
-                                        >
-                                            {i + 1}
-                                        </Button>
-                                    ))}
-                                    <Button
-                                        onClick={() => onPageChange(currentPage + 1)}
-                                        disabled={currentPage === totalPages}
-                                        variant="text"
-                                        size="sm"
-                                    >
-                                        &gt;
-                                    </Button>
-                                </nav>
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
+
+            {/* Mobile Cards */}
+            <div className="block md:hidden space-y-4 mt-4">
+                {React.Children.map(children, (row, rowIndex) => {
+                    if (!React.isValidElement(row) || row.type !== 'tr') return null;
+
+                    const cells = React.Children.toArray(row.props.children).filter(Boolean);
+
+                    return (
+                        <div
+                            key={rowIndex}
+                            className="bg-mobiDarkCloud rounded-md p-3 border border-mobiBorderTable"
+                        >
+                            {cells.map((cell, colIndex) => {
+                                if (!React.isValidElement(cell) || cell.type !== 'td') return null;
+                                return (
+                                    <div key={colIndex} className="flex justify-between py-3 border-b border-mobiBorderTable last:border-b-0">
+                                        <span className="text-xs font-medium text-gray-400">
+                                            {updatedTableHeader[colIndex]}
+                                        </span>
+                                        <span className="text-sm">{cell.props.children}</span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="flex items-center justify-between px-4 py-3 mt-5">
+                    <div className="flex flex-1 justify-between sm:hidden">
+                        <Button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} variant="outlined" size="sm">Previous</Button>
+                        <Button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages} variant="outlined" size="sm">Next</Button>
+                    </div>
+                    <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                        <p className="text-sm">
+                            Page <span className="font-medium">{currentPage}</span> of{" "}
+                            <span className="font-medium">{totalPages}</span>
+                        </p>
+                        <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm">
+                            <Button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1} variant="text" size="sm">&lt;</Button>
+                            {Array.from({ length: totalPages }, (_, i) => (
+                                <Button key={i + 1} onClick={() => onPageChange(i + 1)} variant={currentPage === i + 1 ? "filled" : "text"} size="sm" className="mx-1">{i + 1}</Button>
+                            ))}
+                            <Button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages} variant="text" size="sm">&gt;</Button>
+                        </nav>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

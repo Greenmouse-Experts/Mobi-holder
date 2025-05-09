@@ -99,10 +99,9 @@ export default function CardStructure() {
     return <>
         <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
-                <Header mobile organisation data={user} />
+                <Header mobile organisation data={user} title={'Create ID Card Category'} />
                 <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                     <div className="w-full flex flex-col gap-2">
-                        <p className="lg:text-2xl md:text-xl text-lg font-semibold">Create ID Card Category</p>
                         <p className="text-base">Create an ID card structure for a category of your members</p>
                     </div>
                 </div>
