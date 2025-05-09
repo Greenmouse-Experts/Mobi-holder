@@ -11,6 +11,7 @@ import OrgGreeting from "../modules/OrgModules/OrgDashboard/layouts/Greetings";
 import AvatarInitials from "./AvatarInitials";
 import { dateFormat } from "../helpers/dateHelper";
 import UserPhoto from "./UserPhoto";
+import OrgSidebar from "../modules/OrgModules/sideBar";
 
 export default function Header({ greeting, profile, mobile, organisation, superAdmin, data }) {
     const [open, setOpen] = useState(false);
@@ -31,8 +32,18 @@ export default function Header({ greeting, profile, mobile, organisation, superA
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
             <div className="lg:w-[68%] md:w-[60%] w-full md:px-0 px-3 flex flex-col gap-5">
                 <div className="w-full flex gap-8 justify-between">
-                    <div className="flex md:w-3/5 w-3/4">
+                    {/*<div className="flex md:w-3/5 w-3/4">
                         <SearchInput appendIcon="search.svg" type="text" placeholder="Enter keyword to search" />
+                    </div>*/}
+                    <div className="flex md:hidden w-3/4">
+                        <div className="py-1 px-1 flex gap-6 flex-col space-x-2">
+                            <Link to={'/'} className='flex px-3 gap-3'>
+                                <img src="/mobiHolder.svg" alt="Logo" className="w-[32px] h-[32px] object-contain" />
+                                <div className='flex flex-col justify-center'>
+                                    <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
 
                     <div className="flex gap-3">
@@ -95,7 +106,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                                     <p className="text-base font-semibold">{organisation ? `${data.companyName}` : `${data.firstName} ${data.lastName}`}</p>
                                     <p className="text-sm text-mobiRomanSilver">{data.accountType} account</p>
                                     <div className="flex gap-2">
-                                        <p className="text-mobiBlue">ID: {data.mobiHolderId }</p>
+                                        <p className="text-mobiBlue">ID: {data.mobiHolderId}</p>
                                         <div className="flex flex-col justify-center">
                                             <svg width="13" height="17" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="0.5" y="3.59106" width="12.9092" height="16.0001" rx="2.5" stroke="#939292" />
@@ -123,7 +134,7 @@ export default function Header({ greeting, profile, mobile, organisation, superA
 
                                 <div className="flex flex-col gap-1">
                                     <p className="text-mobiRomanSilver text-center lg:text-xs md:text-xs sm:text-sm text-xs">Status</p>
-                                    <p className="text-xs font-[500] text-center">{ data.isVerified ? 'Verified': 'Not Verified' }</p>
+                                    <p className="text-xs font-[500] text-center">{data.isVerified ? 'Verified' : 'Not Verified'}</p>
                                 </div>
                             </div>
                         </>
@@ -133,7 +144,11 @@ export default function Header({ greeting, profile, mobile, organisation, superA
                 </div>
             </div>
             <Drawer open={open} onClose={closeDrawer} className="bg-mobiDarkCloud">
+                {organisation ?
+                    <OrgSidebar mobile />
+                    :
                     <Sidebar mobile />
+                }
             </Drawer>
         </div>
     )

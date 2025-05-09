@@ -6,7 +6,7 @@ import useModal from '../../hooks/modal';
 import LogOutModal from '../../components/LogOutModal';
 import ReusableModal from '../../components/ReusableModal';
 
-export default function Sidebar({ mobile }) {
+export default function OrgSidebar({ mobile }) {
     const location = useLocation();
     const navigate = useNavigate();
     const { openModal, isOpen, modalOptions, closeModal } = useModal();

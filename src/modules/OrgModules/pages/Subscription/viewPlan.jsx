@@ -122,7 +122,7 @@ const ViewPlan = () => {
     return (
         <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
-                <Header mobile data={user} />
+                <Header mobile organisation data={user} />
                 <div className="w-full flex flex-col gap-5 border border-mobiBorderFray card-body p-5 rounded-xl my-2">
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
@@ -131,21 +131,110 @@ const ViewPlan = () => {
                                 Organisation
                             </span></p>
                         </div>
-                        <div className="flex md:w-2/5 w-full justify-end">
-                            {status !== 'active' ? (
-                                subscriptionPlan.name !== 'Free Plan' ? (
-                                    <Button disabled={disabled} className="bg-mobiPink" onClick={() => handlePayment()}>Subscribe</Button>
-                                )
-                                    :
-                                    (<></>)
-                            ) :
-                                (
-                                    <Button className="bg-green-500">Active Plan</Button>
-                                )}
-                        </div>
+                        {status &&
+                            <div className="flex md:w-2/5 w-full justify-end">
+                                {status !== 'active' ? (
+                                    subscriptionPlan.name !== 'Free Plan' ? (
+                                        <Button disabled={disabled} className="bg-mobiPink" onClick={() => handlePayment()}>Subscribe</Button>
+                                    )
+                                        :
+                                        (<></>)
+                                ) :
+                                    (
+                                        <Button className="bg-green-500">Active Plan</Button>
+                                    )}
+                            </div>
+                        }
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="min-w-[700px] table-auto border-collapse w-full border border-gray-700 text-sm">
+
+
+                        {/* Mobile view (vertical list) */}
+                        <div className="md:hidden space-y-4 border border-gray-700 p-4 text-sm">
+                            <div>
+                                <p className="font-medium">Plan</p>
+                                <p className="font-bold text-lg">{subscriptionPlan.name}</p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Duration</p>
+                                <p><b>{subscriptionPlan.duration} month(s)</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Access Private Events</p>
+                                <p><b>{subscriptionPlan.accessPrivateEvent ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Access Semi-Private Events</p>
+                                <p><b>{subscriptionPlan.accessSemiPrivateEvent ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Free Events Only</p>
+                                <p><b>{subscriptionPlan.freeEventsOnly ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Event Upload Limit</p>
+                                <p><b>{subscriptionPlan.eventLimit}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Verifiers Per Event</p>
+                                <p><b>{subscriptionPlan.verifiersPerEvent}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Max Staff Members</p>
+                                <p><b>{subscriptionPlan.maxStaffs}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Organization User Limit</p>
+                                <p><b>{subscriptionPlan.organizationUserLimit}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Customized Templates Allowed</p>
+                                <p><b>{subscriptionPlan.customizedTemplateLimit}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Default Template</p>
+                                <p><b>{subscriptionPlan.defaultTemplate ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Event Logs Access</p>
+                                <p><b>{subscriptionPlan.hasEventLogs ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Subscription Management</p>
+                                <p><b>{subscriptionPlan.subscriptionManagement ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Recurring Events</p>
+                                <p><b>{subscriptionPlan.recurringEvents ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Can Appoint Verifiers</p>
+                                <p><b>{subscriptionPlan.canAppointVerifiers ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Email Support Response Time</p>
+                                <p><b>{subscriptionPlan.emailSupport}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Dedicated Support</p>
+                                <p><b>{subscriptionPlan.dedicated_support ? 'Yes' : 'No'}</b></p>
+                            </div>
+                            <div>
+                                <p className="font-medium">Amount</p>
+                                <p>
+                                    {subscriptionPlan.amount > 0 ? (
+                                        <span>{subscriptionPlan.currency} {subscriptionPlan.amount}</span>
+                                    ) : (
+                                        <span>Free</span>
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+
+
+
+                        {/* Desktop view (table) */}
+                        <table className="hidden md:table min-w-[700px] table-auto border-collapse w-full border border-gray-700 text-sm">
                             <thead>
                                 <tr className="border-b border-gray-700 text-left">
                                     <th className="p-4 font-medium whitespace-nowrap">Plan</th>
