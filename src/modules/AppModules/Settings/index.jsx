@@ -36,10 +36,9 @@ export default function Settings() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile data={user} />
-                    <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
+                    <Header mobile data={user} title={'Settings'} />
+                    <div className="w-full flex flex-col gap-8 my-2 px-3">
                         <div className="w-full flex justify-between items-center">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Settings</p>
                             <div className="flex md:hidden">
                                 <DropdownMenu buttonLabel={activeTab} color="#242EF2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiBlue border rounded-md border-mobiBlue">
                                     {tabs.map((tab, index) => (

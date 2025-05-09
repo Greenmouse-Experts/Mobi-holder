@@ -45,7 +45,7 @@ export default function Header({ greeting, profile, mobile, organisation, title,
                             </Link>
                         </div>
 
-                        <div className="w-full flex flex-col mt-3 px-3">
+                        <div className="w-full md:flex hidden flex-col mt-3 px-3">
                             <div className="w-full flex flex-col gap-2">
                                 <p className="lg:text-2xl md:text-xl text-lg font-semibold">{title}</p>
                             </div>

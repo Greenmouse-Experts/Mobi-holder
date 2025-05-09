@@ -39,7 +39,7 @@ const useApiMutation = () => {
                 case "DELETE":
                     return data ? apiClient.delete(url, { data, ...config }) : apiClient.delete(url, { undefined, ...config });
                 case "PATCH":
-                    return apiClient.patch(url, data, config);
+                    return data !== null ? apiClient.patch(url, data, config) : apiClient.patch(url, undefined, config);
                 default:
                     throw new Error(`Unsupported method: ${method}`);
             }
