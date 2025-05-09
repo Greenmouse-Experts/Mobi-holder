@@ -131,7 +131,6 @@ const ViewPlan = () => {
                                 Organisation
                             </span></p>
                         </div>
-                        {status &&
                             <div className="flex md:w-2/5 w-full justify-end">
                                 {status !== 'active' ? (
                                     subscriptionPlan.name !== 'Free Plan' ? (
@@ -144,7 +143,6 @@ const ViewPlan = () => {
                                         <Button className="bg-green-500">Active Plan</Button>
                                     )}
                             </div>
-                        }
                     </div>
                     <div className="overflow-x-auto">
 
