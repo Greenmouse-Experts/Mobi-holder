@@ -62,10 +62,10 @@ export default function SubscriptionLog() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile data={user} />
-                    <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
+                    <Header mobile data={user} title={'My Subscriptions'} />
+                    <div className="w-full flex flex-col gap-8 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">My Subscriptions</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">My Subscriptions</p>
                         </div>
                     </div>
 

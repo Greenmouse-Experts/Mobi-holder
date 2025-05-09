@@ -9,7 +9,7 @@ import { Menu, MenuHandler, MenuItem, MenuList } from "@material-tailwind/react"
 
 export default function Notification({organisation}) {
 
-    const user = organisation ? useSelector((state) => state.userData.data) : useSelector((state) => state.orgData.orgData);
+    const user = organisation ? useSelector((state) => state.orgData.orgData) : useSelector((state) => state.userData.data);
     const [activeTab, setActiveTab] = useState('All');
     const [allNotifications, setAllNotifications] = useState([]);
     const [originalNotifications, setOriginalNotifications] = useState([]);
