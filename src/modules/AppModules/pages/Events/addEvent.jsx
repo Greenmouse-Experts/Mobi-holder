@@ -17,6 +17,10 @@ export default function AddEvent() {
                     <Header mobile data={user} title={'Create Event'} />
 
                     <div className="w-full flex flex-grow flex-col md:px-0 px-3 gap-10">
+                        <div className="w-full flex flex-col gap-2 md: hidden">
+                            <p className="text-base font-semibold md:hidden">Create Event</p>
+                        </div>
+
                         <div className="hidden flex-col md:w-3/4 w-full md:gap-0 gap-3 md:flex sm:flex-row">
                             <button
                                 className={`w-full px-4 py-2 ${activeTab > 0 ? 'border-b-2 border-mobiBlue' : 'border-b border-mobiBorderFray'

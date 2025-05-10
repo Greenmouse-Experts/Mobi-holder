@@ -141,6 +141,7 @@ export default function AddEventVerifier() {
                     <Header mobile data={user} title={'Add Verifier'} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
+                        <p className="text-base font-semibold md:hidden">Add Verifier</p>
                             <p className="text-base">Add Verifier for: <span className="text-mobiBlue">
                                 {eventDetails.name}
                             </span></p>
