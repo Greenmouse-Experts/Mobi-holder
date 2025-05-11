@@ -125,7 +125,7 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
                             </Button>
                             {type !== 'Accept' &&
                                 <Button type="submit"
-                                onClick={() => handleBlackList()}
+                                    onClick={() => handleBlackList()}
                                     className={'bg-transparent border md:w-1/2 montserrat w-full p-3 rounded-full'}
                                 >
                                     Blacklist Member
@@ -221,6 +221,9 @@ export default function OrgMembership() {
         <>   <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
                 <Header mobile organisation data={user} title={'Membership'} />
+                <div className="w-full flex flex-col gap-2">
+                    <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Membership</p>
+                </div>
                 <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                     <StatCard
                         number={allMembers.length}
@@ -304,7 +307,7 @@ export default function OrgMembership() {
                             ])),
                             "All Members.xlsx"
                         )}
-                        >
+                    >
                         {allMembers.filter(item => item.status === 'active').length > 0 ?
                             allMembers.filter(item => item.status === 'active').map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -378,19 +381,19 @@ export default function OrgMembership() {
 
                             setBlackListedMembers(sortedMembers);
                         }
-                    }
-                    handleExportDataClick={() => exportToExcel(
-                        TableHeaders,
-                        allMembers.filter(item => item.status === 'inactive').map(item => ([
-                            `${item.individual.firstName} ${item.individual.lastName}`,
-                            item.designation,
-                            item.memberId ? item.memberId : '---',
-                            item.individual.email,
-                            item.status
-                    ])),
-                        "Blacklisted Members.xlsx"
-                    )}
-                        >
+                        }
+                        handleExportDataClick={() => exportToExcel(
+                            TableHeaders,
+                            allMembers.filter(item => item.status === 'inactive').map(item => ([
+                                `${item.individual.firstName} ${item.individual.lastName}`,
+                                item.designation,
+                                item.memberId ? item.memberId : '---',
+                                item.individual.email,
+                                item.status
+                            ])),
+                            "Blacklisted Members.xlsx"
+                        )}
+                    >
                         {allMembers.filter(item => item.status === 'inactive').length > 0 ?
                             allMembers.filter(item => item.status === 'inactive').map((data, index) => (
                                 <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -453,25 +456,25 @@ export default function OrgMembership() {
                                         const bName = `${b.individual.firstName} ${b.individual.lastName}`;
 
                                         return order === "ASC"
-                                        ? aName.localeCompare(bName)
-                                        : bName.localeCompare(aName);
-                                }
-                                return 0; // Default case if field is not recognized
-                            });
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
 
-                            setInitiatedMembers(sortedMembers);
-                        }}
-                        handleExportDataClick={() => exportToExcel(
-                            RequetsHeaders1,
-                            initiatedMembers.map(item => ([
-                                `${item.individual.firstName} ${item.individual.lastName}`,
-                                item.individual.email,
-                                dateFormat(data.createdAt, 'dd-MM-yyyy'),
-                                item.status
-                        ])),
-                            "Initiated Pending Requests.xlsx"
-                        )}    
-                            >
+                                setInitiatedMembers(sortedMembers);
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                RequetsHeaders1,
+                                initiatedMembers.map(item => ([
+                                    `${item.individual.firstName} ${item.individual.lastName}`,
+                                    item.individual.email,
+                                    dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                                    item.status
+                                ])),
+                                "Initiated Pending Requests.xlsx"
+                            )}
+                        >
                             {initiatedMembers.length > 0 ?
                                 initiatedMembers.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
@@ -528,22 +531,22 @@ export default function OrgMembership() {
                                         const bName = `${b.individual.firstName} ${b.individual.lastName}`;
 
                                         return order === "ASC"
-                                        ? aName.localeCompare(bName)
-                                        : bName.localeCompare(aName);
-                                }
-                                return 0; // Default case if field is not recognized
-                            });
-                            setPendingMembers(sortedMembers);
-                        }}
-                        handleExportDataClick={() => exportToExcel(
-                            RequetsHeaders2,
-                            pendingMembers.map(item => ([
-                                `${item.individual.firstName} ${item.individual.lastName}`,
-                                item.individual.email,
-                                dateFormat(data.createdAt, 'dd-MM-yyyy'),
-                        ])),
-                            "Received Pending Requests.xlsx"
-                        )}    
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+                                setPendingMembers(sortedMembers);
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                RequetsHeaders2,
+                                pendingMembers.map(item => ([
+                                    `${item.individual.firstName} ${item.individual.lastName}`,
+                                    item.individual.email,
+                                    dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                                ])),
+                                "Received Pending Requests.xlsx"
+                            )}
                         >
                             {pendingMembers.length > 0 ?
                                 pendingMembers.map((data, index) => (

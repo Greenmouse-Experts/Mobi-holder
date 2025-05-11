@@ -58,10 +58,10 @@ export default function PreviewCard() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile organisation data={user} />
+                    <Header mobile organisation data={user} title={'View ID Card'} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">View ID Card</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">View ID Card</p>
                             <p className="text-base">Preview ID Card for : <span className="text-mobiBlue">
                                 {cardData.individual?.firstName} {cardData.individual?.lastName}
                             </span></p>

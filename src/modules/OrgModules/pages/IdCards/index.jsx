@@ -120,6 +120,7 @@ export default function OrgIDCardsPage() {
                     <Header mobile organisation data={user} title={'ID Card Management'} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">ID Card Management</p>
                             <p className="text-base">Create, mange and do more with our ID card module</p>
                         </div>
                     </div>

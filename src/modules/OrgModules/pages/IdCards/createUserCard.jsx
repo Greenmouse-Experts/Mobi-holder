@@ -143,10 +143,10 @@ export default function CreateUserCard() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile organisation data={user} />
+                    <Header mobile organisation data={user} title={'Create ID Card'} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Create ID Card</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Create ID Card</p>
                             <p className="text-base">Create ID Card for: <span className="text-mobiBlue">{individualData.individual.firstName}
                                 {individualData.individual.lastName}</span></p>
                         </div>

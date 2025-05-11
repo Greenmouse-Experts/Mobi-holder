@@ -27,6 +27,7 @@ export default function OrgAddCard() {
                     <Header mobile organisation data={user} title={'ID Card Categories'} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">ID Card Categories</p>
                             <p className="text-base">All your create ID Card for your different categories</p>
                         </div>
                         <div className="flex md:w-2/5 w-full justify-end">
