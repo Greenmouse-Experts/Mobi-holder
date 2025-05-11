@@ -70,6 +70,7 @@ export default function JoinOrganisation() {
                     <Header mobile data={user} title={'Join Organisation'} />
                     <div className="w-full flex justify-between items-center gap-8 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Join Organisation</p>
                             <p className="text-base">Join new organisation: <span className="text-mobiBlue">{paramsData.companyName}</span></p>
                         </div>
                     </div>

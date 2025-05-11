@@ -179,10 +179,10 @@ export default function VerifyEvent() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile data={user} />
+                    <Header mobile data={user} title={'Scan Event'} />
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Scan Event</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Scan Event</p>
                             <p className="text-base">Scan Users for: <span className="text-mobiBlue">{eventDetails.name}</span></p>
                         </div>
                     </div>

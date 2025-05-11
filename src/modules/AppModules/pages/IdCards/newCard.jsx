@@ -100,10 +100,10 @@ export default function AddNewCard() {
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
                 <div className="w-full flex flex-col gap-5 h-full">
-                    <Header mobile data={user} />
+                    <Header mobile data={user} title={'Generate New Card'} />
                     <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Generate New Card</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Generate New Card</p>
                             <p className="text-base">Generate Card from your Organization Template</p>
                         </div>
                     </div>
