@@ -172,11 +172,6 @@ export default function OrgEvents() {
                                                                 View Details
                                                             </span>
                                                         </MenuItem>
-                                                        <MenuItem className="flex flex-col gap-3">
-                                                            <span className="cursor-pointer" onClick={() => navigate(`/org/edit-event/${data.eventId}`)}>
-                                                               Edit Event
-                                                            </span>
-                                                        </MenuItem>
                                                     </MenuList>
                                                 </Menu>
                                             </td>
