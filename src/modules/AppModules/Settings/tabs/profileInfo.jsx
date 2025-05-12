@@ -302,7 +302,7 @@ export default function ProfileInfo() {
                             <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
                                 <div className="flex flex-col w-full gap-2">
                                     <p className="mb-3 text-mobiFormGray">Upload Front View</p>
-                                    <DropZone onUpload={(file) => setFrontFile(file)} />
+                                    <DropZone multiple={false} text={'Upload Document Front View (JPG, PNG)'} onUpload={(file) => setFrontFile(file)} />
                                     {frontFile && (
                                         <div className="relative mt-2">
                                             <img
@@ -322,7 +322,7 @@ export default function ProfileInfo() {
 
                                 <div className="flex flex-col w-full gap-2">
                                     <p className="mb-3 text-mobiFormGray">Upload Back View</p>
-                                    <DropZone multiple={false} onUpload={(file) => setBackFile(file)} />
+                                    <DropZone multiple={false} text={'Upload Document Back View (JPG, PNG)'} onUpload={(file) => setBackFile(file)} />
                                     {backFile && (
                                         <div className="relative mt-2">
                                             <img
