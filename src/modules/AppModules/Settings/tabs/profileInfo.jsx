@@ -22,7 +22,8 @@ export default function ProfileInfo() {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingDocuments, setIsLoadingDocuments] = useState(false);
     const [pageLoader, setLoader] = useState(true);
-    const [files, setFiles] = useState([]);
+    const [frontFile, setFrontFile] = useState(null);
+    const [backFile, setBackFile] = useState(null);
     const [documentSelected, setSelectedDocument] = useState(null);
     const [uploadedIDData, setUploadedIDData] = useState(null);
     const [customError, setCustomError] = useState(false);
@@ -101,7 +102,7 @@ export default function ProfileInfo() {
 
 
     const updateDocuments = (data) => {
-        if (files.length > 0) {
+        if (frontFile && backFile) {
             if (!documentSelected) {
                 setCustomError(true);
                 return;
@@ -109,8 +110,8 @@ export default function ProfileInfo() {
             setIsLoadingDocuments(true);
             const payload = {
                 name: documentSelected,
-                governmentIdCardFront: files[0],
-                governmentIdCardBack: files[1],
+                governmentIdCardFront: frontFile,
+                governmentIdCardBack: backFile,
                 ...data
             }
             mutate({
@@ -143,7 +144,8 @@ export default function ProfileInfo() {
                 if (data) {
                     setUploadedIDData(data);
                     setSelectedDocument(data.name);
-                    setFiles([data.governmentIdCardFront, data.governmentIdCardBack]);
+                    setFrontFile(data.governmentIdCardFront);
+                    setBackFile(data.governmentIdCardBack);
                     setLoader(false)
                 }
                 else {
@@ -297,30 +299,49 @@ export default function ProfileInfo() {
 
 
                         <div className="w-full flex flex-col gap-2">
-                            <div className="flex flex-col w-full gap-6">
-                                <p className="-mb-3 text-mobiFormGray">
-                                    Upload Documents (Select front and back view of document)
-                                </p>
-                                <DropZone onUpload={handleDrop} />
-                            </div>
-                            <div className="grid grid-cols-3 gap-4 mt-4">
-                                {files.map((fileObj, index) => (
-                                    <div key={index} className="relative">
-                                        <img
-                                            src={fileObj}
-                                            alt="preview"
-                                            className="w-full h-24 object-cover rounded"
-                                        />
-                                        <button
-                                            onClick={() => removeImage(index)}
-                                            className="absolute top-1 right-1 bg-white shadow-lg text-black rounded-full p-1"
-                                        >
-                                            <FaTimes className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                ))}
+                            <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                                <div className="flex flex-col w-full gap-2">
+                                    <p className="mb-3 text-mobiFormGray">Upload Front View</p>
+                                    <DropZone onUpload={(file) => setFrontFile(file)} />
+                                    {frontFile && (
+                                        <div className="relative mt-2">
+                                            <img
+                                                src={frontFile}
+                                                alt="Front preview"
+                                                className="w-full h-24 object-cover rounded"
+                                            />
+                                            <button
+                                                onClick={() => setFrontFile(null)}
+                                                className="absolute top-1 right-1 bg-white shadow text-black rounded-full p-1"
+                                            >
+                                                <FaTimes className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="flex flex-col w-full gap-2">
+                                    <p className="mb-3 text-mobiFormGray">Upload Back View</p>
+                                    <DropZone multiple={false} onUpload={(file) => setBackFile(file)} />
+                                    {backFile && (
+                                        <div className="relative mt-2">
+                                            <img
+                                                src={backFile}
+                                                alt="Back preview"
+                                                className="w-full h-24 object-cover rounded"
+                                            />
+                                            <button
+                                                onClick={() => setBackFile(null)}
+                                                className="absolute top-1 right-1 bg-white shadow text-black rounded-full p-1"
+                                            >
+                                                <FaTimes className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                     <div className="flex">
