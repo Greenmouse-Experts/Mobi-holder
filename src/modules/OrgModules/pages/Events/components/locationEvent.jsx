@@ -21,6 +21,7 @@ export default function LocationEvent({ next, back, data }) {
 
 
     const dateTimeLocal = (value) => {
+        if(!value) return null;
         const dateTime = new Date(`${value}`)
         .toISOString()
         .slice(0, 16);

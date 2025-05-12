@@ -188,7 +188,7 @@ export default function TicketEvent({ back, data }) {
         let payload = {};
         setIsLoading(true);
 
-        if (data.id) {
+        if (data?.id) {
             payload = {
                 eventId: data.id,
                 ...event,
@@ -211,8 +211,8 @@ export default function TicketEvent({ back, data }) {
         const reformedPayload = transformPayload(payload);
 
         mutate({
-             url: data.eventId ? `/api/events/event/update` : `/api/events/event/create`,
-             method: data.eventId ? "PUT" : "POST",
+             url: data?.eventId ? `/api/events/event/update` : `/api/events/event/create`,
+             method: data?.eventId ? "PUT" : "POST",
              headers: true,
              data: reformedPayload,
              onSuccess: (response) => {

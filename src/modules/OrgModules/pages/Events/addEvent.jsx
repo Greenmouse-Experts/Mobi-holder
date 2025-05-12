@@ -21,7 +21,7 @@ export default function OrgAddEvent() {
                         </div>
                     </div>
 
-                    <div className="w-full flex flex-grow flex-col md:px-0 px-3 gap-10">
+                    <div className="w-full flex flex-grow flex-col md:px-0 px-3 gap-7">
                         <div className="hidden flex-col md:w-3/4 w-full md:gap-0 gap-3 md:flex sm:flex-row">
                             <button
                                 className={`w-full px-4 py-2 ${activeTab > 0 ? 'border-b-2 border-mobiBlue' : 'border-b border-mobiBorderFray'
