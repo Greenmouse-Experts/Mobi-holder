@@ -194,7 +194,7 @@ export default function ViewVerifiers() {
                                 <p>Location Photos</p>
 
                                 <div className="flex gap-4 overflow-x-auto p-4">
-                                    {JSON.parse(eventDetails.venueImage).map((src, index) => (
+                                    {eventDetails.venueImage.map((src, index) => (
                                         <img
                                             key={index}
                                             src={src}

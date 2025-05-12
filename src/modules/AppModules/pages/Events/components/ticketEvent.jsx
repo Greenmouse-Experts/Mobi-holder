@@ -265,7 +265,7 @@ export default function TicketEvent({ back }) {
                         </>
                     }
 
-{ticketsArray.map((tickets, index) => (
+                    {ticketsArray.map((tickets, index) => (
                         <div className="w-full flex flex-col rounded-lg gap-8 -mt-1 p-3 border-2 border-dashed">
                             <div className="flex flex-col w-full gap-6" key={index}>
                                 <p className="-mb-3 text-mobiFormGray">
