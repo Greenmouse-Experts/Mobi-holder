@@ -22,7 +22,6 @@ import CreateUserCard from '../modules/OrgModules/pages/IdCards/createUserCard';
 import PreviewCard from '../modules/OrgModules/pages/IdCards/viewCard';
 import UpdateMember from '../modules/OrgModules/pages/Memberships/updateMember';
 import InviteMember from '../modules/OrgModules/pages/Memberships/inviteMember';
-import OrgNotification from '../modules/OrgModules/Notifications';
 import OrgSettings from '../modules/OrgModules/Settings';
 import UpdateCard from "../modules/OrgModules/pages/IdCards/updateCard";
 import ViewOrgPublicEvents from "../modules/OrgModules/pages/Events/viewPublicEvents";
