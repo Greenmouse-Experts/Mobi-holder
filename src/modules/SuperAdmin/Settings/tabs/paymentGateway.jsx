@@ -30,6 +30,7 @@ export default function PaymentGateway() {
                 setIsLoading(false)
             },
             onError: () => {
+                setIsLoading(false)
             }
         });
     }
