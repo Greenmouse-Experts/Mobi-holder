@@ -3,7 +3,7 @@ import Header from "../../../../components/Header";
 import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "../../../../components/Loader";
 import { useOrganizationApi } from "../../../../api/hooks/useOrganizationApi";
@@ -20,6 +20,8 @@ export default function CreateUserCard() {
     const { id } = useParams();
 
     const { getOrganisationsMember } = useOrganizationApi();
+
+    const navigate = useNavigate();
 
     const { mutate } = useApiMutation();
 

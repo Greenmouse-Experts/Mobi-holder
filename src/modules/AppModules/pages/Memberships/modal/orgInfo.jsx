@@ -2,7 +2,7 @@ import UserPhoto from "../../../../../components/UserPhoto";
 
 const OrganisationInfo = ({ closeModal, orgInfo }) => {
 
-    const formattedAddress = JSON.parse(orgInfo.companyAddress);
+    const formattedAddress = orgInfo.companyAddress;
 
     return (
         <>

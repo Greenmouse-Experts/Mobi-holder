@@ -142,7 +142,7 @@ export default function Membership() {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const TableHeaders = ["Organisation", "Role", "Staff ID", "Email", "Status", "Action"];
+    const TableHeaders = ["Organisation", "Role", "Staff ID", "Email", "Date Joined", "Status", "Action"];
     const RequetsHeaders1 = ["Organisation", "Role", "Request ID", "Requested On", "Action"];
     const RequetsHeaders2 = ["Organisation", "Request ID", "Role", "Request On", "Status", "Action"];
 
@@ -167,6 +167,7 @@ export default function Membership() {
                 setIsLoading(false);
             },
             onError: () => {
+                console.log("Error fetching data");
                 setIsLoading(false);
             }
         });
@@ -291,6 +292,7 @@ export default function Membership() {
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.id}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyEmail}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.dateJoined, 'dd-MM-yyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
                                         <td className="px-6 py-3">
                                             <Menu placement="left">
