@@ -97,7 +97,7 @@ export default function PaymentGateway() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Gateway Public Key
                                         </p>
-                                        <Input type="text" name="publicKey" value={gateway.publicKey} register={register}
+                                        <Input type="text" name="publicKey" value={gateway?.publicKey} register={register}
                                             rules={{ required: 'API Key is required' }} errors={errors} placeholder="Enter API Key" />
                                     </div>
 
@@ -105,7 +105,7 @@ export default function PaymentGateway() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Gateway Secret key
                                         </p>
-                                        <Input type="text" name="secretKey" value={gateway.secretKey} register={register}
+                                        <Input type="text" name="secretKey" value={gateway?.secretKey} register={register}
                                             rules={{ required: 'Secret Key is required' }} errors={errors} placeholder="Enter Secret Key" />
                                     </div>
 
