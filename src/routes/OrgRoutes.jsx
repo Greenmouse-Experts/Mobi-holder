@@ -35,6 +35,7 @@ import OrganisationPlans from "../modules/OrgModules/pages/Subscription/plans";
 import ViewPlan from "../modules/OrgModules/pages/Subscription/viewPlan";
 import SubscriptionLog from "../modules/OrgModules/pages/Subscription/SubscriptionLog";
 import Notification from "../modules/Notifications";
+import Wallet from "../modules/OrgModules/pages/Wallet";
 
 const OrgRoutes = [
     <Route path="dashboard" element={<OrgDashboard />} />,
@@ -74,6 +75,7 @@ const OrgRoutes = [
     <Route path="subscription/log" element={<SubscriptionLog />} />,
     <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
     <Route path="notification" element={<Notification organisation />} />,
+    <Route path="wallet" element={<Wallet />} />,
 ];
 
 export default OrgRoutes;

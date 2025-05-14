@@ -5,6 +5,7 @@ import Theme from '../../components/Theme';
 import useModal from '../../hooks/modal';
 import LogOutModal from '../../components/LogOutModal';
 import ReusableModal from '../../components/ReusableModal';
+import { FaWallet } from 'react-icons/fa';
 
 export default function OrgSidebar({ mobile }) {
     const location = useLocation();
@@ -136,6 +137,15 @@ export default function OrgSidebar({ mobile }) {
                     name: "Scan Event"
                 },
             ],
+            openChildren: false
+        },
+
+        {
+            path: "/org/wallet",
+            slug: "wallet",
+            name: "Wallet",
+            icon: <FaWallet className="mr-3" />,
+            children: [],
             openChildren: false
         },
 
