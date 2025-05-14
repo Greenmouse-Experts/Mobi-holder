@@ -28,6 +28,10 @@ export default function OrgSettings() {
             slug: 'Security',
             name: 'Security'
         },
+        {
+            slug: 'Bank Details',
+            name: 'Bank Details'
+        }
        /* {
             slug: 'Support',
             name: 'Support'
@@ -73,6 +77,7 @@ export default function OrgSettings() {
                                     {activeTab === 'Account Info' && <AccountInfo />}
                                     {activeTab === 'Security' && <Security />}
                                     {activeTab === 'Support' && <Support />}
+                                    {activeTab === 'Bank Details' && <BankDetails />}
                                 </div>
                             </div>
                         </div>

@@ -6,6 +6,7 @@ import AccountInfo from "./tabs/accountInfo";
 import Security from "./tabs/security";
 import Support from "./tabs/support";
 import DropdownMenu from "../../../components/DropdownMenu";
+import BankDetails from "./tabs/bankDetails";
 
 export default function Settings() {
     const [activeTab, setActiveTab] = useState('Profile Info');
@@ -23,6 +24,10 @@ export default function Settings() {
             slug: 'Security',
             name: 'Security'
         },
+        {
+            slug: 'Bank Details',
+            name: 'Bank Details'
+        }
        /* {
             slug: 'Support',
             name: 'Support'
@@ -67,6 +72,7 @@ export default function Settings() {
                                     {activeTab === 'Account Info' && <AccountInfo />}
                                     {activeTab === 'Security' && <Security />}
                                     {activeTab === 'Support' && <Support />}
+                                    {activeTab === 'Bank Details' && <BankDetails />}
                                 </div>
                             </div>
                         </div>
