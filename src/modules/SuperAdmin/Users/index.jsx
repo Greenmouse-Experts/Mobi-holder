@@ -13,12 +13,18 @@ import SuspendModal from "./modal/SuspendModal";
 export default function AllUsers() {
     const navigate = useNavigate();
     const [individuals, setIndividuals] = useState([]);
+    const [allIndividuals, setAllIndividuals] = useState([]);
+
+    const [search, setSearch] = useState('');
+
     const [paginationData, setPagination] = useState({});
     const [loadingIndividuals, setLoadingIndividuals] = useState(false);
 
     const { getIndividualsAdmin } = useIndividualApi();
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
+
+
 
     const getUsers = async (params) => {
         setLoadingIndividuals(true); // Start loading
@@ -35,8 +41,24 @@ export default function AllUsers() {
     };
 
 
+
+    const getAllUsers = async () => {
+        try {
+            const data = await getIndividualsAdmin(`?page=1&limit=2000000000000`);
+            setAllIndividuals(data.data);
+        } catch (error) {
+            console.error("Error fetching individuals:", error);
+        } finally {
+        }
+    };
+
+
+
+
+
     useEffect(() => {
         getUsers(1);
+        getAllUsers();
     }, []);
 
 
@@ -54,6 +76,18 @@ export default function AllUsers() {
     const TableHeaders = ["Name", "Mobiholder ID", "Email", "Phone Number", "Username", "Status", "Action"];
 
 
+    const filteredIndividuals = (search === '' ? individuals : allIndividuals)?.filter((data) => {
+        const fullName = `${data.firstName} ${data.lastName}`.toLowerCase();
+        return (
+            fullName.includes(search.toLowerCase()) ||
+            data.mobiHolderId?.toLowerCase().includes(search.toLowerCase()) ||
+            data.email?.toLowerCase().includes(search.toLowerCase()) ||
+            data.phoneNumber?.toLowerCase().includes(search.toLowerCase()) ||
+            data.username?.toLowerCase().includes(search.toLowerCase())
+        );
+    });
+
+
     return (
         <>
             <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -65,6 +99,8 @@ export default function AllUsers() {
                             currentPage={paginationData.page}
                             totalPages={paginationData.totalPages}
                             onPageChange={(page) => getUsers(page)}
+                            search={search}
+                            onSearchChange={setSearch}
                             tableBtn={
                                 <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
                                     <span className="text-xs text-white">Newest First</span>
@@ -75,8 +111,8 @@ export default function AllUsers() {
                                 </button>
                             }
                             tableHeader={TableHeaders}>
-                            {individuals.length > 0 ?
-                                individuals.map((data, index) => (
+                            {filteredIndividuals.length > 0 ?
+                                filteredIndividuals.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{index + 1}</td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{data.firstName} {data.lastName}</td>

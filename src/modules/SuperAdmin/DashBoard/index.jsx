@@ -251,7 +251,7 @@ export default function Dashboard() {
                             <Table subTitle={<span>Upcoming Events</span>}
                                 tableHeader={NewTableHeaders}>
                                 {eventsData.length > 0 ?
-                                    eventsData
+                                    eventsData.slice(0, 4)
                                         .map((data, index) => (
                                             <tr key={index} className="py-5">
                                                 <td className="px-3 py-5 text-mobiTableText">{data.name}</td>

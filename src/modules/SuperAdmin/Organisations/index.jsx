@@ -13,8 +13,10 @@ import useModal from "../../../hooks/modal";
 export default function Organisations() {
     const navigate = useNavigate();
     const [organisations, setOrganisations] = useState([]);
+    const [allOrganisations, setAllOrganisations] = useState([]);
     const [paginationData, setPagination] = useState({});
     const [loadingOrganisations, setLoadingOrganisations] = useState(false);
+    const [search, setSearch] = useState('');
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
@@ -47,14 +49,43 @@ export default function Organisations() {
     };
 
 
+
+
+    const getAllUsers = async () => {
+        try {
+            const data = await getOrganisationsAdmin(`?page=1&limit=20000000000000000`);
+            setAllOrganisations(data.data);
+        } catch (error) {
+            console.error("Error fetching organisations:", error);
+        } finally {
+        }
+    };
+
+
+
+
     useEffect(() => {
         getUsers(1);
+        getAllUsers();
     }, []);
 
 
 
     const TableHeaders = ["Organisation name", "Mobiholder ID", "Email", "Phone Number", "Location", "Status", "Action"];
 
+
+    const filteredOrganisations = (search === '' ? organisations : allOrganisations)?.filter((data) => {
+        const fullAddress = `${data.companyAddress.state} ${data.companyAddress.country}`;
+        return (
+            data.companyName?.toLowerCase().includes(search.toLowerCase()) ||
+            data.mobiHolderId?.toLowerCase().includes(search.toLowerCase()) ||
+            data.email?.toLowerCase().includes(search.toLowerCase()) ||
+            data.phoneNumber?.toLowerCase().includes(search.toLowerCase()) ||
+            fullAddress?.toLowerCase().includes(search.toLowerCase())
+        );
+    });
+
+    
 
     return (
         <>
@@ -67,6 +98,8 @@ export default function Organisations() {
                             currentPage={paginationData.page}
                             totalPages={paginationData.totalPages}
                             onPageChange={(page) => getUsers(page)}
+                            search={search}
+                            onSearchChange={setSearch}
                             tableBtn={
                                 <button className="px-2 pt-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(21, 23, 30, 1)' }}>
                                     <span className="text-xs text-white">Newest First</span>
@@ -77,8 +110,8 @@ export default function Organisations() {
                                 </button>
                             }
                             tableHeader={TableHeaders}>
-                            {organisations.length > 0 ?
-                                organisations.map((data, index) => (
+                            {filteredOrganisations.length > 0 ?
+                                filteredOrganisations.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{index + 1}</td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{data.companyName}</td>
@@ -87,7 +120,7 @@ export default function Organisations() {
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">{data.phoneNumber}</td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal">
                                             {data.companyAddress.state} {data.companyAddress.country}
-                                            </td>
+                                        </td>
                                         <td className="px-3 py-5 text-mobiTableText break-words whitespace-normal"><Badge status={data.status} /></td>
                                         <td className="px-3 py-3">
                                             <Menu placement="left">
@@ -106,12 +139,12 @@ export default function Organisations() {
                                                     </MenuItem>
                                                     <MenuItem className="flex flex-col gap-3">
                                                         <span className="cursor-pointer" onClick={() => navigate(`members/${data.id}`)}>
-                                                             View Members
+                                                            View Members
                                                         </span>
                                                     </MenuItem>
                                                     <MenuItem className="flex flex-col gap-3">
                                                         <span className="cursor-pointer" onClick={() => navigate(`templates/${data.id}`)}>
-                                                             View Card Templates
+                                                            View Card Templates
                                                         </span>
                                                     </MenuItem>
                                                     {data.status === 'active' ?
