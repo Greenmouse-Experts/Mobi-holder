@@ -124,7 +124,7 @@ export default function AddCard() {
                                                 <p className="-mb-3 text-mobiFormGray">
                                                     Scan ID Card Front
                                                 </p>
-                                                <DropZone text="Upload the front of the ID Card" onUpload={handleDrop} />
+                                                <DropZone text="Upload the front of the ID Card" multiple={false} maxSize={false} onUpload={handleDrop} />
                                             </div>
                                             <div className="grid grid-cols-3 gap-4 mt-4">
                                                 {files.map((fileObj, index) => (
@@ -143,7 +143,7 @@ export default function AddCard() {
                                                 <p className="-mb-3 text-mobiFormGray">
                                                     Scan ID Card Back
                                                 </p>
-                                                <DropZone text="Upload the back of the ID Card" onUpload={handleDropBack} />
+                                                <DropZone text="Upload the back of the ID Card" multiple={false} maxSize={false} onUpload={handleDropBack} />
                                             </div>
                                             <div className="grid grid-cols-3 gap-4 mt-4">
                                                 {backFiles.map((fileObj, index) => (

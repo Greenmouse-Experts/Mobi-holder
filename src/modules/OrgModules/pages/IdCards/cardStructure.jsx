@@ -223,7 +223,7 @@ export default function CardStructure() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Company Logo
                                             </p>
-                                            <DropZone text="Upload Company Logo" onUpload={handleDrop} />
+                                            <DropZone text="Upload Company Logo" multiple={false} maxSize={false} onUpload={handleDrop} />
                                         </div>
 
                                         <div className="grid grid-cols-3 gap-4 mt-4">
