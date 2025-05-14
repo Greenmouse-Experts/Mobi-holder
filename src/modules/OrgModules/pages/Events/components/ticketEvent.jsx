@@ -131,8 +131,13 @@ export default function TicketEvent({ back, data }) {
         setIsLoading(true);
         openModal({
             size: "sm",
-            content: <ConfirmModal closeModal={closeModal} eventInfo={data} selectedPlan={selectedPlan} ticketsArray={ticketsArray} eventPayload={event} redirect={handleRedirect} />
+            content: <ConfirmModal closeModal={handleCloseModal} eventInfo={data} selectedPlan={selectedPlan} ticketsArray={ticketsArray} eventPayload={event} redirect={handleRedirect} />
         })
+    }
+
+
+    const handleCloseModal = () => {
+        setIsLoading(false);
     }
 
 
