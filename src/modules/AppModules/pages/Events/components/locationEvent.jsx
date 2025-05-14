@@ -9,8 +9,12 @@ export default function LocationEvent({ next, back }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [files, setFiles] = useState(event.venueImage ? event.venueImage : []);
+
+
+    const startDate = watch("startDate");
+    const endDate = watch("endDate");
 
 
     const handleBack = () => {
@@ -30,16 +34,16 @@ export default function LocationEvent({ next, back }) {
 
     const createEvent = (data) => {
         const payload = {
-             ...event,
-             ...data,
+            ...event,
+            ...data,
             venue: {
                 name: data.venueName,
                 address: `${data.street} ${data.city} ${data.state}, ${data.country}`
             },
             venueImage: files
-         }; 
-         localStorage.setItem('eventPayload', JSON.stringify(payload));
-         next(true);
+        };
+        localStorage.setItem('eventPayload', JSON.stringify(payload));
+        next(true);
     }
 
     return (
@@ -128,8 +132,19 @@ export default function LocationEvent({ next, back }) {
                             <p className="-mb-3 text-mobiFormGray">
                                 End Date
                             </p>
-                            <Input name="endDate" value={event?.endDate} rules={{ required: 'End Date is required' }} errors={errors} register={register}
-                                type="datetime-local" placeholder="Choose the End date" />
+                            <Input
+                                name="endDate"
+                                value={event?.endDate}
+                                rules={{
+                                    required: 'End Date is required',
+                                    validate: value =>
+                                        new Date(value) >= new Date(startDate) || "End Date must be after Start Date"
+                                }}
+                                errors={errors}
+                                register={register}
+                                type="datetime-local"
+                                placeholder="Choose the End date"
+                            />
                         </div>
                     </div>
 

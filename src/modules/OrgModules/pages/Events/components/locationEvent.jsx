@@ -10,7 +10,7 @@ export default function LocationEvent({ next, back, data }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [files, setFiles] = useState(() => {
         return event.venueImage
             || (data?.venueImage ? JSON.parse(data.venueImage) : [])
@@ -19,12 +19,14 @@ export default function LocationEvent({ next, back, data }) {
 
     const venueLocation = data ? data?.venue : null;
 
+    const startDate = watch("startDate");
+    const endDate = watch("endDate");
 
     const dateTimeLocal = (value) => {
-        if(!value) return null;
+        if (!value) return null;
         const dateTime = new Date(`${value}`)
-        .toISOString()
-        .slice(0, 16);
+            .toISOString()
+            .slice(0, 16);
 
         return dateTime
     }
@@ -78,7 +80,7 @@ export default function LocationEvent({ next, back, data }) {
                         <Input type="text" name="street" value={event?.street || venueLocation?.address} rules={{ required: 'Address is required' }} register={register} placeholder="Enter the address of the venue of your event" />
                     </div>
 
-                   {/* <div className="flex flex-col w-full gap-6">
+                    {/* <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">
                             Country
                         </p>
@@ -146,8 +148,19 @@ export default function LocationEvent({ next, back, data }) {
                             <p className="-mb-3 text-mobiFormGray">
                                 End Date
                             </p>
-                            <Input name="endDate" value={event?.endDate || dateTimeLocal(data?.endDate)} rules={{ required: 'End Date is required' }} errors={errors} register={register}
-                                type="datetime-local" placeholder="Choose the End date" />
+                            <Input
+                                name="endDate"
+                                value={event?.endDate}
+                                rules={{
+                                    required: 'End Date is required',
+                                    validate: value =>
+                                        new Date(value) >= new Date(startDate) || "End Date must be after Start Date"
+                                }}
+                                errors={errors}
+                                register={register}
+                                type="datetime-local"
+                                placeholder="Choose the End date"
+                            />
                         </div>
                     </div>
 
