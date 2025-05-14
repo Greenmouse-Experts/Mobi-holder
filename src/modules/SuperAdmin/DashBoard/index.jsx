@@ -77,8 +77,6 @@ export default function Dashboard() {
                 return eventStartDate >= tomorrow;
             });
 
-            console.log(futureEvents)
-
             setEventsData(futureEvents);
         } catch (error) {
             console.error("Error fetching events:", error);
