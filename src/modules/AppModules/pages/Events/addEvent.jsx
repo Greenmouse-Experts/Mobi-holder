@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AboutEvent from "./components/aboutEvent";
 import LocationEvent from "./components/locationEvent";
 import TicketEvent from "./components/ticketEvent";
@@ -9,6 +9,22 @@ export default function AddEvent() {
     const user = useSelector((state) => state.userData.data);
 
     const [activeTab, setActiveTab] = useState(1);
+
+
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            console.log('Page is being unloaded');
+            localStorage.removeItem('eventPayload');
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            localStorage.removeItem('eventPayload'); // React navigation
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
 
     return (
         <>
