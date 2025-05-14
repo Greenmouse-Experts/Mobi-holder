@@ -1,45 +1,29 @@
 import { useForm } from "react-hook-form";
 import Input from "../../../../../components/Input";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@material-tailwind/react";
 import RadioButtonGroup from "../../../../../components/RadioButtonGroup";
 import Checkbox from "../../../../../components/CheckBox";
 import useApiMutation from "../../../../../api/hooks/useApiMutation";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "./modal/confirmModal";
+import useModal from "../../../../../hooks/modal";
+import ReusableModal from "../../../../../components/ReusableModal";
 
 export default function TicketEvent({ back, data }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
+
     const { register, trigger, handleSubmit, formState: { errors } } = useForm();
-    const [selectedPlan, setSelectedPlan] = useState(data ? data.ticketType : 'Free');
+    const [selectedPlan, setSelectedPlan] = useState('Free');
     const [isLoading, setIsLoading] = useState(false);
-    const [isRecurring, setIsRecurring] = useState(data ? data.isRecurring : false);
-    const [recurrenceType, setRecurrenceType] = useState(data ? data.recurrenceType : null);
-    const [ticketsArray, setTicketsArray] = useState(data ?
-        data.eventtickets.map(ticket => ({
-            id: ticket.id,
-            name: ticket.name,
-            ticketsAvailable: ticket.ticketsAvailable ?? null,
-            plusAllowed: null,
-            price: ticket.price ?? null
-        }))
-        :
-        [
-            { name: null, ticketsAvailable: null, plusAllowed: null, price: null }
-        ]
-    );
-
-
-
-    const dateTimeLocal = (value) => {
-        const dateTime = new Date(`${value}`)
-            .toISOString()
-            .slice(0, 16);
-
-        return dateTime
-    }
-
+    const [isRecurring, setIsRecurring] = useState(false);
+    const [recurrenceType, setRecurrenceType] = useState(null);
+    const [ticketsArray, setTicketsArray] = useState([
+        { name: null, ticketsAvailable: null, plusAllowed: null, price: null }
+    ]);
 
     const { mutate } = useApiMutation();
 
@@ -83,6 +67,7 @@ export default function TicketEvent({ back, data }) {
             setTicketsArray(prevTickets => prevTickets.filter((_, i) => i !== index));
         }
     }
+
 
 
     const frequencyOptions = [
@@ -141,96 +126,27 @@ export default function TicketEvent({ back, data }) {
     }
 
 
-    const transformPayload = (input) => {
-        const tickets = ticketsArray.map((ticketRef, index) => {
-            const name = input[`ticketName${index}`];
-            const ticketsAvailable = input[`ticketsAvailable${index}`];
-            const plusAllowed = input[`plusAllowed${index}`];
-            const price = input[`price${index}`];
 
-            const ticket = {
-                name: name || null,
-                ticketsAvailable: ticketsAvailable ? Number(ticketsAvailable) : null,
-                plusAllowed: plusAllowed ? Number(plusAllowed) : null,
-                price: price ? String(price) : null,
-            };
-
-            // Include ID if it exists in the reference array
-            if (ticketRef.id) {
-                ticket.id = ticketRef.id;
-            }
-
-            return ticket;
-        }).filter(ticket => ticket.name); // Remove tickets with no name
-
-        // Clean up input by removing ticket-related keys
-        const cleanedInput = { ...input };
-        Object.keys(input).forEach((key) => {
-            if (
-                key.startsWith("ticketName") ||
-                key.startsWith("ticketsAvailable") ||
-                key.startsWith("plusAllowed") ||
-                key.startsWith("price")
-            ) {
-                delete cleanedInput[key];
-            }
-        });
-
-        return {
-            ...cleanedInput,
-            tickets,
-        };
-    };
-
-
-
-    const createEvent = (dataEvent) => {
-        let payload = {};
+    const checkEvent = (data) => {
         setIsLoading(true);
-
-        if (data?.id) {
-            payload = {
-                eventId: data.id,
-                ...event,
-                ...dataEvent,
-                ticketType: selectedPlan
-            };
-        }
-        else {
-            payload = {
-                ...event,
-                ...dataEvent,
-                ticketType: selectedPlan
-            };
-        }
-        delete payload.city;
-        delete payload.country;
-        delete payload.state;
-        delete payload.street;
-        delete payload.venueName;
-        const reformedPayload = transformPayload(payload);
-
-        mutate({
-             url: data?.eventId ? `/api/events/event/update` : `/api/events/event/create`,
-             method: data?.eventId ? "PUT" : "POST",
-             headers: true,
-             data: reformedPayload,
-             onSuccess: (response) => {
-                 navigate(-1);
-                 localStorage.removeItem('eventPayload');
-                 setIsLoading(false)
-             },
-             onError: () => {
-                 setIsLoading(false)
-             }
-         });
-
+        openModal({
+            size: "sm",
+            content: <ConfirmModal closeModal={closeModal} eventInfo={data} selectedPlan={selectedPlan} ticketsArray={ticketsArray} eventPayload={event} redirect={handleRedirect} />
+        })
     }
+
+
+    const handleRedirect = () => {
+        setIsLoading(false);
+        navigate(-1);
+        localStorage.removeItem('eventPayload');
+    }
+
 
 
     return (
         <>
-            <form onSubmit={handleSubmit(createEvent)}>
+            <form onSubmit={handleSubmit(checkEvent)}>
                 <div className="mb-1 flex flex-col gap-10 mt-5">
                     <div className="flex w-full gap-6">
                         <RadioButtonGroup options={arrayOptions} select={handleSelect} selectedOption={selectedPlan} />
@@ -245,7 +161,6 @@ export default function TicketEvent({ back, data }) {
                                     name="isRecurring"
                                     label="Event Occurs more than once"
                                     register={register}
-                                    value={isRecurring}
                                     errors={errors}
                                     onChange={(checked) => setIsRecurring(checked)}
                                 />
@@ -259,7 +174,7 @@ export default function TicketEvent({ back, data }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Event Frequency
                                 </p>
-                                <Input name="frequency" value={data?.frequency} options={frequencyOptions} register={register} errors={errors}
+                                <Input name="frequency" options={frequencyOptions} register={register} errors={errors}
                                     rules={{ required: 'Event Frequency is required' }}
                                     type="select" placeholder="Select Frequency" />
                             </div>
@@ -268,7 +183,7 @@ export default function TicketEvent({ back, data }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Event Recurrence End Type
                                 </p>
-                                <Input name="recurrenceEndType" value={data?.recurrenceEndType} options={recurrenceOptions} register={register} errors={errors}
+                                <Input name="recurrenceEndType" options={recurrenceOptions} register={register} errors={errors}
                                     rules={{ required: 'Event Frequency is required' }}
                                     onChange={handleRecurrence}
                                     type="select" placeholder="Select End Type" />
@@ -279,7 +194,7 @@ export default function TicketEvent({ back, data }) {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Number of Recurrencies
                                     </p>
-                                    <Input type="text" name="recurrenceCount" value={data?.recurrenceCount}
+                                    <Input type="text" name="recurrenceCount"
                                         rules={{ required: 'Number of Recurrencies is required' }} errors={errors} register={register}
                                         placeholder="Number of Recurrencies" />
                                 </div>
@@ -290,7 +205,7 @@ export default function TicketEvent({ back, data }) {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Recurrence End Date
                                     </p>
-                                    <Input type="datetime-local" name="recurrenceEndDate" value={dateTimeLocal(data?.recurrenceEndDate)}
+                                    <Input type="datetime-local" name="recurrenceEndDate"
                                         rules={{ required: 'Recurrency end date is required' }} errors={errors} register={register}
                                         placeholder="Recurrency End Date" />
                                 </div>
@@ -304,7 +219,7 @@ export default function TicketEvent({ back, data }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Ticket Name
                                 </p>
-                                <Input type="text" value={tickets?.name} name={`ticketName${index}`}
+                                <Input type="text" name={`ticketName${index}`}
                                     rules={{ required: 'Ticket Name is required' }} errors={errors} register={register}
                                     placeholder="Ticket Name" />
                             </div>
@@ -313,7 +228,7 @@ export default function TicketEvent({ back, data }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Number of Tickets Available
                                 </p>
-                                <Input type="text" value={tickets?.ticketsAvailable} name={`ticketsAvailable${index}`}
+                                <Input type="text" name={`ticketsAvailable${index}`}
                                     rules={{ required: 'Number of Available Tickets is required' }} errors={errors} register={register}
                                     placeholder="Number of Available Tickets" />
                             </div>
@@ -322,7 +237,7 @@ export default function TicketEvent({ back, data }) {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Additional Number of Tickets Available
                                 </p>
-                                <Input type="text" value={tickets?.plusAllowed} name={`plusAllowed${index}`}
+                                <Input type="text" name={`plusAllowed${index}`}
                                     rules={{ required: 'Additional Number of Available Tickets is required' }} errors={errors} register={register}
                                     placeholder="Additional Number of Available Tickets" />
                             </div>
@@ -332,7 +247,7 @@ export default function TicketEvent({ back, data }) {
                                     <p className="-mb-3 text-mobiFormGray">
                                         Price of Ticket
                                     </p>
-                                    <Input type="text" value={tickets?.price} name={`price${index}`}
+                                    <Input type="text" name={`price${index}`}
                                         rules={{ required: 'Price of Ticket is required' }} errors={errors} register={register}
                                         placeholder="Price of Ticket" />
                                 </div>
@@ -359,12 +274,22 @@ export default function TicketEvent({ back, data }) {
                         </Button>
 
                         <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
-                            {isLoading ? (data ? "Updating..." : "Creating...") : data ? "Update" : "Create"}
+                            {isLoading ? 'Creating...' : 'Create'}
                         </Button>
                     </div>
 
                 </div>
             </form>
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
         </>
     )
 }

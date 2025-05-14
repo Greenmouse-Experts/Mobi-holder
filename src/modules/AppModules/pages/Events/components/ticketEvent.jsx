@@ -6,10 +6,15 @@ import RadioButtonGroup from "../../../../../components/RadioButtonGroup";
 import Checkbox from "../../../../../components/CheckBox";
 import useApiMutation from "../../../../../api/hooks/useApiMutation";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "./modal/confirmModal";
+import useModal from "../../../../../hooks/modal";
+import ReusableModal from "../../../../../components/ReusableModal";
 
 export default function TicketEvent({ back }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
+
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const { register, trigger, handleSubmit, formState: { errors } } = useForm();
     const [selectedPlan, setSelectedPlan] = useState('Free');
@@ -121,84 +126,27 @@ export default function TicketEvent({ back }) {
     }
 
 
-    const transformPayload = (input) => {
-        const tickets = ticketsArray.map((ticketRef, index) => {
-            const name = input[`ticketName${index}`];
-            const ticketsAvailable = input[`ticketsAvailable${index}`];
-            const plusAllowed = input[`plusAllowed${index}`];
-            const price = input[`price${index}`];
 
-            const ticket = {
-                name: name || null,
-                ticketsAvailable: ticketsAvailable ? Number(ticketsAvailable) : null,
-                plusAllowed: plusAllowed ? Number(plusAllowed) : null,
-                price: price ? String(price) : null,
-            };
-
-            // Include ID if it exists in the reference array
-            if (ticketRef.id) {
-                ticket.id = ticketRef.id;
-            }
-
-            return ticket;
-        }).filter(ticket => ticket.name); // Remove tickets with no name
-
-        // Clean up input by removing ticket-related keys
-        const cleanedInput = { ...input };
-        Object.keys(input).forEach((key) => {
-            if (
-                key.startsWith("ticketName") ||
-                key.startsWith("ticketsAvailable") ||
-                key.startsWith("plusAllowed") ||
-                key.startsWith("price")
-            ) {
-                delete cleanedInput[key];
-            }
-        });
-
-        return {
-            ...cleanedInput,
-            tickets,
-        };
-    };
-
-
-
-    const createEvent = (data) => {
-        setIsLoading(true)
-        const payload = {
-            ...event,
-            ...data,
-            ticketType: selectedPlan
-        };
-        delete payload.city;
-        delete payload.country;
-        delete payload.state;
-        delete payload.street;
-        delete payload.venueName;
-        const reformedPayload = transformPayload(payload);
-
-        mutate({
-            url: `/api/events/event/create`,
-            method: "POST",
-            headers: true,
-            data: reformedPayload,
-            onSuccess: (response) => {
-                navigate(-1);
-                localStorage.removeItem('eventPayload');
-                setIsLoading(false)
-            },
-            onError: () => {
-                setIsLoading(false)
-            }
-        });
-
+    const checkEvent = (data) => {
+        setIsLoading(true);
+        openModal({
+            size: "sm",
+            content: <ConfirmModal closeModal={closeModal} eventInfo={data} selectedPlan={selectedPlan} ticketsArray={ticketsArray} eventPayload={event} redirect={handleRedirect} />
+        })
     }
+
+
+    const handleRedirect = () => {
+        setIsLoading(false);
+        navigate(-1);
+        localStorage.removeItem('eventPayload');
+    }
+
 
 
     return (
         <>
-            <form onSubmit={handleSubmit(createEvent)}>
+            <form onSubmit={handleSubmit(checkEvent)}>
                 <div className="mb-1 flex flex-col gap-10 mt-5">
                     <div className="flex w-full gap-6">
                         <RadioButtonGroup options={arrayOptions} select={handleSelect} selectedOption={selectedPlan} />
@@ -332,6 +280,16 @@ export default function TicketEvent({ back }) {
 
                 </div>
             </form>
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
         </>
     )
 }
