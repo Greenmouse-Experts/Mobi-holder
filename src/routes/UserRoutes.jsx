@@ -34,6 +34,7 @@ import ViewPersonalCard from "../modules/AppModules/pages/IdCards/viewPersonalCa
 import IndividualPlans from "../modules/AppModules/pages/Subscriptions/plans";
 import ViewPlan from "../modules/AppModules/pages/Subscriptions/viewPlan";
 import SubscriptionLog from "../modules/AppModules/pages/Subscriptions/SubscriptionLog";
+import Wallet from "../modules/AppModules/pages/Wallet";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -72,6 +73,7 @@ const UserRoutes = [
     <Route path="subscription/plans/view/:id" element={<ViewPlan />} />,
     <Route path="subscription/log" element={<SubscriptionLog />} />,
     <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
+    <Route path="wallet" element={<Wallet />} />,
 ];
 
 export default UserRoutes
