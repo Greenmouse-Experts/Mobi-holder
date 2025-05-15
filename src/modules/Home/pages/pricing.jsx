@@ -13,9 +13,9 @@ const PricingPlans = () => {
 
     const { mutate } = useApiMutation();
 
-    useEffect(() => {
+    /*useEffect(() => {
         fetchSubscriptionPlans();
-    }, []);
+    }, []);*/
 
 
   /*  const fetchSubscriptionPlans = () => {

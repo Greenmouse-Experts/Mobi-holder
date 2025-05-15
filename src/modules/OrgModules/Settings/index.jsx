@@ -7,6 +7,7 @@ import Support from "./tabs/support";
 import DropdownMenu from "../../../components/DropdownMenu";
 import OrganisationData from "./tabs/organisationData";
 import UserData from "./tabs/userData";
+import BankDetails from "./tabs/bankDetails";
 
 export default function OrgSettings() {
     const [activeTab, setActiveTab] = useState('Organisation Data');
