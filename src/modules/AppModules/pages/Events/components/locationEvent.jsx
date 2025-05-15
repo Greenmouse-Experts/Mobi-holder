@@ -140,8 +140,8 @@ export default function LocationEvent({ next, back }) {
                                     validate: value => {
                                         if (!value || !startDate) return true;
 
-                                        const start = new Date(startDate.replace('T', ' ') + ':00');
-                                        const end = new Date(value.replace('T', ' ') + ':00');
+                                        const start = new Date(startDate);
+                                        const end = new Date(value);
 
                                         return end >= start || "End Date must be after Start Date";
                                     }
