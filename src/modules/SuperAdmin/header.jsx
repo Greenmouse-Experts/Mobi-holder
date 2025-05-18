@@ -37,7 +37,7 @@ export default function Header({ mobile }) {
                             <img src={settings} />
                         </div>
                         <div className="lg:flex md:flex hidden md:p-2 px-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                            <Link to={'/app/notification'} className="w-full">
+                            <Link to={'/superadmin/notification'} className="w-full">
                                 <img src={notifications} />
                             </Link>
                         </div>

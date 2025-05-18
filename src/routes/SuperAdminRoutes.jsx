@@ -33,6 +33,7 @@ import OrganisationPlan from "../modules/SuperAdmin/Subscriptions/OrganisationPl
 import OrgCreatePlan from "../modules/SuperAdmin/Subscriptions/modules/orgCreatePlan";
 import IndividualLog from "../modules/SuperAdmin/Subscriptions/IndividualLog";
 import OrganisationLog from "../modules/SuperAdmin/Subscriptions/OrganisationLog";
+import FAQs from "../modules/SuperAdmin/FAQs";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -70,6 +71,7 @@ const SuperAdminRoutes = [
     <Route path="staffs/update/:id" element={<UpdateStaff />} />,
     <Route path="staffs/roles" element={<ViewRoles />} />,
     <Route path="settings" element={<AdminSettings />} />,
+    <Route path="faqs" element={<FAQs />} />,
 ];
 
 export default SuperAdminRoutes;
