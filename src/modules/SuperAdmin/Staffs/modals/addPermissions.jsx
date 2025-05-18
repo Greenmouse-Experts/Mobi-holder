@@ -104,8 +104,9 @@ const AddPermissions = ({ closeModal, id }) => {
                                                     onChange={() => getChecked(permission)}
                                                 />
                                             </span>
-                                            <span className="flex flex-col mt-2 capitalize">
-                                                {permission.name}
+                                            <span className="flex flex-col gap-1 mt-2 capitalize">
+                                               <p className="font-semibold"> {permission.name} </p>
+                                               <p className="font-[400]">({permission.hint})</p>
                                             </span>
                                         </div>
                                     ))}

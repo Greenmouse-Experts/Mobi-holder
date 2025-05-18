@@ -1,25 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../header";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useApiMutation from "../../../api/hooks/useApiMutation";
 import Loader from "../../../components/Loader";
 import { Button } from "@material-tailwind/react";
+import useModal from "../../../hooks/modal";
+import ReusableModal from "../../../components/ReusableModal";
+import DeleteModal from "../../../components/DeleteModal";
 
 const IndividualPlan = () => {
-
-    const [subscriptionPlans, setSubscriptionPlans] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
+    const [subscriptionPlans, setSubscriptionPlans] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const { mutate } = useApiMutation();
     const navigate = useNavigate();
+
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
+
 
     useEffect(() => {
         fetchSubscriptionPlans();
     }, []);
 
-
     const fetchSubscriptionPlans = () => {
+        setLoading(true);
         mutate({
             url: `/api/admins/individual/subscription/plans`,
             method: "GET",
@@ -32,7 +36,17 @@ const IndividualPlan = () => {
             onError: () => {
                 setLoading(false);
                 setSubscriptionPlans([]);
-            }
+            },
+        });
+    };
+
+
+
+    const handleDeleteModal = (planId) => {
+        openModal({
+            size: "sm",
+            content: <DeleteModal title={'Do you wish to delete this Plan?'} api={`/api/admins/individual/subscription/plan/delete?id=${planId}`}
+                closeModal={closeModal} redirect={fetchSubscriptionPlans} />
         })
     }
 
@@ -40,16 +54,30 @@ const IndividualPlan = () => {
 
     if (loading) {
         return (
-            <>
-                <div className="w-full h-screen flex items-center justify-center">
-                    <Loader />
-                </div>
-            </>
-        )
+            <div className="w-full h-screen flex items-center justify-center">
+                <Loader />
+            </div>
+        );
     }
 
+    const featureRows = [
+        { label: "Duration", render: (plan) => `${plan.duration} month(s)` },
+        { label: "Uploadable Events", render: (plan) => plan.eventLimit },
+        { label: "Event Log Access", render: (plan) => (plan.eventLogsAccess ? "Yes" : "No") },
+        { label: "Free Ticket Events", render: (plan) => (plan.freeTicketEvents ? "Yes" : "No") },
+        { label: "Paid Ticket Events", render: (plan) => (plan.paidTicketEvents ? "Yes" : "No") },
+        { label: "Self Scanned IDs", render: (plan) => plan.selfScannedIds },
+        { label: "Self Verification", render: (plan) => (plan.selfVerification ? "Yes" : "No") },
+        { label: "Verifiers per Event", render: (plan) => plan.verifiersPerEvent },
+        { label: "Amount", render: (plan) => (plan.amount > 0 ? `${plan.currency} ${plan.amount}` : "Free") },
+    ];
 
-
+    const renderFeature = (label, value) => (
+        <div className="flex justify-between py-1 border-b border-gray-100">
+            <span className="text-gray-600 font-medium">{label}:</span>
+            <span className="text-gray-800 text-right">{value}</span>
+        </div>
+    );
 
     return (
         <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -59,66 +87,57 @@ const IndividualPlan = () => {
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold">Subscriptions (Individual)</p>
-                            <p className="text-base">Subscription Module for : <span className="text-mobiBlue">
-                                Individual
-                            </span></p>
+                            <p className="text-base">
+                                Subscription Module for: <span className="text-mobiBlue">Individual</span>
+                            </p>
                         </div>
                         <div className="flex md:w-2/5 w-full justify-end">
-                            <Button className="bg-mobiPink" onClick={() => navigate('create')}>Add New Plan</Button>
+                            <Button className="bg-mobiPink" onClick={() => navigate("create")}>
+                                Add New Plan
+                            </Button>
                         </div>
                     </div>
+
                     {subscriptionPlans.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="min-w-[2200px] table-auto border-collapse border border-gray-700 text-sm">
-                                <thead>
-                                    <tr className="border-b border-gray-700 text-left">
-                                        <th className="p-4 font-medium">Individuals</th>
-                                        {subscriptionPlans.slice().reverse().map((plan, index) => (
-                                            <th key={index} className="p-4 font-medium border-l border-gray-700">
-                                                <div className="flex items-center justify-between gap-2">
-                                                    <span>{plan.name}</span>
-                                                    <button
-                                                        onClick={() => navigate(`edit/${plan.id}`)} // or a function you define
-                                                        className="text-mobiBlue hover:text-mobiPink"
-                                                    >
-                                                        ✏️ {/* You can use an icon library if preferred */}
-                                                    </button>
-                                                </div>
-                                            </th>))}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr className="align-top border-b border-gray-700">
-                                        <td className="p-4 font-medium">Features</td>
-                                        {subscriptionPlans.slice().reverse().map((plan, index) => (
-                                            <td key={index} className="p-4 border-l border-gray-700">
-                                                <ul className="list-disc ml-4 space-y-2">
-                                                    <li>Duration: <b>{plan.duration} month(s)</b></li>
-                                                    <li>Number of Uploadable Events : <b>{plan.eventLimit}</b></li>
-                                                    <li>Access to Event Log : <b>{plan.eventLogsAccess ? 'Yes' : 'No'}</b></li>
-                                                    <li>Free ticket events : <b>{plan.freeTicketEvents ? 'Yes' : 'No'}</b></li>
-                                                    <li>Paid ticket events : <b>{plan.paidTicketEvents ? 'Yes' : 'No'}</b></li>
-                                                    <li>Number of Self Scanned IDs : <b>{plan.selfScannedIds}</b></li>
-                                                    {plan.selfVerification && <li>Self verification for events</li>}
-                                                    <li>Verifiers Per Event : <b>{plan.verifiersPerEvent}</b></li>
-                                                </ul>
-                                            </td>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                            {subscriptionPlans.map((plan, idx) => (
+                                <div
+                                    key={idx}
+                                    className="border border-gray-200 rounded-xl p-4 shadow-sm flex flex-col justify-between"
+                                >
+                                    <div className="flex flex-col gap-2">
+                                        <h3 className="text-xl font-semibold text-mobiBlue mb-2">
+                                            {plan.name}
+                                        </h3>
+
+                                        {featureRows.map((feature, i) => (
+                                            <React.Fragment key={i}>
+                                                {renderFeature(feature.label, feature.render(plan))}
+                                            </React.Fragment>
                                         ))}
-                                    </tr>
-                                    <tr className="border-b border-gray-700">
-                                        <td className="p-4 font-medium">Amount</td>
-                                        {subscriptionPlans.slice().reverse().map((plan, index) => (
-                                            <td key={index} className="p-4 border-l border-gray-700">
-                                                {plan.amount > 0 ? (
-                                                    <span>{plan.currency} {plan.amount}</span>
-                                                ) : (
-                                                    <span>Free</span>
-                                                )}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                </tbody>
-                            </table>
+                                    </div>
+
+                                    <div className="flex justify-end gap-4 mt-4">
+                                        <Button
+                                            size="sm"
+                                            variant="outlined"
+                                            className="text-mobiBlue border-mobiBlue"
+                                            onClick={() => navigate(`edit/${plan.id}`)}
+                                        >
+                                            Edit Plan
+                                        </Button>
+
+                                        <Button
+                                            size="sm"
+                                            variant="outlined"
+                                            className="text-red-500 border-red-500"
+                                            onClick={() => handleDeleteModal(plan.id)}
+                                        >
+                                            Delete Plan
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     ) : (
                         <div className="text-center py-10 text-gray-400">
@@ -127,6 +146,18 @@ const IndividualPlan = () => {
                     )}
                 </div>
             </div>
+
+
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
+
+
         </div>
     );
 };
