@@ -34,6 +34,7 @@ import OrgCreatePlan from "../modules/SuperAdmin/Subscriptions/modules/orgCreate
 import IndividualLog from "../modules/SuperAdmin/Subscriptions/IndividualLog";
 import OrganisationLog from "../modules/SuperAdmin/Subscriptions/OrganisationLog";
 import FAQs from "../modules/SuperAdmin/FAQs";
+import StaffActivityLog from "../modules/SuperAdmin/Staffs/activityLog";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -72,6 +73,7 @@ const SuperAdminRoutes = [
     <Route path="staffs/roles" element={<ViewRoles />} />,
     <Route path="settings" element={<AdminSettings />} />,
     <Route path="faqs" element={<FAQs />} />,
+    <Route path="activityLog" element={<StaffActivityLog />} />,
 ];
 
 export default SuperAdminRoutes;
