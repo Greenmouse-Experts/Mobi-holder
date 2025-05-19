@@ -6,10 +6,28 @@ import { ThemeContext } from '../../../context/ThemeContext';
 // Register components in ChartJS
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function SubscriptionAnalysis() {
-
+export default function SubscriptionAnalysis({ subscriptionsData }) {
     const { theme } = useContext(ThemeContext);
 
+    // Process the subscription data to get monthly counts and amounts
+    const processSubscriptionData = (data) => {
+        const monthlyCounts = Array(12).fill(0);
+        const monthlyAmounts = Array(12).fill(0);
+
+        data.forEach(subscription => {
+            const date = new Date(subscription.subscribedAt);
+            const month = date.getMonth(); // 0-11
+            monthlyCounts[month]++;
+
+            // Convert amount to number (some are strings in the data)
+            const amount = Number(subscription.plan.amount) || 0;
+            monthlyAmounts[month] += amount;
+        });
+
+        return { counts: monthlyCounts, amounts: monthlyAmounts };
+    };
+
+    const { counts, amounts } = processSubscriptionData(subscriptionsData);
 
     const options = {
         responsive: true,
@@ -29,22 +47,56 @@ export default function SubscriptionAnalysis() {
                 ticks: {
                     color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
                     beginAtZero: true,
-                    callback: (value) => `${value / 1000}K`, // Adjust tick values for 'K' format
+                    callback: (value) => Number.isInteger(value) ? value : '',
                 },
                 grid: {
                     color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)'
-                    // display: false
                 },
+                title: {
+                    display: true,
+                    text: 'Number of Subscriptions',
+                    color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
+                }
+            },
+            y1: {
+                position: 'right',
+                ticks: {
+                    color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
+                    beginAtZero: true,
+                    callback: (value) => `₦${value.toLocaleString()}`,
+                },
+                grid: {
+                    drawOnChartArea: false,
+                },
+                title: {
+                    display: true,
+                    text: 'Amount Generated (NGN)',
+                    color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
+                }
             },
         },
         plugins: {
             legend: {
-                display: false,
+                position: 'top',
+                labels: {
+                    color: theme === 'dark' ? 'rgba(174, 185, 225, 1)' : 'rgba(96, 101, 116, 1)',
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                }
             },
             tooltip: {
                 backgroundColor: 'rgba(255, 255, 255, 0.8)',
                 bodyColor: '#000',
                 titleColor: '#000',
+                callbacks: {
+                    label: function (context) {
+                        if (context.dataset.label === 'Subscriptions') {
+                            return `${context.raw} subscription${context.raw !== 1 ? 's' : ''}`;
+                        } else {
+                            return `Amount: ₦${context.raw.toLocaleString()}`;
+                        }
+                    }
+                }
             },
         },
     };
@@ -53,11 +105,20 @@ export default function SubscriptionAnalysis() {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
             {
-                label: 'Monthly Sales',
-                data: [20000, 45000, 35000, 60000, 70000, 15000, 30000, 10000, 5000, 40000, 20000, 30000],
-                backgroundColor: 'rgba(198, 0, 249, 1)', // Purple color for the bars
+                label: 'Subscriptions',
+                data: counts,
+                backgroundColor: 'rgba(198, 0, 249, 1)',
                 borderRadius: 5,
-                barThickness: 6
+                barThickness: 6,
+                yAxisID: 'y',
+            },
+            {
+                label: 'Amount Generated',
+                data: amounts,
+                backgroundColor: 'rgba(0, 184, 217, 1)',
+                borderRadius: 5,
+                barThickness: 6,
+                yAxisID: 'y1',
             },
         ],
     };
@@ -67,7 +128,7 @@ export default function SubscriptionAnalysis() {
             <div className="flex lg:flex-row md:flex-row flex-col lg:gap-0 md:gap-0 gap-3 justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold">Subscription Analysis</h3>
                 <div className="flex space-x-2">
-                    <button className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
+                    {/* <button className="px-2 py-2 flex gap-2 rounded-md" style={{ backgroundColor: 'rgba(10, 19, 48, 1)' }}>
                         <svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="0.921631" y="1.76648" width="12.3818" height="12.4521" rx="1.3652" stroke="#AEB9E1" strokeWidth="1.09216" />
                             <path d="M0.921631 5.92786H13.3034V12.8523C13.3034 13.6063 12.6922 14.2175 11.9382 14.2175H2.28683C1.53285 14.2175 0.921631 13.6063 0.921631 12.8523V5.92786Z" fill="#AEB9E1" stroke="#AEB9E1" stroke-width="1.09216" />
@@ -80,7 +141,7 @@ export default function SubscriptionAnalysis() {
                                 <path d="M4.87769 6.34473L8.97329 10.4403L13.0689 6.34473" stroke="#AEB9E1" strokeWidth="1.3652" stroke-linecap="round" strokeLinejoin="round" />
                             </g>
                         </svg>
-                    </button>
+                    </button> */}
                 </div>
             </div>
             <div className="py-1 mt-5 rounded-lg border border-mobiBorderTable px-3">
@@ -91,4 +152,3 @@ export default function SubscriptionAnalysis() {
         </div>
     );
 };
-

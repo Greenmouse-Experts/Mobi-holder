@@ -19,57 +19,64 @@ const Table = ({
     onSearchChange,
 }) => {
     return (
-        <div className={`rounded-lg p-4 ${transparentBg ? '' : 'bg-mobiGrey'} w-full`}>
-            <div className="flex flex-col w-full md:flex-row justify-between items-start md:items-center mb-4 gap-3">
-                <div className=''>
-                    <h2 className="text-xl font-bold">{title}</h2>
-                    <h3 className="text-lg font-semibold">{subTitle}</h3>
+        <div className={`rounded-xl p-6 ${transparentBg ? '' : 'bS-overlay shadow'} w-full`}>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <div>
+                    <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
+                    {subTitle && <p className="text-sm text-gray-500">{subTitle}</p>}
                 </div>
-                <div className='flex justify-end gap-3'>
+                <div className="flex flex-wrap gap-3 items-center">
                     {search !== undefined && (
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => onSearchChange(e.target.value)}
                             placeholder="Search..."
-                            className="px-3 py-1.5 border border-gray-600 rounded bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                            className="px-4 py-2 border border-gray-300 rounded-md bS-overlay focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                         />
                     )}
-                    {tableBtn}</div>
+                    {tableBtn}
+                </div>
             </div>
 
             <div className="overflow-auto">
-                <table className="w-full table-auto border-separate border-spacing-y-3">
-                    <thead>
-                        <tr className="text-left bg-transparent">
-                            {hasNumber && <th className="px-3 py-2 text-sm font-bold">#</th>}
-                            {tableHeader?.map((header, index) => (
-                                <th key={index} className="px-3 py-2 text-sm font-bold">
+                <table className="w-full table-auto border-collapse text-sm">
+                    <thead className="bg-gray-300">
+                        <tr>
+                            {hasNumber && (
+                                <th className="text-left px-4 py-3 font-medium text-gray-700">#</th>
+                            )}
+                            {tableHeader?.map((header, idx) => (
+                                <th key={idx} className="text-left px-4 py-3 font-medium text-gray-700">
                                     {header}
                                 </th>
                             ))}
                         </tr>
                     </thead>
-                    <tbody>{children}</tbody>
+                    <tbody className="divide-y divide-gray-200 montserrat">{children}</tbody>
                 </table>
             </div>
 
-            <div className="flex justify-end mt-4">
-                <button
-                    className="px-3 py-1 border rounded disabled:opacity-50"
-                    onClick={() => onPageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    Prev
-                </button>
-                <span className="px-4 pt-1">{currentPage} / {totalPages}</span>
-                <button
-                    className="px-3 py-1 border rounded disabled:opacity-50"
-                    onClick={() => onPageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    Next
-                </button>
+            <div className="flex justify-between items-center mt-6">
+                <div className="text-sm montserrat">
+                    Page {currentPage} of {totalPages}
+                </div>
+                <div className="flex gap-2">
+                    <button
+                        className="px-4 py-2 border border-gray-300 rounded-md text-sm montserrat hover:bg-gray-100 disabled:opacity-50"
+                        onClick={() => onPageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        Previous
+                    </button>
+                    <button
+                        className="px-4 py-2 border border-gray-300 rounded-md text-sm montserrat hover:bg-gray-100 disabled:opacity-50"
+                        onClick={() => onPageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
         </div>
     );

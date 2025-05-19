@@ -27,7 +27,7 @@ module.exports = withMT({
         mobiDarkSide: 'var(--bs-darkSideBar)',
         mobiSilverDivider: 'var(--bs-lineDivider)',
         mobiBlueFade: 'rgba(36, 46, 242, 0.1)',
-        mobiRomanSilver: 'rgba(127, 127, 127, 1)',
+        mobiRomanSilver: 'var(--bs-tableText)',
         mobiSearchDark: 'var(--bs-search)',
         mobiOrange: 'var(--bs-mobiOrange)',
         mobiSkyCloud: 'var(--bs-mobiSkyCloud)',

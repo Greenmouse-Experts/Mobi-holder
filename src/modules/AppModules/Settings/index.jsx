@@ -27,11 +27,11 @@ export default function Settings() {
         {
             slug: 'Bank Details',
             name: 'Bank Details'
-        }
-       /* {
+        },
+        {
             slug: 'Support',
             name: 'Support'
-        } */
+        }
     ];
 
     document.documentElement.style.position = null;

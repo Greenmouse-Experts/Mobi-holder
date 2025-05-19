@@ -32,11 +32,11 @@ export default function OrgSettings() {
         {
             slug: 'Bank Details',
             name: 'Bank Details'
-        }
-       /* {
+        },
+        {
             slug: 'Support',
             name: 'Support'
-        } */
+        }
     ];
 
     document.documentElement.style.position = null;

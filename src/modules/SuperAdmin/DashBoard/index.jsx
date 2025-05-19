@@ -11,6 +11,7 @@ import { dateFormat } from "../../../helpers/dateHelper";
 import Loader from "../../../components/Loader";
 import { useEventsApi } from "../../../api/hooks/useEventsApi";
 import SubscriptionAnalysis from "../layouts/Subscriptions";
+import useApiMutation from "../../../api/hooks/useApiMutation";
 
 export default function Dashboard() {
     const [organisations, setOrganisations] = useState([]);
@@ -18,11 +19,15 @@ export default function Dashboard() {
     const [totalUsers, setTotalUsers] = useState(0);
     const [totalOrganisations, setTotalOrganisations] = useState(0);
     const [totalEvents, setTotalEvents] = useState(0);
+    const [totalSubscribers, setTotalSubscribers] = useState([]);
+    const [totalNumSubscribers, setTotalNumSubscribers] = useState(0);
     const [userData, setUsersData] = useState([]);
     const [eventsData, setEventsData] = useState([]);
     const [loadingOrganisations, setLoadingOrganisations] = useState(false);
     const [loadingIndividuals, setLoadingIndividuals] = useState(false);
     const [loadingEvents, setLoadingEvents] = useState(false);
+
+    const { mutate } = useApiMutation();
 
 
     const { getOrganisationsAdmin } = useOrganizationApi();
@@ -86,9 +91,47 @@ export default function Dashboard() {
     };
 
 
+
+
+    const fetchSubscribers = () => {
+        mutate({
+            url: `/api/admins/individual/subscribers?page=1&limit=100000000000000`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                fetchOrgSubscribers(response.data);
+            },
+            onError: () => {
+            }
+        })
+    }
+
+
+
+    const fetchOrgSubscribers = (data) => {
+        mutate({
+            url: `/api/admins/organization/subscribers?page=1&limit=100000000000000`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setTotalNumSubscribers(response.data.pagination.total + data.pagination.total);
+                const mergedSubscription = [...data.data, ...response.data.data];
+                setTotalSubscribers(mergedSubscription);
+            },
+            onError: () => {
+            }
+        })
+    }
+
+
+
+
     useEffect(() => {
         getOrganisations();
         getEvents();
+        fetchSubscribers();
     }, []);
 
 
@@ -102,24 +145,6 @@ export default function Dashboard() {
 
     const TableHeaders = ["Name", "User Type", "Date"];
     const NewTableHeaders = ["Event Name", "Type", "Date"];
-
-    const NewTableData = [
-        {
-            organization: 'Green Mouse Tech',
-            type: 'Open',
-            date: '03-10-2024',
-        },
-        {
-            organization: 'Afrima Lmt',
-            type: 'Open',
-            date: '03-10-2024',
-        },
-        {
-            organization: 'Green Mouse Tech',
-            type: 'Open',
-            date: '03-10-2024',
-        },
-    ];
 
 
 
@@ -157,7 +182,7 @@ export default function Dashboard() {
             cronAnalytics: <span className="flex w-auto flex-col justify-center py-1 px-3 text-xs rounded-md shadow-xs" style={{ backgroundColor: 'rgba(5, 193, 104, 0.2)' }}>
                 28.4%
             </span>,
-            value: 407,
+            value: totalNumSubscribers,
             label: "Total Subscriptions",
             iconColor: "bg-mobiSubPurple",
             icon: <svg width="22" height="26" viewBox="0 0 30 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -244,7 +269,7 @@ export default function Dashboard() {
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">
 
                         <div className="lg:w-[50%] md:w-[50%] w-full flex flex-col gap-5">
-                            <SubscriptionAnalysis />
+                            <SubscriptionAnalysis subscriptionsData={totalSubscribers} />
                         </div>
 
                         <div className="lg:w-[50%] md:w-[50%] w-full flex flex-col gap-5">
