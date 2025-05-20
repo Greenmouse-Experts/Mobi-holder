@@ -68,7 +68,7 @@ export default function CreateUserCard() {
 
 
     const createCard = (data) => {
-        const payload = {...data, memberId: individualData?.memberId || individualData.individualId};
+        const payload = {...data, memberId: individualData.individualId};
         setIsLoading(true);
         mutate({
             url: "/api/idcards/organization/create/member/card",
@@ -78,8 +78,6 @@ export default function CreateUserCard() {
             onSuccess: (response) => {
                 navigate(-1);
                 setIsLoading(false);
-                setFiles([]);
-                setBackFiles([]);
             },
             onError: () => {
                 setIsLoading(false);

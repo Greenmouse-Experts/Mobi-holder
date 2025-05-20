@@ -11,6 +11,9 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { exportToExcel } from "../../../../helpers/exportToExcel";
+import useModal from "../../../../hooks/modal";
+import RevokeCardModal from "./modal/revokeCard";
+import ReusableModal from "../../../../components/ReusableModal";
 
 export default function OrgIDCardsPage() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -18,6 +21,7 @@ export default function OrgIDCardsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [allMembers, setAllMembers] = useState([]);
     const [memberCards, setMemberCards] = useState([]);
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const navigate = useNavigate();
 
@@ -99,6 +103,45 @@ export default function OrgIDCardsPage() {
         getOrganisationsMember();
         getMemberCards();
     }, []);
+
+
+
+
+    const handleRevokeCard = (data) => {
+        console.log(data)
+        openModal({
+            size: "sm",
+            content: <RevokeCardModal closeModal={closeModal} cardInfo={data} reload={getMemberCards} />
+        })
+    }
+
+
+
+
+
+
+
+    const handleActivateCard = (data) => {
+        const payload = {
+            cardId: data.cardNumber,
+            status: 'active'
+        };
+        mutate({
+            url: "/api/idcards/organization/change/card/status",
+            method: "POST",
+            headers: true,
+            data: payload,
+            onSuccess: (response) => {
+                getMemberCards();
+            },
+            onError: () => {
+            }
+        });
+
+    }
+
+
+
 
 
 
@@ -292,7 +335,9 @@ export default function OrgIDCardsPage() {
                                         <td className="px-3 py-3 text-mobiTableText">---</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.expiryDate, 'dd-MM-yyyy')}</td>
-                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                        <td className="px-3 py-3 text-mobiTableText">
+                                            <Badge status={data.status} color={data.status === 'revoked' ? 'inactive' : ''} />
+                                        </td>
                                         <td className="px-6 py-3 cursor-pointer">
                                             <Menu placement="left">
                                                 <MenuHandler>
@@ -313,6 +358,20 @@ export default function OrgIDCardsPage() {
                                                             Update Card
                                                         </span>
                                                     </MenuItem>
+                                                    {data.status !== 'revoked' &&
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => handleRevokeCard(data)}>
+                                                                Revoke ID Card
+                                                            </span>
+                                                        </MenuItem>
+                                                    }
+                                                    {data.status === 'revoked' &&
+                                                        <MenuItem className="flex flex-col gap-3">
+                                                            <span className="cursor-pointer" onClick={() => handleActivateCard(data)}>
+                                                                Activate ID Card
+                                                            </span>
+                                                        </MenuItem>
+                                                    }
                                                 </MenuList>
                                             </Menu>
                                         </td>
@@ -408,6 +467,15 @@ export default function OrgIDCardsPage() {
                     </div>
 
                 </div>
+
+
+                <ReusableModal
+                    isOpen={isOpen}
+                    size={modalOptions.size}
+                    title={modalOptions.title}
+                    content={modalOptions.content}
+                    closeModal={closeModal}
+                />
             </div>
         </>
     )
