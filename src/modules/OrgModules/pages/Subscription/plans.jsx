@@ -94,7 +94,7 @@ const OrganisationPlans = () => {
                             {subscriptionPlans.map((plan, idx) => (
                                 <div
                                     key={idx}
-                                    className="border border-gray-200 rounded-xl p-4 h-full shadow-sm flex flex-col"
+                                    className="border border-gray-200 rounded-xl p-4 h-full shadow-md flex flex-col"
                                 >
                                     {/* Scrollable content area */}
                                     <div className="flex flex-col gap-2">
