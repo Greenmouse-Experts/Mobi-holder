@@ -84,7 +84,7 @@ const MultipleSelect = ({ accessType, selectedData }) => {
                                     readOnly
                                     className="w-4 h-4 text-blue-500 bg-gray-700 border-gray-600 rounded"
                                 />
-                                <span className="ml-2">Opened</span>
+                                <span className="ml-2">Open</span>
                                 <InfoIcon text="Any individual can join without approval, i.e No request or approval needed to join." />
                             </div>
                         </label>

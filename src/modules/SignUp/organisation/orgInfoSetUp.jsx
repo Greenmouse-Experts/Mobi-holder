@@ -143,7 +143,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                                 Country
                                             </p>
                                             <Input icon="human.svg" type="text" name="country" value={user?.companyAddress.country} register={register}
-                                                rules={{ required: 'Country is required' }} errors={errors} placeholder="Choose your country" />
+                                                rules={{ required: 'Country is required' }} errors={errors} placeholder="Enter your country name" />
                                         </div>
 
                                         <div className="flex flex-col gap-6">
@@ -151,7 +151,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                                 State
                                             </p>
                                             <Input icon="human.svg" type="text" name="state" value={user?.companyAddress.state} register={register}
-                                                rules={{ required: 'State is required' }} errors={errors} placeholder="Choose your state" />
+                                                rules={{ required: 'State is required' }} errors={errors} placeholder="Enter your state" />
                                         </div>
                                     </div>
 

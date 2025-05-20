@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Input from "../../components/Input";
 import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
@@ -10,20 +10,29 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../reducers/userSlice";
 import useApiMutation from "../../api/hooks/useApiMutation";
 import Checkbox from "../../components/CheckBox";
+import useFileUpload from "../../api/hooks/useFileUpload";
+import { Camera } from "lucide-react";
 
 export default function IndividualSignUp() {
     const [isLoading, setIsLoading] = useState(false);
+    const fileInputRef = useRef(null);
+    const { uploadFiles, isLoadingUpload } = useFileUpload();
+    const [uploadedPhoto, setUploadedPhoto] = useState("");
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
 
     const { mutate } = useApiMutation();
 
     const createAccount = (data) => {
+        const payload = {
+            ...data,
+            photo: uploadedPhoto
+        }
         setIsLoading(true);
         mutate({
             url: "/api/users/auth/register/individual",
             method: "POST",
-            data: data,
+            data: payload,
             navigateTo: "/verify-email",
             onSuccess: (response) => {
                 dispatch(setUser(response.data.data));
@@ -34,6 +43,18 @@ export default function IndividualSignUp() {
             }
         });
     };
+
+
+    const handleFileChange = async (event) => {
+        const files = event.target.files;
+        if (files.length > 0) {
+            await uploadFiles(files, (uploadedUrl) => {
+                setUploadedPhoto(uploadedUrl);
+            });
+        }
+    };
+
+
 
 
     return (
@@ -107,6 +128,25 @@ export default function IndividualSignUp() {
                                         </p>
                                         <Input icon="human.svg" type="date" name="dateOfBirth" disableFutureDates register={register}
                                             placeholder="Enter your date of birth" />
+                                    </div>
+
+                                    <div className="flex flex-col gap-6 my-1">
+                                        <div className="flex flex-col items-center gap-3">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Upload Profile Photo
+                                            </p>
+                                            <label htmlFor="profile-upload" className="relative cursor-pointer">
+                                                <div className="w-28 h-28 rounded-full border-2 border-gray-600 flex items-center justify-center overflow-hidden bg-gray-900 hover:opacity-80 transition">
+                                                    {uploadedPhoto ? (
+                                                        <img src={uploadedPhoto} alt="Profile" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <Camera className="text-white w-8 h-8" />
+                                                    )}
+                                                </div>
+                                                <input id="profile-upload" type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleFileChange} />
+                                            </label>
+                                            <p className="text-gray-400 text-sm">{!isLoadingUpload ? 'Click to set profile photo' : 'Uploading profile photo'}</p>
+                                        </div>
                                     </div>
 
                                     <div className="flex flex-col gap-6">

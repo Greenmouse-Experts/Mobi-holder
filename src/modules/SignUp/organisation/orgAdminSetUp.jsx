@@ -127,13 +127,7 @@ export default function OrgAdminSetUp({ moveBack }) {
                                     <div className="flex justify-start">
                                         <div className="flex gap-1">
                                             <span className="flex">
-                                                <Checkbox
-                                                    name="acceptedTnC"
-                                                    label="Note, this person would be your organisation Super Admin"
-                                                    register={register}
-                                                    rules={{ required: 'Terms & Conditions is required' }}
-                                                    errors={errors}
-                                                />
+                                                Note, this person would be your organisation Super Admin
                                             </span>
                                         </div>
                                     </div>
