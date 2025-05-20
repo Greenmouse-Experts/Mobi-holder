@@ -175,7 +175,7 @@ export default function SuperAdminSidebar({ mobile }) {
             openChildren: false
         },
         {
-            path: "/superadmin/faqs",
+            path: "",
             slug: "faqs",
             name: "FAQs",
             icon: <i className="mr-3">
@@ -184,7 +184,16 @@ export default function SuperAdminSidebar({ mobile }) {
                         fill={`${activeNav === 'faqs' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} />
                 </svg>
             </i>,
-            children: [],
+            children: [
+                {
+                    path: "/superadmin/faqs/categories",
+                    name: "FAQ Categories"
+                },
+                {
+                    path: "/superadmin/faqs",
+                    name: "View FAQs"
+                },
+            ],
             openChildren: false
         },
     ];

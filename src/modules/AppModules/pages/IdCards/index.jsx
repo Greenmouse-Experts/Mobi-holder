@@ -167,18 +167,18 @@ export default function IDCardsPage() {
 
                                 setOrgCards(sortedOrgCards);
                             }}
-                        handleExportDataClick={() => exportToExcel(
-                            TableHeaders,
-                            orgCards.map(item => ([
-                                item.organization.companyName,
-                                '<img width={50} src="/id-card.png" />',
-                                item.cardNumber,
-                                item.designation,
-                                dateFormat(item.expiryDate, 'dd-MM-yyyy'),
-                                item.status,
-                            ])),
-                            "Manage ID Cards.xlsx"
-                        )}
+                            handleExportDataClick={() => exportToExcel(
+                                TableHeaders,
+                                orgCards.map(item => ([
+                                    item.organization.companyName,
+                                    '<img width={50} src="/id-card.png" />',
+                                    item.cardNumber,
+                                    item.designation,
+                                    dateFormat(item.expiryDate, 'dd-MM-yyyy'),
+                                    item.status,
+                                ])),
+                                "Manage ID Cards.xlsx"
+                            )}
                         >
                             {orgCards.length > 0 ?
                                 orgCards.map((data, index) => (
@@ -188,7 +188,9 @@ export default function IDCardsPage() {
                                         <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data?.expiryDate ? dateFormat(data?.expiryDate, 'dd-MM-yyyy') : '---'}</td>
-                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                        <td className="px-3 py-3 text-mobiTableText">
+                                            <Badge status={data.status} color={data.status === 'revoked' ? 'inactive' : ''} />
+                                        </td>
                                         <td className="px-6 py-3 cursor-pointer">
                                             <Menu placement="left">
                                                 <MenuHandler>

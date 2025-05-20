@@ -3,9 +3,9 @@ import Header from "../header";
 import DeleteModal from "../../../components/DeleteModal";
 import ReusableModal from "../../../components/ReusableModal";
 import useModal from "../../../hooks/modal";
-import CreateFAQ from "./modals/createFAQ";
+import CreateCategory from "./modals/createCategory";
 
-export default function FAQs() {
+export default function FAQCategories() {
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
@@ -13,37 +13,14 @@ export default function FAQs() {
         {
             id: 1,
             category: 'Organisation',
-            question: 'How do I book an event through your platform?',
-            answer:
-                'You can book an event by visiting our event booking page, selecting your desired event, and filling out the registration form.',
         },
         {
-            id: 2,
+            id: 1,
             category: 'Organisation',
-            question: 'What information is required to generate an ID card?',
-            answer:
-                'To generate your ID card, we require your full name, a recent photograph, contact details, event registration ID, and any other event-specific details as requested during registration.',
         },
         {
-            id: 3,
+            id: 1,
             category: 'Organisation',
-            question: 'How long does it take to receive my ID card after registration?',
-            answer:
-                'Typically, ID cards are generated and sent within 24–48 hours of successful registration and verification of the required details.',
-        },
-        {
-            id: 4,
-            category: 'Organisation',
-            question: 'Can I make changes to my details after submitting the form?',
-            answer:
-                'Yes, you can request changes by contacting our support team before the ID card is generated. Once the card is issued, any modifications may incur a reprint fee.',
-        },
-        {
-            id: 5,
-            category: 'Organisation',
-            question: 'Is the ID card digital or physical, and how do I receive it?',
-            answer:
-                'We offer both digital and physical ID cards. Digital cards are sent via email, while physical cards (if applicable) can be collected at the event venue or shipped, depending on your chosen delivery option.',
         },
     ];
 
@@ -51,7 +28,7 @@ export default function FAQs() {
     const handleAddModal = () => {
         openModal({
             size: "sm",
-            content: <CreateFAQ />
+            content: <CreateCategory />
         })
     }
 
@@ -60,7 +37,7 @@ export default function FAQs() {
     const handleDeleteModal = () => {
         openModal({
             size: "sm",
-            content: <DeleteModal title={'Do you wish to delete this FAQ?'} closeModal={closeModal} />
+            content: <DeleteModal title={'Do you wish to delete this Category?'} closeModal={closeModal} />
         })
     }
 
@@ -72,10 +49,10 @@ export default function FAQs() {
                 <div className="w-full flex flex-col gap-5 border border-mobiBorderFray card-body p-5 rounded-xl my-2">
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">Frequently Asked Questions</p>
+                            <p className="lg:text-2xl md:text-xl text-lg font-semibold">FAQ Categories</p>
                         </div>
                         <div className="flex md:w-2/5 w-full justify-end">
-                            <Button className="bg-mobiPink" onClick={() => handleAddModal()}>Add FAQs</Button>
+                            <Button className="bg-mobiPink" onClick={() => handleAddModal()}>Add Category</Button>
                         </div>
                     </div>
                     <div className="overflow-x-auto p-4">
@@ -84,8 +61,6 @@ export default function FAQs() {
                                 <tr>
                                     <th className="p-3 border border-gray-300">S/N</th>
                                     <th className="p-3 border border-gray-300">Category</th>
-                                    <th className="p-3 border border-gray-300">Questions</th>
-                                    <th className="p-3 border border-gray-300">Answer</th>
                                     <th className="p-3 border border-gray-300">Action</th>
                                 </tr>
                             </thead>
@@ -94,9 +69,7 @@ export default function FAQs() {
                                     <tr key={faq.id} className="border border-gray-200">
                                         <td className="p-3 border border-gray-300">{index + 1}</td>
                                         <td className="p-3 border border-gray-300">{faq.category}</td>
-                                        <td className="p-3 border border-gray-300">{faq.question}</td>
-                                        <td className="p-3 border border-gray-300">{faq.answer}</td>
-                                        <td className="p-3 border border-gray-300 text-center">
+                                        <td className="p-3 border border-gray-300">
                                             <Menu placement="left">
                                                 <MenuHandler>
                                                     <span className="cursor-pointer">☰</span>
@@ -104,12 +77,12 @@ export default function FAQs() {
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
                                                         <span className="cursor-pointer">
-                                                            Edit FAQ
+                                                            Edit
                                                         </span>
                                                     </MenuItem>
                                                     <MenuItem className="flex flex-col gap-3">
                                                         <span className="cursor-pointer" onClick={() => handleDeleteModal()}>
-                                                            Delete FAQ
+                                                            Delete
                                                         </span>
                                                     </MenuItem>
                                                 </MenuList>
@@ -131,16 +104,8 @@ export default function FAQs() {
                                         S/N: <span className="font-normal">{index + 1}</span>
                                     </div>
                                     <div className="font-semibold text-sm text-gray-600 mb-1">
-                                        Category:
-                                        <div className="font-normal mt-1 text-gray-800">{faq.category}</div>
-                                    </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
                                         Question:
                                         <div className="font-normal mt-1 text-gray-800">{faq.question}</div>
-                                    </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
-                                        Answer:
-                                        <div className="font-normal mt-1 text-gray-800">{faq.answer}</div>
                                     </div>
                                     <div className="text-right mt-2 text-xl">☰</div>
                                 </div>
