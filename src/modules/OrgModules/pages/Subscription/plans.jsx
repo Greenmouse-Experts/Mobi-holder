@@ -1,26 +1,28 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import Header from "../../../../components/Header";
 import { useSelector } from "react-redux";
-import { FaEye } from "react-icons/fa";
+import { Button } from "@material-tailwind/react";
+import useModal from "../../../../hooks/modal";
+import ReusableModal from "../../../../components/ReusableModal";
 
 const OrganisationPlans = () => {
     const user = useSelector((state) => state.orgData.orgData);
-    const [subscriptionPlans, setSubscriptionPlans] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
+    const [subscriptionPlans, setSubscriptionPlans] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const { mutate } = useApiMutation();
     const navigate = useNavigate();
-
+    const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     useEffect(() => {
         fetchSubscriptionPlans();
     }, []);
 
-
     const fetchSubscriptionPlans = () => {
+        setLoading(true);
         mutate({
             url: `/api/users/organization/subscription/plans`,
             method: "GET",
@@ -34,23 +36,46 @@ const OrganisationPlans = () => {
                 setLoading(false);
                 setSubscriptionPlans([]);
             }
-        })
-    }
+        });
+    };
 
 
+    const featureRows = [
+        { label: "Duration", render: (plan) => `${plan.duration} month(s)` },
+        { label: "Private Events Access", render: (plan) => (plan.accessPrivateEvent ? "Yes" : "No") },
+        { label: "Semi-Private Events Access", render: (plan) => (plan.accessSemiPrivateEvent ? "Yes" : "No") },
+        { label: "Free Events Only", render: (plan) => (plan.freeEventsOnly ? "Yes" : "No") },
+        { label: "Event Upload Limit", render: (plan) => plan.eventLimit },
+        { label: "Verifiers Per Event", render: (plan) => plan.verifiersPerEvent },
+        { label: "Max Staff Members", render: (plan) => plan.maxStaffs },
+        { label: "Organization User Limit", render: (plan) => plan.organizationUserLimit },
+        { label: "Custom Templates Allowed", render: (plan) => plan.customizedTemplateLimit },
+        { label: "Default Template", render: (plan) => (plan.defaultTemplate ? "Yes" : "No") },
+        { label: "Event Logs Access", render: (plan) => (plan.hasEventLogs ? "Yes" : "No") },
+        { label: "Subscription Management", render: (plan) => (plan.subscriptionManagement ? "Yes" : "No") },
+        { label: "Recurring Events", render: (plan) => (plan.recurringEvents ? "Yes" : "No") },
+        { label: "Can Appoint Verifiers", render: (plan) => (plan.canAppointVerifiers ? "Yes" : "No") },
+        { label: "Email Support Response", render: (plan) => plan.emailSupport },
+        { label: "Dedicated Support", render: (plan) => (plan.dedicated_support ? "Yes" : "No") },
+        { label: "Amount", render: (plan) => (plan.amount > 0 ? `${plan.currency} ${plan.amount}` : "Free") },
+    ];
 
+    const renderFeature = (label, value) => (
+        <div className="flex justify-between py-1 border-b border-gray-100">
+            <span className="montserrat">{label}:</span>
+            <span className="montserrat text-right font-semibold">{value}</span>
+        </div>
+    );
+
+
+    
     if (loading) {
         return (
-            <>
-                <div className="w-full h-screen flex items-center justify-center">
-                    <Loader />
-                </div>
-            </>
-        )
+            <div className="w-full h-screen flex items-center justify-center">
+                <Loader />
+            </div>
+        );
     }
-
-
-
 
     return (
         <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -60,132 +85,43 @@ const OrganisationPlans = () => {
                     <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
                         <div className="w-full flex flex-col gap-2">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Subscriptions (Organization)</p>
-                            <p className="text-base">Subscription Module for : <span className="text-mobiBlue">
-                                Organization
-                            </span></p>
+                            <p className="text-base">Subscription Module for: <span className="text-mobiBlue">Organization</span></p>
                         </div>
                     </div>
-                    {subscriptionPlans.length > 0 ? (
-                        <>
-                            {/* Mobile view: vertical cards */}
-                            <div className="md:hidden space-y-6">
-                                {subscriptionPlans
-                                    .slice()
-                                    .reverse()
-                                    .map((plan, index) => (
-                                        <div
-                                            key={index}
-                                            className="border border-gray-700 rounded-md p-4 space-y-3 text-sm"
-                                        >
-                                            <div className="flex justify-between items-center">
-                                                <p className="font-bold text-lg">{plan.name}</p>
-                                                <button
-                                                    onClick={() => navigate(`view/${plan.id}`)}
-                                                    className="flex items-center gap-1 text-mobiBlue hover:text-mobiPink"
-                                                >
-                                                    <FaEye className="text-sm" />
-                                                    <span className="text-sm">View</span>
-                                                </button>
-                                            </div>
-                                            <ul className="list-disc ml-5 space-y-1">
-                                                <li>Duration: <b>{plan.duration} month(s)</b></li>
-                                                <li>Access Private Events: <b>{plan.accessPrivateEvent ? 'Yes' : 'No'}</b></li>
-                                                <li>Access Semi-Private Events: <b>{plan.accessSemiPrivateEvent ? 'Yes' : 'No'}</b></li>
-                                                <li>Free Events Only: <b>{plan.freeEventsOnly ? 'Yes' : 'No'}</b></li>
-                                                <li>Event Upload Limit: <b>{plan.eventLimit}</b></li>
-                                                <li>Verifiers Per Event: <b>{plan.verifiersPerEvent}</b></li>
-                                                <li>Max Staff Members: <b>{plan.maxStaffs}</b></li>
-                                                <li>Organization User Limit: <b>{plan.organizationUserLimit}</b></li>
-                                                <li>Customized Templates Allowed: <b>{plan.customizedTemplateLimit}</b></li>
-                                                <li>Default Template: <b>{plan.defaultTemplate ? 'Yes' : 'No'}</b></li>
-                                                <li>Event Logs Access: <b>{plan.hasEventLogs ? 'Yes' : 'No'}</b></li>
-                                                <li>Subscription Management: <b>{plan.subscriptionManagement ? 'Yes' : 'No'}</b></li>
-                                                <li>Recurring Events: <b>{plan.recurringEvents ? 'Yes' : 'No'}</b></li>
-                                                <li>Can Appoint Verifiers: <b>{plan.canAppointVerifiers ? 'Yes' : 'No'}</b></li>
-                                                <li>Email Support Response Time: <b>{plan.emailSupport}</b></li>
-                                                <li>Dedicated Support: <b>{plan.dedicated_support ? 'Yes' : 'No'}</b></li>
-                                                <li>Amount: <b>{plan.amount > 0 ? `${plan.currency} ${plan.amount}` : 'Free'}</b></li>
-                                            </ul>
-                                        </div>
-                                    ))}
-                            </div>
 
-                            {/* Desktop/tablet view: horizontal table */}
-                            <div className="hidden md:block w-full overflow-x-auto">
-                                <table className="min-w-[2200px] table-auto border-collapse border border-gray-700 text-sm">
-                                    <thead>
-                                        <tr className="border-b border-gray-700 text-left">
-                                            <th className="p-4 font-medium whitespace-nowrap">Organization</th>
-                                            {subscriptionPlans
-                                                .slice()
-                                                .reverse()
-                                                .map((plan, index) => (
-                                                    <th
-                                                        key={index}
-                                                        className="p-4 font-medium border-l border-gray-700 whitespace-nowrap"
-                                                    >
-                                                        <div className="flex items-center justify-between gap-2">
-                                                            <span>{plan.name}</span>
-                                                            <button
-                                                                onClick={() => navigate(`view/${plan.id}`)}
-                                                                className="flex items-center gap-1 text-mobiBlue hover:text-mobiPink"
-                                                            >
-                                                                <FaEye className="text-sm" />
-                                                                <span className="text-sm">View</span>
-                                                            </button>
-                                                        </div>
-                                                    </th>
-                                                ))}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className="align-top border-b border-gray-700">
-                                            <td className="p-4 font-medium whitespace-nowrap">Features</td>
-                                            {subscriptionPlans
-                                                .slice()
-                                                .reverse()
-                                                .map((plan, index) => (
-                                                    <td key={index} className="p-4 border-l border-gray-700 align-top">
-                                                        <ul className="list-disc ml-4 space-y-6">
-                                                            <li>Duration: <b>{plan.duration} month(s)</b></li>
-                                                            <li>Access Private Events: <b>{plan.accessPrivateEvent ? 'Yes' : 'No'}</b></li>
-                                                            <li>Access Semi-Private Events: <b>{plan.accessSemiPrivateEvent ? 'Yes' : 'No'}</b></li>
-                                                            <li>Free Events Only: <b>{plan.freeEventsOnly ? 'Yes' : 'No'}</b></li>
-                                                            <li>Event Upload Limit: <b>{plan.eventLimit}</b></li>
-                                                            <li>Verifiers Per Event: <b>{plan.verifiersPerEvent}</b></li>
-                                                            <li>Max Staff Members: <b>{plan.maxStaffs}</b></li>
-                                                            <li>Organization User Limit: <b>{plan.organizationUserLimit}</b></li>
-                                                            <li>Customized Templates Allowed: <b>{plan.customizedTemplateLimit}</b></li>
-                                                            <li>Default Template: <b>{plan.defaultTemplate ? 'Yes' : 'No'}</b></li>
-                                                            <li>Event Logs Access: <b>{plan.hasEventLogs ? 'Yes' : 'No'}</b></li>
-                                                            <li>Subscription Management: <b>{plan.subscriptionManagement ? 'Yes' : 'No'}</b></li>
-                                                            <li>Recurring Events: <b>{plan.recurringEvents ? 'Yes' : 'No'}</b></li>
-                                                            <li>Can Appoint Verifiers: <b>{plan.canAppointVerifiers ? 'Yes' : 'No'}</b></li>
-                                                            <li>Email Support Response Time: <b>{plan.emailSupport}</b></li>
-                                                            <li>Dedicated Support: <b>{plan.dedicated_support ? 'Yes' : 'No'}</b></li>
-                                                        </ul>
-                                                    </td>
-                                                ))}
-                                        </tr>
-                                        <tr className="border-b border-gray-700">
-                                            <td className="p-4 font-medium whitespace-nowrap">Amount</td>
-                                            {subscriptionPlans
-                                                .slice()
-                                                .reverse()
-                                                .map((plan, index) => (
-                                                    <td key={index} className="p-4 border-l border-gray-700">
-                                                        {plan.amount > 0 ? (
-                                                            <span>{plan.currency} {plan.amount}</span>
-                                                        ) : (
-                                                            <span>Free</span>
-                                                        )}
-                                                    </td>
-                                                ))}
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </>
+                    {subscriptionPlans.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                            {subscriptionPlans.map((plan, idx) => (
+                                <div
+                                    key={idx}
+                                    className="border border-gray-200 rounded-xl p-4 h-full shadow-sm flex flex-col"
+                                >
+                                    {/* Scrollable content area */}
+                                    <div className="flex flex-col gap-2">
+                                        <h3 className="text-xl font-semibold text-mobiBlue mb-2">
+                                            {plan.name}
+                                        </h3>
+
+                                        {featureRows.map((feature, i) => (
+                                            <React.Fragment key={i}>
+                                                {renderFeature(feature.label, feature.render(plan))}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+
+                                    {/* Fixed button area at bottom */}
+                                    <div className="mt-4 pt-4">
+                                        <Button
+                                            size="sm"
+                                            variant="outlined"
+                                            className="text-mobiBlue border-mobiBlue w-full"
+                                            onClick={() => navigate(`view/${plan.id}`)}
+                                        >
+                                            View Plan
+                                        </Button>
+                                    </div>
+                                </div>))}
+                        </div>
                     ) : (
                         <div className="text-center py-10 text-gray-400">
                             No subscription plans available.
@@ -193,6 +129,14 @@ const OrganisationPlans = () => {
                     )}
                 </div>
             </div>
+
+            <ReusableModal
+                isOpen={isOpen}
+                size={modalOptions.size}
+                title={modalOptions.title}
+                content={modalOptions.content}
+                closeModal={closeModal}
+            />
         </div>
     );
 };
