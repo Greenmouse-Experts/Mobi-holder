@@ -120,7 +120,8 @@ export default function OrganisationData() {
                 data: payload,
                 headers: true,
                 onSuccess: (response) => {
-                    setIsLoadingDocuments(false)
+                    setIsLoadingDocuments(false);
+                    getUploadedIDCards();
                 },
                 onError: () => {
                     setIsLoadingDocuments(false);
@@ -220,12 +221,16 @@ export default function OrganisationData() {
     }
 
 
-    console.log(files)
 
     return (
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
                 <div className="mb-1 flex flex-col gap-5">
+                    <div className="w-full flex justify-end items-center">
+                        <Button disabled className={uploadedIDData ? uploadedIDData.isVerified ? 'bg-green-500' : 'bg-yellow-500 text-black' : 'bg-red-500'}>
+                            {uploadedIDData ? uploadedIDData.isVerified ? 'Verified' : 'Verification is under review' : 'Unverified'}
+                        </Button>
+                    </div>
 
                     <div className="flex md:flex-row flex-col gap-3">
                         {user.photo ?
