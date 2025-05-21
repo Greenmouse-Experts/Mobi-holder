@@ -34,13 +34,15 @@ export default function Header({ mobile }) {
 
                     <div className="flex gap-3">
                         <div className="lg:flex md:flex hidden md:p-2 px-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                            <img src={settings} />
+                            <Link to={'/superadmin/settings'} className="w-full">
+                                <img src={settings} />
+                            </Link>
                         </div>
-                        <div className="lg:flex md:flex hidden md:p-2 px-3 bg-mobiSearchDark rounded-md flex-col justify-center">
+                        {/*<div className="lg:flex md:flex hidden md:p-2 px-3 bg-mobiSearchDark rounded-md flex-col justify-center">
                             <Link to={'/superadmin/notification'} className="w-full">
                                 <img src={notifications} />
                             </Link>
-                        </div>
+                        </div>*/}
                         <div className="lg:hidden md:hidden flex p-2 bg-mobiSearchDark rounded-md flex-col justify-center">
                             <button
                                 className="text-black focus:outline-none"
@@ -60,12 +62,14 @@ export default function Header({ mobile }) {
             <div className={`${mobile ? 'lg:flex md:flex hidden' : 'flex w-full md:px-0 px-3 flex-col'} lg:w-[32%] md:w-[40%]`}>
                 <div className={`w-full flex flex-col gap-6`}>
                     <div className="flex items-center justify-center border w-full border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
-                        <div className="flex flex-grow">
-                            <p className="text-sm font-semibold">Admin Profile</p>
-                        </div>
-                        <div className="flex rounded-md">
-                            <AvatarInitials name={'Admin Profile'} size="8" />
-                        </div>
+                        <Link to={'/superadmin/settings'} className="w-full flex items-center justify-center">
+                            <div className="flex flex-grow">
+                                <p className="text-sm font-semibold">Admin Profile</p>
+                            </div>
+                            <div className="flex rounded-md">
+                                <AvatarInitials name={'Admin Profile'} size="8" />
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>

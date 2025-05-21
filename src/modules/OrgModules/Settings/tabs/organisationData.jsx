@@ -220,6 +220,8 @@ export default function OrganisationData() {
     }
 
 
+    console.log(files)
+
     return (
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
@@ -385,7 +387,7 @@ export default function OrganisationData() {
                                 <DropZone onUpload={handleDrop} />
                             </div>
                             <div className="grid grid-cols-3 gap-4 mt-4">
-                                {files.map((fileObj, index) => (
+                                {(files.length > 0 ? files : (uploadedIDData?.documentUrl ? [uploadedIDData.documentUrl] : [])).map((fileObj, index) => (
                                     <div key={index} className="relative">
                                         <img
                                             src={fileObj}

@@ -105,7 +105,9 @@ export default function Header({ greeting, profile, mobile, organisation, title,
                             <p className="text-sm font-semibold">{superAdmin ? 'Admin Profile' : 'My Profile'}</p>
                         </div>
                         <div className="flex rounded-md">
-                            <UserPhoto data={data} organisation={organisation} />
+                            <Link className="w-full" to={organisation ? '/org/settings' : '/app/settings'}>
+                                <UserPhoto data={data} organisation={organisation} />
+                            </Link>
                         </div>
                     </div>
 
