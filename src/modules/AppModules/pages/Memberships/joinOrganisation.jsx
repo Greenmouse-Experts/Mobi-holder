@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import AvatarInitials from "../../../../components/AvatarInitials";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function JoinOrganisation() {
     const user = useSelector((state) => state.userData.data);
@@ -14,6 +15,8 @@ export default function JoinOrganisation() {
     const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { mutate } = useApiMutation();
+
+    const navigate = useNavigate();
 
 
     const joinOrganisation = (data) => {
@@ -28,15 +31,14 @@ export default function JoinOrganisation() {
             data: payload,
             headers: true,
             onSuccess: () => { 
-                setIsLoading(false)
+                setIsLoading(false);
+                navigate('/app/membership');
             },
             onError: () => {
                 setIsLoading(false);
             }
         });
     };
-
-
 
 
 
@@ -125,7 +127,7 @@ export default function JoinOrganisation() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Organisation Email (Optional)
                                             </p>
-                                            <Input type="text" name="organizationEmail" register={register}
+                                            <Input type="text" name="organizationEmail" value={paramsData?.companyEmail} register={register}
                                                 placeholder="Organisation Email" />
                                         </div>
                                     </div>

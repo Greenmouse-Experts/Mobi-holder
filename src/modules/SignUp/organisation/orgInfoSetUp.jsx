@@ -212,6 +212,15 @@ export default function OrgInfoSetUp({ moveNext }) {
 
                                     <div className="flex flex-col gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
+                                            Company Registered Date (Optional)
+                                        </p>
+                                        <Input icon="company.svg" type="date" value={user?.dateOfBirth}
+                                            name="dateOfBirth" disableFutureDates register={register}
+                                            placeholder="Enter company registered date" />
+                                    </div>
+
+                                    <div className="flex flex-col gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
                                             Company Email (Optional)
                                         </p>
                                         <Input icon="email.svg" type="email" value={user?.companyEmail} name="companyEmail" register={register}

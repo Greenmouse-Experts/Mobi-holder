@@ -36,7 +36,13 @@ export default function ProfileInfo() {
         },
         {
             name: 'Drivers Licence'
-        }
+        },
+        {
+            name: 'Passport'
+        },
+        {
+            name: "Permanent Voter's Card"
+        },
     ];
 
 
@@ -120,7 +126,8 @@ export default function ProfileInfo() {
                 data: payload,
                 headers: true,
                 onSuccess: (response) => {
-                    setIsLoadingDocuments(false)
+                    setIsLoadingDocuments(false);
+                    getUploadedIDCards();
                 },
                 onError: () => {
                     setIsLoadingDocuments(false);
@@ -179,6 +186,11 @@ export default function ProfileInfo() {
         <>
             <form onSubmit={handleSubmit(changeProfile)}>
                 <div className="mb-1 flex flex-col gap-5">
+                    <div className="w-full flex justify-end items-center">
+                        <Button disabled className={uploadedIDData ? uploadedIDData.isVerified ? 'bg-green-500' : 'bg-yellow-500 text-black' : 'bg-red-500'}>
+                            {uploadedIDData ? uploadedIDData.isVerified ? 'Verified' : 'Verification is under review' : 'Unverified'}
+                        </Button>
+                    </div>
                     <div className="flex md:flex-row flex-col gap-3">
                         {user.photo ?
                             <div className="flex w-32 h-32">
@@ -260,7 +272,9 @@ export default function ProfileInfo() {
 
             <form onSubmit={handleSubmitUpload(updateDocuments)}>
                 <div className="mb-1 flex flex-col gap-5 mt-6">
-                    <p className="mt-6 text-mobiFormGray">Verification Documents</p>
+                    <div className="w-full flex justify-between items-center">
+                        <p className="mt-6 text-mobiFormGray">Verification Documents</p>
+                    </div>
 
                     <div className="w-full flex flex-col gap-8 border-2 rounded-xl border-gray-900 border-dashed p-8">
 

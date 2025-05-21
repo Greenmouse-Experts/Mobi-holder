@@ -1,4 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+
+
+
+
+
+
+
+
+
+const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
+    <div
+        onClick={onClick}
+        ref={ref}
+        className="peer w-full h-full bg-transparent font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all text-base px-3 py-3 rounded-[7px] cursor-pointer"
+    >
+        {value || <span className="text-gray-400">{placeholder}</span>}
+    </div>
+));
+
+
+
+
+
+
+
+
+
+
+
 
 export default function Input({
     icon,
@@ -46,35 +78,56 @@ export default function Input({
             <div className="flex items-center border border-transparent bGmobiGrayDark px-3 py-1.5 rounded-[7px]" style={style}>
                 {icon && <img src={`/${icon}`} alt="icon" />}
 
-                {type === "select" ? (
-                    <select
-                        className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all text-base px-3 py-3 rounded-[7px]"
-                        {...register(name, rules)}
-                        value={inputValue} // Controlled value for select input
-                        onChange={handleChange}
+                {(type === "date" || type === "datetime") ? (
+                    <DatePicker
+                        selected={inputValue ? new Date(inputValue) : null}
+                        onChange={(date) => {
+                            const isoDate = date.toISOString();
+                            if (setValue) setValue(name, isoDate);
+                            setInputValue(isoDate);
+                            if (onChange) onChange(isoDate);
+                        }}
+                        showTimeSelect={type === "datetime"}
+                        dateFormat={type === "datetime" ? "dd-MM-yyyy HH:mm" : "dd-MM-yyyy"}
+                        maxDate={disableFutureDates ? new Date() : null}
+                        placeholderText={placeholder}
+                        customInput={<CustomDateInput placeholder={placeholder} />}
                         disabled={disabled}
-                    >
-                        <option value="" disabled>{placeholder}</option>
-                        {options.map((option, index) => (
-                            <option key={index} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                ) : (
-                    <input
-                        type={type === "password" ? (passwordOpen ? "text" : "password") : type}
-                        max={disableFutureDates ? new Date().toISOString().split("T")[0] : null}
-                        placeholder={placeholder}
-                        className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
-                        {...register(name, rules)}
-                        value={inputValue} // Controlled value for the input field
-                        onChange={handleChange}
-                        autoComplete="off"
-                        {...props} // Spread any additional props
-                        disabled={disabled}
+                        wrapperClassName="w-full montserrat"
+                        showYearDropdown
+                        scrollableYearDropdown
+                        yearDropdownItemNumber={100}
                     />
-                )}
+                )
+                    : type === "select" ? (
+                        <select
+                            className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all text-base px-3 py-3 rounded-[7px]"
+                            {...register(name, rules)}
+                            value={inputValue} // Controlled value for select input
+                            onChange={handleChange}
+                            disabled={disabled}
+                        >
+                            <option value="" disabled>{placeholder}</option>
+                            {options.map((option, index) => (
+                                <option key={index} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <input
+                            type={type === "password" ? (passwordOpen ? "text" : "password") : type}
+                            max={disableFutureDates ? new Date().toISOString().split("T")[0] : null}
+                            placeholder={placeholder}
+                            className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
+                            {...register(name, rules)}
+                            value={inputValue} // Controlled value for the input field
+                            onChange={handleChange}
+                            autoComplete="off"
+                            {...props} // Spread any additional props
+                            disabled={disabled}
+                        />
+                    )}
 
                 {type === "password" && (
                     <img
