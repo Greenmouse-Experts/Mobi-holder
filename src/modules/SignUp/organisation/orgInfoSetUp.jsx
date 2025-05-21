@@ -13,6 +13,8 @@ import Checkbox from "../../../components/CheckBox";
 import MultipleSelect from "../../../components/MultipleSelect";
 import useFileUpload from "../../../api/hooks/useFileUpload";
 import { Camera } from "lucide-react";
+import { State, Country } from "country-state-city";
+
 
 export default function OrgInfoSetUp({ moveNext }) {
     const user = useSelector((state) => state.orgData.orgData);
@@ -24,9 +26,34 @@ export default function OrgInfoSetUp({ moveNext }) {
     const { uploadFiles, isLoadingUpload } = useFileUpload();
     const [uploadedPhoto, setUploadedPhoto] = useState("");
     const [btnDisabled, setDisabled] = useState(true);
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedState, setSelectedState] = useState(null);
+    const [states, setStates] = useState([]);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+
+    const countries = Country.getAllCountries();
+
+
+    const handleCountryChange = (isoCode) => {
+        if (!isoCode) return;
+        const country = countries.find((c) => c.name === isoCode);
+        setSelectedCountry(country);
+        setSelectedState(null);
+        setStates(State.getStatesOfCountry(country.isoCode));
+    };
+
+    const handleStateChange = (isoCode) => {
+        if (!isoCode || !selectedCountry) return;
+
+        const state = states.find((s) => s.name === isoCode);
+
+        setSelectedState(state);
+    };
+
+
 
     const moveTo = (data) => {
         setPayload((prevPayload) => {
@@ -142,16 +169,44 @@ export default function OrgInfoSetUp({ moveNext }) {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Country
                                             </p>
-                                            <Input icon="human.svg" type="text" name="country" value={user?.companyAddress.country} register={register}
-                                                rules={{ required: 'Country is required' }} errors={errors} placeholder="Enter your country name" />
+                                            <Input
+                                                icon="human.svg"
+                                                type="select"
+                                                name="country"
+                                                value={selectedCountry?.isoCode}
+                                                options={countries
+                                                    .filter((country) => country.name === 'Nigeria') // only Nigeria
+                                                    .map((country) => ({
+                                                        value: country.name,
+                                                        label: country.name
+                                                    }))}
+                                                onChange={handleCountryChange} // Add this line
+                                                register={register}
+                                                rules={{ required: 'Country is required' }}
+                                                errors={errors}
+                                                placeholder="Enter your country name"
+                                            />
                                         </div>
 
                                         <div className="flex flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 State
                                             </p>
-                                            <Input icon="human.svg" type="text" name="state" value={user?.companyAddress.state} register={register}
-                                                rules={{ required: 'State is required' }} errors={errors} placeholder="Enter your state" />
+                                            <Input
+                                                icon="human.svg"
+                                                type="select"
+                                                name="state"
+                                                value={selectedState?.isoCode}
+                                                options={states.map((state) => ({
+                                                    value: state.name,
+                                                    label: state.name,
+                                                }))}
+                                                onChange={handleStateChange} // Add this line
+                                                register={register}
+                                                rules={{ required: 'State is required' }}
+                                                errors={errors}
+                                                placeholder="Select your state"
+                                            />
                                         </div>
                                     </div>
 

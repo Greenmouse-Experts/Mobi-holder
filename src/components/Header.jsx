@@ -12,6 +12,7 @@ import AvatarInitials from "./AvatarInitials";
 import { dateFormat } from "../helpers/dateHelper";
 import UserPhoto from "./UserPhoto";
 import OrgSidebar from "../modules/OrgModules/sideBar";
+import { toast } from "react-toastify";
 
 export default function Header({ greeting, profile, mobile, organisation, title, superAdmin, data }) {
     const [open, setOpen] = useState(false);
@@ -27,6 +28,16 @@ export default function Header({ greeting, profile, mobile, organisation, title,
     const { theme } = useContext(ThemeContext);
 
     const url = window.location.pathname;
+
+    const handleCopy = (textToCopy) => {
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                toast.success('ID copied');
+            })
+            .catch((err) => {
+                console.error("Failed to copy: ", err);
+            });
+    };
 
     return (
         <div className="w-full lg:flex-row md:flex-row flex flex-col gap-3">
@@ -54,10 +65,12 @@ export default function Header({ greeting, profile, mobile, organisation, title,
 
                     <div className="flex gap-3">
                         <div className="lg:flex md:flex hidden md:p-2 px-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                            <img src={settings} />
+                            <Link to={organisation ? '/org/settings' : '/app/settings'} className="w-full">
+                                <img src={settings} />
+                            </Link>
                         </div>
                         <div className="lg:flex md:flex hidden md:p-2 px-3 bg-mobiSearchDark rounded-md flex-col justify-center">
-                            <Link to={'/app/notification'} className="w-full">
+                            <Link to={organisation ? '/org/notification' : '/app/notification'} className="w-full">
                                 <img src={notifications} />
                             </Link>
                         </div>
@@ -113,7 +126,7 @@ export default function Header({ greeting, profile, mobile, organisation, title,
                                     <p className="text-sm text-mobiRomanSilver">{data.accountType} account</p>
                                     <div className="flex gap-2">
                                         <p className="text-mobiBlue">ID: {data.mobiHolderId}</p>
-                                        <div className="flex flex-col justify-center">
+                                        <div className="flex flex-col justify-center cursor-pointer" onClick={() => handleCopy(data.mobiHolderId)}>
                                             <svg width="13" height="17" viewBox="0 0 17 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect x="0.5" y="3.59106" width="12.9092" height="16.0001" rx="2.5" stroke="#939292" />
                                                 <rect x="3.59082" y="0.5" width="12.9092" height="16.0001" rx="2.5" stroke="#939292" />
