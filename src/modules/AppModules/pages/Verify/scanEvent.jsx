@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
 import SearchInput from "../../../../components/SearchInput";
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import useApiMutation from "../../../../api/hooks/useApiMutation";
 import Loader from "../../../../components/Loader";
 import { compareEventDate, formatDateTime, formatEventDate } from "../../../../helpers/dateHelper";
+import useEventManagement from "./hooks/useEventManagement";
+import { useSelector } from "react-redux";
 
 const Card = ({ logo, startDate, endDate, name, ticketType }) => {
     return (
@@ -58,47 +57,23 @@ const Card = ({ logo, startDate, endDate, name, ticketType }) => {
 export default function ScanEvents() {
     const user = useSelector((state) => state.userData.data);
 
-    const [allEvents, setAllEvents] = useState([]);
+    const {
+        isLoading,
+        allMyEvents, // Using the combined array
+        refreshEvents
+    } = useEventManagement();
 
-    const [isLoading, setIsLoading] = useState(true);
-
-    const { mutate } = useApiMutation();
+    console.log(allMyEvents)
 
 
-        const getAllEvents = () => {
-            mutate({
-                url: `/api/events/get/events`,
-                method: "GET",
-                headers: true,
-                hideToast: true,
-                onSuccess: (response) => {
-                    setAllEvents(response.data.data);
-                    setIsLoading(false);
-                },
-                onError: () => {
-                    setIsLoading(false);
-                }
-            });
-        }
-    
-    
-        useEffect(() => {
-            getAllEvents();
-        }, []);
-    
-    
-    
-    
-    
-    
-        if (isLoading) {
-            return (
-                <div className="w-full h-screen flex items-center justify-center">
-                    <Loader />
-                </div>
-            )
-        }
-    
+    if (isLoading) {
+        return (
+            <div className="w-full h-screen flex items-center justify-center">
+                <Loader />
+            </div>
+        )
+    }
+
 
 
 
@@ -114,7 +89,7 @@ export default function ScanEvents() {
                             Scan Event
                         </p>
                         <p className="text-base">
-                        Choose an event to verify for    
+                            Choose an event to verify for
                         </p>
                     </div>
                     <div className="md:flex md:w-2/5 hidden">
@@ -125,14 +100,14 @@ export default function ScanEvents() {
                 <div className="w-full flex md:px-0 px-3 flex-grow">
                     <div className="shadow-xl py-5 px-5 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                         <div className="py-5">
-                            {allEvents.length > 0 ?
+                            {allMyEvents.length > 0 ?
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                    {allEvents.map((event, index) => (
-                                        <Link to={`/app/verify-event/${event.eventId}`}>
+                                    {allMyEvents.map((event, index) => (
+                                        <Link to={`/app/verify-event/${event.eventDetails.eventId}`}>
                                             <Card key={index}
-                                                {...event}
+                                                {...event.eventDetails}
                                                 logo={<div className="w-full h-full rounded-lg">
-                                                    <img src={event.image} className="w-full h-full rounded-t-lg object-cover" />
+                                                    <img src={event.eventDetails.image} className="w-full h-full rounded-t-lg object-cover" />
                                                 </div>}
                                             />
                                         </Link>
@@ -143,7 +118,7 @@ export default function ScanEvents() {
                                     <p className="text-xl font-semibold">NO AVAILABLE EVENTS TO DISPLAY</p>
                                 </div>
                             }
-                       </div>
+                        </div>
                     </div>
                 </div>
             </div>
