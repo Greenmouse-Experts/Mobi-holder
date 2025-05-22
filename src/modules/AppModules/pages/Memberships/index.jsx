@@ -277,7 +277,7 @@ export default function Membership() {
                             organisations.map(item => ([
                                 item.organization.companyName,
                                 item.designation,
-                                item.id,
+                                item.memberId || '---',
                                 item.organization.companyEmail,
                                 item.status,
                             ])),
@@ -290,7 +290,7 @@ export default function Membership() {
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.id}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.memberId || '---'}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyEmail}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.dateJoined, 'dd-MM-yyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>

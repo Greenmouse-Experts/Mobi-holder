@@ -35,7 +35,7 @@ const StaffCardPortrait = ({ data, background, company, textColor }) => {
         </div>
         <div className="flex justify-between text-sm">
           <p className="font-semibold">Card Number</p>
-          <p className="uppercase"> {data.cardNumber.split('-')[0]} </p>
+          <p className="uppercase"> {data.cardNumber} </p>
           </div>
         <div className="flex justify-between text-sm">
           <p className="font-semibold">Organisation</p>

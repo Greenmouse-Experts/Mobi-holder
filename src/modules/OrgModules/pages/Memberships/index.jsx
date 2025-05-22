@@ -92,7 +92,7 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Organisation Email
                                 </p>
-                                <Input type="text" name="organizationEmail" register={register}
+                                <Input type="text" name="organizationEmail" value={userInfo?.organizationEmail} register={register}
                                     placeholder="Enter organisation email"
                                     rules={{ required: 'Organization Email is required' }} errors={errors} />
                             </div>

@@ -50,7 +50,7 @@ export default function CreateUserCard() {
                     .map((item) => {
                         return {
                             label: item.name,
-                            value: item.id    
+                            value: item.id
                         }
                     })
                 setTemplates(templates);
@@ -68,7 +68,7 @@ export default function CreateUserCard() {
 
 
     const createCard = (data) => {
-        const payload = {...data, memberId: individualData.individualId};
+        const payload = { ...data, memberId: individualData.individualId };
         setIsLoading(true);
         mutate({
             url: "/api/idcards/organization/create/member/card",
@@ -156,10 +156,10 @@ export default function CreateUserCard() {
                         <div className="shadow-xl py-5 px-5 md:w-[30%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-6">
                             <div className="w-full flex justify-center">
                                 <div className="w-[200px] h-[200px] flex rounded-full bg-gray-400">
-                                    {!individualData.individual.photo ?
+                                    {individualData.individual.photo ?
                                         <img src={individualData?.individual.photo} className="w-full h-full object-cover rounded-full" />
                                         :
-                                        <></>
+                                        <div className="w-full h-full rounded-full" />
                                     }
                                 </div>
                             </div>

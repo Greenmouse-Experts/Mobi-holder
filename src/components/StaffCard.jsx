@@ -45,7 +45,7 @@ const StaffCard = ({ data, background, company, textColor }) => {
                     </div>
                     <div className="px-5">
                         <p className="">Card Number</p>
-                        <p className="uppercase"> {data.cardNumber.split('-')[0]} </p>
+                        <p className="uppercase"> {data.cardNumber} </p>
                     </div>
                     <div>
                         <p className="">Expiry Date</p>

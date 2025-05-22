@@ -12,6 +12,7 @@ export default function InviteMember() {
     const [isLoading, setIsLoading] = useState(false);
     const { mutate } = useApiMutation();
 
+
     const inviteMember = (data) => {
         setIsLoading(true)
         mutate({
@@ -72,7 +73,7 @@ export default function InviteMember() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Organisation Email (optional)
                                         </p>
-                                        <Input type="text" name="organizationEmail" register={register} placeholder="Email" />
+                                        <Input type="text" name="organizationEmail" value={user?.companyEmail} register={register} placeholder="Email" />
                                     </div>
                                     <div className="flex">
                                         <Button type="submit" disabled={isLoading} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
