@@ -28,7 +28,9 @@ const Card = ({ photo, companyName }) => {
 export default function OrganisationLists() {
     const user = useSelector((state) => state.userData.data);
     const [cards, setOrgCards] = useState([]);
+    const [filteredCards, setFilteredCards] = useState([]);
     const [loader, setLoader] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
     const dispatch = useDispatch();
 
     const { mutate } = useApiMutation();
@@ -41,24 +43,37 @@ export default function OrganisationLists() {
             hideToast: true,
             onSuccess: (response) => {
                 setOrgCards(response.data.data);
+                setFilteredCards(response.data.data); // Initialize filtered cards
                 setLoader(false);
             },
             onError: () => {
+                setLoader(false);
             }
         });
     }
+
+    // Handle search functionality
+    const handleSearch = (term) => {
+        setSearchTerm(term);
+        if (term === '') {
+            setFilteredCards(cards);
+        } else {
+            const filtered = cards.filter(card => 
+                card.companyName.toLowerCase().includes(term.toLowerCase())
+            );
+            setFilteredCards(filtered);
+        }
+    };
 
     useEffect(() => {
         getAllOrganisations();
     }, []);
 
-
     const setParams = (data) => {
         dispatch(setParamsData(data))
     }
 
-
-    return <>
+    return (
         <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
                 <Header mobile data={user} title={'Join New Organisation'} />
@@ -66,34 +81,46 @@ export default function OrganisationLists() {
                     <div className="w-full flex flex-col gap-2">
                         <p className="text-base">
                             Choose an organisation you want to be a member of
-                            {/*'Choose an organisation you want to subscribe to'*/}
                         </p>
                     </div>
                     <div className="md:flex md:w-2/5 hidden">
-                        <SearchInput appendIcon="search.svg" type="text" placeholder="Enter keyword to search" />
+                        <SearchInput 
+                            appendIcon="search.svg" 
+                            type="text" 
+                            placeholder="Enter keyword to search"
+                            value={searchTerm}
+                            onChange={(e) => handleSearch(e.target.value)}
+                        />
                     </div>
                 </div>
 
                 <div className="w-full flex md:px-0 px-3 flex-grow">
                     <div className="shadow-xl py-5 px-5 w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
                         <div className="py-5">
-                            {
-                                loader ?
-                                    <Loader />
-                                    :
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                                        {cards.map((card, index) => (
-                                            <Link to={`/app/join-organisation-form/${card.id}`} onClick={() => setParams(card)}>
-                                                <Card key={index} {...card} />
-                                            </Link>
-                                        ))}
-                                        {/* /app/view-organisation/239404 */}
-                                    </div>
-                            }
+                            {loader ? (
+                                <Loader />
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                    {filteredCards.map((card, index) => (
+                                        <Link 
+                                            to={`/app/join-organisation-form/${card.id}`} 
+                                            onClick={() => setParams(card)}
+                                            key={index}
+                                        >
+                                            <Card {...card} />
+                                        </Link>
+                                    ))}
+                                    {filteredCards.length === 0 && (
+                                        <div className="col-span-full text-center py-10">
+                                            No organizations found matching your search
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </>
+    );
 }

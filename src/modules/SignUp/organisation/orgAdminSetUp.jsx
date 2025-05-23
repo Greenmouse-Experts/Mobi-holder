@@ -18,6 +18,7 @@ export default function OrgAdminSetUp({ moveBack }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     const orgData = useSelector((state) => state.orgData.orgData);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -28,6 +29,7 @@ export default function OrgAdminSetUp({ moveBack }) {
 
     const createOrgAccount = (data) => {
         const payload = { ...orgData, ...data };
+        setIsLoading(true);
         mutate({
             url: "/api/users/auth/register/organization",
             method: "POST",
@@ -36,8 +38,11 @@ export default function OrgAdminSetUp({ moveBack }) {
             onSuccess: (response) => {
                 dispatch(setOrg(response.data.data));
                 localStorage.setItem('email', JSON.stringify(payload.email));
+                navigate('/verify-email');
+                setIsLoading(false);
             },
             onError: () => {
+                setIsLoading(false);
             }
         });
 
@@ -139,7 +144,7 @@ export default function OrgAdminSetUp({ moveBack }) {
                                         </Button>
 
                                         {/* Sign Up Button on the Right */}
-                                        <Button type="submit" className="bg-mobiPink px-6 py-3 rounded-full text-white ml-auto">
+                                        <Button type="submit" disabled={isLoading} className="bg-mobiPink px-6 py-3 rounded-full text-white ml-auto">
                                             Sign Up As Organisation
                                         </Button>
                                     </div>

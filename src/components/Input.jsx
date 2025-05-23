@@ -1,14 +1,6 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
-
-
-
-
-
-
-
 
 
 const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
@@ -26,12 +18,6 @@ const CustomDateInput = forwardRef(({ value, onClick, placeholder }, ref) => (
 
 
 
-
-
-
-
-
-
 export default function Input({
     icon,
     type,
@@ -40,37 +26,80 @@ export default function Input({
     name,
     disabled,
     disableFutureDates,
+    disablePastDates,
     register,
     rules,
     errors,
-    watch, // Watch all form values
-    setValue, // Set value manually
-    options = [], // For select input
-    value = "", // Default value if nothing is passed
+    watch,
+    setValue,
+    options = [],
+    value = "",
     onChange,
     ...props
 }) {
-    const [inputValue, setInputValue] = useState(value); // Local state for input value
+    const [inputValue, setInputValue] = useState(value);
     const [passwordOpen, setPasswordOpen] = useState(false);
 
-    // Update input value if "watch" is passed
-    const watchAll = watch ? watch() : {}; // Ensure watch is optional
-    const inputWatchValue = watchAll?.[name]; // Get the value for this specific input
+    // Properly integrate with react-hook-form
+    const { ref, onChange: registerOnChange, ...registerProps } = register ? register(name, rules) : { ref: null, onChange: () => { } };
 
+    // Sync with external value changes
     useEffect(() => {
-        if (inputWatchValue !== undefined) {
-            setInputValue(inputWatchValue); // Sync value with form state
+        if (value !== undefined && value !== inputValue) {
+            setInputValue(value);
         }
-    }, [inputWatchValue]);
+    }, [value]);
 
+    // Handle all input changes consistently
     const handleChange = (e) => {
         const newValue = e.target.value;
+        setInputValue(newValue);
         if (setValue) {
-            setValue(name, newValue); // Update form state if setValue is passed
-        } else {
-            setInputValue(newValue); // Update local state if no setValue
+            setValue(name, newValue, { shouldValidate: true });
         }
-        if (onChange) onChange(newValue); // Trigger onChange if provided
+        if (registerOnChange) {
+            registerOnChange(e); // Trigger react-hook-form's onChange
+        }
+        if (onChange) {
+            onChange(newValue); // Trigger custom onChange if provided
+        }
+    };
+
+    // Special handler for date inputs
+    const handleDateChange = (date) => {
+        let dateValue;
+
+        if (date) {
+            // Convert to local date string (YYYY-MM-DD) without timezone offset issues
+            const localDate = new Date(date);
+            localDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+            dateValue = localDate.toISOString().split('T')[0];
+        } else {
+            dateValue = null;
+        }
+
+        setInputValue(dateValue);
+
+        // Update form state if setValue is available
+        if (setValue) {
+            setValue(name, dateValue, { shouldValidate: true });
+        }
+
+        // Trigger react-hook-form's onChange if registered
+        if (registerOnChange) {
+            const event = {
+                target: {
+                    name,
+                    value: dateValue
+                }
+            };
+            registerOnChange(event);
+        }
+
+        // Trigger custom onChange if provided
+        if (onChange) {
+            onChange(dateValue);
+        }
     };
 
     return (
@@ -81,53 +110,59 @@ export default function Input({
                 {(type === "date" || type === "datetime") ? (
                     <DatePicker
                         selected={inputValue ? new Date(inputValue) : null}
-                        onChange={(date) => {
-                            const isoDate = date.toISOString();
-                            if (setValue) setValue(name, isoDate);
-                            setInputValue(isoDate);
-                            if (onChange) onChange(isoDate);
-                        }}
+                        onChange={handleDateChange}
                         showTimeSelect={type === "datetime"}
                         dateFormat={type === "datetime" ? "dd-MM-yyyy HH:mm" : "dd-MM-yyyy"}
+                        minDate={disablePastDates ? new Date() : null}
                         maxDate={disableFutureDates ? new Date() : null}
                         placeholderText={placeholder}
-                        customInput={<CustomDateInput placeholder={placeholder} />}
+                        customInput={
+                            <CustomDateInput
+                                placeholder={placeholder}
+                                onClick={(e) => e.preventDefault()}
+                                ref={ref}
+                            />
+                        }
                         disabled={disabled}
                         wrapperClassName="w-full montserrat"
                         showYearDropdown
                         scrollableYearDropdown
                         yearDropdownItemNumber={100}
+                        {...props}
                     />
-                )
-                    : type === "select" ? (
-                        <select
-                            className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all text-base px-3 py-3 rounded-[7px]"
-                            {...register(name, rules)}
-                            value={inputValue} // Controlled value for select input
-                            onChange={handleChange}
-                            disabled={disabled}
-                        >
-                            <option value="" disabled>{placeholder}</option>
-                            {options.map((option, index) => (
-                                <option key={index} value={option.value}>
-                                    {option.label}
-                                </option>
-                            ))}
-                        </select>
-                    ) : (
-                        <input
-                            type={type === "password" ? (passwordOpen ? "text" : "password") : type}
-                            max={disableFutureDates ? new Date().toISOString().split("T")[0] : null}
-                            placeholder={placeholder}
-                            className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
-                            {...register(name, rules)}
-                            value={inputValue} // Controlled value for the input field
-                            onChange={handleChange}
-                            autoComplete="off"
-                            {...props} // Spread any additional props
-                            disabled={disabled}
-                        />
-                    )}
+                ) : type === "select" ? (
+                    <select
+                        className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all text-base px-3 py-3 rounded-[7px]"
+                        value={inputValue}
+                        onChange={handleChange}
+                        disabled={disabled}
+                        ref={ref}
+                        {...registerProps}
+                        {...props}
+                    >
+                        <option value="" disabled>
+                            {placeholder}
+                        </option>
+                        {options.map((option, index) => (
+                            <option key={index} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                ) : (
+                    <input
+                        type={type === "password" ? (passwordOpen ? "text" : "password") : type}
+                        max={disableFutureDates ? new Date().toISOString().split("T")[0] : null}
+                        placeholder={placeholder}
+                        className="peer w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:border-0 disabled:cursor-auto transition-all placeholder:opacity-1 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
+                        value={inputValue}
+                        onChange={handleChange}
+                        ref={ref}
+                        {...registerProps}
+                        disabled={disabled}
+                        {...props}
+                    />
+                )}
 
                 {type === "password" && (
                     <img

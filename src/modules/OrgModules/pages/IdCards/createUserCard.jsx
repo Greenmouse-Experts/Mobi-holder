@@ -197,8 +197,8 @@ export default function CreateUserCard() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Expiry Date
                                             </p>
-                                            <Input type="date" name="expiryDate" register={register}
-                                                placeholder="Role" />
+                                            <Input type="date" name="expiryDate" disablePastDates register={register}
+                                                placeholder="Expiry date" />
                                         </div>
                                         <div className="flex flex-col w-full gap-6">
                                             <p className="-mb-3 text-mobiFormGray">

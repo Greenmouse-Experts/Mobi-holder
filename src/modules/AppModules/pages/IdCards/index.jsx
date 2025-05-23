@@ -100,7 +100,7 @@ export default function IDCardsPage() {
 
 
 
-    const TableHeaders = ["Organisation", "ID Card", "Card Number", "Role", "Expiry Date", "Status", "Action"];
+    const TableHeaders = ["Organisation", "Card Number", "Role", "Expiry Date", "Status", "Action"];
     const NewTableHeaders = ["Organisation", "Card Number", "Role", "Issued Date", "Expiry Date", "Action"];
 
 
@@ -184,7 +184,6 @@ export default function IDCardsPage() {
                                 orgCards.map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                         <td className="px-3 py-3 text-mobiTableText">{data.organization.companyName}</td>
-                                        <td className="px-3 py-3 text-center text-mobiTableText"><img width={50} src="/id-card.png" /></td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data?.expiryDate ? dateFormat(data?.expiryDate, 'dd-MM-yyyy') : '---'}</td>

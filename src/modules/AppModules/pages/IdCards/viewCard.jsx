@@ -78,7 +78,7 @@ export default function ViewCard() {
                             <form>
                                 <div className="mb-1 flex flex-col gap-8 mt-5">
                                     {cardData.template?.layout === "horizontal" || cardData.template?.layout === "Landscape" ? 
-                                    <StaffCard data={cardData} background={cardData.template.backgroundColor} textColor={cardData.template.textColor} /> : <StaffCardPortrait /> }
+                                    <StaffCard data={cardData} background={cardData.template.backgroundColor} textColor={cardData.template.textColor} /> : <StaffCardPortrait data={cardData} background={cardData.template.backgroundColor} company={cardData?.organization?.companyName} textColor={cardData.template.textColor} />}
                                     <div className="flex flex-col w-full mt-10 gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
                                             Organisation
