@@ -168,7 +168,7 @@ export default function ViewPublicEvents() {
                                         <span onClick={() => navigate(`/app/order-tickets/${id}`)}>Ticket Request</span>
                                     </MenuItem>
                                     <MenuItem className="flex flex-col gap-3">
-                                        <span onClick={() => handleVerificationRequest(id)}>Verification Request</span>
+                                        <span onClick={() => handleVerificationRequest(eventDetails.id)}>Verification Request</span>
                                     </MenuItem>
                                 </MenuList>
                             </Menu>

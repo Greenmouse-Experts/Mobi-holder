@@ -140,10 +140,21 @@ export default function LocationEvent({ next, back, data }) {
                             <p className="-mb-3 text-mobiFormGray">
                                 Start Date
                             </p>
-                            <Input name="startDate" value={event?.startDate || dateTimeLocal(data?.startDate)} rules={{ required: 'Start Date is required' }} errors={errors} register={register}
-                                type="datetime-local" placeholder="Choose the Start date" />
+                            <Input
+                                name="startDate"
+                                value={event?.startDate || ''}
+                                onChange={(value) => {
+                                    // Convert to proper format before saving
+                                    const formattedValue = value ? new Date(value).toISOString() : null;
+                                    setValue('startDate', formattedValue, { shouldValidate: true });
+                                }}
+                                rules={{ required: 'Start Date is required' }}
+                                errors={errors}
+                                register={register}
+                                type="datetime-local"
+                                placeholder="Choose the Start date"
+                            />
                         </div>
-
                         <div className="flex flex-col w-full gap-6">
                             <p className="-mb-3 text-mobiFormGray">
                                 End Date
@@ -161,6 +172,11 @@ export default function LocationEvent({ next, back, data }) {
 
                                         return end >= start || "End Date must be after Start Date";
                                     }
+                                }}
+                                onChange={(value) => {
+                                    // Convert to proper format before saving
+                                    const formattedValue = value ? new Date(value).toISOString() : null;
+                                    setValue('endDate', formattedValue, { shouldValidate: true });
                                 }}
                                 errors={errors}
                                 register={register}

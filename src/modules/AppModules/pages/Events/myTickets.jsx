@@ -39,6 +39,7 @@ export default function MyTickets() {
                 setIsLoading(false);
             },
             onError: () => {
+                setIsLoading(false)
             }
         });
     }

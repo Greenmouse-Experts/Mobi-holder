@@ -71,36 +71,49 @@ export default function Input({
         let dateValue;
 
         if (date) {
-            // Convert to local date string (YYYY-MM-DD) without timezone offset issues
-            const localDate = new Date(date);
-            localDate.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-            dateValue = localDate.toISOString().split('T')[0];
+            if (type === "datetime") {
+                // For datetime inputs, create a Date object at the exact selected local time
+                // This avoids timezone conversion issues
+                dateValue = new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate(),
+                    date.getHours(),
+                    date.getMinutes(),
+                    date.getSeconds()
+                ).toISOString();
+            } else {
+                // For date-only inputs
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                dateValue = `${year}-${month}-${day}`;
+            }
         } else {
             dateValue = null;
         }
 
         setInputValue(dateValue);
 
-        // Update form state if setValue is available
+        // Update react-hook-form state
         if (setValue) {
             setValue(name, dateValue, { shouldValidate: true });
         }
 
-        // Trigger react-hook-form's onChange if registered
+        // Trigger react-hook-form's onChange
         if (registerOnChange) {
             const event = {
                 target: {
                     name,
-                    value: dateValue
+                    value: dateValue,
+                    type: type === "datetime" ? "datetime" : "date"
                 }
             };
             registerOnChange(event);
         }
 
-        // Trigger custom onChange if provided
-        if (onChange) {
-            onChange(dateValue);
-        }
+        // Trigger custom onChange
+        if (onChange) onChange(dateValue);
     };
 
     return (
@@ -115,10 +128,10 @@ export default function Input({
                         showTimeSelect={type === "datetime"}
                         dateFormat={type === "datetime" ? "dd-MM-yyyy HH:mm" : "dd-MM-yyyy"}
                         minDate={
-                        disablePastDates ? new Date() :
-                        minDate ? new Date(minDate) :
-                        null
-                    }
+                            disablePastDates ? new Date() :
+                                minDate ? new Date(minDate) :
+                                    null
+                        }
                         maxDate={disableFutureDates ? new Date() : null}
                         placeholderText={placeholder}
                         customInput={

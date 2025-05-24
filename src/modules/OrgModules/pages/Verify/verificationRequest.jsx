@@ -44,8 +44,8 @@ export default function OrgVerificationRequest() {
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                const filteredRequests = response.data.data.filter((data) => data.user.id === user.id);
-                setReceivedRequests(getEventOwners(filteredRequests, data));
+                const filteredRequests = response.data.data.filter((data) => data.eventOwnerId === user.id);
+                setReceivedRequests(filteredRequests);
                 setIsLoading(false);
             },
             onError: () => {
@@ -127,6 +127,8 @@ export default function OrgVerificationRequest() {
     const RequetsHeaders1 = ["Individual", "Email", "Request On", "Status", "Action"];
 
 
+    console.log(receivedRequests)
+
 
 
     return (
@@ -166,12 +168,12 @@ export default function OrgVerificationRequest() {
                                     return order === "asc" ? new Date(a.createdAt) - new Date(b.createdAt) : new Date(b.createdAt) - new Date(a.createdAt);
                                 }
                                 else if (field === "name") {
-                                    const aName = a.eventOwner.companyName 
-                                        ? a.eventOwner.companyName 
-                                        : `${a.eventOwner.firstName} ${a.eventOwner.lastName}`;
-                                    const bName = b.eventOwner.companyName 
-                                        ? b.eventOwner.companyName 
-                                        : `${b.eventOwner.firstName} ${b.eventOwner.lastName}`;
+                                    const aName = a.user.companyName 
+                                        ? a.user.companyName 
+                                        : `${a.user.firstName} ${a.user.lastName}`;
+                                    const bName = b.user.companyName 
+                                        ? b.user.companyName 
+                                        : `${b.user.firstName} ${b.user.lastName}`;
 
                                     return order === "ASC"
                                         ? aName.localeCompare(bName)
@@ -185,8 +187,8 @@ export default function OrgVerificationRequest() {
                             handleExportDataClick={() => exportToExcel(
                                 RequetsHeaders,
                                 receivedRequests.map(item => ([
-                                    `${item.eventOwner.companyName ? item.eventOwner.companyName : `${item.eventOwner.firstName} ${item.eventOwner.lastName}`}`,
-                                    item.eventOwner.email,
+                                    `${item.user.companyName ? item.user.companyName : `${item.user.firstName} ${item.user.lastName}`}`,
+                                    item.user.email,
                                     `${dateFormat(item.createdAt, 'dd-MM-yyy')}`,
                                     item.status
                                 ])),
@@ -197,8 +199,8 @@ export default function OrgVerificationRequest() {
                             receivedRequests
                                 .map((data, index) => (
                                     <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.eventOwner.companyName ? data.eventOwner.companyName : `${data.eventOwner.firstName} ${data.eventOwner.lastName}`}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.eventOwner.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.user.companyName ? data.user.companyName : `${data.user.firstName} ${data.user.lastName}`}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.user.email}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText">
                                             {data.status === 'active' ?
