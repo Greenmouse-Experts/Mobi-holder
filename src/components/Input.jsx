@@ -27,6 +27,7 @@ export default function Input({
     disabled,
     disableFutureDates,
     disablePastDates,
+    minDate,
     register,
     rules,
     errors,
@@ -113,7 +114,11 @@ export default function Input({
                         onChange={handleDateChange}
                         showTimeSelect={type === "datetime"}
                         dateFormat={type === "datetime" ? "dd-MM-yyyy HH:mm" : "dd-MM-yyyy"}
-                        minDate={disablePastDates ? new Date() : null}
+                        minDate={
+                        disablePastDates ? new Date() :
+                        minDate ? new Date(minDate) :
+                        null
+                    }
                         maxDate={disableFutureDates ? new Date() : null}
                         placeholderText={placeholder}
                         customInput={

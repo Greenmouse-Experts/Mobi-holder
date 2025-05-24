@@ -402,14 +402,14 @@ export default function ViewUserAdmin() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Issue Date
                                             </p>
-                                            <Input name="issueDate" register={register} disabled value={individual.verifiedIdCard?.issueDate} placeholder="No Data Available" />
+                                            <Input name="issueDate" type={'datetime'} register={register} disabled value={individual.verifiedIdCard?.issueDate} placeholder="No Data Available" />
                                         </div>
 
                                         <div className="flex flex-col w-full gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Expiry Date
                                             </p>
-                                            <Input name="expiryDate" register={register} disabled value={individual.verifiedIdCard?.expiryDate} placeholder="No Data Available" />
+                                            <Input name="expiryDate" type={'datetime'} register={register} disabled value={individual.verifiedIdCard?.expiryDate} placeholder="No Data Available" />
                                         </div>
                                     </div>
 

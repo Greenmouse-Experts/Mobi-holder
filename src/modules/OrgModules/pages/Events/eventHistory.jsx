@@ -88,7 +88,7 @@ export default function OrgEventHistory() {
                                 TableHeaders,
                                 events.map(item => ([
                                     item.name,
-                                    `${JSON.parse(item.venue).name} ${JSON.parse(item.venue).address}`,
+                                    `${item.venue.name} ${item.venue.address}`,
                                     `${dateFormat(item.startDate, "dd MMM yyyy")} - ${dateFormat(item.endDate, "dd MMM yyyy")}`,
                                     'Concluded',
                                 ])),
@@ -99,7 +99,7 @@ export default function OrgEventHistory() {
                                     .map((data, index) => (
                                         <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
                                             <td className="px-3 py-3 text-mobiTableText">{data.name}</td>
-                                            <td className="px-3 py-3 text-mobiTableText">{JSON.parse(data.venue).name} {JSON.parse(data.venue).address}</td>
+                                            <td className="px-3 py-3 text-mobiTableText">{data.venue.name} {data.venue.address}</td>
                                             <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.startDate, "dd MMM yyyy")} - {dateFormat(data.endDate, "dd MMM yyyy")}</td>
                                             <td className="px-3 py-3 text-mobiTableText"><Badge status={'Concluded'} color='inactive' /></td>
                                             <td className="px-6 py-3 cursor-pointer">

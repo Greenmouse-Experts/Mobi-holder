@@ -14,6 +14,7 @@ export default function AddCard() {
     const [isLoading, setIsLoading] = useState(false);
     const [files, setFiles] = useState([]);
     const [backFiles, setBackFiles] = useState([]);
+    const [issuedDate, setIssuedDate] = useState(null);
 
     const navigate = useNavigate();
 
@@ -103,7 +104,8 @@ export default function AddCard() {
                                             </p>
                                             <Input type="date" name="issuedDate"
                                                 register={register}
-                                                rules={{ required: 'Expiry Date is required' }} errors={errors} placeholder="Enter expiry date" />
+                                                onChange={(date) => setIssuedDate(date)}
+                                                rules={{ required: 'Issued date is required' }} errors={errors} placeholder="Enter issued date" />
                                         </div>
                                     </div>
 
@@ -114,6 +116,7 @@ export default function AddCard() {
                                             </p>
                                             <Input type="date" name="expiryDate"
                                                 register={register}
+                                                minDate={issuedDate}
                                                 rules={{ required: 'Expiry Date is required' }} errors={errors} placeholder="Enter expiry date" />
                                         </div>
                                     </div>

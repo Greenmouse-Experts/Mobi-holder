@@ -113,6 +113,7 @@ export default function OrgDashboard() {
                 setIsLoadingEvents(false);
             },
             onError: () => {
+                setIsLoadingEvents(false);
             }
         });
     }
