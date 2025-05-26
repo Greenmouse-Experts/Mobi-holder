@@ -66,31 +66,21 @@ export default function Input({
         }
     };
 
-    // Special handler for date inputs
     const handleDateChange = (date) => {
         let dateValue;
 
         if (date) {
             if (type === "datetime") {
-                // For datetime inputs, create a Date object at the exact selected local time
-                // This avoids timezone conversion issues
-                dateValue = new Date(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    date.getHours(),
-                    date.getMinutes(),
-                    date.getSeconds()
-                ).toISOString();
+                // For datetime, use full ISO string
+                dateValue = date.toISOString();
             } else {
-                // For date-only inputs
-                const year = date.getFullYear();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                dateValue = `${year}-${month}-${day}`;
+                // For date-only, create clean YYYY-MM-DD string
+                const localDate = new Date(date);
+                localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+                dateValue = localDate.toISOString().split('T')[0];
             }
         } else {
-            dateValue = null;
+            dateValue = ""; // Use empty string instead of null for better form handling
         }
 
         setInputValue(dateValue);
@@ -106,7 +96,7 @@ export default function Input({
                 target: {
                     name,
                     value: dateValue,
-                    type: type === "datetime" ? "datetime" : "date"
+                    type: "text" // Some validators need this
                 }
             };
             registerOnChange(event);
@@ -115,6 +105,7 @@ export default function Input({
         // Trigger custom onChange
         if (onChange) onChange(dateValue);
     };
+
 
     return (
         <>

@@ -12,7 +12,7 @@ import useApiMutation from "../../../../api/hooks/useApiMutation";
 
 export default function CreateUserCard() {
     const user = useSelector((state) => state.orgData.orgData);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [individualData, setIndividualData] = useState({});
     const [templates, setTemplates] = useState([]);
     const [loader, setLoader] = useState(true);
@@ -197,7 +197,11 @@ export default function CreateUserCard() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Expiry Date
                                             </p>
-                                            <Input type="date" name="expiryDate" disablePastDates register={register}
+                                            <Input type="date" name="expiryDate"
+                                                onChange={(value) => {
+                                                    setValue("expiryDate", value, { shouldValidate: true });
+                                                }}
+                                                disablePastDates register={register}
                                                 placeholder="Expiry date" />
                                         </div>
                                         <div className="flex flex-col w-full gap-6">

@@ -139,6 +139,7 @@ export default function TicketEvent({ back }) {
 
     const handleCloseModal = () => {
         setIsLoading(false);
+        closeModal();
     }
 
     

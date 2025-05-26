@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../../components/Input";
 import { Button, Checkbox } from "@material-tailwind/react";
 import RangeSlider from "../../../components/RangeSlider";

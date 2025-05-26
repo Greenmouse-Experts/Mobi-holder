@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function AddCard() {
     const user = useSelector((state) => state.userData.data);
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const [files, setFiles] = useState([]);
     const [backFiles, setBackFiles] = useState([]);
@@ -102,10 +102,24 @@ export default function AddCard() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Issued Date
                                             </p>
-                                            <Input type="date" name="issuedDate"
+                                            <Input
+                                                type="date"
+                                                name="issuedDate"
                                                 register={register}
-                                                onChange={(date) => setIssuedDate(date)}
-                                                rules={{ required: 'Issued date is required' }} errors={errors} placeholder="Enter issued date" />
+                                                onChange={(value) => {
+                                                    setIssuedDate(value);
+                                                    setValue("issuedDate", value, { shouldValidate: true });
+                                                }}
+                                                rules={{
+                                                    required: 'Issued date is required',
+                                                    validate: (value) => {
+                                                        const date = new Date(value);
+                                                        return !isNaN(date.getTime()) || "Invalid date";
+                                                    }
+                                                }}
+                                                errors={errors}
+                                                placeholder="Enter issued date"
+                                            />
                                         </div>
                                     </div>
 
@@ -114,10 +128,28 @@ export default function AddCard() {
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Expiry Date
                                             </p>
-                                            <Input type="date" name="expiryDate"
+                                            <Input
+                                                type="date"
+                                                name="expiryDate"
                                                 register={register}
-                                                minDate={issuedDate}
-                                                rules={{ required: 'Expiry Date is required' }} errors={errors} placeholder="Enter expiry date" />
+                                                minDate={watch("issuedDate")}
+                                                onChange={(value) => {
+                                                    setValue("expiryDate", value, { shouldValidate: true });
+                                                }}
+                                                rules={{
+                                                    required: 'Expiry Date is required',
+                                                    validate: (value) => {
+                                                        const issued = watch("issuedDate");
+                                                        const expiry = new Date(value);
+                                                        return (
+                                                            !isNaN(expiry.getTime()) &&
+                                                            (!issued || expiry >= new Date(issued))
+                                                        ) || "Expiry date must be after issued date";
+                                                    }
+                                                }}
+                                                errors={errors}
+                                                placeholder="Enter expiry date"
+                                            />
                                         </div>
                                     </div>
 
