@@ -22,7 +22,6 @@ const ContactForm = () => {
         mutate({
             url: `/api/admins/public/submit/contact-us`,
             method: "POST",
-            headers: true,
             data,
             onSuccess: () => { reset(); setDisabled(false) },
             onError: () => setDisabled(false),

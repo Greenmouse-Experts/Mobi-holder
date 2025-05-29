@@ -7,6 +7,7 @@ import logoGradient from "../../../assets/logo-gradient.png";
 import { useEffect, useState } from "react";
 import useApiMutation from "../../../api/hooks/useApiMutation";
 import Tabs from "../pages/components/tabs";
+import { Controller, useForm } from "react-hook-form";
 
 function Icon({ id, open }) {
     return (
@@ -29,6 +30,8 @@ export default function ModuleAccess() {
     const [activeAccordion, setActiveAccordion] = useState(null);
     const [activeTab, setActiveTab] = useState(null);
     const [faqCategories, setFaqCategories] = useState([]);
+
+    const { register, handleSubmit, reset, control, formState: { errors } } = useForm();
 
     const { mutate } = useApiMutation();
 
@@ -66,6 +69,25 @@ export default function ModuleAccess() {
     // Get the currently active category's FAQs
     const activeCategory = faqCategories.find(cat => cat.name === activeTab);
     const activeFaqs = activeCategory?.faqs || [];
+
+
+
+
+    const subscribeNewsLetter = (data) => {
+        mutate({
+            url: "/api/admins/public/submit/newsletter",
+            method: "POST",
+            data: data,
+            onSuccess: (response) => {
+                 reset({ email: "" });
+                // Optionally, show a success message or reset the form
+            },
+            onError: (error) => {
+                console.error("Subscription error:", error);
+                // Optionally, show an error message
+            },
+        });
+    }
 
 
 
@@ -220,17 +242,31 @@ export default function ModuleAccess() {
                             </span>
                         </div>
                         <div className="flex w-full py-3">
-                            <form className="relative flex w-full max-w-[30rem]">
-                                <Input
-                                    type="email"
-                                    label="Email Address"
-                                    className="pr-20 bg-white"
-                                    containerProps={{
-                                        className: "min-w-0",
-                                    }}
+                            <form className="relative flex w-full max-w-[30rem]" onSubmit={handleSubmit(subscribeNewsLetter)}>
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    defaultValue={''}
+                                    rules={{ required: "Email is required" }}
+                                    render={({ field }) => (
+                                        <Input
+                                            {...field}
+                                            type="email"
+                                            label="Email Address"
+                                            className="pr-20 bg-white"
+                                            containerProps={{
+                                                className: "min-w-0",
+                                            }}
+                                        />
+                                    )}
                                 />
+                                {errors.email && (
+                                    <p className="text-red-500 text-sm absolute -bottom-5 left-0">{errors.email.message}</p>
+                                )}
+
                                 <Button
                                     size="sm"
+                                    type="submit"
                                     className="!absolute bg-mobiBlue right-1 top-1 rounded"
                                 >
                                     Subscribe
