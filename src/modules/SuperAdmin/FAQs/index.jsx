@@ -71,9 +71,6 @@ export default function FAQs() {
 
 
 
-
-
-
     const handleAddModal = () => {
         openModal({
             size: "sm",
@@ -137,7 +134,7 @@ export default function FAQs() {
                     </div>
                     <div className="overflow-x-auto p-4">
                         <table className="min-w-full hidden md:table border border-gray-300 text-sm">
-                            <thead className="bg-gray-100 text-left">
+                            <thead className="bg-gray-100 text-gray-700 text-left">
                                 <tr>
                                     <th className="p-3 border border-gray-300">S/N</th>
                                     <th className="p-3 border border-gray-300">Category</th>

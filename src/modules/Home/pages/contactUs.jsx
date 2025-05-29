@@ -1,13 +1,40 @@
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import { Button } from "@material-tailwind/react";
+import { useForm } from "react-hook-form";
+import useApiMutation from "../../../api/hooks/useApiMutation";
+import { useState } from "react";
 
 
 
 const ContactForm = () => {
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm();
+    const { mutate } = useApiMutation();
+    const [disabled, setDisabled] = useState(false);
+
+    const submitContactForm = (data) => {
+        setDisabled(true);
+        mutate({
+            url: `/api/admins/public/submit/contact-us`,
+            method: "POST",
+            headers: true,
+            data,
+            onSuccess: () => { reset(); setDisabled(false) },
+            onError: () => setDisabled(false),
+        });
+    };
+
     return (
         <div className="flex items-center justify-center md:px-4 py-3">
-            <form className="md:px-6 px-3 rounded-lg w-full max-w-lg space-y-6">
+            <form
+                className="md:px-6 px-3 rounded-lg w-full max-w-lg space-y-6"
+                onSubmit={handleSubmit(submitContactForm)}
+            >
                 {/* Name Field */}
                 <div>
                     <label className="block text-sm font-medium text-gray-200" htmlFor="name">
@@ -17,34 +44,29 @@ const ContactForm = () => {
                         id="name"
                         type="text"
                         placeholder="Enter your full name"
-                        className="w-full mt-2 p-3 bg-white text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        {...register("name", { required: "Name is required" })}
+                        className="w-full mt-2 p-3 bg-white text-black rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                     />
+                    {errors.name && (
+                        <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                    )}
                 </div>
 
-                {/* Location Field */}
+                {/* Email Field */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-200" htmlFor="location">
-                        Location
+                    <label className="block text-sm font-medium text-gray-200" htmlFor="email">
+                        Email
                     </label>
                     <input
-                        id="location"
-                        type="text"
-                        placeholder="Choose your location"
-                        className="w-full mt-2 p-3 bg-white text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        id="email"
+                        type="email"
+                        placeholder="Enter your email address"
+                        {...register("email", { required: "Email is required" })}
+                        className="w-full mt-2 p-3 bg-white text-black rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                     />
-                </div>
-
-                {/* Phone Number Field */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-200" htmlFor="phone">
-                        Phone Number
-                    </label>
-                    <input
-                        id="phone"
-                        type="tel"
-                        placeholder="Enter your phone number"
-                        className="w-full mt-2 p-3 bg-white text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
-                    />
+                    {errors.email && (
+                        <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                    )}
                 </div>
 
                 {/* Subject Field */}
@@ -56,8 +78,12 @@ const ContactForm = () => {
                         id="subject"
                         type="text"
                         placeholder="Enter the subject of your message"
-                        className="w-full mt-2 p-3 bg-white text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                        {...register("subject", { required: "Subject is required" })}
+                        className="w-full mt-2 p-3 bg-white text-black rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
                     />
+                    {errors.subject && (
+                        <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
+                    )}
                 </div>
 
                 {/* Message Field */}
@@ -67,18 +93,30 @@ const ContactForm = () => {
                     </label>
                     <textarea
                         id="message"
-                        placeholder="Enter your message"
                         rows="4"
-                        className="w-full mt-2 p-3 bg-white text-white rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
-                    />
+                        placeholder="Enter your message"
+                        {...register("message", { required: "Message is required" })}
+                        className="w-full mt-2 p-3 bg-white text-black rounded-lg focus:ring-2 focus:ring-purple-500 outline-none"
+                    ></textarea>
+                    {errors.message && (
+                        <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
+                    )}
                 </div>
 
                 {/* Submit Button */}
-                <Button className="rounded-full w-full text-center flex justify-center bg-mobiPink">
-                    <span className="normal-case flex text-base gap-1">Send Message
+                <Button
+                    className="rounded-full w-full text-center flex justify-center bg-mobiPink"
+                    disabled={disabled}
+                    type="submit"
+                >
+                    <span className="normal-case flex text-base gap-1">
+                        Send Message
                         <span className="flex flex-col justify-center pt-[1.5px]">
                             <svg width="25" height="7" viewBox="0 0 27 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M27.0073 4.25L19.4255 0.0647949L19.5919 8.72345L27.0073 4.25ZM1.00706 5.49986L20.273 5.12957L20.2442 3.62985L0.978233 4.00014L1.00706 5.49986Z" fill="white" />
+                                <path
+                                    d="M27.0073 4.25L19.4255 0.0647949L19.5919 8.72345L27.0073 4.25ZM1.00706 5.49986L20.273 5.12957L20.2442 3.62985L0.978233 4.00014L1.00706 5.49986Z"
+                                    fill="white"
+                                />
                             </svg>
                         </span>
                     </span>
@@ -87,6 +125,8 @@ const ContactForm = () => {
         </div>
     );
 };
+
+
 
 
 
