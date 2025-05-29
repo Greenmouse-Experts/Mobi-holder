@@ -1,8 +1,9 @@
 import { Accordion, AccordionBody, AccordionHeader, Button } from "@material-tailwind/react";
-import Header from "../layouts/Header"
-import { useState } from "react";
+import Header from "../layouts/Header";
+import { useEffect, useState } from "react";
 import Tabs from "./components/tabs";
 import Footer from "../layouts/Footer";
+import useApiMutation from "../../../api/hooks/useApiMutation";
 
 function Icon({ id, open }) {
     return (
@@ -19,18 +20,57 @@ function Icon({ id, open }) {
     );
 }
 
-
 export default function FAQ() {
-    const [open, setOpen] = useState(0);
+    const [activeAccordion, setActiveAccordion] = useState(null);
+    const [activeTab, setActiveTab] = useState(null);
+    const [faqCategories, setFaqCategories] = useState([]);
 
-    const handleOpen = (value) => setOpen(open === value ? 0 : value);
+    const { mutate } = useApiMutation();
+
+    useEffect(() => {
+        getFaqCategories();
+    }, []);
+
+    const getFaqCategories = () => {
+        mutate({
+            url: "/api/admins/public/faq-categories",
+            method: "GET",
+            hideToast: true,
+            onSuccess: (response) => {
+                setFaqCategories(response.data.data);
+                // Set the first category as active by default if available
+                if (response.data.data.length > 0) {
+                    setActiveTab(response.data.data[0].name);
+                }
+            },
+            onError: (error) => {
+                console.error("Error fetching FAQ categories:", error);
+            },
+        });
+    };
+
+    const handleAccordionOpen = (id) => {
+        setActiveAccordion(activeAccordion === id ? null : id);
+    };
+
+    const handleTabChange = (tabName) => {
+        setActiveTab(tabName);
+        setActiveAccordion(null); // Reset accordion when changing tabs
+    };
+
+    // Get the currently active category's FAQs
+    const activeCategory = faqCategories.find(cat => cat.name === activeTab);
+    const activeFaqs = activeCategory?.faqs || [];
 
     return (
         <>
             <div className="flex flex-col w-full animate__animated animate__fadeIn">
                 <div className="w-full h-full relative">
-                    <div className="absolute bg-cover bg-center md:top-[0px] top-[20px] w-full h-full" style={{ backgroundImage: `url(https://res.cloudinary.com/do2kojulq/image/upload/v1736029463/mobiHolder/mobiHolder_home/spring-ball-roller_d3dhsf.gif)` }}></div>
-                    <div className="absolute w-full h-full md:top-[0px] top-[20px]" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}></div>
+                    <div
+                        className="absolute bg-cover bg-center md:top-[0px] top-[20px] w-full h-full"
+                        style={{ backgroundImage: `url(https://res.cloudinary.com/do2kojulq/image/upload/v1736029463/mobiHolder/mobiHolder_home/spring-ball-roller_d3dhsf.gif)` }}
+                    />
+                    <div className="absolute w-full h-full md:top-[0px] top-[20px]" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }} />
                     <Header />
                     <div className="w-full lg:mt-10 md:mt-10 mt-[40px] px-8 lg:py-10 relative lg:px-44 xl:px-72 md:px-20 flex flex-col gap-10 z-50">
                         <p className="md:text-5xl text-3xl text-white font-bold mb-5 md:leading-[90px]">FAQs</p>
@@ -61,37 +101,35 @@ export default function FAQ() {
                                     </div>
                                 </div>
 
-                                <div className="w-4/5 md:my-10 my-5 flex flex-col gap-4">
-                                    <Tabs />
+                                <div className="w-4/5 md:my-5 my-5 flex flex-col gap-4">
+                                    <Tabs
+                                        categories={faqCategories}
+                                        activeTab={activeTab}
+                                        onTabChange={handleTabChange}
+                                    />
                                 </div>
 
                                 <div className="md:w-3/5 mb-10 flex flex-col md:gap-8 gap-5">
-                                    <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
-                                        <AccordionHeader onClick={() => handleOpen(1)}>What is MobiHolder?</AccordionHeader>
-                                        <AccordionBody>
-                                        </AccordionBody>
-                                    </Accordion>
-                                    <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
-                                        <AccordionHeader onClick={() => handleOpen(2)}>
-                                            How does MobiHolder ensure data security?
-                                        </AccordionHeader>
-                                        <AccordionBody>
-                                        </AccordionBody>
-                                    </Accordion>
-                                    <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
-                                        <AccordionHeader onClick={() => handleOpen(3)}>
-                                            Who can use MobiHolder?
-                                        </AccordionHeader>
-                                        <AccordionBody>
-                                        </AccordionBody>
-                                    </Accordion>
-                                    <Accordion open={open === 4} icon={<Icon id={4} open={open} />}>
-                                        <AccordionHeader onClick={() => handleOpen(4)}>
-                                            How does MobiHolder streamline event management?
-                                        </AccordionHeader>
-                                        <AccordionBody>
-                                        </AccordionBody>
-                                    </Accordion>
+                                    {activeFaqs.length > 0 ? (
+                                        activeFaqs.map((faq, index) => (
+                                            <Accordion
+                                                key={faq.id}
+                                                open={activeAccordion === index}
+                                                icon={<Icon id={index} open={activeAccordion} />}
+                                            >
+                                                <AccordionHeader onClick={() => handleAccordionOpen(index)}>
+                                                    {faq.question}
+                                                </AccordionHeader>
+                                                <AccordionBody>
+                                                    <span className="text-base montserrat font-normal">{faq.answer}</span>
+                                                </AccordionBody>
+                                            </Accordion>
+                                        ))
+                                    ) : (
+                                        <p className="text-center py-4 text-gray-500">
+                                            No FAQs available for this category
+                                        </p>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -100,5 +138,5 @@ export default function FAQ() {
                 <Footer />
             </div>
         </>
-    )
+    );
 }

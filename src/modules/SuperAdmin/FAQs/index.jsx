@@ -4,65 +4,122 @@ import DeleteModal from "../../../components/DeleteModal";
 import ReusableModal from "../../../components/ReusableModal";
 import useModal from "../../../hooks/modal";
 import CreateFAQ from "./modals/createFAQ";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../api/hooks/useApiMutation";
+import Loader from "../../../components/Loader";
+import EditFAQ from "./modals/editFAQ";
 
 export default function FAQs() {
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
+    const [faqsCategories, setFaqsCategories] = useState([]);
+    const [faqs, setFaqs] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const { mutate } = useApiMutation();
 
-    const faqs = [
-        {
-            id: 1,
-            category: 'Organisation',
-            question: 'How do I book an event through your platform?',
-            answer:
-                'You can book an event by visiting our event booking page, selecting your desired event, and filling out the registration form.',
-        },
-        {
-            id: 2,
-            category: 'Organisation',
-            question: 'What information is required to generate an ID card?',
-            answer:
-                'To generate your ID card, we require your full name, a recent photograph, contact details, event registration ID, and any other event-specific details as requested during registration.',
-        },
-        {
-            id: 3,
-            category: 'Organisation',
-            question: 'How long does it take to receive my ID card after registration?',
-            answer:
-                'Typically, ID cards are generated and sent within 24–48 hours of successful registration and verification of the required details.',
-        },
-        {
-            id: 4,
-            category: 'Organisation',
-            question: 'Can I make changes to my details after submitting the form?',
-            answer:
-                'Yes, you can request changes by contacting our support team before the ID card is generated. Once the card is issued, any modifications may incur a reprint fee.',
-        },
-        {
-            id: 5,
-            category: 'Organisation',
-            question: 'Is the ID card digital or physical, and how do I receive it?',
-            answer:
-                'We offer both digital and physical ID cards. Digital cards are sent via email, while physical cards (if applicable) can be collected at the event venue or shipped, depending on your chosen delivery option.',
-        },
-    ];
+
+    useEffect(() => {
+        setIsLoading(true);
+        Promise.all([fetchCategories(), fetchFAQs()])
+            .finally(() => setIsLoading(false));
+    }, []);
+
+
+    const fetchCategories = () => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/admins/faq-categories?page=1&limit=100000`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => {
+                    const categories = response.data.data.map(category => ({
+                        label: category.name,
+                        value: category.id
+                    }));
+                    setFaqsCategories(categories);
+                    resolve();
+                },
+                onError: (err) => {
+                    console.error("Failed to fetch categories");
+                    reject(err);
+                }
+            });
+        });
+    };
+
+
+    const fetchFAQs = () => {
+        return new Promise((resolve, reject) => {
+            mutate({
+                url: `/api/admins/faqs?page=1&limit=100000`,
+                method: "GET",
+                headers: true,
+                hideToast: true,
+                onSuccess: (response) => {
+                    setFaqs(response.data.data);
+                    resolve();
+                },
+                onError: (err) => {
+                    console.error("Failed to fetch FAQs");
+                    reject(err);
+                }
+            });
+        });
+    };
+
+
+
+
+
 
 
     const handleAddModal = () => {
         openModal({
             size: "sm",
-            content: <CreateFAQ />
+            content: <CreateFAQ categories={faqsCategories} closeModal={closeModal} />
         })
     }
 
 
 
-    const handleDeleteModal = () => {
+
+    const handleEditModal = (data) => {
         openModal({
             size: "sm",
-            content: <DeleteModal title={'Do you wish to delete this FAQ?'} closeModal={closeModal} />
+            content: <EditFAQ faqData={data} categories={faqsCategories} closeModal={closeModal} redirect={fetchFAQs} />
         })
     }
+
+
+
+
+
+    const handleDeleteModal = (id) => {
+        openModal({
+            size: "sm",
+            content: <DeleteModal title={'Do you wish to delete this FAQ?'} api={`/api/admins/faq?id=${id}`} redirect={fetchFAQs} closeModal={closeModal} />
+        })
+    }
+
+
+
+
+
+    if (isLoading) {
+        return (
+            <>
+                <div className="w-full h-screen flex items-center justify-center">
+                    <Loader />
+                </div>
+            </>
+        )
+    }
+
+
+
+
+
 
 
     return (
@@ -93,7 +150,7 @@ export default function FAQs() {
                                 {faqs.map((faq, index) => (
                                     <tr key={faq.id} className="border border-gray-200">
                                         <td className="p-3 border border-gray-300">{index + 1}</td>
-                                        <td className="p-3 border border-gray-300">{faq.category}</td>
+                                        <td className="p-3 border border-gray-300">{faq.category.name}</td>
                                         <td className="p-3 border border-gray-300">{faq.question}</td>
                                         <td className="p-3 border border-gray-300">{faq.answer}</td>
                                         <td className="p-3 border border-gray-300 text-center">
@@ -103,12 +160,12 @@ export default function FAQs() {
                                                 </MenuHandler>
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer">
+                                                        <span className="cursor-pointer" onClick={() => handleEditModal(faq)}>
                                                             Edit FAQ
                                                         </span>
                                                     </MenuItem>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => handleDeleteModal()}>
+                                                        <span className="cursor-pointer" onClick={() => handleDeleteModal(faq.id)}>
                                                             Delete FAQ
                                                         </span>
                                                     </MenuItem>
@@ -132,7 +189,7 @@ export default function FAQs() {
                                     </div>
                                     <div className="font-semibold text-sm text-gray-600 mb-1">
                                         Category:
-                                        <div className="font-normal mt-1 text-gray-800">{faq.category}</div>
+                                        <div className="font-normal mt-1 text-gray-800">{faq.category.name}</div>
                                     </div>
                                     <div className="font-semibold text-sm text-gray-600 mb-1">
                                         Question:
@@ -142,7 +199,25 @@ export default function FAQs() {
                                         Answer:
                                         <div className="font-normal mt-1 text-gray-800">{faq.answer}</div>
                                     </div>
-                                    <div className="text-right mt-2 text-xl">☰</div>
+                                    <div className="text-right mt-2 text-xl">
+                                            <Menu placement="left">
+                                                <MenuHandler>
+                                                    <span className="cursor-pointer">☰</span>
+                                                </MenuHandler>
+                                                <MenuList>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer">
+                                                            Edit FAQ
+                                                        </span>
+                                                    </MenuItem>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => handleDeleteModal(faq.id)}>
+                                                            Delete FAQ
+                                                        </span>
+                                                    </MenuItem>
+                                                </MenuList>
+                                            </Menu>
+                                    </div>
                                 </div>
                             ))}
                         </div>

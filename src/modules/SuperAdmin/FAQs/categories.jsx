@@ -4,40 +4,61 @@ import DeleteModal from "../../../components/DeleteModal";
 import ReusableModal from "../../../components/ReusableModal";
 import useModal from "../../../hooks/modal";
 import CreateCategory from "./modals/createCategory";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../api/hooks/useApiMutation";
+import EditCategory from "./modals/editCategory";
 
 export default function FAQCategories() {
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
+    const [faqs, setFaqs] = useState([]);
 
-    const faqs = [
-        {
-            id: 1,
-            category: 'Organisation',
-        },
-        {
-            id: 1,
-            category: 'Organisation',
-        },
-        {
-            id: 1,
-            category: 'Organisation',
-        },
-    ];
+    const { mutate } = useApiMutation();
+
+
+    useEffect(() => {
+        getAllCategories();
+    }, []);
+
+
+    const getAllCategories = () => {
+        mutate({
+            url: `/api/admins/faq-categories?page=1&limit=100000`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                setFaqs(response.data.data);
+            },
+            onError: () => {
+                console.error("Failed to fetch categories");
+            }
+        });
+    }
+
 
 
     const handleAddModal = () => {
         openModal({
             size: "sm",
-            content: <CreateCategory />
+            content: <CreateCategory closeModal={closeModal} redirect={getAllCategories} />
+        })
+    }
+
+
+    const handleEditModal = (data) => {
+        openModal({
+            size: "sm",
+            content: <EditCategory categoryData={data} closeModal={closeModal} redirect={getAllCategories} />
         })
     }
 
 
 
-    const handleDeleteModal = () => {
+    const handleDeleteModal = (id) => {
         openModal({
             size: "sm",
-            content: <DeleteModal title={'Do you wish to delete this Category?'} closeModal={closeModal} />
+            content: <DeleteModal title={'Do you wish to delete this Category?'} api={`/api/admins/faq-category?id=${id}`} redirect={getAllCategories} closeModal={closeModal} />
         })
     }
 
@@ -68,7 +89,7 @@ export default function FAQCategories() {
                                 {faqs.map((faq, index) => (
                                     <tr key={faq.id} className="border border-gray-200">
                                         <td className="p-3 border border-gray-300">{index + 1}</td>
-                                        <td className="p-3 border border-gray-300">{faq.category}</td>
+                                        <td className="p-3 border border-gray-300">{faq.name}</td>
                                         <td className="p-3 border border-gray-300">
                                             <Menu placement="left">
                                                 <MenuHandler>
@@ -76,12 +97,12 @@ export default function FAQCategories() {
                                                 </MenuHandler>
                                                 <MenuList>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer">
+                                                        <span className="cursor-pointer" onClick={() => handleEditModal(faq)}>
                                                             Edit
                                                         </span>
                                                     </MenuItem>
                                                     <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => handleDeleteModal()}>
+                                                        <span className="cursor-pointer" onClick={() => handleDeleteModal(faq.id)}>
                                                             Delete
                                                         </span>
                                                     </MenuItem>
@@ -105,9 +126,27 @@ export default function FAQCategories() {
                                     </div>
                                     <div className="font-semibold text-sm text-gray-600 mb-1">
                                         Question:
-                                        <div className="font-normal mt-1 text-gray-800">{faq.question}</div>
+                                        <div className="font-normal mt-1 text-gray-800">{faq.name}</div>
                                     </div>
-                                    <div className="text-right mt-2 text-xl">☰</div>
+                                    <div className="text-right mt-2 text-xl">
+                                        <Menu placement="left">
+                                            <MenuHandler>
+                                                <span className="cursor-pointer">☰</span>
+                                            </MenuHandler>
+                                            <MenuList>
+                                                <MenuItem className="flex flex-col gap-3">
+                                                    <span className="cursor-pointer" onClick={() => handleEditModal(faq)}>
+                                                        Edit
+                                                    </span>
+                                                </MenuItem>
+                                                <MenuItem className="flex flex-col gap-3">
+                                                    <span className="cursor-pointer" onClick={() => handleDeleteModal(faq.id)}>
+                                                        Delete
+                                                    </span>
+                                                </MenuItem>
+                                            </MenuList>
+                                        </Menu>
+                                    </div>
                                 </div>
                             ))}
                         </div>
