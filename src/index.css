@@ -125,9 +125,10 @@ body {
   background-color: var(--bs-bodyRay);
 }
 
+/*
 input:focus {
   color: var(--bs-color);
-}
+}*/
 
 input {
   color: var(--bs-color);

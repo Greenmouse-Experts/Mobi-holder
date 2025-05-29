@@ -134,7 +134,7 @@ const Input = ({
   return (
     <div className={`mb-4 ${className}`}>
       <div
-        className={`flex items-center border border-transparent bg-gray-100 px-3 py-1.5 rounded-[7px] ${
+        className={`flex items-center border border-transparent bg-gray-100 text-black px-3 py-1.5 rounded-[7px] ${
           errors?.[name] ? "border-red-500" : ""
         }`}
         style={style}
@@ -173,7 +173,7 @@ const Input = ({
         {/* Textarea Input */}
         {type === "textarea" && (
           <textarea
-            className="w-full h-full bg-transparent montserrat outline-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all placeholder:opacity-70 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px] resize-none"
+            className="w-full h-full bg-transparent text-black outline-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all placeholder:opacity-70 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px] resize-none"
             placeholder={placeholder}
             value={internalValue}
             onChange={handleInputChange}
@@ -191,7 +191,7 @@ const Input = ({
             type={resolvedType}
             max={disableFutureDates && type === "date" ? new Date().toISOString().split("T")[0] : null}
             placeholder={placeholder}
-            className="w-full h-full bg-transparent font-sans font-normal outline-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all placeholder:opacity-70 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
+            className="w-full h-full bg-transparent text-black font-normal outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all placeholder:opacity-70 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
             value={internalValue}
             onChange={handleInputChange}
             ref={ref}

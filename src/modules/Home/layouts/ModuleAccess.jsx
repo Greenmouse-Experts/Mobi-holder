@@ -4,7 +4,9 @@ import authGroup from "../../../assets/auth-group.png";
 import playStore from "../../../assets/playstore.png";
 import appleStore from "../../../assets/applestore.png";
 import logoGradient from "../../../assets/logo-gradient.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../api/hooks/useApiMutation";
+import Tabs from "../pages/components/tabs";
 
 function Icon({ id, open }) {
     return (
@@ -24,7 +26,49 @@ function Icon({ id, open }) {
 export default function ModuleAccess() {
     const [open, setOpen] = useState(0);
 
-    const handleOpen = (value) => setOpen(open === value ? 0 : value);
+    const [activeAccordion, setActiveAccordion] = useState(null);
+    const [activeTab, setActiveTab] = useState(null);
+    const [faqCategories, setFaqCategories] = useState([]);
+
+    const { mutate } = useApiMutation();
+
+    useEffect(() => {
+        getFaqCategories();
+    }, []);
+
+    const getFaqCategories = () => {
+        mutate({
+            url: "/api/admins/public/faq-categories",
+            method: "GET",
+            hideToast: true,
+            onSuccess: (response) => {
+                setFaqCategories(response.data.data);
+                // Set the first category as active by default if available
+                if (response.data.data.length > 0) {
+                    setActiveTab(response.data.data[0].name);
+                }
+            },
+            onError: (error) => {
+                console.error("Error fetching FAQ categories:", error);
+            },
+        });
+    };
+
+    const handleAccordionOpen = (id) => {
+        setActiveAccordion(activeAccordion === id ? null : id);
+    };
+
+    const handleTabChange = (tabName) => {
+        setActiveTab(tabName);
+        setActiveAccordion(null); // Reset accordion when changing tabs
+    };
+
+    // Get the currently active category's FAQs
+    const activeCategory = faqCategories.find(cat => cat.name === activeTab);
+    const activeFaqs = activeCategory?.faqs || [];
+
+
+
 
     return (
         <>
@@ -176,7 +220,7 @@ export default function ModuleAccess() {
                             </span>
                         </div>
                         <div className="flex w-full py-3">
-                            <div className="relative flex w-full max-w-[30rem]">
+                            <form className="relative flex w-full max-w-[30rem]">
                                 <Input
                                     type="email"
                                     label="Email Address"
@@ -191,7 +235,7 @@ export default function ModuleAccess() {
                                 >
                                     Subscribe
                                 </Button>
-                            </div>
+                            </form>
                         </div>
                     </div>
 
@@ -247,32 +291,36 @@ export default function ModuleAccess() {
                         <div className="w-full flex justify-center">
                             <div className="md:w-3/5 flex flex-col md:gap-8 gap-5">
                                 <p className="md:text-4xl text-2xl font-bold w-full my-4 text-center text-black">Frequently Asked Questions</p>
-                                <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
-                                    <AccordionHeader onClick={() => handleOpen(1)}>What is MobiHolder?</AccordionHeader>
-                                    <AccordionBody>
-                                    </AccordionBody>
-                                </Accordion>
-                                <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
-                                    <AccordionHeader onClick={() => handleOpen(2)}>
-                                        How does MobiHolder ensure data security?
-                                    </AccordionHeader>
-                                    <AccordionBody>
-                                    </AccordionBody>
-                                </Accordion>
-                                <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
-                                    <AccordionHeader onClick={() => handleOpen(3)}>
-                                        Who can use MobiHolder?
-                                    </AccordionHeader>
-                                    <AccordionBody>
-                                    </AccordionBody>
-                                </Accordion>
-                                <Accordion open={open === 4} icon={<Icon id={4} open={open} />}>
-                                    <AccordionHeader onClick={() => handleOpen(4)}>
-                                        How does MobiHolder streamline event management?
-                                    </AccordionHeader>
-                                    <AccordionBody>
-                                    </AccordionBody>
-                                </Accordion>
+                                <div className="w-full md:my-5 my-5 flex flex-col gap-4">
+                                    <Tabs
+                                        categories={faqCategories}
+                                        activeTab={activeTab}
+                                        onTabChange={handleTabChange}
+                                    />
+                                </div>
+
+                                <div className="w-full mb-10 flex flex-col md:gap-8 gap-5">
+                                    {activeFaqs.length > 0 ? (
+                                        activeFaqs.slice(0, 4).map((faq, index) => (
+                                            <Accordion
+                                                key={faq.id}
+                                                open={activeAccordion === index}
+                                                icon={<Icon id={index} open={activeAccordion} />}
+                                            >
+                                                <AccordionHeader onClick={() => handleAccordionOpen(index)}>
+                                                    {faq.question}
+                                                </AccordionHeader>
+                                                <AccordionBody>
+                                                    <span className="text-base montserrat font-normal">{faq.answer}</span>
+                                                </AccordionBody>
+                                            </Accordion>
+                                        ))
+                                    ) : (
+                                        <p className="text-center py-4 text-gray-500">
+                                            No FAQs available for this category
+                                        </p>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -22,7 +22,7 @@ const Table = ({
         <div className={`rounded-xl p-6 ${transparentBg ? '' : 'bS-overlay shadow'} w-full`}>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
-                    <h2 className="text-2xl font-semibold text-gray-800">{title}</h2>
+                    <h2 className="text-2xl font-semibold text-gray-500">{title}</h2>
                     {subTitle && <p className="text-sm text-gray-500">{subTitle}</p>}
                 </div>
                 <div className="flex flex-wrap gap-3 items-center">
