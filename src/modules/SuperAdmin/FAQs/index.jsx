@@ -74,7 +74,7 @@ export default function FAQs() {
     const handleAddModal = () => {
         openModal({
             size: "sm",
-            content: <CreateFAQ categories={faqsCategories} closeModal={closeModal} />
+            content: <CreateFAQ categories={faqsCategories} closeModal={closeModal} redirect={fetchFAQs} />
         })
     }
 
