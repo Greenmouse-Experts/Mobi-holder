@@ -157,23 +157,23 @@ export default function UserInquiries() {
                                     <div className="font-semibold text-sm text-gray-600 mb-1">
                                         S/N: <span className="font-normal">{index + 1}</span>
                                     </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
+                                    <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         User:
                                         <div className="font-normal mt-1 text-gray-800">{userInquiry.name}</div>
                                     </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
+                                    <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         Email:
                                         <div className="font-normal mt-1 text-gray-800">{userInquiry.email}</div>
                                     </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
+                                    <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         Subject:
                                         <div className="font-normal mt-1 text-gray-800">{userInquiry.subject}</div>
                                     </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
+                                    <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         Message:
                                         <div className="font-normal mt-1 text-gray-800">{userInquiry.message}</div>
                                     </div>
-                                    <div className="font-semibold text-sm text-gray-600 mb-1">
+                                    <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         Status:
                                         <div className={`mt-1 px-3 py-2 rounded-full text-sm font-medium w-fit
   ${userInquiry.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}

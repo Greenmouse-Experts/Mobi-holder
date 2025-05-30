@@ -209,6 +209,24 @@ export default function SuperAdminSidebar({ mobile }) {
             children: [],
             openChildren: false
         },
+        {
+            path: "/superadmin/newsletter",
+            slug: "newsletter",
+            name: "Newsletter Subscribers",
+            icon: <i className="mr-3 -mt-1">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    width="20" height="20" viewBox="0 0 26 26"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                        d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25H4.5a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5H4.5a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-.75 1.692L13.06 13.5a2.25 2.25 0 01-2.12 0L3.75 8.685A2.25 2.25 0 013 6.993V6.75" />
+                </svg>
+            </i>,
+            children: [],
+            openChildren: false
+        },
     ];
 
 
