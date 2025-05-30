@@ -57,7 +57,7 @@ export default function AdminLogin() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Email
                                         </p>
-                                        <Input icon="email.svg" type="email" style={{ backgroundColor: 'rgba(82, 81, 81, 1)' }} name="email" register={register}
+                                        <Input icon="email.svg" type="email" name="email" register={register}
                                             rules={{ required: 'Email is required' }} errors={errors} placeholder="Enter your email address" />
                                     </div>
 
@@ -65,7 +65,7 @@ export default function AdminLogin() {
                                         <p className="-mb-3 text-mobiFormGray">
                                             Password
                                         </p>
-                                        <Input icon="padlock.svg" type="password" name="password" style={{ backgroundColor: 'rgba(82, 81, 81, 1)' }} register={register}
+                                        <Input icon="padlock.svg" type="password" name="password" register={register}
                                             rules={{ required: 'Password is required' }} errors={errors} placeholder="Password" />
                                     </div>
 

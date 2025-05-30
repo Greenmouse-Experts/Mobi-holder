@@ -46,7 +46,7 @@ const OrgEventTicket = () => {
                                 <div className="flex items-start gap-2 text-gray-400 text-sm">
                                     <FaMapMarkerAlt className="mt-1" />
                                     <p>
-                                        {`${JSON.parse(ticketPreview.event?.venue).name}, ${JSON.parse(ticketPreview.event?.venue).address}`}
+                                        {`${ticketPreview.event?.venue.name}, ${ticketPreview.event?.venue.address}`}
                                     </p>
                                 </div>
 
