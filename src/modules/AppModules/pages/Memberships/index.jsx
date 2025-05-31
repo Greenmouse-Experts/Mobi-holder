@@ -6,7 +6,7 @@ import Table from "../../../../components/Tables";
 import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
 import calendar from "../../../../assets/calendar.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { dateFormat } from "../../../../helpers/dateHelper";
@@ -148,6 +148,8 @@ export default function Membership() {
 
     const { mutate } = useApiMutation();
 
+    const navigate = useNavigate();
+
     const getOrganisations = (params) => {
         mutate({
             url: `/api/memberships-subscriptions/individual/membership${params}`,
@@ -211,11 +213,11 @@ export default function Membership() {
         <>   <div className="w-full flex h-full animate__animated animate__fadeIn">
             <div className="w-full flex flex-col gap-5 h-full">
                 <Header mobile data={user} title={'Membership'} />
-                    <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
-                        <div className="w-full flex flex-col gap-2">
-                            <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Membership</p>
-                        </div>
+                <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
+                    <div className="w-full flex flex-col gap-2">
+                        <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Membership</p>
                     </div>
+                </div>
                 <div className="w-full md:flex-row flex flex-col md:px-0 px-3 gap-5">
                     <StatCard
                         number={organisations.length}
@@ -254,7 +256,7 @@ export default function Membership() {
 
 
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                    <Table title="Today" filter subTitle={<span>All Organisations</span>} exportData
+                    <Table title="All Organisations" filter exportData
                         tableHeader={TableHeaders}
                         sortFunc={(field, order) => {
                             const sortedOrganisations = [...organisations].sort((a, b) => {
@@ -307,6 +309,11 @@ export default function Membership() {
                                                     <MenuItem className="flex flex-col gap-3">
                                                         <span className="cursor-pointer" onClick={() => handleViewOrg(data.organization)}>
                                                             View Organisation
+                                                        </span>
+                                                    </MenuItem>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate(`subscriptions/${data.organization.id}`)}>
+                                                            View Subscription Plans
                                                         </span>
                                                     </MenuItem>
                                                 </MenuList>

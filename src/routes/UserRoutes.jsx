@@ -35,6 +35,7 @@ import IndividualPlans from "../modules/AppModules/pages/Subscriptions/plans";
 import ViewPlan from "../modules/AppModules/pages/Subscriptions/viewPlan";
 import SubscriptionLog from "../modules/AppModules/pages/Subscriptions/SubscriptionLog";
 import Wallet from "../modules/AppModules/pages/Wallet";
+import OrgSubscriptionPlans from "../modules/AppModules/pages/Memberships/orgSubscriptionPlans";
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -48,6 +49,7 @@ const UserRoutes = [
     <Route path="join-organisation" element={<OrganisationLists />} />,
     <Route path="join-organisation-form/:id" element={<JoinOrganisation />} />,
     <Route path="membership" element={<Membership />} />,
+    <Route path="membership/subscriptions/:id" element={<OrgSubscriptionPlans />} />,
     <Route path="events" element={<IndividualEvents />} />,
     <Route path="notification" element={<Notification />} />,
     <Route path="settings" element={<Settings />} />,
