@@ -1,7 +1,7 @@
 import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import DropZone from "../../../../components/DropZone";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { useEffect, useRef, useState } from "react";
@@ -15,7 +15,7 @@ import useFileUpload from "../../../../api/hooks/useFileUpload";
 export default function OrganisationData() {
     let user = useSelector((state) => state.orgData.orgData);
 
-    const { register, handleSubmit, setValue, watch, formState: { errors } } =
+    const { register, handleSubmit, setValue, control, watch, formState: { errors } } =
         useForm({
             defaultValues: {
                 companyName: user.companyName,
@@ -26,7 +26,11 @@ export default function OrganisationData() {
                 state: typeof user.companyAddress === "string" ? JSON.parse(user.companyAddress).state : user.companyAddress.state,
             },
         });
-    const { register: registerUpload, setValue: setValueUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm();
+    const { register: registerUpload, setValue: setValueUpload, handleSubmit: handleSubmitUpload, formState: { errors: errorsUpload } } = useForm({
+        defaultValues: {
+            registrationDate: "", // or pre-filled ISO string
+        },
+    });
     const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef(null);
     const { uploadFiles, isLoadingUpload } = useFileUpload();
@@ -379,7 +383,24 @@ export default function OrganisationData() {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Company Registration Date
                                 </p>
-                                <Input name="registrationDate" value={uploadedIDData?.registrationDate} register={registerUpload} errors={errorsUpload} rules={{ required: 'Issue Date is required' }} type="date" placeholder="Choose the issue date" />
+                                <Controller
+                                    control={control}
+                                    name="registrationDate"
+                                    rules={{ required: "Registration Date is required" }}
+                                    render={({ field }) => (
+                                        <Input
+                                            type="date"
+                                            name="registrationDate"
+                                            placeholder="Choose the issue date"
+                                            value={field.value || ""}
+                                            onChange={(val) => {
+                                                // This manually sets the value in react-hook-form
+                                                field.onChange(val);
+                                            }}
+                                            errors={errorsUpload}
+                                        />
+                                    )}
+                                />
                             </div>
                         </div>
 

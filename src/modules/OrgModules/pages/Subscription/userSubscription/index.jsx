@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ReusableModal from "../../../../../components/ReusableModal";
 import useModal from "../../../../../hooks/modal";
 import CreatePlan from "./modals/createPlan";
+import AlertModal from "../../../../../components/AlertModal";
 
 export default function MySubPlans() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -17,6 +18,7 @@ export default function MySubPlans() {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
+    const [hasSubAccounts, setHasSubAccounts] = useState(false);
 
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
@@ -47,14 +49,47 @@ export default function MySubPlans() {
     };
 
 
+
+
+
+    const getMySubAccounts = () => {
+        mutate({
+            url: `/api/users/payment/subaccounts`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                if(response.data.data.length > 0) {
+                    setHasSubAccounts(true);
+                }
+            },
+            onError: () => {
+            }
+        });
+    };
+
+
+
+
+
+
+
+
     useEffect(() => {
         getMyPlans();
+        getMySubAccounts();
     }, []);
+
+
+
+
+
 
     const totalPages = Math.ceil(subscriptions.length / itemsPerPage);
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = subscriptions.slice(indexOfFirstItem, indexOfLastItem);
+
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -66,7 +101,11 @@ export default function MySubPlans() {
     const handleAddPlanModal = () => {
         openModal({
             size: "md",
-            content: <CreatePlan closeModal={closeModal} redirect={getMyPlans} />
+            content: !hasSubAccounts ? <AlertModal title={'Set Up Bank Details First'} text={'To create a plan and start receiving payments, please set up your bank account details first.'} 
+            btnLink={'Proceed'} link={'/org/settings#bank_details'} closeModal={closeModal} submitButton={false}
+            />
+             : 
+            <CreatePlan closeModal={closeModal} redirect={getMyPlans} />
         })
     }
 

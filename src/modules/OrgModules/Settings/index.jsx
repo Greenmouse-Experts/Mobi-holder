@@ -8,9 +8,12 @@ import DropdownMenu from "../../../components/DropdownMenu";
 import OrganisationData from "./tabs/organisationData";
 import UserData from "./tabs/userData";
 import BankDetails from "./tabs/bankDetails";
+import { useLocation } from "react-router-dom";
 
 export default function OrgSettings() {
-    const [activeTab, setActiveTab] = useState('Organisation Data');
+    const location = useLocation();
+
+    const [activeTab, setActiveTab] = useState(location.hash === '#bank_details' ? 'Bank Details' : 'Organisation Data');
 
     const tabs = [
         {

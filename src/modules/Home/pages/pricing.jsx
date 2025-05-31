@@ -120,7 +120,6 @@ const PricingPlans = () => {
                     <div className="flex justify-center gap-4 my-6">
                         <button
                             onClick={() => handleTabChange("individual")}
-                            disabled={org ? true : false}
                             className={`px-4 py-2 rounded-full font-semibold ${tab === "individual"
                                     ? "bg-white text-black"
                                     : "bg-transparent border border-white text-white"
@@ -130,7 +129,6 @@ const PricingPlans = () => {
                         </button>
                         <button
                             onClick={() => handleTabChange("organization")}
-                            disabled={user ? true : false}
                             className={`px-4 py-2 rounded-full font-semibold ${tab === "organization"
                                     ? "bg-white text-black"
                                     : "bg-transparent border border-white text-white"

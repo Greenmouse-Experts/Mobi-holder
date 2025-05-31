@@ -6,9 +6,8 @@ const CustomInput = forwardRef(({ value, onClick, placeholder, type, disabled },
   <div
     onClick={disabled ? undefined : onClick}
     ref={ref}
-    className={`peer w-full h-full bg-transparent font-normal outline-none focus:outline-none transition-all text-base px-3 py-3 rounded-[7px] ${
-      disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
-    }`}
+    className={`peer w-full h-full bg-transparent font-normal outline-none focus:outline-none transition-all text-base px-3 py-3 rounded-[7px] ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+      }`}
   >
     {value || <span className="text-gray-400">{placeholder}</span>}
   </div>
@@ -41,7 +40,7 @@ const Input = ({
   // React Hook Form integration
   const { ref, onChange: registerOnChange, ...registerProps } = register
     ? register(name, rules)
-    : { ref: null, onChange: () => {} };
+    : { ref: null, onChange: () => { } };
 
   // Sync with external value changes
   useEffect(() => {
@@ -134,9 +133,8 @@ const Input = ({
   return (
     <div className={`mb-4 ${className}`}>
       <div
-        className={`flex items-center border border-transparent bg-gray-100 text-black px-3 py-1.5 rounded-[7px] ${
-          errors?.[name] ? "border-red-500" : ""
-        }`}
+        className={`flex items-center border border-transparent bg-gray-100 text-black px-3 py-1.5 rounded-[7px] ${errors?.[name] ? "border-red-500" : ""
+          }`}
         style={style}
       >
         {icon && (
