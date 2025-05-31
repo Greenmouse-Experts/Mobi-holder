@@ -8,6 +8,9 @@ export default defineConfig({
     // Enable history API fallback for SPA
     historyApiFallback: true,
   },
+  define: {
+    global: 'window'
+  },
   build: {
     // Optional: Ensure proper handling in production builds
     rollupOptions: {

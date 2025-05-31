@@ -11,6 +11,8 @@ import ReusableModal from "../../../../../components/ReusableModal";
 import useModal from "../../../../../hooks/modal";
 import CreatePlan from "./modals/createPlan";
 import AlertModal from "../../../../../components/AlertModal";
+import DeleteModal from "../../../../../components/DeleteModal";
+import EditPlan from "./modals/editPlan";
 
 export default function MySubPlans() {
     const user = useSelector((state) => state.orgData.orgData);
@@ -59,7 +61,7 @@ export default function MySubPlans() {
             headers: true,
             hideToast: true,
             onSuccess: (response) => {
-                if(response.data.data.length > 0) {
+                if (response.data.data.length > 0) {
                     setHasSubAccounts(true);
                 }
             },
@@ -101,13 +103,38 @@ export default function MySubPlans() {
     const handleAddPlanModal = () => {
         openModal({
             size: "md",
-            content: !hasSubAccounts ? <AlertModal title={'Set Up Bank Details First'} text={'To create a plan and start receiving payments, please set up your bank account details first.'} 
-            btnLink={'Proceed'} link={'/org/settings#bank_details'} closeModal={closeModal} submitButton={false}
+            content: !hasSubAccounts ? <AlertModal title={'Set Up Bank Details First'} text={'To create a plan and start receiving payments, please set up your bank account details first.'}
+                btnLink={'Proceed'} link={'/org/settings#bank_details'} closeModal={closeModal} submitButton={false}
             />
-             : 
-            <CreatePlan closeModal={closeModal} redirect={getMyPlans} />
+                :
+                <CreatePlan closeModal={closeModal} redirect={getMyPlans} />
         })
     }
+
+
+
+
+    const handleEditModal = (plan) => {
+        openModal({
+            size: "md",
+            content: <EditPlan subscriptionData={plan} closeModal={closeModal} redirect={getMyPlans} />
+        })
+    }
+
+
+
+
+
+
+    const handleDeleteModal = (id) => {
+        openModal({
+            size: "sm",
+            content: <DeleteModal title={'Do you wish to delete this Plan?'} api={`/api/memberships-subscriptions/subscription/plan/delete?planId=${id}`} redirect={getMyPlans} closeModal={closeModal} />
+        })
+    }
+
+
+
 
 
 
@@ -118,6 +145,9 @@ export default function MySubPlans() {
             </div>
         );
     }
+
+
+
 
     return (
         <div className="w-full flex h-full animate__animated animate__fadeIn">
@@ -132,11 +162,11 @@ export default function MySubPlans() {
                     tableBtn={
                         <>
                             <Button className="bg-mobiPink p-2 rounded-lg" onClick={() => handleAddPlanModal()}>
-                                <span className="text-white text-sm">Add New Plan</span>
+                                <span className="text-white text-sm capitalize">Add New Plan</span>
                             </Button>
                         </>
                     }
-                    tableHeader={["Plan", "Validity", "Amount", "Status", "Action"]}
+                    tableHeader={["Plan", "Validity", "Amount", "Action"]}
                     currentPage={currentPage}
                     totalPages={totalPages}
                     onPageChange={handlePageChange}
@@ -145,19 +175,12 @@ export default function MySubPlans() {
                 >
                     {currentItems.map((subscription, index) => (
                         <tr key={subscription.id} className={index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"}>
-                            <td className="px-3 py-3 text-mobiTableText">{subscription.plan?.name || 'N/A'}</td>
+                            <td className="px-3 py-3 text-mobiTableText">{subscription?.name || 'N/A'}</td>
                             <td className="px-3 py-3 text-mobiTableText">
-                                {subscription.plan?.duration || 'N/A'} month(s)
+                                {subscription?.validity || 'N/A'} month(s)
                             </td>
                             <td className="px-3 py-3 text-mobiTableText">
-                                {subscription.plan?.currency || ''} {subscription.plan?.amount || 'N/A'}
-                            </td>
-                            <td className="px-3 py-3 text-mobiTableText">
-                                <Badge
-                                    status={subscription.status}
-                                    color={subscription.status === "active" ? "#4CAF50" : "inactive"}
-                                    textColor={subscription.status === "active" ? "#FFFFFF" : "#000000"}
-                                />
+                                {subscription?.price || 'N/A'}
                             </td>
                             <td className="px-6 py-3">
                                 <Menu placement="left">
@@ -170,8 +193,11 @@ export default function MySubPlans() {
                                         </button>
                                     </MenuHandler>
                                     <MenuList>
-                                        <MenuItem onClick={() => navigate(`/org/subscription/plans/view/${subscription.plan?.id}/${subscription.status}`)}>
-                                            View Plan
+                                        <MenuItem onClick={() => handleEditModal(subscription)}>
+                                            View/Edit Plan
+                                        </MenuItem>
+                                        <MenuItem onClick={() => handleDeleteModal(subscription.id)}>
+                                            Delete Plan
                                         </MenuItem>
                                     </MenuList>
                                 </Menu>

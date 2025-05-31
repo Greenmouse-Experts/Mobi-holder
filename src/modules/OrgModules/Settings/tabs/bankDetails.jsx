@@ -21,6 +21,7 @@ export default function BankDetails() {
 
     useEffect(() => {
         getBankList();
+        getUserBankDetails();
     }, []);
 
 
@@ -47,6 +48,32 @@ export default function BankDetails() {
 
 
 
+
+    const getUserBankDetails = () => {
+        mutate({
+            url: `/api/users/payment/subaccounts`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                if (response.data) {
+                    const bankDetails = response.data.data;
+                    setBankDetails(bankDetails);
+                }
+                setLoading(false);
+            },
+            onError: (error) => {
+                console.error(error);
+                setLoading(false);
+            }
+        });
+    }
+
+
+
+
+
+
     const setAccount = (data) => {
         setIsDisabled(true);
         mutate({
@@ -56,6 +83,7 @@ export default function BankDetails() {
             data: data,
             onSuccess: (response) => {
                 setIsDisabled(false);
+                getUserBankDetails();
                 setLoading(true);
             },
             onError: (error) => {

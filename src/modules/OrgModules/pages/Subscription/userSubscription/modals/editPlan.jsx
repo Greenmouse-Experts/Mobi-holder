@@ -1,13 +1,14 @@
 import { Button } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import Input from "../../../../../../components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useApiMutation from "../../../../../../api/hooks/useApiMutation";
 import { convertToRaw, EditorState } from "draft-js";
 import DraftEditor from "../../../../../../components/Editor";
 import draftToHtml from "draftjs-to-html";
+import { stateFromHTML } from "draft-js-import-html";
 
-const CreatePlan = ({ redirect, closeModal }) => {
+const EditPlan = ({ redirect, subscriptionData, closeModal }) => {
     const [descriptionEditor, setDescriptionEditor] = useState(() =>
         EditorState.createEmpty()
     );
@@ -21,11 +22,12 @@ const CreatePlan = ({ redirect, closeModal }) => {
     const createSubPlan = (data) => {
         setDisabled(true);
         mutate({
-            url: `/api/memberships-subscriptions/subscription/plan/create`,
-            method: "POST",
+            url: `/api/memberships-subscriptions/subscription/plan/update`,
+            method: "PUT",
             headers: true,
             data: {
                 ...data,
+                planId: subscriptionData.id,
                 description: draftToHtml(convertToRaw(descriptionEditor.getCurrentContent()))
             },
             onSuccess: () => {
@@ -41,12 +43,41 @@ const CreatePlan = ({ redirect, closeModal }) => {
     }
 
 
+
+
+
+
+
+    useEffect(() => {
+        if (subscriptionData.description) {
+            try {
+                const contentState = stateFromHTML(subscriptionData.description); // Convert HTML to Draft.js state
+                setDescriptionEditor(EditorState.createWithContent(contentState));
+            } catch (error) {
+                console.error("Error parsing description:", error);
+            }
+        }
+
+    }, [subscriptionData]);
+
+
+
+
+
+
+
+
+
+
+
+
+
     return (
         <>
             <div className="w-full flex max-h-[90vh] flex-col px-3 py-6 overflow-y-auto gap-3 -mt-3">
                 <div className="flex gap-5">
                     <div className="flex flex-col justify-start">
-                        <h2 className="font-[500]">Create Subscription Plan</h2>
+                        <h2 className="font-[500]">Edit Subscription Plan</h2>
                     </div>
                 </div>
                 <form onSubmit={handleSubmit(createSubPlan)}>
@@ -55,7 +86,8 @@ const CreatePlan = ({ redirect, closeModal }) => {
                             <p className="-mb-3 text-mobiFormGray">
                                 Name
                             </p>
-                            <Input type="text" name="name" register={register}
+                            <Input type="text" name="name" value={subscriptionData?.name} register={register}
+                                rules={{ required: 'Name is required' }} errors={errors}
                                 placeholder="Enter name of plan" />
                         </div>
                         <div className="flex flex-col w-full gap-6">
@@ -77,7 +109,7 @@ const CreatePlan = ({ redirect, closeModal }) => {
                             <p className="-mb-3 text-mobiFormGray">
                                 Price
                             </p>
-                            <Input type="text" name="price" register={register}
+                            <Input type="text" name="price" value={subscriptionData?.price} register={register}
                                 rules={{ required: 'Amount is required' }} errors={errors}
                                 placeholder="Enter amount" />
                         </div>
@@ -85,7 +117,7 @@ const CreatePlan = ({ redirect, closeModal }) => {
                             <p className="-mb-3 text-mobiFormGray">
                                 Duration (in months)
                             </p>
-                            <Input type="text" name="validity" register={register}
+                            <Input type="text" name="validity" value={subscriptionData?.validity} register={register}
                                 rules={{ required: 'Duration is required' }} errors={errors}
                                 placeholder="Enter amount" />
                         </div>
@@ -94,7 +126,7 @@ const CreatePlan = ({ redirect, closeModal }) => {
                                 disabled={disabled}
                                 className="bg-mobiPink p-3 rounded-lg"
                             >
-                                Create Plan
+                                Edit Plan
                             </Button>
                         </div>
                     </div>
@@ -104,4 +136,4 @@ const CreatePlan = ({ redirect, closeModal }) => {
     )
 };
 
-export default CreatePlan;
+export default EditPlan;
