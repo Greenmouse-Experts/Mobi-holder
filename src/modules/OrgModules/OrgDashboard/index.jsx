@@ -136,7 +136,7 @@ export default function OrgDashboard() {
                 <div className="w-full flex flex-col gap-5 h-full">
                     <Header greeting profile organisation data={user} title={'Dashboard'} />
                     <div className="w-full flex lg:flex-row md:flex-row flex-col h-full gap-5 my-2 md:px-0 px-3">
-                        <DashboardStats members={allMembers} subscriptionData={0} eventsData={events} />
+                        <DashboardStats members={allMembers} subscriptionData={subscribers.length} eventsData={events} />
                     </div>
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-2">

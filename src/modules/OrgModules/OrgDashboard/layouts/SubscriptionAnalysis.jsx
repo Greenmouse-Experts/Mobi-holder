@@ -13,7 +13,7 @@ const SubscriptionAnalysis = ({ subscribers, plans }) => {
         let totalSubscribers = 0;
 
         subscribers.forEach(subscriber => {
-            const plan = JSON.parse(subscriber.plan);
+            const plan = subscriber.plan;
             planCounts[plan.name] = (planCounts[plan.name] || 0) + 1;
             
             const orgId = subscriber.organizationId;
@@ -48,6 +48,7 @@ const SubscriptionAnalysis = ({ subscribers, plans }) => {
         },
     };
 
+
     return (
         <div className="md:px-5 px-2 py-7 md:rounded-lg border border-mobiBorderFray bg-mobiSearchDark">
             <div className="flex justify-between items-center mb-4">
@@ -58,7 +59,7 @@ const SubscriptionAnalysis = ({ subscribers, plans }) => {
                     <Doughnut data={data} options={options} />
                 </div>
                 <div className="mt-1 text-center">
-                    <p className="text-white font-bold text-base">Total Subscribers: {subscriptionData.totalSubscribers}</p>
+                    <p className="font-bold text-base">Total Subscribers: {subscriptionData.totalSubscribers}</p>
                 </div>
             </div>
         </div>
