@@ -316,6 +316,11 @@ export default function Membership() {
                                                             View Subscription Plans
                                                         </span>
                                                     </MenuItem>
+                                                    <MenuItem className="flex flex-col gap-3">
+                                                        <span className="cursor-pointer" onClick={() => navigate(`subscriptions/history/${data.organization.id}`)}>
+                                                            View Subscription Log
+                                                        </span>
+                                                    </MenuItem>
                                                 </MenuList>
                                             </Menu>
 
