@@ -359,6 +359,161 @@ export default function OrgMembership() {
                 </div>
 
 
+
+
+
+                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                    <div className="lg:w-[63%] md:w-[63%] w-full flex flex-col gap-5">
+                        <Table title="Today" filter subTitle={<span>Pending Requests (Initiated)</span>} exportData
+                            tableHeader={RequetsHeaders1}
+                            sortFunc={(field, order) => {
+                                const sortedMembers = [...initiatedMembers].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.createdAt) - new Date(b.createdAt)
+                                            : new Date(b.createdAt) - new Date(a.createdAt);
+                                    } else if (field === "name") {
+                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+
+                                setInitiatedMembers(sortedMembers);
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                RequetsHeaders1,
+                                initiatedMembers.map(item => ([
+                                    `${item.individual.firstName} ${item.individual.lastName}`,
+                                    item.individual.email,
+                                    dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                                    item.status
+                                ])),
+                                "Initiated Pending Requests.xlsx"
+                            )}
+                        >
+                            {initiatedMembers.length > 0 ?
+                                initiatedMembers.map((data, index) => (
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
+                                        <td className="px-6 py-3">
+                                            <span className="flex w-full">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                </svg>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={RequetsHeaders1.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={RequetsHeaders1.length} className="text-center py-10 font-semibold text-gray-500">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                            }
+                        </Table>
+                    </div>
+
+                    <div className="lg:w-[37%] md:w-[37%] w-full flex-grow h-full flex flex-col gap-5">
+                        <MembersAnalysis members={allMembers} />
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
+                    <div className="w-full flex flex-col gap-5">
+                        <Table title="Today" filter subTitle={<span>Pending Requests (Received)</span>} exportData
+                            tableHeader={RequetsHeaders2}
+                            sortFunc={(field, order) => {
+                                const sortedMembers = [...pendingMembers].sort((a, b) => {
+                                    if (field === "date") {
+                                        return order === "ASC"
+                                            ? new Date(a.createdAt) - new Date(b.createdAt)
+                                            : new Date(b.createdAt) - new Date(a.createdAt);
+                                    } else if (field === "name") {
+                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
+                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
+
+                                        return order === "ASC"
+                                            ? aName.localeCompare(bName)
+                                            : bName.localeCompare(aName);
+                                    }
+                                    return 0; // Default case if field is not recognized
+                                });
+                                setPendingMembers(sortedMembers);
+                            }}
+                            handleExportDataClick={() => exportToExcel(
+                                RequetsHeaders2,
+                                pendingMembers.map(item => ([
+                                    `${item.individual.firstName} ${item.individual.lastName}`,
+                                    item.individual.email,
+                                    dateFormat(data.createdAt, 'dd-MM-yyyy'),
+                                ])),
+                                "Received Pending Requests.xlsx"
+                            )}
+                        >
+                            {pendingMembers.length > 0 ?
+                                pendingMembers.map((data, index) => (
+                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">
+                                            <span className="flex gap-2">
+                                                <span className="flex py-2 px-3 rounded-full cursor-pointer border border-[rgba(247,77,27,1)]"
+                                                    onClick={() => handleDeclineMember(data)}>
+                                                    <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
+                                                </span>
+                                                <span className="flex py-2 px-3 rounded-full cursor-pointer bg-mobiPink"
+                                                    onClick={() => handleAcceptMember(data)}>
+                                                    <p className="text-white text-xs font-[500]">Accept</p>
+                                                </span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                                :
+                                isLoading ?
+                                    <tr>
+                                        <td colSpan={RequetsHeaders2.length} className="text-center py-10 font-semibold text-gray-500">
+                                            <Loader size={20} />
+                                        </td>
+                                    </tr>
+                                    :
+                                    <tr>
+                                        <td colSpan={RequetsHeaders2.length} className="text-center py-10 font-semibold text-gray-500">
+                                            No Data Available
+                                        </td>
+                                    </tr>
+                            }
+                        </Table>
+                    </div>
+
+                </div>
+
+
+
+
+
                 <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
                     <Table title="Today" filter subTitle={<span>BlackListed Members</span>} exportData
                         tableHeader={TableHeaders}
@@ -439,153 +594,6 @@ export default function OrgMembership() {
                     </Table>
                 </div>
 
-
-
-                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                    <div className="lg:w-[63%] md:w-[63%] w-full flex flex-col gap-5">
-                        <Table title="Today" filter subTitle={<span>Pending Requests (Initiated)</span>} exportData
-                            tableHeader={RequetsHeaders1}
-                            sortFunc={(field, order) => {
-                                const sortedMembers = [...initiatedMembers].sort((a, b) => {
-                                    if (field === "date") {
-                                        return order === "ASC"
-                                            ? new Date(a.createdAt) - new Date(b.createdAt)
-                                            : new Date(b.createdAt) - new Date(a.createdAt);
-                                    } else if (field === "name") {
-                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
-                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
-
-                                        return order === "ASC"
-                                            ? aName.localeCompare(bName)
-                                            : bName.localeCompare(aName);
-                                    }
-                                    return 0; // Default case if field is not recognized
-                                });
-
-                                setInitiatedMembers(sortedMembers);
-                            }}
-                            handleExportDataClick={() => exportToExcel(
-                                RequetsHeaders1,
-                                initiatedMembers.map(item => ([
-                                    `${item.individual.firstName} ${item.individual.lastName}`,
-                                    item.individual.email,
-                                    dateFormat(data.createdAt, 'dd-MM-yyyy'),
-                                    item.status
-                                ])),
-                                "Initiated Pending Requests.xlsx"
-                            )}
-                        >
-                            {initiatedMembers.length > 0 ?
-                                initiatedMembers.map((data, index) => (
-                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyyy')}</td>
-                                        <td className="px-3 py-3 text-mobiTableText"><Badge status={data.status} /></td>
-                                        <td className="px-6 py-3">
-                                            <span className="flex w-full">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z" stroke="#AEB9E1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))
-                                :
-                                isLoading ?
-                                    <tr>
-                                        <td colSpan={RequetsHeaders1.length} className="text-center py-10 font-semibold text-gray-500">
-                                            <Loader size={20} />
-                                        </td>
-                                    </tr>
-                                    :
-                                    <tr>
-                                        <td colSpan={RequetsHeaders1.length} className="text-center py-10 font-semibold text-gray-500">
-                                            No Data Available
-                                        </td>
-                                    </tr>
-                            }
-                        </Table>
-                    </div>
-
-                    <div className="lg:w-[37%] md:w-[37%] w-full flex-grow h-full flex flex-col gap-5">
-                        <MembersAnalysis members={allMembers} />
-                    </div>
-
-                </div>
-
-
-
-                <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
-                    <div className="w-full flex flex-col gap-5">
-                        <Table title="Today" filter subTitle={<span>Pending Requests (Received)</span>} exportData
-                            tableHeader={RequetsHeaders2}
-                            sortFunc={(field, order) => {
-                                const sortedMembers = [...pendingMembers].sort((a, b) => {
-                                    if (field === "date") {
-                                        return order === "ASC"
-                                            ? new Date(a.createdAt) - new Date(b.createdAt)
-                                            : new Date(b.createdAt) - new Date(a.createdAt);
-                                    } else if (field === "name") {
-                                        const aName = `${a.individual.firstName} ${a.individual.lastName}`;
-                                        const bName = `${b.individual.firstName} ${b.individual.lastName}`;
-
-                                        return order === "ASC"
-                                            ? aName.localeCompare(bName)
-                                            : bName.localeCompare(aName);
-                                    }
-                                    return 0; // Default case if field is not recognized
-                                });
-                                setPendingMembers(sortedMembers);
-                            }}
-                            handleExportDataClick={() => exportToExcel(
-                                RequetsHeaders2,
-                                pendingMembers.map(item => ([
-                                    `${item.individual.firstName} ${item.individual.lastName}`,
-                                    item.individual.email,
-                                    dateFormat(data.createdAt, 'dd-MM-yyyy'),
-                                ])),
-                                "Received Pending Requests.xlsx"
-                            )}
-                        >
-                            {pendingMembers.length > 0 ?
-                                pendingMembers.map((data, index) => (
-                                    <tr key={index} className={`py-5 ${index % 2 === 0 ? 'bg-mobiDarkCloud' : 'bg-mobiTheme'}`}>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.firstName} {data.individual.lastName}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{data.individual.email}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.createdAt, 'dd-MM-yyyy')}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">
-                                            <span className="flex gap-2">
-                                                <span className="flex py-2 px-3 rounded-full cursor-pointer border border-[rgba(247,77,27,1)]"
-                                                    onClick={() => handleDeclineMember(data)}>
-                                                    <p className="text-[rgba(247,77,27,1)] text-xs font-[500]">Decline</p>
-                                                </span>
-                                                <span className="flex py-2 px-3 rounded-full cursor-pointer bg-mobiPink"
-                                                    onClick={() => handleAcceptMember(data)}>
-                                                    <p className="text-white text-xs font-[500]">Accept</p>
-                                                </span>
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))
-                                :
-                                isLoading ?
-                                    <tr>
-                                        <td colSpan={RequetsHeaders2.length} className="text-center py-10 font-semibold text-gray-500">
-                                            <Loader size={20} />
-                                        </td>
-                                    </tr>
-                                    :
-                                    <tr>
-                                        <td colSpan={RequetsHeaders2.length} className="text-center py-10 font-semibold text-gray-500">
-                                            No Data Available
-                                        </td>
-                                    </tr>
-                            }
-                        </Table>
-                    </div>
-
-                </div>
 
             </div>
 

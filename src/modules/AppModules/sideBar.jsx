@@ -6,6 +6,7 @@ import useModal from '../../hooks/modal';
 import ReusableModal from '../../components/ReusableModal';
 import LogOutModal from '../../components/LogOutModal';
 import { FaWallet } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
 export default function Sidebar({ mobile }) {
     const location = useLocation();
@@ -13,6 +14,8 @@ export default function Sidebar({ mobile }) {
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
 
     const [activeNav, setActiveNav] = useState(location.pathname);
+
+    const user = useSelector((state) => state.userData.data);
 
     const navArray = [
         {
@@ -211,6 +214,10 @@ export default function Sidebar({ mobile }) {
                         <span className='text-xl mt-1 font-semibold'>MobiHolder</span>
                     </div>
                 </Link>
+                <div className='w-full flex flex-col gap-1'>
+                    <p className='text-base font-semibold'>{user?.firstName} {user?.lastName}</p>
+                    <p className='text-sm text-mobiRomanSilver'>Individual account</p>
+                </div>
                 <div className='w-full h-[1px] border-mobiSilverDivider border-bottom border'></div>
             </div>
 
