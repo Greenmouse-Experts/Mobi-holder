@@ -62,6 +62,10 @@ export default function OrgSidebar({ mobile }) {
                 {
                     path: "/org/subscription/my-plans",
                     name: "My Subscription Plans"
+                },
+                {
+                    path: "/org/subscription/subscribers",
+                    name: "My Subscribers"  
                 }
             ],
             openChildren: false
