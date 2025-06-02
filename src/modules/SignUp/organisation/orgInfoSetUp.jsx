@@ -8,18 +8,19 @@ import AuthSideBar from "../../../components/AuthSideBar";
 import Theme from "../../../components/Theme";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { setOrg } from "../../../reducers/organisationSlice";
+import { setSignUpData } from "../../../reducers/organisationSlice";
 import Checkbox from "../../../components/CheckBox";
 import MultipleSelect from "../../../components/MultipleSelect";
 import useFileUpload from "../../../api/hooks/useFileUpload";
 import { Camera } from "lucide-react";
 import { State, Country } from "country-state-city";
+import { toast } from "react-toastify";
 
 
 export default function OrgInfoSetUp({ moveNext }) {
-    const user = useSelector((state) => state.orgData.orgData);
+    const user = useSelector((state) => state.orgData.signUpData);
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [payload, setPayload] = useState({});
     const [errorAccess, setErrorAccess] = useState(false);
     const fileInputRef = useRef(null);
@@ -56,6 +57,10 @@ export default function OrgInfoSetUp({ moveNext }) {
 
 
     const moveTo = (data) => {
+        if(!uploadedPhoto) {
+            toast.error("Please upload an organization logo.");
+            return;
+        }
         setPayload((prevPayload) => {
             const { country, state, street, ...restData } = data;
             const updatedPayload = {
@@ -74,7 +79,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                 setErrorAccess(true);
             } else {
                 setErrorAccess(false);
-                dispatch(setOrg(updatedPayload)); // Use updatedPayload here
+                dispatch(setSignUpData(updatedPayload)); // Use updatedPayload here
                 moveNext();
             }
 

@@ -10,14 +10,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "../../../api/apiFactory";
-import { setOrg } from "../../../reducers/organisationSlice";
+import { setOrg, setSignUpData } from "../../../reducers/organisationSlice";
 import { toast } from "react-toastify";
 import useApiMutation from "../../../api/hooks/useApiMutation";
 
 export default function OrgAdminSetUp({ moveBack }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    const orgData = useSelector((state) => state.orgData.orgData);
+    const orgData = useSelector((state) => state.orgData.signUpData);
     const [isLoading, setIsLoading] = useState(false);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -36,6 +36,7 @@ export default function OrgAdminSetUp({ moveBack }) {
             data: payload,
             navigateTo: "/verify-email",
             onSuccess: (response) => {
+                dispatch(setSignUpData(null));
                 dispatch(setOrg(response.data.data));
                 localStorage.setItem('email', JSON.stringify(payload.email));
                 navigate('/verify-email');

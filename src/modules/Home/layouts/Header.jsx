@@ -183,7 +183,7 @@ export default function Header() {
                                 </Link>
                             </Button>
                             <Button className="bg-mobiDarkBlue rounded-full text-white">
-                                <Link className="w-full h-full flex justify-center" to={'/login'}>
+                                <Link className="w-full h-full flex justify-center" to={'/signup'}>
                                     <span className="font-semibold normal-case">Sign up</span>
                                 </Link>
                             </Button>

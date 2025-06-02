@@ -11,7 +11,7 @@ import useApiMutation from "../../api/hooks/useApiMutation";
 import { setOrg } from "../../reducers/organisationSlice";
 
 export default function Login() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -25,21 +25,22 @@ export default function Login() {
             method: "POST",
             data: data,
             onSuccess: (response) => {
+                reset({ email: '', password: '' });
                 if (response.data.data.accountType === 'Organization') {
                     dispatch(setOrg(response.data.data));
                     localStorage.setItem("userToken", response.data.token);
                     navigate('/org/dashboard');
                 }
                 else {
-                     dispatch(setUser(response.data.data));
-                     localStorage.setItem("userToken", response.data.token)
-                     navigate('/app/dashboard')
+                    dispatch(setUser(response.data.data));
+                    localStorage.setItem("userToken", response.data.token)
+                    navigate('/app/dashboard')
                 }
             },
             onError: (error) => {
-                if(error.response.data.message === 'Your email is not verified. A verification email has been sent to your email address.'){
+                if (error.response.data.message === 'Your email is not verified. A verification email has been sent to your email address.') {
                     localStorage.setItem('email', JSON.stringify(data.email));
-                   // dispatch(setUser({email: data.email}));
+                    // dispatch(setUser({email: data.email}));
                     navigate('/verify-email')
                 }
                 setIsLoading(false);

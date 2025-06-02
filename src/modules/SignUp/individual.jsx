@@ -12,18 +12,23 @@ import useApiMutation from "../../api/hooks/useApiMutation";
 import Checkbox from "../../components/CheckBox";
 import useFileUpload from "../../api/hooks/useFileUpload";
 import { Camera } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function IndividualSignUp() {
     const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef(null);
     const { uploadFiles, isLoadingUpload } = useFileUpload();
-    const [uploadedPhoto, setUploadedPhoto] = useState("");
+    const [uploadedPhoto, setUploadedPhoto] = useState(null);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
 
     const { mutate } = useApiMutation();
 
     const createAccount = (data) => {
+        if(!uploadedPhoto) {
+            toast.error("Please upload a profile photo.");
+            return;
+        }
         const payload = {
             ...data,
             photo: uploadedPhoto
@@ -87,7 +92,7 @@ export default function IndividualSignUp() {
                             <form onSubmit={handleSubmit(createAccount)}>
                                 <div className="mb-1 flex flex-col gap-6 mt-5">
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 First name
                                             </p>
@@ -95,7 +100,7 @@ export default function IndividualSignUp() {
                                                 rules={{ required: 'First Name is required' }} errors={errors} type="text" placeholder="Enter your first name" />
                                         </div>
 
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Last name
                                             </p>
@@ -105,7 +110,7 @@ export default function IndividualSignUp() {
                                     </div>
 
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Email
                                             </p>
@@ -113,7 +118,7 @@ export default function IndividualSignUp() {
                                                 rules={{ required: 'Email is required' }} errors={errors} placeholder="Enter your email" />
                                         </div>
 
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Phone Number
                                             </p>
