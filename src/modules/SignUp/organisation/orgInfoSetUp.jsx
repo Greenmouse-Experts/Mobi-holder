@@ -170,7 +170,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                     </div>
 
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Country
                                             </p>
@@ -193,7 +193,7 @@ export default function OrgInfoSetUp({ moveNext }) {
                                             />
                                         </div>
 
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 State
                                             </p>

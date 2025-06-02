@@ -89,7 +89,7 @@ export default function OrgAdminSetUp({ moveBack }) {
                             <form onSubmit={handleSubmit(createOrgAccount)} autoComplete="off">
                                 <div className="mb-1 flex flex-col gap-6 mt-5">
                                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 First name
                                             </p>
@@ -97,7 +97,7 @@ export default function OrgAdminSetUp({ moveBack }) {
                                                 rules={{ required: 'First Name is required' }} errors={errors} type="text" placeholder="Enter your first name" />
                                         </div>
 
-                                        <div className="flex flex-col gap-6">
+                                        <div className="flex md:w-1/2 flex-col gap-6">
                                             <p className="-mb-3 text-mobiFormGray">
                                                 Last name
                                             </p>
