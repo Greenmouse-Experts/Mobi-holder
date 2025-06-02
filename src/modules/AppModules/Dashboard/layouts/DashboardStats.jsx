@@ -4,7 +4,7 @@ import organisation from "../../../../assets/organisation.svg";
 import subscriptions from "../../../../assets/subscriptions.svg";
 import calendar from "../../../../assets/calendar.svg";
 
-const DashboardStats = ({orgData, idCards, events}) => {
+const DashboardStats = ({orgData, idCards, subscriptions, events}) => {
 
     return (
         <div className="flex w-full lg:flex-row md:flex-row flex-col gap-4">
@@ -23,7 +23,7 @@ const DashboardStats = ({orgData, idCards, events}) => {
                 colorGradient={['rgba(107, 155, 239, 1)', 'rgba(52, 59, 79, 1)']}
             />
             <StatCard
-                number={0}
+                number={subscriptions.length}
                 label="Subscriptions"
                 iconColor="bg-mobiSubPurple"
                 IconComponent={<img src={subscriptions} alt="Subscriptions" style={{ width: '20px' }} />}
