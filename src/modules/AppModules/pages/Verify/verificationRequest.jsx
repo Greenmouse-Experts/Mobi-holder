@@ -97,7 +97,7 @@ export default function VerificationRequest() {
                 api='/api/verifications/verification/requests/update/status'
                 body={{ requestId: id, status: 'decline' }}
                 method="PATCH"
-                redirect={getReceivedVerificationRequest('received')} />
+                redirect={() => getReceivedVerificationRequest('received')} />
         });
     }
 
@@ -115,7 +115,7 @@ export default function VerificationRequest() {
                 api='/api/verifications/verification/requests/update/status'
                 body={{ requestId: id, status: 'active' }}
                 method="PATCH"
-                redirect={getReceivedVerificationRequest('received')} />
+                redirect={() => getReceivedVerificationRequest('received')} />
         });
     }
 

@@ -38,6 +38,7 @@ import StaffActivityLog from "../modules/SuperAdmin/Staffs/activityLog";
 import FAQCategories from "../modules/SuperAdmin/FAQs/categories";
 import UserInquiries from "../modules/SuperAdmin/UserInquiries";
 import NewsletterSubscribers from "../modules/SuperAdmin/NewsLetter";
+import Notification from "../modules/SuperAdmin/Notifications";
 
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
@@ -79,7 +80,8 @@ const SuperAdminRoutes = [
     <Route path="faqs/categories" element={<FAQCategories />} />,
     <Route path="activityLog" element={<StaffActivityLog />} />,
     <Route path="user-inquiries" element={<UserInquiries />} />,
-    <Route path="newsletter" element={<NewsletterSubscribers />} />
+    <Route path="newsletter" element={<NewsletterSubscribers />} />,
+    <Route path="notification" element={<Notification />} />
 ];
 
 export default SuperAdminRoutes;

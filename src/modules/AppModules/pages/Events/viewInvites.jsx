@@ -15,7 +15,7 @@ export default function ViewInvites() {
     const user = useSelector((state) => state.userData.data);
     const navigate = useNavigate();
     const { id } = useParams();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [eventDetails, setEventDetails] = useState({});
     const [eventInvites, setEventInvites] = useState([]);
     const [loading, setIsLoading] = useState(true);
@@ -74,7 +74,7 @@ export default function ViewInvites() {
     const inviteUser = (data) => {
         setDisabled(true);
         const payload = {
-            eventId: id,
+            eventId: `${eventDetails.id}`,
             userId: data.userId,
             ticketId: data.ticketId,
             isFree: eventDetails.ticketType === 'Free'
@@ -87,9 +87,11 @@ export default function ViewInvites() {
             onSuccess: () => {
                 getEventDetails();
                 setDisabled(false);
+                reset();
             },
             onError: () => {
                 setDisabled(false);
+                reset();
             }
         });
     };
@@ -224,12 +226,15 @@ export default function ViewInvites() {
                             </div>
                         </div>
                         <div className="shadow-xl md:py-5 md:px-8 px-2 py-2 md:w-[70%] w-full border border-mobiBorderFray card-body flex rounded-xl flex-col gap-10">
-                            <p className="-mb-3 text-mobiFormGray">
+                            <p className="-mb-3 text-mobiFormGray md:text-lg text-base font-semibold">
                                 Invite User(s)
                             </p>
                             <form onSubmit={handleSubmit(inviteUser)}>
-                                <div className="mb-1 flex flex-col gap-10 mt-5">
+                                <div className="mb-1 flex flex-col gap-6 mt-5">
                                     <div className="flex flex-col w-full gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                User's Email or ID
+                                            </p>
                                         <Input type="text" name="userId" required
                                             errors={errors}
                                             rules={{ required: `User's email or ID is required` }}
