@@ -159,6 +159,8 @@ export default function EventInvites() {
         })
     };
 
+
+
     const onClose = () => {
         console.log("Payment closed");
     };
