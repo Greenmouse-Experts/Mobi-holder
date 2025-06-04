@@ -161,7 +161,7 @@ export default function CardStructure() {
                                                         />
                                                         <RoundedCards
                                                             bgColor={color.color2}
-                                                            selectBg={handleSelectedText}
+                                                            selectBg={handleSelectedBg}
                                                             isSelected={selectedBgColor === color.color2}
                                                         />
                                                     </div>
