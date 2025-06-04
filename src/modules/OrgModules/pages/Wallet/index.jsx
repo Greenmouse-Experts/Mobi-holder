@@ -1,9 +1,52 @@
 import { Button } from "@material-tailwind/react";
 import Header from "../../../../components/Header";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import useApiMutation from "../../../../api/hooks/useApiMutation";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../../../components/Loader";
 
 export default function Wallet() {
     const user = useSelector((state) => state.orgData.orgData);
+    const [bankDetails, setBankDetails] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const { mutate } = useApiMutation();
+
+
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        getUserBankDetails();
+    }, []);
+
+
+
+
+    const getUserBankDetails = () => {
+        mutate({
+            url: `/api/users/payment/subaccounts`,
+            method: "GET",
+            headers: true,
+            hideToast: true,
+            onSuccess: (response) => {
+                if (response.data) {
+                    const bankDetails = response.data.data;
+                    setBankDetails(bankDetails);
+                }
+                setLoading(false);
+            },
+            onError: (error) => {
+                console.error(error);
+                setLoading(false);
+            }
+        });
+    }
+
+
+
+
+
 
     /* const initiateWithdrawal = (bankId) => {
          openModal({
@@ -61,24 +104,92 @@ export default function Wallet() {
                                         NGN {user.wallet}
                                     </p>
                                 </div>
-                                <div className="">
+                               {/* <div className="">
                                     <Button className="bg-mobiPink">
                                         Withdraw
                                     </Button>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="mt-20 md:mt-10 w-full">
 
-                                <h1 className="text-center text-lg font-bold mb-4">
-                                    No Account Added
-                                </h1>
+                                {
+                                    loading ? (
+                                        <div className="w-full h-full">
+                                            <Loader size={20} />
+                                        </div>
+                                    )
+                                        :
+                                        bankDetails.length === 0 ? (
+                                            <>
+                                                <h1 className="text-center text-lg font-bold mb-4">
+                                                    No Account Added
+                                                </h1>
 
-                                <div className="w-full flex justify-center p-1">
-                                    <Button className="text-white">
-                                        ADD BANK ACCOUNT
-                                    </Button>
-                                </div>
+                                                <div className="w-full flex justify-center p-1">
+                                                    <Button className="text-white" onClick={() => navigate('/app/settings#bank_details')}>
+                                                        ADD BANK ACCOUNT
+                                                    </Button>
+                                                </div>
+                                            </>
+                                        )
+                                            :
+
+
+                                            <div className="overflow-x-auto p-4">
+                                                <table className="min-w-full hidden md:table border border-gray-300 text-sm">
+                                                    <thead className="bg-gray-100 text-gray-700 text-left">
+                                                        <tr>
+                                                            <th className="p-3 border border-gray-300">S/N</th>
+                                                            <th className="p-3 border border-gray-300">Bank</th>
+                                                            <th className="p-3 border border-gray-300">Account Number</th>
+                                                            <th className="p-3 border border-gray-300">Account Name</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {bankDetails.map((bankDetail, index) => (
+                                                            <tr key={bankDetail.id} className="border border-gray-200">
+                                                                <td className="p-3 border border-gray-300">{index + 1}</td>
+                                                                <td className="p-3 border border-gray-300">{bankDetail.settlementBank}</td>
+                                                                <td className="p-3 border border-gray-300">{bankDetail.accountNumber}</td>
+                                                                <td className="p-3 border border-gray-300">{bankDetail.businessName}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+
+
+
+
+
+
+                                                {/* Mobile Version */}
+                                                <div className="md:hidden flex flex-col gap-4">
+                                                    {bankDetails.map((bankDetail, index) => (
+                                                        <div
+                                                            key={bankDetail.id}
+                                                            className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white"
+                                                        >
+                                                            <div className="font-semibold text-sm text-gray-600 mb-1">
+                                                                S/N: <span className="font-normal">{index + 1}</span>
+                                                            </div>
+                                                            <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
+                                                                Bank:
+                                                                <div className="font-normal mt-1 text-gray-800">{bankDetail.settlementBank}</div>
+                                                            </div>
+                                                            <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
+                                                                Account Number:
+                                                                <div className="font-normal mt-1 text-gray-800">{bankDetail.accountNumber}</div>
+                                                            </div>
+                                                            <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
+                                                                Account Name:
+                                                                <div className="font-normal mt-1 text-gray-800">{bankDetail.businessName}</div>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                }
 
                             </div>
                         </div>

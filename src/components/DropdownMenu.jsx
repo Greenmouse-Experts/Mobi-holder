@@ -9,7 +9,7 @@ const DropdownMenu = ({ buttonLabel, children, btnClass, disabled, color }) => {
     };
 
     return (
-        <div className="relative inline-block text-left">
+        <div className="relative inline-block z-[9999] w-full text-left">
             {/* Button to trigger the dropdown */}
             <button
                 onClick={toggleDropdown}

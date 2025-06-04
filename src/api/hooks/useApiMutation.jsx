@@ -35,7 +35,7 @@ const useApiMutation = () => {
                 case "POST":
                     return data !== null ? apiClient.post(url, data, config) : apiClient.post(url, undefined, config);
                 case "PUT":
-                    return apiClient.put(url, data, config);
+                    return data !== null ? apiClient.put(url, data, config) : apiClient.put(url, undefined, config);
                 case "DELETE":
                     return data ? apiClient.delete(url, { data, ...config }) : apiClient.delete(url, { undefined, ...config });
                 case "PATCH":

@@ -14,8 +14,6 @@ export default function OrgSidebar({ mobile }) {
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
     const user = useSelector((state) => state.orgData.orgData);
 
-    console.log(user)
-
     const [activeNav, setActiveNav] = useState(location.pathname);
 
     const navArray = [
