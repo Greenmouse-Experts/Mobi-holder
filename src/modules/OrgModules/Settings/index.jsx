@@ -149,7 +149,7 @@ export default function OrgSettings() {
                     <div className="w-full flex flex-col gap-8 my-2 px-3">
                         <div className="w-full flex justify-between items-center">
                             <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">Settings</p>
-                            <div className="flex md:hidden">
+                            <div className="flex w-1/2 md:hidden">
                                 <DropdownMenu buttonLabel={activeTab} color="#242EF2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiBlue border rounded-md border-mobiBlue">
                                     {tabs.map((tab, index) => (
                                         <div key={index} onClick={() => setActiveTab(tab.slug)} className={`flex items-center text-black py-2 cursor-pointer px-4 h-[40px] rounded-lg transition`}>

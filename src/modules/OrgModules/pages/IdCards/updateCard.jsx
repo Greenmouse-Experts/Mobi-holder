@@ -115,7 +115,7 @@ export default function UpdateCard() {
                             <p className="text-base">Preview ID Card for : <span className="text-mobiBlue">
                                 {cardData.individual?.firstName} {cardData.individual?.lastName}
                             </span></p>
-                            <div className="flex my-2">
+                            <div className="flex md:w-1/4 my-2">
                                 <DropdownMenu buttonLabel={cardData.createdBy === cardData.organization?.id ? 'Created By Me' : `Created By ${cardData.individual.firstName} ${cardData.individual.lastName}`} disabled color="#A324F2" btnClass="inline-flex justify-center w-full px-4 h-full py-1 gap-3 font-medium text-mobiPink border rounded-md border-mobiPink">
                                 </DropdownMenu>
                             </div>
@@ -128,7 +128,7 @@ export default function UpdateCard() {
                             <form onSubmit={handleSubmit(updateCard)}>
                                 <div className="mb-1 flex flex-col gap-8 mt-5">
                                     {cardData.template?.layout === "horizontal" || cardData.template?.layout === "Landscape" ?
-                                        <StaffCard data={cardData} background={cardData.template.backgroundColor} textColor={cardData.template.textColor} /> : <StaffCardPortrait />}
+                                        <StaffCard data={cardData} background={cardData.template.backgroundColor} textColor={cardData.template.textColor} /> : <StaffCardPortrait data={cardData} background={cardData.template.backgroundColor} company={user?.companyName} textColor={cardData.template.textColor} />}
 
                                     <div className="flex flex-col w-full gap-6">
                                         <p className="-mb-3 text-mobiFormGray">
