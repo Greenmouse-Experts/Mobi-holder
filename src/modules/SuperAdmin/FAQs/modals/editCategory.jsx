@@ -14,6 +14,7 @@ const EditCategory = ({ redirect, categoryData, closeModal }) => {
     const createCategory = (data) => {
         setDisabled(true);
         const payload = {
+            type: data.type,
             name: data.name,
             id: categoryData.id
         };
@@ -45,6 +46,23 @@ const EditCategory = ({ redirect, categoryData, closeModal }) => {
                 </div>
                 <form onSubmit={handleSubmit(createCategory)}>
                     <div className="flex flex-col gap-4 mt-7">
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
+                                Account Type
+                            </p>
+                            <Input type="select" value={categoryData?.type} name="type" options={[
+                                {
+                                    label: 'Individual',
+                                    value: 'individual'
+                                },
+                                {
+                                    label: 'Organization',
+                                    value: 'organization'
+                                }
+                            ]} register={register}
+                                placeholder="Select Category" />
+                        </div>
+
                         <div className="flex flex-col w-full gap-6">
                             <p className="-mb-3 text-mobiFormGray">
                                 Category Name

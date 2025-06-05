@@ -82,6 +82,7 @@ export default function FAQCategories() {
                                 <tr>
                                     <th className="p-3 border border-gray-300">S/N</th>
                                     <th className="p-3 border border-gray-300">Category</th>
+                                    <th className="p-3 border border-gray-300">Account Type</th>
                                     <th className="p-3 border border-gray-300">Action</th>
                                 </tr>
                             </thead>
@@ -90,6 +91,7 @@ export default function FAQCategories() {
                                     <tr key={faq.id} className="border border-gray-200">
                                         <td className="p-3 border border-gray-300">{index + 1}</td>
                                         <td className="p-3 border border-gray-300">{faq.name}</td>
+                                        <td className="p-3 border border-gray-300 capitalize">{faq.type}</td>
                                         <td className="p-3 border border-gray-300">
                                             <Menu placement="left">
                                                 <MenuHandler>

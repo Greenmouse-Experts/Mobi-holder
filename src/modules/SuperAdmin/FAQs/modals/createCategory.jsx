@@ -43,6 +43,23 @@ const CreateCategory = ({ redirect, closeModal }) => {
                     <div className="flex flex-col gap-4 mt-7">
                         <div className="flex flex-col w-full gap-6">
                             <p className="-mb-3 text-mobiFormGray">
+                                Account Type
+                            </p>
+                            <Input type="select" name="type" options={[
+                                {
+                                    label: 'Individual',
+                                    value: 'individual'
+                                },
+                                {
+                                    label: 'Organization',
+                                    value: 'organization'
+                                }
+                            ]} register={register}
+                                placeholder="Select Category" />
+                        </div>
+
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
                                 Category Name
                             </p>
                             <Input type="text" name="name" register={register}
