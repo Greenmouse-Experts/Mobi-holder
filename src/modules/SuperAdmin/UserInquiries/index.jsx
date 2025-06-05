@@ -10,27 +10,29 @@ export default function UserInquiries() {
 
     const { openModal, isOpen, modalOptions, closeModal } = useModal();
     const [userInquiries, setInquiries] = useState([]);
+    const [pagination, setPagination] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const { mutate } = useApiMutation();
 
 
     useEffect(() => {
         setIsLoading(true);
-        Promise.all([fetchInquiries()])
+        Promise.all([fetchInquiries(1)])
             .finally(() => setIsLoading(false));
     }, []);
 
 
 
-    const fetchInquiries = () => {
+    const fetchInquiries = (params) => {
         return new Promise((resolve, reject) => {
             mutate({
-                url: `/api/admins/contact-us?page=1&limit=50`,
+                url: `/api/admins/contact-us?page=${params}&limit=10`,
                 method: "GET",
                 headers: true,
                 hideToast: true,
                 onSuccess: (response) => {
                     setInquiries(response.data.data);
+                    setPagination(response.data.pagination);
                     resolve();
                 },
                 onError: (err) => {
@@ -65,8 +67,15 @@ export default function UserInquiries() {
 
 
 
+    const handlePrev = () => {
+         if (pagination.currentPage > 1) fetchInquiries(pagination.currentPage - 1);
+    }
 
 
+
+    const handleNext = () => {
+         if (pagination.currentPage < pagination.totalPages) fetchInquiries(pagination.currentPage + 1);
+    }
 
 
 
@@ -85,6 +94,9 @@ export default function UserInquiries() {
 
 
 
+    const getSerialNumber = (index) => (pagination.currentPage - 1) * pagination.perPage + index + 1;
+
+
 
 
     return (
@@ -98,6 +110,7 @@ export default function UserInquiries() {
                         </div>
                     </div>
                     <div className="overflow-x-auto p-4">
+                        {/* Desktop Table */}
                         <table className="min-w-full hidden md:table border border-gray-300 text-sm">
                             <thead className="bg-gray-100 text-gray-700 text-left">
                                 <tr>
@@ -113,17 +126,17 @@ export default function UserInquiries() {
                             <tbody>
                                 {userInquiries.map((userInquiry, index) => (
                                     <tr key={userInquiry.id} className="border border-gray-200">
-                                        <td className="p-3 border border-gray-300">{index + 1}</td>
+                                        <td className="p-3 border border-gray-300">{getSerialNumber(index)}</td>
                                         <td className="p-3 border border-gray-300">{userInquiry.name}</td>
                                         <td className="p-3 border border-gray-300">{userInquiry.email}</td>
                                         <td className="p-3 border border-gray-300">{userInquiry.subject}</td>
                                         <td className="p-3 border border-gray-300">{userInquiry.message}</td>
                                         <td className="p-3 border border-gray-300">
                                             <span
-                                                className={`px-3 py-2 rounded-full text-xs font-medium
-      ${userInquiry.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-      ${userInquiry.status === 'responded' ? 'bg-green-100 text-green-800' : ''}
-    `}
+                                                className={`px-3 py-2 rounded-full text-xs font-medium ${userInquiry.status === 'pending'
+                                                    ? 'bg-yellow-100 text-yellow-800'
+                                                    : 'bg-green-100 text-green-800'
+                                                    }`}
                                             >
                                                 {userInquiry.status.charAt(0).toUpperCase() + userInquiry.status.slice(1)}
                                             </span>
@@ -147,15 +160,12 @@ export default function UserInquiries() {
                             </tbody>
                         </table>
 
-                        {/* Mobile Version */}
+                        {/* Mobile View */}
                         <div className="md:hidden flex flex-col gap-4">
                             {userInquiries.map((userInquiry, index) => (
-                                <div
-                                    key={userInquiry.id}
-                                    className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white"
-                                >
+                                <div key={userInquiry.id} className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white">
                                     <div className="font-semibold text-sm text-gray-600 mb-1">
-                                        S/N: <span className="font-normal">{index + 1}</span>
+                                        S/N: <span className="font-normal">{getSerialNumber(index)}</span>
                                     </div>
                                     <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         User:
@@ -175,10 +185,12 @@ export default function UserInquiries() {
                                     </div>
                                     <div className="font-semibold text-sm text-gray-600 mb-1 mt-3">
                                         Status:
-                                        <div className={`mt-1 px-3 py-2 rounded-full text-sm font-medium w-fit
-  ${userInquiry.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
-  ${userInquiry.status === 'responded' ? 'bg-green-100 text-green-800' : ''}
-`}>
+                                        <div
+                                            className={`mt-1 px-3 py-2 rounded-full text-sm font-medium w-fit ${userInquiry.status === 'pending'
+                                                ? 'bg-yellow-100 text-yellow-800'
+                                                : 'bg-green-100 text-green-800'
+                                                }`}
+                                        >
                                             {userInquiry.status.charAt(0).toUpperCase() + userInquiry.status.slice(1)}
                                         </div>
                                     </div>
@@ -199,11 +211,53 @@ export default function UserInquiries() {
                                 </div>
                             ))}
                         </div>
+
+                        {/* Pagination Info (Optional Display) */}
+                        <div className="mt-6 text-sm text-gray-600 text-center">
+                            Page {pagination.currentPage} of {pagination.totalPages} — {pagination.totalItems} total items
+                        </div>
                     </div>
+
+                    {/* Pagination Controls */}
+                    <div className="mt-6 flex justify-center items-center gap-2 text-sm text-gray-600">
+                        <button
+                            onClick={handlePrev}
+                            disabled={pagination.currentPage === 1}
+                            className={`px-3 py-1 border rounded ${pagination.currentPage === 1
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    : 'hover:bg-gray-200'
+                                }`}
+                        >
+                            Previous
+                        </button>
+
+                        {/* Page Numbers */}
+                        {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((pageNum) => (
+                            <button
+                                key={pageNum}
+                                className={`px-3 py-1 border rounded ${pageNum === pagination.currentPage
+                                        ? 'bg-blue-600 text-white'
+                                        : 'hover:bg-gray-200'
+                                    }`}
+                            >
+                                {pageNum}
+                            </button>
+                        ))}
+
+                        <button
+                            onClick={handleNext}
+                            disabled={pagination.currentPage === pagination.totalPages}
+                            className={`px-3 py-1 border rounded ${pagination.currentPage === pagination.totalPages
+                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                    : 'hover:bg-gray-200'
+                                }`}
+                        >
+                            Next
+                        </button>
+                    </div>
+
                 </div>
             </div>
-
-
 
             <ReusableModal
                 isOpen={isOpen}

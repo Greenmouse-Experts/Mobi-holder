@@ -2,6 +2,8 @@ import { parseISO } from 'date-fns';
 import { format } from 'date-fns-tz';
 
 export const dateFormat = (dateString, formatType) => {
+    if(!dateString) return '---';
+
     // Parse in UTC mode
     const parsedDate = parseISO(dateString);
 

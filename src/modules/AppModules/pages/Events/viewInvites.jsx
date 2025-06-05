@@ -87,7 +87,10 @@ export default function ViewInvites() {
             onSuccess: () => {
                 getEventDetails();
                 setDisabled(false);
-                reset();
+                reset({
+                    userId: '',
+                    ticketId: '',
+                });
             },
             onError: () => {
                 setDisabled(false);

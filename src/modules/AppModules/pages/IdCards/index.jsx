@@ -238,8 +238,8 @@ export default function IDCardsPage() {
                                 const sortedCards = [...personalCards].sort((a, b) => {
                                     if (field === "date") {
                                         return order === "ASC"
-                                            ? new Date(a.issuedDate) - new Date(b.issuedDate)
-                                            : new Date(b.issuedDate) - new Date(a.issuedDate);
+                                            ? new Date(a?.issuedDate) - new Date(b?.issuedDate)
+                                            : new Date(b?.issuedDate) - new Date(a?.issuedDate);
                                     } else if (field === "name") {
                                         return order === "ASC"
                                             ? a.issuingOrganization.localeCompare(b.issuingOrganization)
@@ -256,7 +256,7 @@ export default function IDCardsPage() {
                                     item.issuingOrganization,
                                     item.cardNumber,
                                     item.designation,
-                                    dateFormat(item.issuedDate, 'dd-MM-yyyy'),
+                                    dateFormat(item?.issuedDate, 'dd-MM-yyyy'),
                                     item?.expiryDate ? dateFormat(item?.expiryDate, 'dd-MM-yyyy') : '---',
                                 ])),
                                 "Personal ID Cards.xlsx"
@@ -268,7 +268,7 @@ export default function IDCardsPage() {
                                         <td className="px-3 py-3 text-mobiTableText">{data.issuingOrganization}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.cardNumber}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data.designation}</td>
-                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.issuedDate, 'dd-MM-yyyy')}</td>
+                                        <td className="px-3 py-3 text-mobiTableText">{dateFormat(data?.issuedDate, 'dd-MM-yyyy')}</td>
                                         <td className="px-3 py-3 text-mobiTableText">{data?.expiryDate ? dateFormat(data?.expiryDate, 'dd-MM-yyyy') : '---'}</td>
                                         <td className="px-6 py-3 cursor-pointer">
                                             <Menu placement="left">

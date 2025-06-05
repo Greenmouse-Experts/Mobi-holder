@@ -15,7 +15,7 @@ export default function OrgViewInvites() {
     const user = useSelector((state) => state.orgData.orgData);
     const navigate = useNavigate();
     const { id } = useParams();
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const [eventDetails, setEventDetails] = useState({});
     const [eventInvites, setEventInvites] = useState([]);
     const [loading, setIsLoading] = useState(true);
@@ -85,6 +85,7 @@ export default function OrgViewInvites() {
             data: payload,
             onSuccess: () => {
                 getEventDetails();
+                reset({ ticketId: '', eventId: '' });
                 setDisabled(false);
             },
             onError: () => {
@@ -235,14 +236,14 @@ export default function OrgViewInvites() {
                                             register={register} placeholder="Enter User(s) email or ID" />
                                     </div>
 
-                                        <div className="flex flex-col w-full gap-6">
-                                            <p className="-mb-3 text-mobiFormGray">
-                                                Assign Ticket to Invitee
-                                            </p>
-                                            <Input name="ticketId" options={eventTickets} register={register} errors={errors}
-                                                rules={{ required: 'Event Ticket is required' }}
-                                                type="select" placeholder="Select Ticket" />
-                                        </div>
+                                    <div className="flex flex-col w-full gap-6">
+                                        <p className="-mb-3 text-mobiFormGray">
+                                            Assign Ticket to Invitee
+                                        </p>
+                                        <Input name="ticketId" options={eventTickets} register={register} errors={errors}
+                                            rules={{ required: 'Event Ticket is required' }}
+                                            type="select" placeholder="Select Ticket" />
+                                    </div>
 
                                     <div className="flex">
                                         <Button type="submit" disabled={disabled} className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full">
