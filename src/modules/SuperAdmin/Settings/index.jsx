@@ -4,6 +4,7 @@ import DropdownMenu from '../../../components/DropdownMenu';
 import AccountInfo from './tabs/accountInfo';
 import Security from './tabs/security';
 import PaymentGateway from './tabs/paymentGateway';
+import Support from './tabs/support';
 
 export default function AdminSettings() {
     const [activeTab, setActiveTab] = useState('Account Info');
@@ -21,10 +22,10 @@ export default function AdminSettings() {
             slug: 'Payment Gateway',
             name: 'Payment Gateway'
         },
-        /* {
+        {
              slug: 'Support',
              name: 'Support'
-         } */
+         }
     ];
 
     return (
@@ -61,6 +62,7 @@ export default function AdminSettings() {
                                     {activeTab === 'Account Info' && <AccountInfo />}
                                     {activeTab === 'Security' && <Security />}
                                     {activeTab === 'Payment Gateway' && <PaymentGateway />}
+                                    {activeTab === 'Support' && <Support />}
                                 </div>
                             </div>
                         </div>
