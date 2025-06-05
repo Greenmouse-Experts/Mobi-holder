@@ -24,6 +24,8 @@ export default function FAQ() {
     const [activeAccordion, setActiveAccordion] = useState(null);
     const [activeTab, setActiveTab] = useState(null);
     const [faqCategories, setFaqCategories] = useState([]);
+    const [filteredFaqCategories, setFilteredFaqCategories] = useState([]);
+    const [tab, setTab] = useState("individual");
 
     const { mutate } = useApiMutation();
 
@@ -38,9 +40,11 @@ export default function FAQ() {
             hideToast: true,
             onSuccess: (response) => {
                 setFaqCategories(response.data.data);
+                const filteredCategories = response.data.data.filter((x) => x.type === tab);
+                setFilteredFaqCategories(filteredCategories);
                 // Set the first category as active by default if available
                 if (response.data.data.length > 0) {
-                    setActiveTab(response.data.data[0].name);
+                    setActiveTab(filteredCategories[0].name);
                 }
             },
             onError: (error) => {
@@ -58,8 +62,19 @@ export default function FAQ() {
         setActiveAccordion(null); // Reset accordion when changing tabs
     };
 
+
+    const handleTypeChange = (newTab) => {
+        if (newTab !== tab) {
+            setTab(newTab);
+            const filteredCategories = faqCategories.filter((x) => x.type === newTab);
+            setFilteredFaqCategories(filteredCategories);
+            setActiveTab(filteredCategories[0].name);
+        }
+    };
+
+
     // Get the currently active category's FAQs
-    const activeCategory = faqCategories.find(cat => cat.name === activeTab);
+    const activeCategory = filteredFaqCategories.find(cat => cat.name === activeTab);
     const activeFaqs = activeCategory?.faqs || [];
 
     return (
@@ -102,8 +117,30 @@ export default function FAQ() {
                                 </div>
 
                                 <div className="w-4/5 md:my-5 my-5 flex flex-col gap-4">
+
+                                    <div className="flex justify-center gap-4 mt-2 mb-5">
+                                        <button
+                                            onClick={() => handleTypeChange("individual")}
+                                            className={`px-4 py-2 rounded-full font-semibold ${tab === "individual"
+                                                ? "bg-black text-white"
+                                                : "bg-transparent border border-white text-black"
+                                                }`}
+                                        >
+                                            Individual Account Type
+                                        </button>
+                                        <button
+                                            onClick={() => handleTypeChange("organization")}
+                                            className={`px-4 py-2 rounded-full font-semibold ${tab === "organization"
+                                                ? "bg-black text-white"
+                                                : "bg-transparent border border-white text-black"
+                                                }`}
+                                        >
+                                            Organization Account Type
+                                        </button>
+                                    </div>
+
                                     <Tabs
-                                        categories={faqCategories}
+                                        categories={filteredFaqCategories}
                                         activeTab={activeTab}
                                         onTabChange={handleTabChange}
                                     />

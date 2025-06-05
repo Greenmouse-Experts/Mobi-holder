@@ -33,11 +33,7 @@ export default function FAQs() {
                 headers: true,
                 hideToast: true,
                 onSuccess: (response) => {
-                    const categories = response.data.data.map(category => ({
-                        label: category.name,
-                        value: category.id
-                    }));
-                    setFaqsCategories(categories);
+                    setFaqsCategories(response.data.data);
                     resolve();
                 },
                 onError: (err) => {

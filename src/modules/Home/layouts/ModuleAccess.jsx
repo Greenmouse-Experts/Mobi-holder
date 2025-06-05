@@ -30,6 +30,8 @@ export default function ModuleAccess() {
     const [activeAccordion, setActiveAccordion] = useState(null);
     const [activeTab, setActiveTab] = useState(null);
     const [faqCategories, setFaqCategories] = useState([]);
+    const [filteredFaqCategories, setFilteredFaqCategories] = useState([]);
+    const [tab, setTab] = useState("individual");
 
     const { register, handleSubmit, reset, control, formState: { errors } } = useForm();
 
@@ -46,9 +48,10 @@ export default function ModuleAccess() {
             hideToast: true,
             onSuccess: (response) => {
                 setFaqCategories(response.data.data);
-                // Set the first category as active by default if available
+                const filteredCategories = response.data.data.filter((x) => x.type === tab);
+                setFilteredFaqCategories(filteredCategories);
                 if (response.data.data.length > 0) {
-                    setActiveTab(response.data.data[0].name);
+                    setActiveTab(filteredCategories[0].name);
                 }
             },
             onError: (error) => {
@@ -66,8 +69,19 @@ export default function ModuleAccess() {
         setActiveAccordion(null); // Reset accordion when changing tabs
     };
 
+
+    const handleTypeChange = (newTab) => {
+        if (newTab !== tab) {
+            setTab(newTab);
+            const filteredCategories = faqCategories.filter((x) => x.type === newTab);
+            setFilteredFaqCategories(filteredCategories);
+            setActiveTab(filteredCategories[0].name);
+        }
+    };
+
+
     // Get the currently active category's FAQs
-    const activeCategory = faqCategories.find(cat => cat.name === activeTab);
+    const activeCategory = filteredFaqCategories.find(cat => cat.name === activeTab);
     const activeFaqs = activeCategory?.faqs || [];
 
 
@@ -325,11 +339,33 @@ export default function ModuleAccess() {
                 <div className="w-full h-full relative">
                     <div className="w-full h-full flex md:flex-row flex-col gap-8 md:py-14 md:px-32 px-6 relative" style={{ backgroundColor: 'rgba(249, 247, 243, 1)' }}>
                         <div className="w-full flex justify-center">
-                            <div className="md:w-3/5 flex flex-col md:gap-8 gap-5">
+                            <div className="md:w-3/4 flex flex-col md:gap-8 gap-5">
                                 <p className="md:text-4xl text-2xl font-bold w-full my-4 text-center text-black">Frequently Asked Questions</p>
                                 <div className="w-full md:my-5 my-5 flex flex-col gap-4">
+
+                                    <div className="flex justify-center gap-4 mb-7">
+                                        <button
+                                            onClick={() => handleTypeChange("individual")}
+                                            className={`px-4 py-2 rounded-full font-semibold ${tab === "individual"
+                                                ? "bg-black text-white"
+                                                : "bg-transparent border border-white text-black"
+                                                }`}
+                                        >
+                                            Individual Account Type
+                                        </button>
+                                        <button
+                                            onClick={() => handleTypeChange("organization")}
+                                            className={`px-4 py-2 rounded-full font-semibold ${tab === "organization"
+                                                ? "bg-black text-white"
+                                                : "bg-transparent border border-white text-black"
+                                                }`}
+                                        >
+                                            Organization Account Type
+                                        </button>
+                                    </div>
+
                                     <Tabs
-                                        categories={faqCategories}
+                                        categories={filteredFaqCategories}
                                         activeTab={activeTab}
                                         onTabChange={handleTabChange}
                                     />

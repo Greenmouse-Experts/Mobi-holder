@@ -6,6 +6,13 @@ import { useState } from "react";
 
 const EditFAQ = ({ categories, redirect, faqData, closeModal }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [filteeredCategories, setFilteredCategories] = useState(
+        categories.map(category => ({
+            label: category.name,
+            value: category.id
+        }))
+    );
+    const [categoryDisabled, setCategoryDisabled] = useState(true);
 
     const { mutate } = useApiMutation();
     const [disabled, setDisabled] = useState(false);
@@ -34,9 +41,24 @@ const EditFAQ = ({ categories, redirect, faqData, closeModal }) => {
     }
 
 
+
+    const getSelectedType = (value) => {
+        setCategoryDisabled(false);
+        const filteredData = categories.filter((x) => x.type === value);
+        setFilteredCategories(
+            filteredData.map(category => ({
+                label: category.name,
+                value: category.id
+            }))
+        )
+    }
+
+
+
+
     return (
         <>
-            <div className="w-full flex max-h-[90vh] flex-col px-3 py-6 gap-3 -mt-3">
+            <div className="w-full flex max-h-[90vh] flex-col overflow-y-auto px-3 py-6 gap-3 -mt-3">
                 <div className="flex gap-5">
                     <div className="flex flex-col justify-start">
                         <h2 className="font-[500]">Edit FAQ</h2>
@@ -46,9 +68,27 @@ const EditFAQ = ({ categories, redirect, faqData, closeModal }) => {
                     <div className="flex flex-col gap-2 mt-3">
                         <div className="flex flex-col w-full gap-6">
                             <p className="-mb-3 text-mobiFormGray">
+                                Account Type
+                            </p>
+                            <Input type="select" name="type" options={[
+                                {
+                                    label: 'Individual',
+                                    value: 'individual'
+                                },
+                                {
+                                    label: 'Organization',
+                                    value: 'organization'
+                                }
+                            ]} register={register}
+                                onChange={(e) => getSelectedType(e)}
+                                placeholder="Select Account type" />
+                        </div>
+
+                        <div className="flex flex-col w-full gap-6">
+                            <p className="-mb-3 text-mobiFormGray">
                                 Category
                             </p>
-                            <Input type="select" name="categoryId" value={faqData.categoryId} options={categories} register={register}
+                            <Input type="select" name="categoryId" value={faqData.categoryId} disabled={categoryDisabled} options={filteeredCategories} register={register}
                                 placeholder="Select Category" />
                         </div>
                         <div className="flex flex-col w-full gap-6">
