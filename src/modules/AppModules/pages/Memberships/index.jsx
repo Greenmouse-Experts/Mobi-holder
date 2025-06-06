@@ -205,7 +205,7 @@ export default function Membership() {
     }
 
 
-    
+
     const handleReload = () => {
         setTimeStaamp(new Date().getTime())
     }
@@ -230,7 +230,7 @@ export default function Membership() {
             }
         });
     }
-    
+
 
 
     return (
@@ -335,16 +335,19 @@ export default function Membership() {
                                                             View Organisation
                                                         </span>
                                                     </MenuItem>
-                                                    <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate(`subscriptions/${data.organization.id}`)}>
-                                                            View Subscription Plans
-                                                        </span>
-                                                    </MenuItem>
-                                                    <MenuItem className="flex flex-col gap-3">
-                                                        <span className="cursor-pointer" onClick={() => navigate(`subscriptions/history/${data.organization.id}`)}>
-                                                            View Subscription Log
-                                                        </span>
-                                                    </MenuItem>
+                                                    {data.status !== 'inactive' &&
+                                                        <>
+                                                            <MenuItem className="flex flex-col gap-3">
+                                                                <span className="cursor-pointer" onClick={() => navigate(`subscriptions/${data.organization.id}`)}>
+                                                                    View Subscription Plans
+                                                                </span>
+                                                            </MenuItem>
+                                                            <MenuItem className="flex flex-col gap-3">
+                                                                <span className="cursor-pointer" onClick={() => navigate(`subscriptions/history/${data.organization.id}`)}>
+                                                                    View Subscription Log
+                                                                </span>
+                                                            </MenuItem>
+                                                        </>}
                                                 </MenuList>
                                             </Menu>
 
