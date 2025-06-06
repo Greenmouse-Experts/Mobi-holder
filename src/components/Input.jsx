@@ -55,25 +55,26 @@ const Input = ({
     updateValue(newValue, e);
   };
 
+
   // Handle date picker changes
   const handleDateChange = (date) => {
     let dateValue;
 
     if (date) {
+      // For datetime, use the full ISO string
       if (type === "datetime") {
         dateValue = date.toISOString();
       } else {
-        // Create clean YYYY-MM-DD string in local timezone
-        const localDate = new Date(date);
-        localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
-        dateValue = localDate.toISOString().split("T")[0];
+        // For date-only, use YYYY-MM-DD format
+        dateValue = date.toISOString().split('T')[0];
       }
     } else {
-      dateValue = "";
+      dateValue = null; // Use null instead of empty string for empty values
     }
 
     updateValue(dateValue);
   };
+
 
   // Unified value update function
   const updateValue = (newValue, event) => {

@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import DropZone from "../../../../../components/DropZone";
 import Input from "../../../../../components/Input";
 import { useState } from "react";
@@ -10,7 +10,7 @@ export default function LocationEvent({ next, back, data }) {
     const eventPayload = JSON.parse(localStorage.getItem('eventPayload'));
     const event = eventPayload ? eventPayload : null;
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, control, trigger, formState: { errors } } = useForm();
     const [files, setFiles] = useState(() => {
         return event.venueImage
             || (data?.venueImage ? JSON.parse(data.venueImage) : [])
@@ -19,8 +19,10 @@ export default function LocationEvent({ next, back, data }) {
 
     const venueLocation = data ? data?.venue : null;
 
-    const startDate = watch("startDate");
-    const endDate = watch("endDate");
+
+    const startDate = useWatch({ control, name: "startDate" });
+    const endDate = useWatch({ control, name: "endDate" });
+
 
     const dateTimeLocal = (value) => {
         if (!value) return null;
@@ -137,50 +139,55 @@ export default function LocationEvent({ next, back, data }) {
 
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                         <div className="flex flex-col w-full gap-6">
-                            <p className="-mb-3 text-mobiFormGray">
-                                Start Date
-                            </p>
+                            <p className="-mb-3 text-mobiFormGray">Start Date</p>
                             <Input
                                 name="startDate"
-                                value={event?.startDate || ''}
+                                value={startDate}
+                                disablePastDates={true}
                                 onChange={(value) => {
-                                    // Convert to proper format before saving
-                                    const formattedValue = value ? new Date(value).toISOString() : null;
-                                    setValue('startDate', formattedValue, { shouldValidate: true });
+                                    setValue("startDate", value, { shouldValidate: true });
+                                    trigger("endDate"); // Re-validate end date when start date changes
                                 }}
-                                rules={{ required: 'Start Date is required' }}
+                                rules={{
+                                    required: "Start Date is required",
+                                    validate: (value) => {
+                                        if (!value) return true; // required handles empty case
+                                        const start = new Date(value);
+                                        const now = new Date();
+                                        return start >= now || "Start date must be in the future";
+                                    }
+                                }}
                                 errors={errors}
                                 register={register}
-                                type="datetime-local"
+                                type="datetime"
                                 placeholder="Choose the Start date"
                             />
                         </div>
+
                         <div className="flex flex-col w-full gap-6">
-                            <p className="-mb-3 text-mobiFormGray">
-                                End Date
-                            </p>
+                            <p className="-mb-3 text-mobiFormGray">End Date</p>
                             <Input
                                 name="endDate"
-                                value={event?.endDate}
+                                value={endDate}
+                                minDate={startDate ? new Date(startDate) : new Date()} // Can't be before start date or current date
+                                onChange={(value) => {
+                                    setValue("endDate", value, { shouldValidate: true });
+                                }}
                                 rules={{
-                                    required: 'End Date is required',
-                                    validate: value => {
-                                        if (!value || !startDate) return true;
+                                    required: "End Date is required",
+                                    validate: (value) => {
+                                        if (!value) return true; // required handles empty case
+                                        if (!startDate) return true;
 
                                         const start = new Date(startDate);
                                         const end = new Date(value);
 
-                                        return end >= start || "End Date must be after Start Date";
+                                        return end >= start || "End date must be after start date";
                                     }
-                                }}
-                                onChange={(value) => {
-                                    // Convert to proper format before saving
-                                    const formattedValue = value ? new Date(value).toISOString() : null;
-                                    setValue('endDate', formattedValue, { shouldValidate: true });
                                 }}
                                 errors={errors}
                                 register={register}
-                                type="datetime-local"
+                                type="datetime"
                                 placeholder="Choose the End date"
                             />
                         </div>
