@@ -196,7 +196,7 @@ export default function OrgDashboard() {
                                                 <td className="px-3 py-3 text-mobiTableText">{dateFormat(data.endDate, 'dd-MM-yyy')}</td>
                                             </tr>
                                         ))
-                                    :
+                                    : 
                                     isLoadingEvents ?
                                         <tr>
                                             <td colSpan={TableHeaders.length} className="text-center py-10 font-semibold text-gray-500">
