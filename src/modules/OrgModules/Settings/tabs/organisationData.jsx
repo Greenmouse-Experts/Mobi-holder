@@ -107,7 +107,7 @@ export default function OrganisationData() {
 
 
     const updateDocuments = (data) => {
-        if (files.length > 0) {
+        if ((files.length > 0) || (uploadedIDData?.documentUrl)) {
             if (!documentSelected) {
                 setCustomError(true);
                 return;
@@ -115,7 +115,7 @@ export default function OrganisationData() {
             setIsLoadingDocuments(true);
             const payload = {
                 name: documentSelected,
-                documentUrl: files[0],
+                documentUrl: files[0] || uploadedIDData?.documentUrl,
                 ...data
             }
             mutate({
@@ -383,23 +383,23 @@ export default function OrganisationData() {
                                 <p className="-mb-3 text-mobiFormGray">
                                     Company Registration Date
                                 </p>
-                                <Controller
-                                    control={control}
+                                <Input
+                                    type="date"
                                     name="registrationDate"
-                                    rules={{ required: "Registration Date is required" }}
-                                    render={({ field }) => (
-                                        <Input
-                                            type="date"
-                                            name="registrationDate"
-                                            placeholder="Choose the issue date"
-                                            value={field.value || ""}
-                                            onChange={(val) => {
-                                                // This manually sets the value in react-hook-form
-                                                field.onChange(val);
-                                            }}
-                                            errors={errorsUpload}
-                                        />
-                                    )}
+                                    register={register}
+                                    value={uploadedIDData?.registrationDate}
+                                    onChange={(value) => {
+                                        setValueUpload("registrationDate", value, { shouldValidate: true });
+                                    }}
+                                    rules={{
+                                        required: 'Registration Date is required',
+                                        validate: (value) => {
+                                            const date = new Date(value);
+                                            return !isNaN(date.getTime()) || "Invalid date";
+                                        }
+                                    }}
+                                    errors={errors}
+                                    placeholder="Enter registration date"
                                 />
                             </div>
                         </div>
