@@ -6,11 +6,14 @@ import Input from "../../../components/Input";
 import { useEffect, useState } from "react";
 import Loader from "../../../components/Loader";
 import useApiMutation from "../../../api/hooks/useApiMutation";
+import useFileUpload from "../../../api/hooks/useFileUpload";
 
 export default function AddStaff() {
   const [roles, setRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [disabled, setDisabled] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
   const {
     register,
     handleSubmit,
@@ -23,6 +26,7 @@ export default function AddStaff() {
 
   const navigate = useNavigate();
   const { mutate } = useApiMutation();
+  const { uploadFiles, isLoadingUpload } = useFileUpload();
 
   useEffect(() => {
     getRoles();
@@ -51,27 +55,49 @@ export default function AddStaff() {
     });
   };
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setImagePreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+
+    // Upload image using Cloudinary
+    await uploadFiles([file], (uploadedUrl) => {
+      setImageUrl(uploadedUrl);
+      setValue('photo', uploadedUrl);
+    });
+  };
+
+  const removeImage = () => {
+    setImagePreview(null);
+    setImageUrl("");
+    setValue('photo', "");
+    // Clear the file input
+    const fileInput = document.querySelector('input[name="photo"]');
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   const createStaff = (data) => {
     setDisabled(true);
     
-    // Create FormData for file upload
-    const formData = new FormData();
-    
-    // Append all form fields
-    Object.keys(data).forEach(key => {
-      if (key === 'photo' && data[key]?.[0]) {
-        // Handle file upload
-        formData.append(key, data[key][0]);
-      } else if (data[key] !== null && data[key] !== undefined && data[key] !== '') {
-        formData.append(key, data[key]);
-      }
-    });
+    // Use the uploaded image URL instead of file
+    const staffData = {
+      ...data,
+      photo: imageUrl || data.photo || ""
+    };
 
     mutate({
       url: `/api/admins/staff/create`,
       method: "POST",
       headers: true,
-      data: formData,
+      data: staffData,
       onSuccess: (response) => {
         navigate(-1);
         setDisabled(false);
@@ -239,14 +265,56 @@ export default function AddStaff() {
                   <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                     <div className="flex flex-col w-full gap-6">
                       <p className="-mb-3 text-mobiFormGray">Staff Photo (Optional)</p>
-                      <Input
-                        type="file"
-                        name="photo"
-                        register={register}
-                        errors={errors}
-                        accept="image/*"
-                        placeholder="Upload staff photo"
-                      />
+                      
+                      {/* Custom Image Upload Component */}
+                      <div className="flex flex-col gap-4">
+                        {/* File Input */}
+                        <div className="relative">
+                          <input
+                            type="file"
+                            name="photo"                                            accept="image/*"
+                                            onChange={handleImageChange}
+                                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-mobiPink focus:border-transparent outline-none"
+                                            disabled={isLoadingUpload}
+                                          />
+                                          {isLoadingUpload && (
+                                            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-mobiPink"></div>
+                                            </div>
+                                          )}
+                                        </div>
+
+                                        {/* Image Preview */}
+                                        {imagePreview && (
+                                          <div className="relative">
+                                            <div className="w-32 h-32 border-2 border-gray-300 rounded-lg overflow-hidden">
+                                              <img
+                                                src={imagePreview}
+                                                alt="Preview"
+                                                className="w-full h-full object-cover"
+                                              />
+                                            </div>
+                                            <button
+                                              type="button"
+                                              onClick={removeImage}
+                                              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                                              disabled={isLoadingUpload}
+                                            >
+                                              ×
+                                            </button>
+                                            {isLoadingUpload && (
+                                              <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg flex items-center justify-center">
+                                                <div className="text-white text-sm">Uploading...</div>
+                                              </div>
+                                            )}
+                                          </div>
+                                        )}
+
+                                        {/* Upload Status */}
+                                        {imageUrl && !isLoadingUpload && (
+                          <p className="text-green-600 text-sm">✓ Image uploaded successfully</p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
