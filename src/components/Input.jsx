@@ -1,6 +1,7 @@
 import { useEffect, useState, forwardRef } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import CustomCalendar from "./CustomCalendar";
 
 const CustomInput = forwardRef(({ value, onClick, placeholder, type, disabled }, ref) => (
   <div
@@ -57,19 +58,20 @@ const Input = ({
 
 
   // Handle date picker changes
-  const handleDateChange = (date) => {
+  const handleDateChange = (dateValue) => {
+    // dateValue is already in YYYY-MM-DD format from CustomCalendar
+    updateValue(dateValue);
+  };
+
+  // Handle datetime picker changes
+  const handleDateTimeChange = (date) => {
     let dateValue;
 
     if (date) {
       // For datetime, use the full ISO string
-      if (type === "datetime") {
-        dateValue = date.toISOString();
-      } else {
-        // For date-only, use YYYY-MM-DD format
-        dateValue = date.toISOString().split('T')[0];
-      }
+      dateValue = date.toISOString();
     } else {
-      dateValue = null; // Use null instead of empty string for empty values
+      dateValue = null;
     }
 
     updateValue(dateValue);
@@ -106,12 +108,12 @@ const Input = ({
   // Determine input type for password fields
   const resolvedType = type === "password" ? (passwordVisible ? "text" : "password") : type;
 
-  // Date picker props
-  const datePickerProps = {
+  // Date picker props for datetime
+  const dateTimePickerProps = {
     selected: internalValue ? new Date(internalValue) : null,
-    onChange: handleDateChange,
-    showTimeSelect: type === "datetime",
-    dateFormat: type === "datetime" ? "dd-MM-yyyy HH:mm" : "dd-MM-yyyy",
+    onChange: handleDateTimeChange,
+    showTimeSelect: true,
+    dateFormat: "dd-MM-yyyy HH:mm",
     minDate: disablePastDates ? new Date() : minDate ? new Date(minDate) : null,
     maxDate: disableFutureDates ? new Date() : null,
     placeholderText: placeholder,
@@ -142,9 +144,23 @@ const Input = ({
           <img src={`/${icon}`} alt="icon" className="mr-2" />
         )}
 
-        {/* Date/Datetime Picker */}
-        {(type === "date" || type === "datetime") && (
-          <DatePicker {...datePickerProps} />
+        {/* Date Picker */}
+        {type === "date" && (
+          <CustomCalendar
+            value={internalValue}
+            onChange={handleDateChange}
+            placeholder={placeholder}
+            disabled={disabled}
+            disableFutureDates={disableFutureDates}
+            disablePastDates={disablePastDates}
+            minDate={minDate}
+            className="w-full"
+          />
+        )}
+
+        {/* Datetime Picker (still using react-datepicker for time selection) */}
+        {type === "datetime" && (
+          <DatePicker {...dateTimePickerProps} />
         )}
 
         {/* Select Input */}
