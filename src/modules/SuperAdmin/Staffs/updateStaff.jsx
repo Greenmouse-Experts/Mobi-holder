@@ -76,11 +76,28 @@ export default function UpdateStaff() {
 
     const createStaff = (data) => {
         setDisabled(true);
+        
+        // Create FormData for file upload
+        const formData = new FormData();
+        
+        // Append staff ID
+        formData.append('id', id);
+        
+        // Append all form fields
+        Object.keys(data).forEach(key => {
+            if (key === 'photo' && data[key]?.[0]) {
+                // Handle file upload
+                formData.append(key, data[key][0]);
+            } else if (data[key] !== null && data[key] !== undefined && data[key] !== '') {
+                formData.append(key, data[key]);
+            }
+        });
+
         mutate({
             url: `/api/admins/staff/update`,
             method: "PUT",
             headers: true,
-            data: { ...data, id: id },
+            data: formData,
             onSuccess: (response) => {
                 navigate(-1);
                 setDisabled(false);
@@ -205,6 +222,22 @@ export default function UpdateStaff() {
                                             </p>
                                             <Input name="roleId" register={register} value={staffDetail.admin.role.id} errors={errors} rules={{ required: 'Role is required' }}
                                                 type="select" options={roles} placeholder="Assign a Role" />
+                                        </div>
+                                    </div>
+
+                                    <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
+                                        <div className="flex flex-col w-full gap-6">
+                                            <p className="-mb-3 text-mobiFormGray">
+                                                Update Staff Photo (Optional)
+                                            </p>
+                                            <Input
+                                                type="file"
+                                                name="photo"
+                                                register={register}
+                                                errors={errors}
+                                                accept="image/*"
+                                                placeholder="Upload new staff photo"
+                                            />
                                         </div>
                                     </div>
 
