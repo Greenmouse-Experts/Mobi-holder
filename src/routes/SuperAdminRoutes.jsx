@@ -39,7 +39,7 @@ import FAQCategories from "../modules/SuperAdmin/FAQs/categories";
 import UserInquiries from "../modules/SuperAdmin/UserInquiries";
 import NewsletterSubscribers from "../modules/SuperAdmin/NewsLetter";
 import Notification from "../modules/SuperAdmin/Notifications";
-
+import BLog from "../modules/SuperAdmin/Blog/index.jsx";
 const SuperAdminRoutes = [
     <Route path="dashboard" element={<DashBoard />} />,
     <Route path="organisation" element={<Organisations />} />,
@@ -81,7 +81,8 @@ const SuperAdminRoutes = [
     <Route path="activityLog" element={<StaffActivityLog />} />,
     <Route path="user-inquiries" element={<UserInquiries />} />,
     <Route path="newsletter" element={<NewsletterSubscribers />} />,
-    <Route path="notification" element={<Notification />} />
+    <Route path="notification" element={<Notification />} />,
+    <Route path="blog" element={<BLog />} />
 ];
 
 export default SuperAdminRoutes;
