@@ -197,6 +197,19 @@ export default function SuperAdminSidebar({ mobile }) {
             openChildren: false
         },
         {
+            path: "/superadmin/blog",
+            slug: "blog",
+            name: "BLOGS",
+            icon: <i className="mr-3">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 4H20V20H4V4Z" stroke={`${activeNav === 'blog' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M8 8H16M8 12H16M8 16H12" stroke={`${activeNav === 'blog' ? 'rgba(163, 36, 242, 1)' : '#7F7F7F'}`} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+            </i>,
+            children: [],
+            openChildren: false
+        },
+        {
             path: "/superadmin/user-inquiries",
             slug: "userInquiries",
             name: "User Inquiries",

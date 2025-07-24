@@ -37,6 +37,8 @@ import SubscriptionLog from "../modules/AppModules/pages/Subscriptions/Subscript
 import Wallet from "../modules/AppModules/pages/Wallet";
 import OrgSubscriptionPlans from "../modules/AppModules/pages/Memberships/orgSubscriptionPlans";
 import OrgSubscriptionLog from "../modules/AppModules/pages/Memberships/orgSubscriptionLog";
+import Blogs from '../modules/AppModules/pages/Blogs';
+import BlogView from '../modules/AppModules/pages/BlogView';
 
 const UserRoutes = [
     <Route path="dashboard" element={<Dashboard />} />,
@@ -78,6 +80,8 @@ const UserRoutes = [
     <Route path="subscription/log" element={<SubscriptionLog />} />,
     <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
     <Route path="wallet" element={<Wallet />} />,
+    <Route path="blogs" element={<Blogs />} />,
+    <Route path="blogs/:id" element={<BlogView />} />,
 ];
 
 export default UserRoutes
