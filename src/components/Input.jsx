@@ -3,16 +3,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomCalendar from "./CustomCalendar";
 
-const CustomInput = forwardRef(({ value, onClick, placeholder, type, disabled }, ref) => (
-  <div
-    onClick={disabled ? undefined : onClick}
-    ref={ref}
-    className={`peer w-full h-full bg-transparent font-normal outline-none focus:outline-none transition-all text-base px-3 py-3 rounded-[7px] ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+const CustomInput = forwardRef(
+  ({ value, onClick, placeholder, type, disabled }, ref) => (
+    <div
+      onClick={disabled ? undefined : onClick}
+      ref={ref}
+      className={`peer w-full h-full bg-transparent font-normal outline-none focus:outline-none transition-all text-base px-3 py-3 rounded-[7px] ${
+        disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer"
       }`}
-  >
-    {value || <span className="text-gray-400">{placeholder}</span>}
-  </div>
-));
+    >
+      {value || <span className="text-gray-400">{placeholder}</span>}
+    </div>
+  ),
+);
 
 const Input = ({
   icon,
@@ -39,9 +42,11 @@ const Input = ({
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   // React Hook Form integration
-  const { ref, onChange: registerOnChange, ...registerProps } = register
-    ? register(name, rules)
-    : { ref: null, onChange: () => { } };
+  const {
+    ref,
+    onChange: registerOnChange,
+    ...registerProps
+  } = register ? register(name, rules) : { ref: null, onChange: () => {} };
 
   // Sync with external value changes
   useEffect(() => {
@@ -55,7 +60,6 @@ const Input = ({
     const newValue = e.target.value;
     updateValue(newValue, e);
   };
-
 
   // Handle date picker changes
   const handleDateChange = (dateValue) => {
@@ -76,7 +80,6 @@ const Input = ({
 
     updateValue(dateValue);
   };
-
 
   // Unified value update function
   const updateValue = (newValue, event) => {
@@ -106,7 +109,8 @@ const Input = ({
   };
 
   // Determine input type for password fields
-  const resolvedType = type === "password" ? (passwordVisible ? "text" : "password") : type;
+  const resolvedType =
+    type === "password" ? (passwordVisible ? "text" : "password") : type;
 
   // Date picker props for datetime
   const dateTimePickerProps = {
@@ -136,13 +140,12 @@ const Input = ({
   return (
     <div className={`mb-4 ${className}`}>
       <div
-        className={`flex items-center border border-transparent bg-gray-100 text-black px-3 py-1.5 rounded-[7px] ${errors?.[name] ? "border-red-500" : ""
-          }`}
+        className={`flex items-center border border-transparent bg-gray-100 text-black px-3 py-1.5 rounded-[7px] ${
+          errors?.[name] ? "border-red-500" : ""
+        }`}
         style={style}
       >
-        {icon && (
-          <img src={`/${icon}`} alt="icon" className="mr-2" />
-        )}
+        {icon && <img src={`/${icon}`} alt="icon" className="mr-2" />}
 
         {/* Date Picker */}
         {type === "date" && (
@@ -159,9 +162,7 @@ const Input = ({
         )}
 
         {/* Datetime Picker (still using react-datepicker for time selection) */}
-        {type === "datetime" && (
-          <DatePicker {...dateTimePickerProps} />
-        )}
+        {type === "datetime" && <DatePicker {...dateTimePickerProps} />}
 
         {/* Select Input */}
         {type === "select" && (
@@ -204,7 +205,11 @@ const Input = ({
         {!["date", "datetime", "select", "textarea"].includes(type) && (
           <input
             type={resolvedType}
-            max={disableFutureDates && type === "date" ? new Date().toISOString().split("T")[0] : null}
+            max={
+              disableFutureDates && type === "date"
+                ? new Date().toISOString().split("T")[0]
+                : null
+            }
             placeholder={placeholder}
             className="w-full h-full bg-transparent text-black font-normal outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all placeholder:opacity-70 focus:placeholder:opacity-100 text-base px-3 py-3 rounded-[7px]"
             value={internalValue}
@@ -235,9 +240,7 @@ const Input = ({
 
       {/* Error message */}
       {errors?.[name] && (
-        <p className="mt-1 text-sm text-red-600">
-          {errors[name]?.message}
-        </p>
+        <p className="mt-1 text-sm text-red-600">{errors[name]?.message}</p>
       )}
     </div>
   );
