@@ -147,7 +147,6 @@ export default function AddCard() {
                         type="date"
                         name="expiryDate"
                         register={register}
-                        placeholder={"expiryDate"}
                         minDate={watch("issuedDate")}
                         onChange={(value) => {
                           setValue("expiryDate", value, {
