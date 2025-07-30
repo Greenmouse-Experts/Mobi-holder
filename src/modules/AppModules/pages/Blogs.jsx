@@ -4,6 +4,19 @@ import useApiMutation from "../../../api/hooks/useApiMutation";
 import Header from "../../../components/Header";
 import { setUser } from "../../../reducers/userSlice";
 import { useSelector } from "react-redux";
+import BaseBlogCard from "../../../components/BaseBlogCard";
+export const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
+
+export const extractPreview = (content) => {
+  const plainText = content.replace(/<[^>]+>/g, "");
+  return plainText.length > 120 ? plainText.slice(0, 120) + "..." : plainText;
+};
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +24,6 @@ const Blogs = () => {
   const navigate = useNavigate();
   const { mutate } = useApiMutation();
   const user = useSelector((state) => state.userData.data);
-
 
   useEffect(() => {
     mutate({
@@ -28,19 +40,6 @@ const Blogs = () => {
       },
     });
   }, []);
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const extractPreview = (content) => {
-    const plainText = content.replace(/<[^>]+>/g, "");
-    return plainText.length > 120 ? plainText.slice(0, 120) + "..." : plainText;
-  };
 
   const LoadingSkeleton = () => (
     <div className="p-8">
@@ -98,8 +97,11 @@ const Blogs = () => {
 
   return (
     <>
-      <Header mobile data={user} title={'Blogs'} />
-      <div className="p-8 min-h-screen rounded-lg" style={{ background: "var(--bs-bg)" }}>
+      <Header mobile data={user} title={"Blogs"} />
+      <div
+        className="p-8 min-h-screen rounded-lg"
+        style={{ background: "var(--bs-bg)" }}
+      >
         {/* Header */}
         {/* <h1
           className="text-3xl font-bold mb-8"
@@ -147,76 +149,7 @@ const Blogs = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {blogs.map((blog) => (
-                <article
-                  key={blog.id}
-                  className="group rounded-2xl p-6 cursor-pointer transition-all duration-300 border shadow-md hover:shadow-xl hover:scale-[1.02]"
-                  style={{
-                    background: "var(--bs-cardSupport)",
-                    border: "1.5px solid var(--bs-lineDivider)",
-                    boxShadow:
-                      "0 4px 24px 0 rgba(36,46,242,0.06), 0 1.5px 6px 0 rgba(36,46,242,0.04)",
-                    transition: "box-shadow 0.2s, transform 0.2s",
-                  }}
-                  onClick={() => navigate(`/app/blogs/${blog.id}`)}
-                >
-                  {/* Blog Title */}
-                  <h2
-                    className="text-lg font-semibold mb-3 group-hover:text-blue-400 transition-colors leading-tight"
-                    style={{ color: "var(--bs-color)" }}
-                  >
-                    {blog.title}
-                  </h2>
-
-                  {/* Date */}
-                  <div
-                    className="flex items-center text-sm mb-4"
-                    style={{ color: "var(--bs-tableText)" }}
-                  >
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"
-                      />
-                    </svg>
-                    {formatDate(blog.createdAt)}
-                  </div>
-
-                  {/* Content Preview */}
-                  <p
-                    className="leading-relaxed mb-4 text-sm"
-                    style={{ color: "var(--bs-tableText)" }}
-                  >
-                    {extractPreview(blog.content)}
-                  </p>
-
-                  {/* Read More Link */}
-                  <div
-                    className="flex items-center font-medium text-sm group-hover:text-blue-300 transition-colors"
-                    style={{ color: "var(--bs-skyBlue)" }}
-                  >
-                    Read more
-                    <svg
-                      className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </div>
-                </article>
+                <BaseBlogCard {...blog} key={blog.id} />
               ))}
             </div>
 

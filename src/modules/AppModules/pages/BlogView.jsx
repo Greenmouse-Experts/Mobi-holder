@@ -166,6 +166,14 @@ const BlogView = () => {
             }}
           >
             {/* Header */}
+            <div className="h-72  w-full bg-gray-500">
+              {blog.coverImage && (
+                <img
+                  src={blog.coverImage}
+                  className="w-full h-full  object-cover"
+                />
+              )}
+            </div>
             <div
               className="p-8 pb-6"
               style={{ borderBottom: "1px solid var(--bs-lineDivider)" }}
