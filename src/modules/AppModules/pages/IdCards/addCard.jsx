@@ -154,13 +154,14 @@ export default function AddCard() {
                           });
                         }}
                         rules={{
-                          // required: 'Expiry Date is required',
                           validate: (value) => {
+                            if (!value) return true; // Allow empty value
                             const issued = watch("issuedDate");
                             const expiry = new Date(value);
+                            if (isNaN(expiry.getTime())) return "Invalid date";
                             return (
-                              (!isNaN(expiry.getTime()) &&
-                                (!issued || expiry >= new Date(issued))) ||
+                              !issued ||
+                              expiry >= new Date(issued) ||
                               "Expiry date must be after issued date"
                             );
                           },

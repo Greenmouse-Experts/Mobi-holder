@@ -16,6 +16,87 @@ interface BlogPost {
   createdAt: string;
   updatedAt: string;
 }
+
+const LoadingComponent = () => {
+  return (
+    <div className="container mx-auto">
+      <div className="mt-6">
+        <h2 className="text-3xl font-bold">Latest Posts</h2>
+        <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
+          {[...Array(6)].map((_, index) => (
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-md overflow-hidden animate-pulse"
+            >
+              <div className="p-6">
+                <div className="h-6 bg-gray-300 rounded mb-3"></div>
+                <div className="space-y-2 mb-4">
+                  <div className="h-4 bg-gray-300 rounded"></div>
+                  <div className="h-4 bg-gray-300 rounded"></div>
+                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="h-4 bg-gray-300 rounded w-24"></div>
+                  <div className="h-4 bg-gray-300 rounded w-32"></div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="h-3 bg-gray-300 rounded w-16"></div>
+                  <div className="h-4 bg-gray-300 rounded w-20"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ErrorComponent = ({
+  error,
+  onRetry,
+}: {
+  error: Error;
+  onRetry: () => void;
+}) => {
+  return (
+    <div className="container mx-auto">
+      <div className="mt-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
+          <div className="text-red-600 mb-4">
+            <svg
+              className="w-12 h-12 mx-auto mb-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-red-800 mb-2">
+            Failed to load blog posts
+          </h3>
+          <p className="text-red-600 mb-4">
+            {error.message ||
+              "Something went wrong while fetching the blog posts."}
+          </p>
+          <button
+            onClick={onRetry}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function GeneralBlogs() {
   let query = useQuery({
     queryKey: ["public_blogs"],
@@ -23,29 +104,59 @@ export default function GeneralBlogs() {
       let resp = await fetch(
         "https://api.mobiholder.tech/api/admins/public/blogs",
       );
+      if (!resp.ok) {
+        throw new Error(`HTTP error! status: ${resp.status}`);
+      }
       return await resp.json();
     },
   });
+
   return (
     <div>
       <Header />
       <div className="h-72 bg-gray-800 relative flex">
         <img src="" alt="" />
-        <div className="my-auto container mx-auto">
-          <h2 className="text-2xl font-bold text-white">Our Blog</h2>
-          <p className="text-lg text-white">lorem ipsum</p>
-        </div>
-      </div>
-      <div className="container mx-auto">
-        <div className="mt-6">
-          <h2 className="text-3xl font-bold">Latest Posts</h2>
-          <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
-            {query?.data?.data.map((item: BlogPost) => {
-              return <BlogCard key={item.id} {...item} />;
-            })}
+        <div className="relative isolate w-full flex ">
+          <img
+            className="left-0 absolute  w-full h-full  object-cover"
+            src="https://plus.unsplash.com/premium_photo-1664201890375-f8fa405cdb7d?w=500"
+            alt=""
+          />
+          <div className="w-full h-full bg-black/70 absolute"></div>
+          <div className="my-auto   mx-auto w-full container  relative">
+            <h2 className="text-4xl font-bold text-white">Our Blog</h2>
+            <p className="text-lg text-white mt-2">
+              Read the latest insights and Updates; stay informed with our
+              latest articles.
+            </p>
           </div>
         </div>
       </div>
+
+      {query.isLoading && <LoadingComponent />}
+
+      {query.isError && (
+        <ErrorComponent
+          error={query.error as Error}
+          onRetry={() => query.refetch()}
+        />
+      )}
+
+      {query.isSuccess && (
+        <div className="container mx-auto">
+          <div className="mt-6">
+            <h2 className="text-3xl font-bold">Latest Posts</h2>
+            <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
+              {!query.isFetching &&
+                !query.isError &&
+                query?.data?.data &&
+                query?.data?.data?.map((item: BlogPost) => {
+                  return <BlogCard key={item.id} {...item} />;
+                })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
