@@ -91,28 +91,26 @@ const useApiMutation = () => {
 export default useApiMutation;
 
 // Axios interceptor for requests
-export let newApi = axios.interceptors.request.use(
+// useApiMutation.js or wherever you define newApi
+
+const newApi = axios.create({
+  baseURL: "https://api.mobiholder.tech",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Attach interceptor for auth token
+newApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("userToken");
-
-    // Set base URL
-    config.baseURL = "https://api.mobiholder.tech";
-
-    // Set default headers
-    config.withCredentials = true;
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
-    if (!config.headers["Content-Type"]) {
-      config.headers["Content-Type"] = "application/json";
-    }
-
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  },
+  (error) => Promise.reject(error),
 );
-// Axios interceptor for responses
+
+export { newApi };

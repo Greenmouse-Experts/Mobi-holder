@@ -1,0 +1,267 @@
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
+import { newApi } from "../../../../api/hooks/useApiMutation";
+import Header from "../../../../components/Header";
+import { useSelector } from "react-redux";
+
+interface API_RESPONSE {
+  code: number;
+  data: IDCard;
+  message: string;
+}
+export interface ScanIDCard {
+  frontIdCard: string;
+  backIdCard: string;
+}
+
+export interface IDCard {
+  id: string;
+  cardNumber: string;
+  individualId: string;
+  designation: string;
+  issuingOrganization: string;
+  issuedDate: string; // ISO date string
+  expiryDate: string; // ISO date string
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  scanIDCard: ScanIDCard;
+}
+
+export default function PreviewCard() {
+  const { id } = useParams();
+  const user = useSelector((state) => state.userData.data);
+  const [modalImage, setModalImage] = useState<{
+    src: string;
+    title: string;
+  } | null>(null);
+
+  const {
+    data: cardData,
+    isLoading,
+    isError,
+  } = useQuery<API_RESPONSE>({
+    queryKey: [id, "card"],
+    queryFn: async () => {
+      let resp = await newApi.get(`/api/idcards/personal/card?id=${id}`);
+      console.log(resp.data);
+      return resp.data;
+    },
+  });
+
+  const openModal = (src: string, title: string) => {
+    setModalImage({ src, title });
+  };
+
+  const closeModal = () => {
+    setModalImage(null);
+  };
+
+  if (isLoading) {
+    return <div className="p-6">Loading card details...</div>;
+  }
+
+  if (isError || !cardData?.data) {
+    return <div className="p-6 text-red-500">Error loading card details</div>;
+  }
+
+  const card = cardData.data;
+
+  return (
+    <div className="p-6 max-w-4xl mx-auto">
+      <div>
+        <Header mobile data={user} title={"View ID Card"} />
+      </div>
+      {/* <h1 className="text-2xl font-bold mb-6">ID Card Preview</h1> */}
+
+      {/* Card Details */}
+      <div className="bg-mobiDarkCloud rounded-lg shadow-md p-6 mb-6 mt-12">
+        <h2 className="text-xl font-semibold mb-4">Card Details</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium ">Card Number</label>
+            <p className="mt-1 text-sm ">{card.cardNumber}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Individual ID
+            </label>
+            <p className="mt-1 text-sm ">{card.individualId}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Designation
+            </label>
+            <p className="mt-1 text-sm ">{card.designation}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Issuing Organization
+            </label>
+            <p className="mt-1 text-sm ">{card.issuingOrganization}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Issued Date
+            </label>
+            <p className="mt-1 text-sm ">
+              {new Date(card.issuedDate).toLocaleDateString()}
+            </p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Expiry Date
+            </label>
+            <p className="mt-1 text-sm ">
+              {new Date(card.expiryDate).toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ID Card Images */}
+      <div className="bg-mobiDarkCloud rounded-lg shadow-md p-6">
+        <h2 className="text-xl font-semibold mb-4">ID Card Images</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Front ID Card */}
+          <div>
+            <h3 className="text-lg font-medium mb-3">Front ID Card</h3>
+            <div
+              className="border rounded-lg overflow-hidden cursor-pointer"
+              onClick={() =>
+                openModal(card.scanIDCard.frontIdCard, "Front ID Card")
+              }
+            >
+              <img
+                src={card.scanIDCard.frontIdCard}
+                alt="Front ID Card"
+                className="w-full h-auto object-contain"
+                onError={(e) => {
+                  e.currentTarget.src =
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM5Y2EzYWYiPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+";
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Back ID Card */}
+          <div>
+            <h3 className="text-lg font-medium mb-3">Back ID Card</h3>
+            <div
+              className="border rounded-lg overflow-hidden cursor-pointer"
+              onClick={() =>
+                openModal(card.scanIDCard.backIdCard, "Back ID Card")
+              }
+            >
+              <img
+                src={card.scanIDCard.backIdCard}
+                alt="Back ID Card"
+                className="w-full h-auto object-contain"
+                onError={(e) => {
+                  e.currentTarget.src =
+                    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM5Y2EzYWYiPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+";
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Full Screen Modal */}
+      {modalImage && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={closeModal}
+        >
+          <div className="relative max-w-6xl w-full max-h-full bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-300">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+              <h3 className="text-2xl font-bold flex items-center gap-2">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                {modalImage.title}
+              </h3>
+              <button
+                onClick={closeModal}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors duration-200 group"
+              >
+                <svg
+                  className="w-6 h-6 group-hover:scale-110 transition-transform duration-200"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 bg-gray-50 flex items-center justify-center min-h-[60vh]">
+              <div className="relative bg-white rounded-xl shadow-lg p-4 max-w-full max-h-full">
+                <img
+                  src={modalImage.src}
+                  alt={modalImage.title}
+                  className="max-w-full max-h-[70vh] object-contain rounded-lg"
+                  onClick={(e) => e.stopPropagation()}
+                  onError={(e) => {
+                    e.currentTarget.src =
+                      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgZmlsbD0iI2YzZjRmNiIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXNpemU9IjE0cHgiIGZpbGw9IiM5Y2EzYWYiPkltYWdlIG5vdCBhdmFpbGFibGU8L3RleHQ+PC9zdmc+";
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 bg-gray-100 border-t flex justify-between items-center">
+              <p className="text-sm text-gray-600">
+                Click outside or press ESC to close
+              </p>
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors duration-200 flex items-center gap-2"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

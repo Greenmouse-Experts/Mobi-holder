@@ -583,12 +583,22 @@ export default function IDCardsPage() {
                         <MenuList>
                           <MenuItem className="flex flex-col gap-3">
                             <span
-                              className="cursor-pointer"
+                              className="cursor-pointer size-full"
                               onClick={() =>
                                 navigate(`/app/view-personal-card/${data.id}`)
                               }
                             >
-                              View/Edit Card
+                              Edit Card
+                            </span>
+                          </MenuItem>
+                          <MenuItem className="flex flex-col gap-3">
+                            <span
+                              className="cursor-pointer size-full"
+                              onClick={() =>
+                                navigate(`/app/previewcard/${data.id}`)
+                              }
+                            >
+                              View Card
                             </span>
                           </MenuItem>
                           <MenuItem className="flex flex-col gap-3">
