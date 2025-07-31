@@ -193,7 +193,7 @@ export default function Footer() {
   const [isNewsletterModalOpen, setIsNewsletterModalOpen] = useState(false);
   const [supportContacts, setSupportContacts] = useState({
     phones: ["+234 812 345 6789"], // Default fallback array
-    emails: ["help@mobiholder.com", "support@mobiholder.com"] // Default fallback array
+    emails: ["help@mobiholder.com", "support@mobiholder.com"], // Default fallback array
   });
   const { mutate } = useApiMutation();
 
@@ -205,16 +205,27 @@ export default function Footer() {
       hideToast: true,
       onSuccess: (response) => {
         console.log("Footer support contacts:", response);
-        if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        if (
+          response.data &&
+          response.data.data &&
+          Array.isArray(response.data.data)
+        ) {
           const contacts = response.data.data;
-          
+
           // Extract all phone numbers and emails from all contacts
-          const phones = contacts.map(contact => contact.phoneNumber).filter(Boolean);
-          const emails = contacts.map(contact => contact.email).filter(Boolean);
-          
+          const phones = contacts
+            .map((contact) => contact.phoneNumber)
+            .filter(Boolean);
+          const emails = contacts
+            .map((contact) => contact.email)
+            .filter(Boolean);
+
           setSupportContacts({
             phones: phones.length > 0 ? phones : ["+234 812 345 6789"],
-            emails: emails.length > 0 ? emails : ["help@mobiholder.com", "support@mobiholder.com"]
+            emails:
+              emails.length > 0
+                ? emails
+                : ["help@mobiholder.com", "support@mobiholder.com"],
           });
         }
       },
@@ -303,6 +314,11 @@ export default function Footer() {
                       Contact
                     </a>
                   </li>
+                  <li>
+                    <Link to={"/blogs"} className="uppercase">
+                      Blog
+                    </Link>
+                  </li>
                 </ul>
               </div>
 
@@ -372,16 +388,22 @@ export default function Footer() {
                   {/* Dynamic Phone Numbers */}
                   {supportContacts.phones.map((phone, index) => (
                     <li key={`phone-${index}`}>
-                      <a href={`tel:${phone}`} className="uppercase hover:text-mobiPink transition-colors">
+                      <a
+                        href={`tel:${phone}`}
+                        className="uppercase hover:text-mobiPink transition-colors"
+                      >
                         {phone}
                       </a>
                     </li>
                   ))}
-                  
+
                   {/* Dynamic Email Addresses */}
                   {supportContacts.emails.map((email, index) => (
                     <li key={`email-${index}`}>
-                      <a href={`mailto:${email}`} className="break-all hover:text-mobiPink transition-colors">
+                      <a
+                        href={`mailto:${email}`}
+                        className="break-all hover:text-mobiPink transition-colors"
+                      >
                         {email}
                       </a>
                     </li>
