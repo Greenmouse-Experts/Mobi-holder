@@ -5,6 +5,7 @@ import { useState } from "react";
 import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
+import { CustomDatePicker } from "../../../../components/CustomDatePicker";
 
 export default function InviteMember() {
   const user = useSelector((state) => state.orgData.orgData);
@@ -77,7 +78,21 @@ export default function InviteMember() {
                       placeholder="Enter member/staff ID"
                     />
                   </div>
-
+                  <div className="flex flex-col w-full gap-6 z-20">
+                    <p className="-mb-3 text-mobiFormGray">
+                      Membership Start Date
+                    </p>
+                    <Input
+                      type="date"
+                      name="dateFrom"
+                      className="relative "
+                      register={register}
+                      rules={{ required: "Membership start date is required" }}
+                      errors={errors}
+                      placeholder="Select membership start date"
+                    />
+                    {/* <CustomDatePicker /> */}
+                  </div>
                   <div className="flex flex-col w-full gap-6">
                     <p className="-mb-3 text-mobiFormGray">
                       Role (Designation)
@@ -105,19 +120,6 @@ export default function InviteMember() {
                     />
                   </div>
 
-                  <div className="flex flex-col w-full gap-6">
-                    <p className="-mb-3 text-mobiFormGray">
-                      Membership Start Date
-                    </p>
-                    <Input
-                      type="date"
-                      name="dateFrom"
-                      register={register}
-                      rules={{ required: "Membership start date is required" }}
-                      errors={errors}
-                      placeholder="Select membership start date"
-                    />
-                  </div>
                   <div className="flex">
                     <Button
                       type="submit"
