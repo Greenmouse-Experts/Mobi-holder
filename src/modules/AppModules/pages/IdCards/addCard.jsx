@@ -45,7 +45,7 @@ export default function AddCard() {
       headers: true,
       data: payload,
       onSuccess: (response) => {
-        navigate(-1);
+        // navigate(-1);
         setIsLoading(false);
         setFiles([]);
         setBackFiles([]);
@@ -119,6 +119,7 @@ export default function AddCard() {
                         type="date"
                         name="issuedDate"
                         register={register}
+                        disableFutureDates
                         onChange={(value) => {
                           setIssuedDate(value);
                           setValue("issuedDate", value, {
@@ -153,6 +154,7 @@ export default function AddCard() {
                             shouldValidate: true,
                           });
                         }}
+                        disablePastDates
                         rules={{
                           validate: (value) => {
                             if (!value) return true; // Allow empty value

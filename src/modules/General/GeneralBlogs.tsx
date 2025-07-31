@@ -119,10 +119,10 @@ export default function GeneralBlogs() {
         <div className="relative isolate w-full flex ">
           <img
             className="left-0 absolute  w-full h-full  object-cover"
-            src="https://plus.unsplash.com/premium_photo-1664201890375-f8fa405cdb7d?w=500"
+            src="./blog_header.jpeg"
             alt=""
           />
-          <div className="w-full h-full bg-black/70 absolute"></div>
+          <div className="w-full h-full bg-black/50 absolute"></div>
           <div className="my-auto   mx-auto w-full container  relative">
             <h2 className="text-4xl font-bold text-white">Our Blog</h2>
             <p className="text-lg text-white mt-2">
