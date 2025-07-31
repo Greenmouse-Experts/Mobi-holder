@@ -8,7 +8,7 @@ import organisation from "../../../../assets/organisation.svg";
 import calendar from "../../../../assets/calendar.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import useApiMutation from "../../../../api/hooks/useApiMutation";
+import useApiMutation, { newApi } from "../../../../api/hooks/useApiMutation";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import Loader from "../../../../components/Loader";
 import useModal from "../../../../hooks/modal";
@@ -25,6 +25,10 @@ import {
 } from "@material-tailwind/react";
 import OrganisationInfo from "./modal/orgInfo";
 import { exportToExcel } from "../../../../helpers/exportToExcel";
+import { useMutation } from "@tanstack/react-query";
+import { XIcon } from "lucide-react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const UserDetails = ({ closeModal, userInfo, type, reload }) => {
   const {
@@ -148,82 +152,6 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
   );
 };
 
-const LeaveOrganizationModal = ({ closeModal, organizationData, reload }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { mutate } = useApiMutation();
-
-  const handleLeaveOrganization = (data) => {
-    setIsLoading(true);
-    mutate({
-      url: "/api/memberships-subscriptions/individual/leave/organization",
-      method: "POST",
-      data: {
-        membershipId: organizationData.id,
-        reason: data.reason,
-      },
-      headers: true,
-      onSuccess: () => {
-        setIsLoading(false);
-        closeModal();
-        reload();
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
-  };
-
-  return (
-    <div className="w-full flex max-h-[90vh] flex-col px-3 py-6 gap-3 -mt-3">
-      <div className="flex flex-col gap-2">
-        <h3 className="font-semibold text-lg">Leave Organization</h3>
-        <p className="text-gray-600">
-          Are you sure you want to leave {organizationData.organization.companyName}?
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit(handleLeaveOrganization)}>
-        <div className="flex flex-col gap-4 mt-4">
-          <div className="flex flex-col w-full gap-2">
-            <p className="text-mobiFormGray">Reason for leaving *</p>
-            <textarea
-              {...register("reason", { required: "Reason is required" })}
-              className="w-full p-3 border border-gray-300 rounded-md resize-none h-24"
-              placeholder="Please provide a reason for leaving this organization"
-            />
-            {errors.reason && (
-              <p className="text-red-500 text-sm">{errors.reason.message}</p>
-            )}
-          </div>
-
-          <div className="w-full flex justify-center gap-3 mt-5">
-            <Button
-              type="button"
-              onClick={closeModal}
-              className="bg-transparent border border-gray-400 text-gray-600 md:w-1/2 w-full p-3 rounded-full"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="bg-red-500 md:w-1/2 w-full p-3 rounded-full"
-            >
-              {isLoading ? "Leaving..." : "Leave Organization"}
-            </Button>
-          </div>
-        </div>
-      </form>
-    </div>
-  );
-};
-
 export default function Membership() {
   const user = useSelector((state) => state.userData.data);
   const [organisations, setOrganisations] = useState([]);
@@ -324,19 +252,6 @@ export default function Membership() {
     openModal({
       size: "sm",
       content: <OrganisationInfo closeModal={closeModal} orgInfo={data} />,
-    });
-  };
-
-  const handleLeaveOrganization = (data) => {
-    openModal({
-      size: "sm",
-      content: (
-        <LeaveOrganizationModal
-          closeModal={closeModal}
-          organizationData={data}
-          reload={handleReload}
-        />
-      ),
     });
   };
 
@@ -536,7 +451,17 @@ export default function Membership() {
                           <MenuItem className="flex flex-col gap-3">
                             <span
                               className="cursor-pointer"
-                              onClick={() => handleLeaveOrganization(data)}
+                              onClick={() => {
+                                openModal({
+                                  size: "sm",
+                                  content: (
+                                    <LeaveOrg
+                                      closeModal={closeModal}
+                                      {...data}
+                                    />
+                                  ),
+                                });
+                              }}
                             >
                               Leave Organization
                             </span>
@@ -730,7 +655,7 @@ export default function Membership() {
                     item.organization.companyName,
                     item.id,
                     item.designation,
-                    dateFormat(item.createdAt, "dd-MM-yyyy"),
+                    dateFormat(data.createdAt, "dd-MM-yyyy"),
                     "Pending",
                   ]),
                   "Pending Initiated Organisations.xlsx",
@@ -810,3 +735,74 @@ export default function Membership() {
                   </td>
                 </tr>
               )}
+            </Table>
+          </div>
+        </div>
+      </div>
+      <ReusableModal
+        isOpen={isOpen}
+        size={modalOptions.size}
+        title={modalOptions.title}
+        content={modalOptions.content}
+        closeModal={closeModal}
+      />
+    </>
+  );
+}
+const LeaveOrg = (props) => {
+  const leave = useMutation({
+    mutationFn: async (reason) => {
+      const token = localStorage.getItem("userToken");
+
+      const response = await newApi.post(
+        "https://api.mobiholder.tech/api/memberships-subscriptions/individual/leave/organization",
+        {
+          reason: reason,
+          membershipId: props?.id,
+        },
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("Left organization ");
+      props?.closeModal();
+      setTimeout(() => window.location.reload(), 800);
+    },
+    onError: (error) => {
+      console.log(error.response.data);
+      toast.error("Failed to leave organization");
+      console.error("Leave organization error:", error);
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        let form = new FormData(e.target);
+        let reason = form.get("reason");
+        leave.mutate(reason);
+      }}
+    >
+      <div>
+        <div
+          className="bg-red-500 rounded-full p-1 size-fit my-2 ml-auto text-white cursor-pointer"
+          onClick={() => props.closeModal?.()}
+        >
+          <XIcon />
+        </div>
+      </div>
+      <div>
+        <p className="text-mobiGrayDark font-bold my-2 ">Reason *</p>
+        <Input name={"reason"} placeholder={"Reason for leaving (optional)"} />
+      </div>
+      <button
+        disabled={leave.isPending}
+        className="p-2 bg-purple-400 rounded-md w-full text-white font-bold"
+        type="submit"
+      >
+        {leave.isPending ? "Leaving..." : "Leave"}
+      </button>
+    </form>
+  );
+};
