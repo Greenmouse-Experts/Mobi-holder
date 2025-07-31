@@ -9,11 +9,13 @@ import AvatarInitials from "../../../../components/AvatarInitials";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Building, MapPin } from "lucide-react"; // Import Lucide icons
+import { toast } from "react-toastify";
 
 export default function JoinOrganisation() {
   const user = useSelector((state) => state.userData.data);
   const paramsData = useSelector((state) => state.userData.paramsData);
   const [isLoading, setIsLoading] = useState(false);
+  const [iniData, setIniDate] = useState("");
   const {
     register,
     handleSubmit,
@@ -24,11 +26,12 @@ export default function JoinOrganisation() {
   const navigate = useNavigate();
 
   const joinOrganisation = (data) => {
+    if (!iniData.trim()) return toast.error("date joined required");
     const payload = {
       organizationId: paramsData.id,
       ...data,
       // Format the date if necessary, or send as-is (YYYY-MM-DD for input type="date")
-      joinDate: data.joinDate,
+      joinDate: iniData,
     };
     setIsLoading(true);
     mutate({
@@ -122,20 +125,24 @@ export default function JoinOrganisation() {
                 <div className="h-auto flex flex-col gap-5 mt-5 ">
                   <div className="w-full flex flex-col gap-6 overflow-visible">
                     <div className="flex flex-col relative w-full gap-6">
-                      <p className="-mb-3 text-mobiFormGray">Date Joined</p>
+                      <p className="-mb-3 text-mobiFormGray font-semibold">
+                        Date Joined (Required)
+                      </p>
                       <div className="relative overflow-visible">
                         <Input
                           type="date"
                           name="dateJoined"
-                          register={register}
-                          rules={{ required: "Date joined is required" }}
+                          value={iniData}
+                          onChange={setIniDate}
                           errors={errors}
                           placeholder="Select Date"
                         />
                       </div>
                     </div>
                     <div className="flex flex-col w-full gap-6">
-                      <p className="-mb-3 text-mobiFormGray">Role</p>
+                      <p className="-mb-3 text-mobiFormGray font-semibold">
+                        Role
+                      </p>
                       <Input
                         type="text"
                         name="designation"
@@ -147,7 +154,7 @@ export default function JoinOrganisation() {
                     </div>
 
                     <div className="flex flex-col w-full gap-6">
-                      <p className="-mb-3 text-mobiFormGray">
+                      <p className="-mb-3 text-mobiFormGray font-semibold">
                         Organisation Email (Optional)
                       </p>
                       <Input
