@@ -603,7 +603,7 @@ export default function IDCardsPage() {
                           </MenuItem>
                           <MenuItem className="flex flex-col gap-3">
                             <span
-                              className="cursor-pointer"
+                              className="cursor-pointer size-full"
                               onClick={() => handleDeleteCard(data)}
                             >
                               Delete Card

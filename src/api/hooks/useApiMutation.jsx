@@ -95,7 +95,7 @@ export default useApiMutation;
 
 const newApi = axios.create({
   baseURL: "https://api.mobiholder.tech",
-  withCredentials: true,
+  // withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
