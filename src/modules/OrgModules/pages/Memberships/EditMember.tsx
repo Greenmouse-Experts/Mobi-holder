@@ -105,6 +105,7 @@ export default function EditMember() {
     if (!data.hasOwnProperty("designation")) {
       data["designation"] = memberData?.designation;
     }
+    console.log(data);
     updateStatus.mutate(data);
   };
   return (
@@ -150,7 +151,7 @@ export default function EditMember() {
               <SimpeInput
                 type="text"
                 name="membershipId"
-                value="4321"
+                value={memberData.id}
                 placeholder="Membership ID"
               />
             </div>
