@@ -46,42 +46,11 @@ export default function Header() {
       url: "/contact-us",
       text: "Contact Us",
     },
-    {
-      url: "/blogs",
-      text: "Blog",
-    },
+    // {
+    //   url: "/blogs",
+    //   text: "Blog",
+    // },
   ];
-
-  const isMobile = () => {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    return /android|iPad|iPhone|iPod|windows phone|Mobi/i.test(userAgent);
-  };
-
-  useEffect(() => {
-    // Only add the scroll listener if not on mobile
-    if (!isMobile()) {
-      const handleScroll = () => {
-        const scrolledY = window.scrollY;
-        const header = document.querySelector("[data-header]");
-
-        if (scrolledY >= 20) {
-          header.style.position = "fixed";
-          header.style.top = 0;
-        } else {
-          header.style.position = null;
-          header.style.top = null;
-        }
-      };
-
-      // Add the scroll event listener
-      window.addEventListener("scroll", handleScroll);
-
-      // Cleanup: remove the event listener on component unmount
-      return () => {
-        window.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, []); // Run this effect
 
   const { theme } = useContext(ThemeContext);
 
@@ -99,7 +68,7 @@ export default function Header() {
   return (
     <>
       <div
-        className="w-full flex py-6 lg:px-20 md:px-20 px-6 xl:px-72 md:relative justify-between backdrop-blur-[53.8px] z-[9999]"
+        className="w-full flex py-6 lg:px-20 md:px-20 px-6 xl:px-72 sticky top-0 justify-between backdrop-blur-[53.8px] z-[9999]"
         data-header
         style={{
           background:

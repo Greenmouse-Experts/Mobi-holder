@@ -15,6 +15,7 @@ export default function AddCard() {
     setValue,
     watch,
     formState: { errors },
+    reset, // Added reset from useForm
   } = useForm();
   const [isLoading, setIsLoading] = useState(false);
   const [files, setFiles] = useState([]);
@@ -45,10 +46,15 @@ export default function AddCard() {
       headers: true,
       data: payload,
       onSuccess: (response) => {
-        // navigate(-1);
         setIsLoading(false);
-        setFiles([]);
-        setBackFiles([]);
+        setFiles([]); // Clear front ID card files
+        setBackFiles([]); // Clear back ID card files
+        reset(); // Reset all form fields to their default values
+        setIssuedDate(null); // Clear the issuedDate state variable
+        // Optionally, if you want to navigate back to the previous page:
+        // navigate(-1);
+        // Or if you want to reload the entire page:
+        // window.location.reload();
       },
       onError: () => {
         setIsLoading(false);
