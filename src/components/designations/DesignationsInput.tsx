@@ -110,7 +110,7 @@ export function SimpleDesignationSelect(props: {
     });
   }
   return (
-    <select {...props.props} className="p-4 bg-gray-100 w-full rounded-md">
+    <select {...props.props} className="p-4 bg-mobiFormGray w-full rounded-md">
       {mapped_data.map((callbackfn) => {
         return <option value={callbackfn.value}>{callbackfn.label}</option>;
       })}

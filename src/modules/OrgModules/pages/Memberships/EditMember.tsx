@@ -59,6 +59,54 @@ interface USER_DATA {
   };
 }
 
+const LoadingComponent = () => {
+  return (
+    <OrgDashContaienr>
+      <div className="w-full mx-auto p-6 bg-mobiDarkCloud bg-mobiDarkCloud rounded-lg shadow-md">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-300 rounded w-1/4 mb-6"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 rounded"></div>
+            <div className="h-16 bg-gray-200 rounded md:col-span-2"></div>
+          </div>
+          <div className="flex justify-end space-x-4 pt-6">
+            <div className="h-10 bg-gray-200 rounded w-20"></div>
+            <div className="h-10 bg-gray-200 rounded w-28"></div>
+          </div>
+        </div>
+      </div>
+    </OrgDashContaienr>
+  );
+};
+
+const ErrorComponent = ({ refetch }: { refetch: () => void }) => {
+  return (
+    <OrgDashContaienr>
+      <div className="w-full mx-auto p-6 bg-mobiDarkCloud rounded-lg shadow-md">
+        <div className="text-center py-12">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Error Loading Member Data
+          </h2>
+          <p className="text-gray-600 mb-6">
+            There was an error loading the member information. Please try again.
+          </p>
+          <button
+            onClick={refetch}
+            className="px-6 py-2 text-sm font-medium text-white bg-mobiPink border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    </OrgDashContaienr>
+  );
+};
+
 export default function EditMember() {
   const { id } = useParams();
   const query = useQuery<EDIT_RESPONSE>({
@@ -108,9 +156,13 @@ export default function EditMember() {
     console.log(data);
     updateStatus.mutate(data);
   };
+
+  if (query.isFetching) return <LoadingComponent />;
+  if (query.isError) return <ErrorComponent refetch={query.refetch} />;
+
   return (
     <OrgDashContaienr>
-      <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full mx-auto p-6 bg-mobiDarkCloud rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Edit Member</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,7 +203,7 @@ export default function EditMember() {
               <SimpeInput
                 type="text"
                 name="membershipId"
-                value={memberData.id}
+                value={memberData?.id}
                 placeholder="Membership ID"
               />
             </div>
@@ -174,7 +226,7 @@ export default function EditMember() {
               <select
                 name="status"
                 value={memberData?.status}
-                className="w-full p-4 bg-gray-100"
+                className="w-full p-4 bg-mobiFormGray rounded-md"
               >
                 {input_options.map((e) => {
                   return <option value={e.value}>{e.label}</option>;
@@ -218,7 +270,7 @@ export default function EditMember() {
 const SimpeInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <input
-      className="p-4 w-full  rounded-md bg-gray-100"
+      className="p-4 w-full bg-mobiFormGray  rounded-md "
       type="text"
       {...props}
     />
