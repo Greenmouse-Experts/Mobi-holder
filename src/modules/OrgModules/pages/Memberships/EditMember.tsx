@@ -228,7 +228,7 @@ export default function EditMember() {
               <select
                 name="status"
                 defaultValue={memberData?.status}
-                className="w-full p-4 bg-bg-gray-100 text-black rounded-md"
+                className="w-full p-4 bg-gray-100 text-black rounded-md"
               >
                 {input_options.map((e) => {
                   return <option value={e.value}>{e.label}</option>;
