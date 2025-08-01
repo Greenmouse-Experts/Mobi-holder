@@ -286,7 +286,7 @@ export default function IDCardsPage() {
                   placeholder="Search by organization, card number, or role..."
                   value={orgCardsSearchTerm}
                   onChange={(e) => setOrgCardsSearchTerm(e.target.value)}
-                  className="px-3 bg-gray-500 placeholder:text-gray-800 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[300px]"
+                  className="px-3 bg-mobiDarkRoamn  py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[300px]"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -294,7 +294,7 @@ export default function IDCardsPage() {
                 <select
                   value={orgCardsStatusFilter}
                   onChange={(e) => setOrgCardsStatusFilter(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-2 border bg-mobiDarkRoamn border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Statuses</option>
                   {uniqueStatuses.map((status) => (
@@ -458,7 +458,7 @@ export default function IDCardsPage() {
                   placeholder="Search by organization, card number, or role..."
                   value={personalCardsSearchTerm}
                   onChange={(e) => setPersonalCardsSearchTerm(e.target.value)}
-                  className="px-3 py-2 bg-gray-500 placeholder:text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[300px]"
+                  className="px-3 py-2 bg-mobiDarkRoamn  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[300px]"
                 />
               </div>
               <div className="flex flex-col gap-2">
@@ -468,7 +468,7 @@ export default function IDCardsPage() {
                 <select
                   value={personalCardsDateFilter}
                   onChange={(e) => setPersonalCardsDateFilter(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-mobiDarkRoamn"
                 >
                   <option value="all">All Dates</option>
                   <option value="thisMonth">This Month</option>

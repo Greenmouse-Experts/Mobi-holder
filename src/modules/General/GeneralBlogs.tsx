@@ -114,7 +114,7 @@ export default function GeneralBlogs() {
   return (
     <div>
       <Header />
-      <div className="h-72 bg-gray-800 relative flex">
+      <div className="h-72 bg-gray-800 relative flex ">
         <img src="" alt="" />
         <div className="relative isolate w-full flex ">
           <img
@@ -143,17 +143,17 @@ export default function GeneralBlogs() {
       )}
 
       {query.isSuccess && (
-        <div className="container mx-auto">
+        <div className="container mx-auto pb-12a">
           <div className="mt-6">
             <h2 className="text-3xl font-bold">Latest Posts</h2>
             <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
-              {!query.isFetching &&
-                !query.isError &&
+              {query.isSuccess &&
                 query?.data?.data &&
                 query?.data?.data?.map((item: BlogPost) => {
                   return <BlogCard key={item.id} {...item} />;
                 })}
             </div>
+            <div className="h-[400px]"></div>
           </div>
         </div>
       )}

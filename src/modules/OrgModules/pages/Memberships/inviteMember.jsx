@@ -1,39 +1,58 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
-import useApiMutation from "../../../../api/hooks/useApiMutation";
-import { CustomDatePicker } from "../../../../components/CustomDatePicker";
+import { newApi } from "../../../../api/hooks/useApiMutation";
+import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function InviteMember() {
   const user = useSelector((state) => state.orgData.orgData);
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
+    reset,
+    control,
     formState: { errors },
   } = useForm({
     mode: "onBlur", // Only validate when user leaves the field
     reValidateMode: "onChange", // Re-validate on change after first validation
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const { mutate } = useApiMutation();
+  const [startDate, setStartDate] = useState("");
 
-  const inviteMember = (data) => {
-    setIsLoading(true);
-    mutate({
-      url: "/api/memberships-subscriptions/send/membership/request",
-      method: "POST",
-      data: data,
-      headers: true,
-      onSuccess: (response) => {
-        setIsLoading(false);
-      },
-      onError: () => {
-        setIsLoading(false);
-      },
-    });
+  const request = useMutation({
+    mutationFn: async (inviteData) => {
+      // 'inviteData' will be the argument passed to mutate
+      let resp = await newApi.post(
+        "/api/memberships-subscriptions/send/membership/request",
+        inviteData, // Use the 'inviteData' received from the mutate call
+      );
+      return resp.data;
+    },
+    onSuccess: () => {
+      toast.success("Member invitation sent successfully!");
+      // Reset form state
+      reset();
+      setStartDate("");
+      // Invalidate and refetch any related queries
+      queryClient.invalidateQueries({ queryKey: ["members"] });
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
+      queryClient.invalidateQueries({ queryKey: ["memberships"] });
+    },
+    onError: (error) => {
+      toast.error(
+        error.response?.data?.message || "Failed to send invitation.",
+      );
+    },
+  });
+
+  const inviteMember = async (data) => {
+    if (!startDate.trim()) return toast.error("Please select a start date");
+    let newData = { ...data, dateJoined: startDate }; // Prepare the data payload including startDate
+    request.mutate(newData); // Pass the complete 'newData' to the mutation
   };
 
   return (
@@ -86,9 +105,10 @@ export default function InviteMember() {
                       type="date"
                       name="dateFrom"
                       className="relative "
-                      register={register}
-                      rules={{ required: "Membership start date is required" }}
-                      errors={errors}
+                      value={startDate}
+                      // rules={{ required: "Membership start date is required" }}
+                      // errors={errors}
+                      onChange={setStartDate}
                       placeholder="Select membership start date"
                     />
                     {/* <CustomDatePicker /> */}
@@ -123,10 +143,12 @@ export default function InviteMember() {
                   <div className="flex">
                     <Button
                       type="submit"
-                      disabled={isLoading}
-                      className="bg-mobiPink md:w-1/4 w-full p-3 rounded-full"
+                      disabled={request.isPending}
+                      className="bg-mobiPink  w-full p-3 rounded-full"
                     >
-                      {isLoading ? "Inviting Member" : "Invite New Member"}
+                      {request.isPending
+                        ? "Inviting Member"
+                        : "Invite New Member"}
                     </Button>
                   </div>
                 </div>

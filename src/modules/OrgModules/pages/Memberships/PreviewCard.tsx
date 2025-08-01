@@ -59,11 +59,33 @@ export default function PreviewCard() {
   };
 
   if (isLoading) {
-    return <div className="p-6">Loading card details...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-gray-500">
+        <div className="w-10 h-10 border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+        <p className="text-lg font-medium">Loading ID card details...</p>
+        <p className="text-sm text-center">
+          Please wait while we fetch the card information.
+        </p>
+      </div>
+    );
   }
 
   if (isError || !cardData?.data) {
-    return <div className="p-6 text-red-500">Error loading card details</div>;
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-red-600 bg-red-50 rounded-lg p-6 m-6 border border-red-200 shadow-md">
+        <X className="w-12 h-12 text-red-500 mb-4" />
+        <h2 className="text-2xl font-bold mb-2 text-center">
+          Failed to Load Card Details
+        </h2>
+        <p className="text-lg text-center mb-4">
+          We couldn't retrieve the ID card information.
+        </p>
+        <p className="text-sm text-gray-600 text-center">
+          This might be due to a network issue, or the card ID is invalid.
+          Please check your connection or try again.
+        </p>
+      </div>
+    );
   }
 
   const card = cardData.data;
