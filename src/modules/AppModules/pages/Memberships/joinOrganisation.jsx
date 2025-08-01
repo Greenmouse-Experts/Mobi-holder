@@ -10,12 +10,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Building, MapPin } from "lucide-react"; // Import Lucide icons
 import { toast } from "react-toastify";
+import { DesignationsInput } from "../../../../components/designations/DesignationsInput";
 
 export default function JoinOrganisation() {
   const user = useSelector((state) => state.userData.data);
   const paramsData = useSelector((state) => state.userData.paramsData);
   const [isLoading, setIsLoading] = useState(false);
   const [iniData, setIniDate] = useState("");
+  const [role, setRole] = useState("");
   const {
     register,
     handleSubmit,
@@ -26,12 +28,15 @@ export default function JoinOrganisation() {
   const navigate = useNavigate();
 
   const joinOrganisation = (data) => {
+    console.log(role, "role");
     if (!iniData.trim()) return toast.error("date joined required");
+    if (!role.trim()) return toast.error("role is required");
     const payload = {
       organizationId: paramsData.id,
       ...data,
       // Format the date if necessary, or send as-is (YYYY-MM-DD for input type="date")
       joinDate: iniData,
+      designation: role,
     };
     setIsLoading(true);
     mutate({
@@ -143,13 +148,19 @@ export default function JoinOrganisation() {
                       <p className="-mb-3 text-mobiFormGray font-semibold">
                         Role
                       </p>
-                      <Input
+                      {/* <Input
                         type="text"
                         name="designation"
                         register={register}
                         rules={{ required: "Role is required" }}
                         errors={errors}
                         placeholder="Role"
+                      /> */}
+
+                      <DesignationsInput
+                        name="designation"
+                        organizationId={paramsData.id}
+                        onChange={setRole}
                       />
                     </div>
 
