@@ -34,7 +34,7 @@ const ErrorComponent = ({ message }: { message: string }) => (
 
 const LoadingComponent = () => (
   <div
-    className="bg-gray-100 border border-gray-300 text-gray-700 px-4 py-3 rounded relative mb-4"
+    className="bg-gray-100 mt-4 border border-gray-300 text-gray-700 px-4 py-3 rounded relative mb-4"
     role="status"
   >
     <span className="font-bold">Loading...</span>
@@ -87,9 +87,27 @@ export default function Designations() {
     });
   };
 
+  const handleCreateDesignation = () => {
+    openModal({
+      size: "sm",
+      content: <CreateDesignationComponent closeModal={closeModal} />,
+      title: "Create Designation",
+    });
+  };
+
   return (
     <div className="container mx-auto p-4 font-sans relative">
       <Header mobile organisation data={user} title={"Designation"} />
+      <div className="flex justify-between items-center mb-6 mt-4">
+        <button
+          onClick={handleCreateDesignation}
+          className="bg-mobiPink hover:bg-pink-600 text-white font-bold py-2 px-4 rounded-lg flex items-center space-x-2 shadow-md transition-colors duration-200"
+        >
+          <PlusIcon className="w-5 h-5" />
+          <span>Create Designation</span>
+        </button>
+      </div>
+
       {isError && (
         <ErrorComponent
           message={
@@ -295,7 +313,7 @@ const CreateDesignationComponent = ({
         <button
           type="submit"
           disabled={createDesignationMutation.isPending}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-mobiPink hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           {createDesignationMutation.isPending ? "Creating..." : "Create"}
         </button>
