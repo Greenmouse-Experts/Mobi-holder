@@ -59,7 +59,7 @@ interface USER_DATA {
   };
 }
 
-const LoadingComponent = () => {
+export const LoadingComponent = () => {
   return (
     <OrgDashContaienr>
       <div className="w-full mx-auto p-6 bg-mobiDarkCloud bg-mobiDarkCloud rounded-lg shadow-md">
@@ -83,7 +83,7 @@ const LoadingComponent = () => {
   );
 };
 
-const ErrorComponent = ({ refetch }: { refetch: () => void }) => {
+export const ErrorComponent = ({ refetch }: { refetch: () => void }) => {
   return (
     <OrgDashContaienr>
       <div className="w-full mx-auto p-6 bg-mobiDarkCloud rounded-lg shadow-md">
@@ -216,7 +216,6 @@ export default function EditMember() {
               <SimpeInput
                 name="organizationEmail"
                 value={memberData?.organizationEmail || "assgain@gmail.com"}
-                icon={null}
                 style={{}}
                 placeholder="Organization Email"
               />

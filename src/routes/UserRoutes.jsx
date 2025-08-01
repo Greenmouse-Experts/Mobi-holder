@@ -40,6 +40,7 @@ import OrgSubscriptionLog from "../modules/AppModules/pages/Memberships/orgSubsc
 import Blogs from "../modules/AppModules/pages/Blogs";
 import BlogView from "../modules/AppModules/pages/BlogView";
 import PreviewCard from "../modules/OrgModules/pages/Memberships/PreviewCard";
+import EditMembership from "../modules/AppModules/pages/Memberships/EditMembership";
 
 const UserRoutes = [
   <Route path="dashboard" element={<Dashboard />} />,
@@ -61,6 +62,7 @@ const UserRoutes = [
     path="membership/subscriptions/history/:id"
     element={<OrgSubscriptionLog />}
   />,
+  <Route path="membership/edit/:id" element={<EditMembership />} />,
   <Route path="events" element={<IndividualEvents />} />,
   <Route path="notification" element={<Notification />} />,
   <Route path="settings" element={<Settings />} />,
