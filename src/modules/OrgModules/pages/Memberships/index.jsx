@@ -495,6 +495,19 @@ export default function OrgMembership() {
                               >
                                 View Member Details
                               </span>
+                            </MenuItem>{" "}
+                            <MenuItem className="flex flex-col gap-3">
+                              <span
+                                className="cursor-pointer"
+                                onClick={() => {
+                                  // console.log(data);
+                                  navigate(
+                                    `/org/membership/edit/${data.individual.mobiHolderId}`,
+                                  );
+                                }}
+                              >
+                                Edit Member Details
+                              </span>
                             </MenuItem>
                             <MenuItem className="flex flex-col gap-3">
                               <span

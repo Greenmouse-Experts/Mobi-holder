@@ -39,6 +39,7 @@ import Wallet from "../modules/OrgModules/pages/Wallet";
 import MySubPlans from "../modules/OrgModules/pages/Subscription/userSubscription";
 import MySubscribers from "../modules/OrgModules/pages/Subscription/userSubscription/subscribers";
 import Designations from "../modules/OrgModules/pages/Designations";
+import EditMember from "../modules/OrgModules/pages/Memberships/EditMember";
 
 const OrgRoutes = [
   <Route path="dashboard" element={<OrgDashboard />} />,
@@ -71,6 +72,7 @@ const OrgRoutes = [
   <Route path="card/viewCard/:id" element={<PreviewCard />} />,
   <Route path="card/updateCard/:id" element={<UpdateCard />} />,
   <Route path="membership/updateMember/:id" element={<UpdateMember />} />,
+  <Route path="membership/edit/:id" element={<EditMember />} />,
   <Route path="membership/add" element={<InviteMember />} />,
   <Route path="settings" element={<OrgSettings />} />,
   <Route path="subscription/plans" element={<OrganisationPlans />} />,

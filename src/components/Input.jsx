@@ -31,6 +31,7 @@ const Input = ({
   rules,
   errors,
   setValue,
+  defaultValueSelectValue,
   options = [],
   value: externalValue = "",
   onChange,
