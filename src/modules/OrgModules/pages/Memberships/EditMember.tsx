@@ -163,7 +163,9 @@ export default function EditMember() {
   return (
     <OrgDashContaienr>
       <div className="w-full mx-auto p-6 bg-mobiDarkCloud rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Edit Member</h2>
+        <h2 className="text-2xl font-bold mb-6 text-mobiTableText">
+          Edit Member
+        </h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -226,7 +228,7 @@ export default function EditMember() {
               <select
                 name="status"
                 defaultValue={memberData?.status}
-                className="w-full p-4 bg-mobiFormGray rounded-md"
+                className="w-full p-4 bg-bg-gray-100 text-black rounded-md"
               >
                 {input_options.map((e) => {
                   return <option value={e.value}>{e.label}</option>;
@@ -270,7 +272,7 @@ export default function EditMember() {
 const SimpeInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <input
-      className="p-4 w-full bg-mobiFormGray  rounded-md "
+      className="p-4 w-full bg-gray-100 text-black  rounded-md "
       type="text"
       {...props}
     />
