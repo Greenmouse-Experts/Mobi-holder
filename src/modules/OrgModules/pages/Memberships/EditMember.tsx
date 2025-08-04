@@ -132,9 +132,11 @@ export default function EditMember() {
         "/api/memberships-subscriptions/organization/update/membership/status",
         data,
       );
+      return resp.data;
     },
     onSuccess: () => {
       console.log("success");
+      toast.success("membership details updated ");
     },
     onError: (e) => {
       toast.error(e.response.data.message);
@@ -248,16 +250,16 @@ export default function EditMember() {
             </div>
           </div>
           <div className="flex justify-end space-x-4 pt-6">
-            <button
+            {/*<button
               type="button"
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 border border-gray-300 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
             >
               Cancel
-            </button>
+            </button>*/}
             <button
               disabled={updateStatus.isPending}
               type="submit"
-              className="px-4 py-2 text-sm font-medium text-white bg-mobiPink border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="px-4 py-2 text-sm font-medium text-white bg-mobiPink border border-transparent rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               {updateStatus.isPending ? "updating" : "Save Changes"}
             </button>
