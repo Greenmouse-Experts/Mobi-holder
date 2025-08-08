@@ -39,7 +39,7 @@ export default function InviteMember() {
       // Reset form state
       reset();
       setStartDate("");
-      setTimeout(() => window.location.reload(), [500]);
+      setTimeout(() => window.location.reload(), 500);
       // Invalidate and refetch any related queries
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["invitations"] });

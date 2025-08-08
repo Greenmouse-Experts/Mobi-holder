@@ -137,6 +137,7 @@ export default function EditMember() {
     onSuccess: () => {
       console.log("success");
       toast.success("membership details updated ");
+      query.refetch();
     },
     onError: (e) => {
       toast.error(e.response.data.message);
