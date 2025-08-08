@@ -7,6 +7,7 @@ import { Button } from "@material-tailwind/react";
 import { newApi } from "../../../../api/hooks/useApiMutation";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { SimpleDesignationSelect } from "../../../../components/designations/DesignationsInput";
 
 export default function InviteMember() {
   const user = useSelector((state) => state.orgData.orgData);
@@ -19,7 +20,8 @@ export default function InviteMember() {
     formState: { errors },
   } = useForm({
     mode: "onBlur", // Only validate when user leaves the field
-    reValidateMode: "onChange", // Re-validate on change after first validation
+    reValidateMode: "onChange",
+    // Re-validate on change after first validation
   });
   const [startDate, setStartDate] = useState("");
 
@@ -37,6 +39,7 @@ export default function InviteMember() {
       // Reset form state
       reset();
       setStartDate("");
+      setTimeout(() => window.location.reload(), [500]);
       // Invalidate and refetch any related queries
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["invitations"] });
@@ -117,6 +120,7 @@ export default function InviteMember() {
                     <p className="-mb-3 text-mobiFormGray">
                       Role (Designation)
                     </p>
+                    {/* <SimpleDesignationSelect org />*/}
                     <Input
                       type="text"
                       name="designation"
