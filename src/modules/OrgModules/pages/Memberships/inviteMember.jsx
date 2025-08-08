@@ -8,6 +8,7 @@ import { newApi } from "../../../../api/hooks/useApiMutation";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SimpleDesignationSelect } from "../../../../components/designations/DesignationsInput";
+import { useNavigate } from "react-router-dom";
 
 export default function InviteMember() {
   const user = useSelector((state) => state.orgData.orgData);
@@ -24,7 +25,7 @@ export default function InviteMember() {
     // Re-validate on change after first validation
   });
   const [startDate, setStartDate] = useState("");
-
+  const nav = useNavigate();
   const request = useMutation({
     mutationFn: async (inviteData) => {
       // 'inviteData' will be the argument passed to mutate
@@ -39,11 +40,12 @@ export default function InviteMember() {
       // Reset form state
       reset();
       setStartDate("");
-      setTimeout(() => window.location.reload(), 500);
+      // setTimeout(() => window.location.reload(), 500);
       // Invalidate and refetch any related queries
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["invitations"] });
       queryClient.invalidateQueries({ queryKey: ["memberships"] });
+      nav("/org/memberships");
     },
     onError: (error) => {
       toast.error(
