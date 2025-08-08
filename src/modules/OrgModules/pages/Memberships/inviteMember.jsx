@@ -45,7 +45,7 @@ export default function InviteMember() {
       queryClient.invalidateQueries({ queryKey: ["members"] });
       queryClient.invalidateQueries({ queryKey: ["invitations"] });
       queryClient.invalidateQueries({ queryKey: ["memberships"] });
-      nav("/org/memberships");
+      return nav("/org/memberships");
     },
     onError: (error) => {
       toast.error(
@@ -57,6 +57,8 @@ export default function InviteMember() {
   const inviteMember = async (data) => {
     if (!startDate.trim()) return toast.error("Please select a start date");
     let newData = { ...data, dateJoined: startDate }; // Prepare the data payload including startDate
+    // console.log("newData");
+    //
     request.mutate(newData); // Pass the complete 'newData' to the mutation
   };
 
