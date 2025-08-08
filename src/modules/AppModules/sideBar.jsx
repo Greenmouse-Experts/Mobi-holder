@@ -261,44 +261,6 @@ export default function Sidebar({ mobile }) {
       children: [],
       openChildren: false,
     },
-
-    {
-      path: "/app/blogs",
-      slug: "blogs",
-      name: "Blogs",
-      icon: (
-        <i className="mr-3">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 4H20V20H4V4Z"
-              stroke={
-                activeNav === "blogs" ? "rgba(163, 36, 242, 1)" : "#7F7F7F"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M8 8H16V16H8V8Z"
-              stroke={
-                activeNav === "blogs" ? "rgba(163, 36, 242, 1)" : "#7F7F7F"
-              }
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </i>
-      ),
-      children: [],
-      openChildren: false,
-    },
   ];
 
   const [navigation, setNavigation] = useState(navArray);
