@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import apiClient, { newClient } from "../../../api/apiFactory";
 import { useMemo, useState, useEffect } from "react";
+import Header from "../../../components/Header";
+import { useSelector } from "react-redux";
 // import { getTransactions } from '../../services/transactions';
 interface Plan {
   id: number;
@@ -80,7 +82,9 @@ function useDebouncedValue<T>(value: T, delay: number): T {
 export default function OrgTransactions() {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebouncedValue(search, 400);
-
+  const user = useSelector(
+    (state: { orgData: { orgData: any } }) => state.orgData.orgData,
+  );
   const query = useQuery<TransactionsResponse>({
     queryKey: ["transactions", debouncedSearch],
     queryFn: async () => {
@@ -104,7 +108,10 @@ export default function OrgTransactions() {
 
   return (
     <div className="p-6 w-full mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Organization Transactions</h1>
+      <Header mobile organisation data={user} title={"Designation"} />
+      <h1 className="text-2xl font-bold mb-4 mt-6">
+        Organization Transactions
+      </h1>
       <div className="mb-6">
         <input
           type="text"
