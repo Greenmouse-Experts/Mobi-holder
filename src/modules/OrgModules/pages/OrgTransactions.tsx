@@ -105,7 +105,24 @@ export default function OrgTransactions() {
     if (!query.data?.data) return [];
     return query.data.data;
   }, [query.data]);
-
+  if (query.isError) {
+    return (
+      <>
+        <Header mobile organisation data={user} title={"Designation"} />
+        <div className="mt-6">
+          <div className="mt-4">
+            <p>Error Occurd</p>
+            <button
+              className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+              onClick={() => query.refetch()}
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <div className="p-6 w-full mx-auto">
       <Header mobile organisation data={user} title={"Designation"} />
