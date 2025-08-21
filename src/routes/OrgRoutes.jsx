@@ -40,6 +40,7 @@ import MySubPlans from "../modules/OrgModules/pages/Subscription/userSubscriptio
 import MySubscribers from "../modules/OrgModules/pages/Subscription/userSubscription/subscribers";
 import Designations from "../modules/OrgModules/pages/Designations";
 import EditMember from "../modules/OrgModules/pages/Memberships/EditMember";
+import OrgTransactions from "../modules/OrgModules/pages/OrgTransactions";
 
 const OrgRoutes = [
   <Route path="dashboard" element={<OrgDashboard />} />,
@@ -81,6 +82,7 @@ const OrgRoutes = [
   <Route path="subscription/my-plans" element={<MySubPlans />} />,
   <Route path="subscription/subscribers" element={<MySubscribers />} />,
   <Route path="designations" element={<Designations />} />,
+  <Route path="transactions" element={<OrgTransactions />} />,
   <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
   <Route path="notification" element={<Notification organisation />} />,
   <Route path="wallet" element={<Wallet />} />,

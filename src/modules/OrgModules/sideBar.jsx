@@ -16,6 +16,7 @@ import {
   BellRing,
   CreditCard,
   User2,
+  History,
 } from "lucide-react";
 
 export default function OrgSidebar({ mobile }) {
@@ -48,6 +49,14 @@ export default function OrgSidebar({ mobile }) {
       slug: "designations",
       name: "Designations",
       icon: <User2 size={20} className="mr-3" />,
+      children: [],
+      openChildren: false,
+    },
+    {
+      path: "/org/transactions",
+      slug: "transactions",
+      name: "Transactions",
+      icon: <History size={20} className="mr-3" />,
       children: [],
       openChildren: false,
     },
