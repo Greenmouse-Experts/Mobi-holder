@@ -226,14 +226,14 @@ export default function Sidebar({ mobile }) {
       openChildren: false,
     },
 
-    {
-      path: "/app/wallet",
-      slug: "wallet",
-      name: "Wallet",
-      icon: <FaWallet className="mr-3" />,
-      children: [],
-      openChildren: false,
-    },
+    // {
+    //   path: "/app/wallet",
+    //   slug: "wallet",
+    //   name: "Wallet",
+    //   icon: <FaWallet className="mr-3" />,
+    //   children: [],
+    //   openChildren: false,
+    // },
 
     {
       path: "/app/notification",

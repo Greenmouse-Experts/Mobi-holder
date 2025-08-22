@@ -150,14 +150,14 @@ export default function OrgSidebar({ mobile }) {
       openChildren: false,
     },
 
-    {
-      path: "/org/wallet",
-      slug: "wallet",
-      name: "Wallet",
-      icon: <FaWallet className="mr-3" />,
-      children: [],
-      openChildren: false,
-    },
+    // {
+    //   path: "/org/wallet",
+    //   slug: "wallet",
+    //   name: "Wallet",
+    //   icon: <FaWallet className="mr-3" />,
+    //   children: [],
+    //   openChildren: false,
+    // },
 
     {
       path: "/org/notification",
