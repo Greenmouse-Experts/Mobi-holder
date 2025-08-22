@@ -10,15 +10,23 @@ import {
   MenuItem,
   MenuList,
 } from "@material-tailwind/react";
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "../../api/apiFactory";
 
 export default function Notification({ organisation }) {
   const user = organisation
     ? useSelector((state) => state.orgData.orgData)
     : useSelector((state) => state.userData.data);
   const [activeTab, setActiveTab] = useState("All");
-  const [allNotifications, setAllNotifications] = useState([]);
-  const [originalNotifications, setOriginalNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  // const query = useQuery({
+  //   queryKey: ["notifications_user", user.id],
+  //   queryFn: async () => {
+  //     let resp = await apiClient.get("/api/users/get/notifications");
+  //     return resp.data;
+  //   },
+  // });
+  // return <>sss {JSON.stringify(qu.data)}</>;
 
   const { mutate } = useApiMutation();
 
@@ -115,8 +123,8 @@ export default function Notification({ organisation }) {
                         setActiveTab("Unread"),
                         setAllNotifications(
                           allNotifications.filter(
-                            (notification) => !notification.read
-                          )
+                            (notification) => !notification.read,
+                          ),
                         ),
                       ]}
                       className={`text-sm cursor-pointer ${
@@ -128,7 +136,7 @@ export default function Notification({ organisation }) {
                       Unread (
                       {
                         allNotifications.filter(
-                          (notification) => !notification.read
+                          (notification) => !notification.read,
                         ).length
                       }
                       )

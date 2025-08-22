@@ -192,7 +192,7 @@ export default function OrgMembership() {
     "Email",
     "Invited On",
     "Status",
-    "Action",
+    // "Action",
   ];
   const RequetsHeaders2 = ["Individual", "Email", "Requested On", "Action"];
 

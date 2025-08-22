@@ -43,7 +43,6 @@ const LoadingComponent = () => (
 );
 
 export default function Designations() {
-  const queryClient = useQueryClient();
   const designations_query = useQuery<API_RESPONSE>({
     queryKey: ["designations"],
     queryFn: async () => {
@@ -78,7 +77,7 @@ export default function Designations() {
     openModal({
       size: "sm",
       content: (
-        <DeleteDesignatonCompenent
+        <DeleteDesignationComponent
           designationId={designationId}
           closeModal={closeModal}
         />
@@ -97,7 +96,15 @@ export default function Designations() {
 
   return (
     <div className="container mx-auto p-4 font-sans relative">
-      <Header mobile organisation data={user} title={"Designation"} />
+      <Header
+        mobile
+        organisation
+        data={user}
+        title="Designation"
+        greeting=""
+        profile=""
+        superAdmin={false}
+      />
       <div className="flex justify-between items-center mb-6 mt-4">
         <button
           onClick={handleCreateDesignation}
@@ -187,7 +194,7 @@ export default function Designations() {
   );
 }
 
-const DeleteDesignatonCompenent = ({
+const DeleteDesignationComponent = ({
   designationId,
   closeModal,
 }: {
@@ -229,10 +236,10 @@ const DeleteDesignatonCompenent = ({
         </button>
         <button
           onClick={handleDelete}
-          disabled={deleteMutation.isLoading}
+          disabled={deleteMutation.isPending}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
         >
-          {deleteMutation.isLoading ? "Deleting..." : "Delete"}
+          {deleteMutation.isPending ? "Deleting..." : "Delete"}
         </button>
       </div>
     </div>
@@ -242,7 +249,7 @@ const DeleteDesignatonCompenent = ({
 const CreateDesignationComponent = ({
   closeModal,
 }: {
-  closeModal: () => any;
+  closeModal: () => void;
 }) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -263,12 +270,12 @@ const CreateDesignationComponent = ({
     },
     onError: (error: any) => {
       console.error("Error creating designation:", error);
-      // Handle error, e.g., show an error message to the user
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name.trim()) return;
     createDesignationMutation.mutate();
   };
 
@@ -283,9 +290,14 @@ const CreateDesignationComponent = ({
           Name
         </label>
         <Input
-          name={"name"}
+          name="name"
           placeholder="Designation Name"
           onChange={setName}
+          icon={null}
+          style={{}}
+          minDate={undefined}
+          register={undefined}
+          className="w-full"
         />
       </div>
       <div className="mb-4">
@@ -297,9 +309,14 @@ const CreateDesignationComponent = ({
         </label>
         <Input
           type="textarea"
-          name={"description"}
+          name="description"
           placeholder="Designation Description"
           onChange={setDescription}
+          icon={null}
+          style={{}}
+          minDate={undefined}
+          register={undefined}
+          className="w-full"
         />
       </div>
       <div className="flex justify-end space-x-2">
@@ -313,7 +330,7 @@ const CreateDesignationComponent = ({
         <button
           type="submit"
           disabled={createDesignationMutation.isPending}
-          className="bg-mobiPink hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-mobiPink hover:bg-pink-600 text-white font-bold py-2 px-4 rounded"
         >
           {createDesignationMutation.isPending ? "Creating..." : "Create"}
         </button>
@@ -327,35 +344,36 @@ const EditDesignationComponent = ({
   closeModal,
 }: {
   designation: DESIGN;
-  closeModal: any;
+  closeModal: () => void;
 }) => {
   const [name, setName] = useState(designation.name);
   const [description, setDescription] = useState(designation.description);
   const queryClient = useQueryClient();
 
-  const change = useMutation({
+  const updateMutation = useMutation({
     mutationFn: async () => {
-      await newApi.put(`/api/memberships-subscriptions/designation/update`, {
-        name: name,
+      await newApi.put("/api/memberships-subscriptions/designation/update", {
+        name,
         designation_id: String(designation.id),
-        description: description,
+        description,
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["designations"],
       });
-      console.log(name);
       closeModal();
     },
   });
-  const handleSubmit = () => {
-    console.log(designation);
-    change.mutate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+    updateMutation.mutate();
   };
 
   return (
-    <div className="p-4">
+    <form className="p-4" onSubmit={handleSubmit}>
       <h2 className="text-lg font-semibold mb-2">Edit Designation</h2>
       <div className="mb-4">
         <label
@@ -365,10 +383,15 @@ const EditDesignationComponent = ({
           Name
         </label>
         <Input
-          name={"title"}
+          name="name"
           value={name}
-          placeholder={"title"}
+          placeholder="Designation name"
           onChange={setName}
+          icon={null}
+          style={{}}
+          minDate={undefined}
+          register={undefined}
+          className="w-full"
         />
       </div>
       <div className="mb-4">
@@ -381,20 +404,26 @@ const EditDesignationComponent = ({
         <Input
           type="textarea"
           id="description"
-          name={"description"}
-          placeholder={"description"}
-          className=" w-full border  rounded-md"
+          name="description"
+          placeholder="Description"
           value={description}
           onChange={setDescription}
+          icon={null}
+          style={{}}
+          minDate={undefined}
+          register={undefined}
+          className="w-full border rounded-md"
         />
       </div>
-      <button
-        disabled={change.isPending}
-        onClick={handleSubmit}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        {!change.isPending ? "Update" : "updating"}
-      </button>
-    </div>
+      <div className="flex justify-end">
+        <button
+          disabled={updateMutation.isPending}
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          {updateMutation.isPending ? "Updating..." : "Update"}
+        </button>
+      </div>
+    </form>
   );
 };

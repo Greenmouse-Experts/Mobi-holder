@@ -23,7 +23,7 @@ export default function ViewCard() {
   const query = useQuery({
     queryKey: [user.id, id, "view_card"],
     queryFn: async () => {
-      let resp = await newApi("/api/idcards/individual/view/card?cardId=${id}");
+      let resp = await newApi(`/api/idcards/individual/view/card?cardId=${id}`);
       return resp.data;
     },
   });

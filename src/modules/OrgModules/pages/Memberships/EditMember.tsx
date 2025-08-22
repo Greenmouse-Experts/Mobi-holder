@@ -152,7 +152,7 @@ export default function EditMember() {
     for (let keys of form) {
       data[keys[0]] = keys[1];
     }
-
+    // return console.log(memberData);
     if (!data.hasOwnProperty("designation")) {
       data["designation"] = memberData?.designation;
     }
@@ -218,7 +218,7 @@ export default function EditMember() {
               </label>
               <SimpeInput
                 name="organizationEmail"
-                value={memberData?.organizationEmail || "assgain@gmail.com"}
+                value={memberData?.individual.email || "assgain@gmail.com"}
                 style={{}}
                 placeholder="Organization Email"
               />
