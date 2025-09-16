@@ -72,10 +72,12 @@ export default function Sidebar({ mobile }) {
       openChildren: false,
     },
     {
-      path: "transactions",
+      path: "/app/transactions",
       slug: "transactions",
       name: "Transactions",
       icon: <HistoryIcon size={18} className="mr-2" />,
+      children: [],
+      openChildren: false,
     },
     {
       path: "",
