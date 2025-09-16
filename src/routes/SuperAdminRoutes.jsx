@@ -41,6 +41,7 @@ import NewsletterSubscribers from "../modules/SuperAdmin/NewsLetter";
 import Notification from "../modules/SuperAdmin/Notifications";
 import BLog from "../modules/SuperAdmin/Blog/index.jsx";
 import OrgTransactions from "../modules/OrgModules/pages/OrgTransactions";
+import AdminTransactions from "../modules/Admin/AdminTransactions";
 const SuperAdminRoutes = [
   <Route path="dashboard" element={<DashBoard />} />,
   <Route path="organisation" element={<Organisations />} />,
@@ -104,7 +105,7 @@ const SuperAdminRoutes = [
   <Route path="user-inquiries" element={<UserInquiries />} />,
   <Route path="newsletter" element={<NewsletterSubscribers />} />,
   <Route path="notification" element={<Notification />} />,
-  <Route path="transactions" element={<OrgTransactions />} />,
+  <Route path="transactions" element={<AdminTransactions />} />,
   <Route path="blog" element={<BLog />} />,
 ];
 
