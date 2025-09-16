@@ -7,6 +7,7 @@ import ReusableModal from "../../components/ReusableModal";
 import LogOutModal from "../../components/LogOutModal";
 import { FaWallet } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { HistoryIcon } from "lucide-react";
 
 export default function Sidebar({ mobile }) {
   const location = useLocation();
@@ -70,7 +71,12 @@ export default function Sidebar({ mobile }) {
       children: [],
       openChildren: false,
     },
-
+    {
+      path: "transactions",
+      slug: "transactions",
+      name: "Transactions",
+      icon: <HistoryIcon size={18} className="mr-2" />,
+    },
     {
       path: "",
       slug: "subscription",

@@ -41,6 +41,7 @@ import Blogs from "../modules/AppModules/pages/Blogs";
 import BlogView from "../modules/AppModules/pages/BlogView";
 import PreviewCard from "../modules/OrgModules/pages/Memberships/PreviewCard";
 import EditMembership from "../modules/AppModules/pages/Memberships/EditMembership";
+import UserTransactions from "../modules/AppModules/pages/transactions";
 
 const UserRoutes = [
   <Route path="dashboard" element={<Dashboard />} />,
@@ -90,6 +91,7 @@ const UserRoutes = [
   <Route path="subscription/plans/view/:id/:status" element={<ViewPlan />} />,
   <Route path="wallet" element={<Wallet />} />,
   <Route path="blogs" element={<Blogs />} />,
+  <Route path="transactions" element={<UserTransactions />} />,
   <Route path="previewcard/:id" element={<PreviewCard />} />,
   <Route path="blogs/:id" element={<BlogView />} />,
 ];
