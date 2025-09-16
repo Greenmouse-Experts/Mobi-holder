@@ -86,10 +86,10 @@ export default function OrgTransactions() {
     (state: { orgData: { orgData: any } }) => state.orgData.orgData,
   );
   const query = useQuery<TransactionsResponse>({
-    queryKey: ["transactions", debouncedSearch],
+    queryKey: ["org-transactions", debouncedSearch],
     queryFn: async () => {
       let resp = await newClient.get(
-        "/api/memberships-subscriptions/get/transactions",
+        "/api/memberships-subscriptions/get/organization/transactions",
         {
           params: {
             searchParam: debouncedSearch.trim(),
