@@ -1,26 +1,88 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "../Home/layouts/Header";
-import { toast } from "react-toastify";
+
+// Define API URL as a constant for easier management
+const BLOG_API_BASE_URL = "https://api.mobiholder.tech/api/admins/public/blog";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  banner: string; // Original field, kept for reference
+  content: string;
+  author: string;
+  slug: string;
+  published: boolean;
+  publishedAt: string;
+  views: number;
+  createdAt: string;
+  updatedAt: string;
+  summary?: string;
+  category?: string;
+  tags?: string[];
+  image?: string; // Explicitly defining 'image' as per usage in JSX
+}
+
+interface ApiResponse {
+  code: number;
+  message: string;
+  data: BlogPost; // Assuming `data` is always present and of type `BlogPost` on success
+}
 
 export default function GeneralBlogPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [showShareMenu, setShowShareMenu] = useState(false);
+  const shareMenuRef = useRef<HTMLDivElement>(null); // Ref for share menu to detect clicks outside
 
-  let query = useQuery({
-    queryKey: ["public_blogs"],
+  // Effect to close the share menu when clicking anywhere outside it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        shareMenuRef.current &&
+        !shareMenuRef.current.contains(event.target as Node)
+      ) {
+        setShowShareMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [shareMenuRef]); // Dependency array to ensure effect runs when ref changes (though unlikely for a static ref)
+
+  // Destructure for cleaner access to useQuery results
+  const {
+    data: apiResponse,
+    isLoading,
+    isError,
+  } = useQuery<ApiResponse>({
+    queryKey: ["public_blogs", id], // Add `id` to queryKey for better caching when different blog IDs are navigated
     queryFn: async () => {
-      let resp = await fetch(
-        `https://api.mobiholder.tech/api/admins/public/blog?id=${id}`,
-      );
+      // Ensure id is available before attempting to fetch
+      if (!id) {
+        throw new Error("Blog ID is missing. Cannot fetch blog post.");
+      }
+      const resp = await fetch(`${BLOG_API_BASE_URL}?id=${id}`);
+      if (!resp.ok) {
+        // Handle non-2xx responses as errors
+        throw new Error(
+          `Failed to fetch blog post: ${resp.statusText} (${resp.status})`,
+        );
+      }
       return await resp.json();
     },
+    enabled: !!id, // Only run the query if `id` exists
   });
+
+  // Extract blog data from the API response
+  // This will be null/undefined if apiResponse is null/undefined
+  const blog = apiResponse?.data;
 
   const handleShare = (platform: string) => {
     const url = window.location.href;
+    // Use the blog title, which is guaranteed to be available if `blog` is not null
     const title = blog?.title || "Check out this blog post";
 
     switch (platform) {
@@ -44,13 +106,14 @@ export default function GeneralBlogPage() {
         break;
       case "copy":
         navigator.clipboard.writeText(url);
-        toast.success("Link copied to clipboard!");
+        // Replaced 'toast.success' with a standard browser alert since 'toast' library is not defined/imported
+        alert("Link copied to clipboard!");
         break;
     }
     setShowShareMenu(false);
   };
 
-  if (query.isLoading) {
+  if (isLoading) {
     return (
       <>
         <Header />
@@ -64,7 +127,7 @@ export default function GeneralBlogPage() {
     );
   }
 
-  if (query.isError) {
+  if (isError) {
     return (
       <>
         <Header />
@@ -74,14 +137,48 @@ export default function GeneralBlogPage() {
             <p className="text-gray-600">
               Failed to load blog post. Please try again later.
             </p>
+            {/* Added a back button for user convenience */}
+            <button
+              onClick={() => navigate(-1)}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Go Back
+            </button>
           </div>
         </div>
       </>
     );
   }
 
-  const blog = query.data.data;
+  // If we're not loading, and there's no error, but `blog` is still null/undefined,
+  // it means the API returned successfully but no data was found for the given ID.
+  if (!blog) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Blog Post Not Found
+            </h2>
+            <p className="text-gray-600">
+              The blog post you are looking for does not exist or has been
+              removed.
+            </p>
+            {/* Added a home button for user convenience */}
+            <button
+              onClick={() => navigate("/")}
+              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Go Home
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 
+  // At this point, `blog` is guaranteed to be a `BlogPost` object, so no optional chaining needed for direct properties
   return (
     <>
       <Header />
@@ -108,7 +205,9 @@ export default function GeneralBlogPage() {
               Back
             </button>
 
-            <div className="relative">
+            <div className="relative" ref={shareMenuRef}>
+              {" "}
+              {/* Attach ref to the div containing the share button and menu */}
               <button
                 onClick={() => setShowShareMenu(!showShareMenu)}
                 className="flex items-center text-blue-600 hover:text-blue-800 transition-colors px-4 py-2 border border-blue-600 rounded-lg hover:bg-blue-50"
@@ -128,7 +227,6 @@ export default function GeneralBlogPage() {
                 </svg>
                 Share
               </button>
-
               {showShareMenu && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border z-10">
                   <div className="py-2">
@@ -197,9 +295,9 @@ export default function GeneralBlogPage() {
           </div>
 
           <article className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {blog?.image && (
+            {(blog.banner || blog.image) && (
               <img
-                src={blog.image}
+                src={blog.banner || blog.image}
                 alt={blog.title || "Blog post image"}
                 className="w-full h-64 md:h-96 object-cover"
               />
@@ -208,11 +306,11 @@ export default function GeneralBlogPage() {
             <div className="p-6 md:p-8">
               <header className="mb-6">
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                  {blog?.title || "Untitled Blog Post"}
+                  {blog.title || "Untitled Blog Post"}
                 </h1>
 
                 <div className="flex flex-wrap items-center text-sm text-gray-600 gap-4">
-                  {blog?.author && (
+                  {blog.author && (
                     <span className="flex items-center">
                       <svg
                         className="w-4 h-4 mr-1"
@@ -229,7 +327,7 @@ export default function GeneralBlogPage() {
                     </span>
                   )}
 
-                  {blog?.publishedAt && (
+                  {blog.publishedAt && (
                     <span className="flex items-center">
                       <svg
                         className="w-4 h-4 mr-1"
@@ -246,7 +344,7 @@ export default function GeneralBlogPage() {
                     </span>
                   )}
 
-                  {blog?.category && (
+                  {blog.category && (
                     <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
                       {blog.category}
                     </span>
@@ -254,7 +352,7 @@ export default function GeneralBlogPage() {
                 </div>
               </header>
 
-              {blog?.summary && (
+              {blog.summary && (
                 <div className="mb-6 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
                   <p className="text-gray-700 font-medium italic">
                     {blog.summary}
@@ -263,7 +361,7 @@ export default function GeneralBlogPage() {
               )}
 
               <div className="prose prose-lg max-w-none">
-                {blog?.content ? (
+                {blog.content ? (
                   <div dangerouslySetInnerHTML={{ __html: blog.content }} />
                 ) : (
                   <p className="text-gray-600">
@@ -272,7 +370,7 @@ export default function GeneralBlogPage() {
                 )}
               </div>
 
-              {blog?.tags && blog.tags.length > 0 && (
+              {blog.tags && blog.tags.length > 0 && (
                 <footer className="mt-8 pt-6 border-t border-gray-200">
                   <div className="flex flex-wrap gap-2">
                     <span className="text-sm text-gray-600 mr-2">Tags:</span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, ContentState, convertToRaw } from "draft-js";
@@ -20,7 +20,9 @@ import Loader from "../../../components/Loader";
 import useApiMutation from "../../../api/hooks/useApiMutation.jsx";
 import Header from "../header.jsx";
 import { useSelector } from "react-redux";
-import useFileUpload from "../../../api/hooks/useFileUpload.jsx";
+import useFileUpload, {
+  use_new_Uploader,
+} from "../../../api/hooks/useFileUpload";
 
 // Blog Card Component
 const BlogCard = ({ blog, onEdit, onDelete }) => {
@@ -151,7 +153,7 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
     }
     return EditorState.createEmpty();
   });
-
+  const upload = use_new_Uploader();
   const {
     register,
     handleSubmit,
@@ -198,26 +200,19 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
 
   const handleFormSubmit = async (data) => {
     setIsLoading(true);
-
+    let bannerUrl = bannerPreview;
+    // const banner_blob = (await fetch(bannerUrl)).blob;
+    // const banner_file = new File([banner_blob], "image", {
+    //   type: banner_blob.type,
+    // });
+    // return console.log(selectedFile);
+    // return console.log(file.secure_url);
     try {
-      let bannerUrl = bannerPreview;
-
-      // Upload banner if a new file is selected
-      if (selectedFile) {
-        setIsUploading(true);
-        try {
-          const uploadResponse = await uploadFiles([selectedFile]);
-          if (uploadResponse && uploadResponse.length > 0) {
-            bannerUrl = uploadResponse[0];
-          }
-        } catch (uploadError) {
-          console.error("Error uploading banner:", uploadError);
-          toast.error("Failed to upload banner image");
-          return;
-        } finally {
-          setIsUploading(false);
-        }
+      if (!selectedFile) {
+        return toast.error("Please select a banner image");
       }
+      const file = await upload.mutateAsync(selectedFile);
+      const url = file.secure_url;
 
       // Convert editor content to HTML
       const contentState = editorState.getCurrentContent();
@@ -226,7 +221,7 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
       const blogData = {
         title: data.title,
         content: htmlContent,
-        banner: bannerUrl,
+        banner: url,
       };
 
       // If editing an existing blog, include the id
@@ -246,6 +241,7 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
 
   return (
     <div className="w-full p-4 max-h-[80vh] overflow-y-auto">
+      <ToastContainer />
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         {/* Title Field */}
         <div>
