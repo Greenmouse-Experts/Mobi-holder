@@ -20,6 +20,7 @@ import Loader from "../../../components/Loader";
 import useApiMutation from "../../../api/hooks/useApiMutation.jsx";
 import Header from "../header.jsx";
 import { useSelector } from "react-redux";
+import useFileUpload from "../../../api/hooks/useFileUpload.jsx";
 
 // Blog Card Component
 const BlogCard = ({ blog, onEdit, onDelete }) => {
@@ -30,6 +31,8 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
       return "Invalid date";
     }
   };
+
+  const { uploadFiles } = useFileUpload();
 
   // Truncate content to show preview
   const stripHtml = (html) => {
@@ -46,6 +49,15 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition-colors duration-300">
+      {blog.banner && (
+        <div className="w-full h-48 overflow-hidden">
+          <img
+            src={blog.banner}
+            alt={blog.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
@@ -122,6 +134,11 @@ const BlogCard = ({ blog, onEdit, onDelete }) => {
 // Blog Editor Component
 const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [bannerPreview, setBannerPreview] = useState(blog?.banner || null);
+  const [isUploading, setIsUploading] = useState(false);
+  const { uploadFiles } = useFileUpload();
+
   const [editorState, setEditorState] = useState(() => {
     if (blog && blog.content) {
       const contentBlock = htmlToDraft(blog.content);
@@ -146,10 +163,62 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
     },
   });
 
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please select an image file");
+        return;
+      }
+
+      // Validate file size (e.g., 5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size should be less than 5MB");
+        return;
+      }
+
+      setSelectedFile(file);
+
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setBannerPreview(previewUrl);
+    }
+  };
+
+  const removeBanner = () => {
+    setSelectedFile(null);
+    setBannerPreview(null);
+    // Clear the file input
+    const fileInput = document.getElementById("banner-upload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   const handleFormSubmit = async (data) => {
     setIsLoading(true);
 
     try {
+      let bannerUrl = bannerPreview;
+
+      // Upload banner if a new file is selected
+      if (selectedFile) {
+        setIsUploading(true);
+        try {
+          const uploadResponse = await uploadFiles([selectedFile]);
+          if (uploadResponse && uploadResponse.length > 0) {
+            bannerUrl = uploadResponse[0];
+          }
+        } catch (uploadError) {
+          console.error("Error uploading banner:", uploadError);
+          toast.error("Failed to upload banner image");
+          return;
+        } finally {
+          setIsUploading(false);
+        }
+      }
+
       // Convert editor content to HTML
       const contentState = editorState.getCurrentContent();
       const htmlContent = draftToHtml(convertToRaw(contentState));
@@ -157,6 +226,7 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
       const blogData = {
         title: data.title,
         content: htmlContent,
+        banner: bannerUrl,
       };
 
       // If editing an existing blog, include the id
@@ -175,7 +245,7 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
   };
 
   return (
-    <div className="w-full p-4 max-h-[80vh] ">
+    <div className="w-full p-4 max-h-[80vh] overflow-y-auto">
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
         {/* Title Field */}
         <div>
@@ -192,12 +262,85 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
                 message: "Title must be at least 5 characters long",
               },
             })}
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mobiBlue focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-mobiBlue focus:border-transparent bg-transparent"
             placeholder="Enter your blog title..."
           />
           {errors.title && (
             <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
           )}
+        </div>
+
+        {/* Banner Upload Field */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Banner Image</label>
+          <div className="space-y-4">
+            <div className="flex items-center justify-center w-full">
+              <label
+                htmlFor="banner-upload"
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg
+                    className="w-8 h-8 mb-4 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    />
+                  </svg>
+                  <p className="mb-2 text-sm text-gray-500">
+                    <span className="font-semibold">Click to upload</span>{" "}
+                    banner image
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    PNG, JPG, GIF up to 5MB
+                  </p>
+                </div>
+                <input
+                  id="banner-upload"
+                  type="file"
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </label>
+            </div>
+
+            {/* Banner Preview */}
+            {bannerPreview && (
+              <div className="relative">
+                <img
+                  src={bannerPreview}
+                  alt="Banner preview"
+                  className="w-full h-48 object-cover rounded-lg border border-gray-300"
+                />
+                <button
+                  type="button"
+                  onClick={removeBanner}
+                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content Editor */}
@@ -265,10 +408,14 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
           </button>
           <button
             type="submit"
-            disabled={isLoading || !editorState.getCurrentContent().hasText()}
+            disabled={
+              isLoading ||
+              isUploading ||
+              !editorState.getCurrentContent().hasText()
+            }
             className="px-6 py-2 bg-mobiBlue text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center space-x-2"
           >
-            {isLoading && (
+            {(isLoading || isUploading) && (
               <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
                 <circle
                   cx="12"
@@ -287,13 +434,15 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
               </svg>
             )}
             <span>
-              {isLoading
-                ? blog
-                  ? "Updating..."
-                  : "Creating..."
-                : blog
-                  ? "Update Blog Post"
-                  : "Create Blog Post"}
+              {isUploading
+                ? "Uploading banner..."
+                : isLoading
+                  ? blog
+                    ? "Updating..."
+                    : "Creating..."
+                  : blog
+                    ? "Update Blog Post"
+                    : "Create Blog Post"}
             </span>
           </button>
         </div>

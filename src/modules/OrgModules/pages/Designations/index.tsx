@@ -217,7 +217,8 @@ const DeleteDesignationComponent = ({
   });
 
   const handleDelete = () => {
-    deleteMutation.mutate();
+    console.log(designationId, "designatin_id");
+    // deleteMutation.mutate();
   };
 
   return (
