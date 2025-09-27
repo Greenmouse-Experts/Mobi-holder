@@ -81,9 +81,9 @@ export default function GeneralNotification({ organisation }) {
       <div className="w-full flex h-full animate__animated animate__fadeIn">
         <div className="w-full flex flex-col gap-5 h-full">
           <Header mobile data={user} title={"Notifications"} />
-          <div className="w-full flex flex-col gap-8 my-2 px-3">
-            <div className="w-full flex justify-center">
-              <div className="bg-mobiDarkCloud md:my-3 lg:w-3/4 md:w-3/4 w-full rounded-lg">
+          <div className="w-full flex flex-col gap-8 my-2  px-3">
+            <div className="w-full flex justify-center  p-2">
+              <div className="bg-mobiDarkCloud md:my-3  w-full rounded-lg">
                 <div className="flex justify-between items-center px-6 py-5">
                   <div className="flex md:gap-14 gap-4">
                     <p
@@ -214,9 +214,4 @@ export default function GeneralNotification({ organisation }) {
       </div>
     </>
   );
-}
-{
-  {
-    END_REWRITTEN_CODE;
-  }
 }
