@@ -88,14 +88,13 @@ export default function OrgTransactions() {
   const query = useQuery<TransactionsResponse>({
     queryKey: ["org-transactions", debouncedSearch],
     queryFn: async () => {
-      let resp = await newClient.get(
-        "/api/memberships-subscriptions/get/organization/transactions",
-        {
-          params: {
-            searchParam: debouncedSearch.trim(),
-          },
+      let resp = await newClient.get("/api/users/transactions/fetch?", {
+        params: {
+          search: debouncedSearch.trim() || null,
+          page: 1,
+          limit: 10,
         },
-      );
+      });
       return resp.data;
     },
   });
@@ -141,11 +140,11 @@ export default function OrgTransactions() {
   }
   return (
     <div className="p-6 w-full mx-auto">
-      <Header mobile organisation data={user} title={"Designation"} />
-      <h1 className="text-2xl font-bold mb-4 mt-6">
+      <Header mobile organisation data={user} title={"Transactions"} />
+      {/*<h1 className="text-2xl font-bold mb-4 mt-6">
         Organization Transactions
-      </h1>
-      <div className="mb-6">
+      </h1>*/}
+      <div className=" my-6">
         <input
           type="text"
           className="w-full px-4 bg-white font-semibold py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

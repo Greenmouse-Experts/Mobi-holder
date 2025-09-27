@@ -87,14 +87,11 @@ export default function UserTransactions() {
   const query = useQuery<TransactionsResponse>({
     queryKey: ["transactions", debouncedSearch],
     queryFn: async () => {
-      let resp = await newClient.get(
-        "/api/memberships-subscriptions/get/individual/transactions",
-        {
-          params: {
-            searchParam: debouncedSearch.trim(),
-          },
+      let resp = await newClient.get("/api/users/transactions/fetch", {
+        params: {
+          searchParam: debouncedSearch.trim(),
         },
-      );
+      });
       return resp.data;
     },
   });
