@@ -139,11 +139,13 @@ export default function Header({
         className={`${mobile ? "lg:flex md:flex hidden" : "flex w-full md:px-0 px-3 flex-col"} lg:w-[32%] md:w-[40%]`}
       >
         <div
-          className={`w-fit ml-auto flex flex-col gap-6 ${profile ? "p-2 rounded-md bg-mobiSearchDark" : ""}`}
+          className={`w-full flex flex-col gap-6 ${profile ? "p-2 rounded-md bg-mobiSearchDark" : ""}`}
         >
-          <div className="flex items-center justify-center border  border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
-            <div className="">
-              {/* <p className="text-sm font-semibold">{superAdmin ? 'Admin Profile' : 'My Profile'}</p>*/}
+          <div className="flex items-center justify-center border w-fit ml-auto border-mobiSearchDark bg-mobiBlock px-3 py-1 rounded-[7px]">
+            <div className="flex flex-grow">
+              <p className="text-sm font-semibold">
+                {superAdmin ? "Admin Profile" : null}
+              </p>
             </div>
             <div className="flex rounded-md">
               <Link
