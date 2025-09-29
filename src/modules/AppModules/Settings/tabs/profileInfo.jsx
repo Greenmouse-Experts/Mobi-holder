@@ -1,7 +1,7 @@
 import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import DropZone from "../../../../components/DropZone";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import { setUser } from "../../../../reducers/userSlice";
@@ -32,6 +32,7 @@ export default function ProfileInfo() {
     register: registerUpload,
     setValue: setValueUpload,
     handleSubmit: handleSubmitUpload,
+    control: uploadControl,
     formState: { errors: errorsUpload },
   } = useForm();
   const {
@@ -385,28 +386,50 @@ export default function ProfileInfo() {
             <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
               <div className="flex flex-col w-full gap-6">
                 <p className="-mb-3 text-mobiFormGray">Issue Date</p>
-                <Input
+                <Controller
                   name="issueDate"
-                  register={registerUpload}
-                  value={uploadedIDData?.issueDate}
-                  errors={errorsUpload}
-                  rules={{ required: "Issue Date is required" }}
-                  type="date"
-                  placeholder="Choose the issue date"
-                />
+                  control={uploadControl}
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          name="issueDate"
+                          register={registerUpload}
+                          {...field}
+                          value={uploadedIDData?.issueDate}
+                          errors={errorsUpload}
+                          rules={{ required: "Issue Date is required" }}
+                          type="date"
+                          placeholder="Choose the issue date"
+                        />
+                      </>
+                    );
+                  }}
+                ></Controller>
               </div>
 
               <div className="flex flex-col w-full gap-6">
                 <p className="-mb-3 text-mobiFormGray">Expiry Date</p>
-                <Input
+                <Controller
                   name="expiryDate"
-                  register={registerUpload}
-                  value={uploadedIDData?.expiryDate}
-                  errors={errorsUpload}
-                  rules={{ required: "Expiry Date is required" }}
-                  type="date"
-                  placeholder="Choose the expiry date"
-                />
+                  control={uploadControl}
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <Input
+                          name="expiryDate"
+                          register={registerUpload}
+                          {...field}
+                          value={uploadedIDData?.expiryDate}
+                          errors={errorsUpload}
+                          rules={{ required: "Expiry Date is required" }}
+                          type="date"
+                          placeholder="Choose the expiry date"
+                        />
+                      </>
+                    );
+                  }}
+                ></Controller>
               </div>
             </div>
 
