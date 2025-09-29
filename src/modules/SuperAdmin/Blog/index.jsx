@@ -612,7 +612,7 @@ const Blog = () => {
     return new Promise((resolve, reject) => {
       mutate({
         url: "/api/admins/blog/update",
-        method: "POST",
+        method: "PUT",
         data: blogData,
         headers: true,
         onSuccess: (response) => {
