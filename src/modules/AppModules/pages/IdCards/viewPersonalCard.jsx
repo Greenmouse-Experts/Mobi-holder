@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import Header from "../../../../components/Header";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import Input from "../../../../components/Input";
 import DropZone from "../../../../components/DropZone";
@@ -22,6 +22,7 @@ export default function ViewPersonalCard() {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm();
   const [isLoading, setIsLoading] = useState(true);
@@ -49,9 +50,13 @@ export default function ViewPersonalCard() {
       headers: true,
       hideToast: true,
       onSuccess: (response) => {
-        setIDCard(response.data.data);
-        const images = response.data.data.scanIDCard;
+        const card = response.data.data;
+        setIDCard(card);
+        const images = card.scanIDCard;
         setFiles([images.frontIdCard]);
+        console.log(card.issueDate);
+        setValue("issuedDate", card.issueDate);
+        setValue("expiryDate", card.expiryDate);
         setBackFiles([images.backIdCard]);
         setIsLoading(false);
       },
@@ -201,14 +206,20 @@ export default function ViewPersonalCard() {
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                       <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">Issued Date</p>
-                        <Input
-                          type="date"
-                          value={dateInput(idCard.issuedDate)}
+                        <Controller
+                          control={control}
                           name="issuedDate"
-                          register={register}
-                          rules={{ required: "Expiry Date is required" }}
-                          errors={errors}
-                          placeholder="Enter expiry date"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              type="date"
+                              value={dateInput(idCard.issuedDate)}
+                              register={register}
+                              rules={{ required: "issued Date is required" }}
+                              errors={errors}
+                              placeholder="Enter expiry date"
+                            />
+                          )}
                         />
                       </div>
                     </div>
@@ -216,18 +227,25 @@ export default function ViewPersonalCard() {
                     <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
                       <div className="flex flex-col w-full gap-6">
                         <p className="-mb-3 text-mobiFormGray">Expiry Date</p>
-                        <Input
-                          type="date"
-                          value={
-                            idCard.expiryDate
-                              ? dateInput(idCard.expiryDate)
-                              : ""
-                          }
+                        <Controller
+                          control={control}
                           name="expiryDate"
-                          register={register}
-                          rules={{ required: "Expiry Date is required" }}
-                          errors={errors}
-                          placeholder="Enter expiry date"
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              type="date"
+                              value={
+                                idCard.expiryDate
+                                  ? dateInput(idCard.expiryDate)
+                                  : ""
+                              }
+                              name="expiryDate"
+                              register={register}
+                              rules={{ required: "Expiry Date is required" }}
+                              errors={errors}
+                              placeholder="Enter expiry date"
+                            />
+                          )}
                         />
                       </div>
                     </div>

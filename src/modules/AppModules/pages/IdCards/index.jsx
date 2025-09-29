@@ -225,7 +225,7 @@ export default function IDCardsPage() {
           <div className="md:w-3/4 w-full md:px-0 px-3 md:flex-row flex flex-col gap-5">
             <StatCard
               cronTop
-              number={orgCards.length}
+              number={personalCards.length + orgCards.length}
               label="Total ID Cards"
               iconColor="bg-mobiLightGreen"
               IconComponent={
