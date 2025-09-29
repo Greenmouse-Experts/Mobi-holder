@@ -207,7 +207,26 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
     // });
     // return console.log(selectedFile);
     // return console.log(file.secure_url);
+    // return console.log(blog);
     try {
+      const contentState = editorState.getCurrentContent();
+      const htmlContent = draftToHtml(convertToRaw(contentState));
+
+      if (blog && blog.id) {
+        const blogData = {
+          id: blog.id,
+          title: data.title,
+          content: htmlContent,
+          banner: blog.banner,
+        };
+        if (selectedFile) {
+          const file = await upload.mutateAsync(selectedFile);
+          const url = file.secure_url;
+          blogData.banner = url;
+        }
+        console.log("blogging");
+        return await onSubmit(blogData);
+      }
       if (!selectedFile) {
         return toast.error("Please select a banner image");
       }
@@ -215,8 +234,6 @@ const BlogEditor = ({ blog = null, onSubmit, onCancel }) => {
       const url = file.secure_url;
 
       // Convert editor content to HTML
-      const contentState = editorState.getCurrentContent();
-      const htmlContent = draftToHtml(convertToRaw(contentState));
 
       const blogData = {
         title: data.title,
