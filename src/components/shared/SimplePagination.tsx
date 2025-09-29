@@ -10,8 +10,9 @@ interface Props {
 export default function SimplePagination(props: Props) {
   return (
     <MantineProvider>
-      <div>
+      <div className="mt-4">
         <Pagination
+          className="w-fit mx-auto"
           value={props.page || 1}
           onChange={props.onChange}
           total={props?.total || 0}
