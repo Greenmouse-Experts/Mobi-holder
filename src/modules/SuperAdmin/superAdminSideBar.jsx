@@ -5,6 +5,7 @@ import Theme from "../../components/Theme";
 import LogOutModal from "../../components/LogOutModal";
 import useModal from "../../hooks/modal";
 import ReusableModal from "../../components/ReusableModal";
+import { History } from "lucide-react";
 
 export default function SuperAdminSidebar({ mobile }) {
   const location = useLocation();
@@ -231,6 +232,13 @@ export default function SuperAdminSidebar({ mobile }) {
         },
       ],
       openChildren: false,
+    },
+    {
+      path: "/superadmin/activityLog",
+      slug: "Transactions",
+      name: "Transactions",
+      icon: <History size={20} className="mr-2" />,
+      children: [],
     },
     {
       path: "/superadmin/activityLog",

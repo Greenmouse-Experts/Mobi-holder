@@ -90,10 +90,10 @@ export default function AdminTransactions() {
   const query = useQuery<TransactionsResponse>({
     queryKey: ["org-transactions", debouncedSearch],
     queryFn: async () => {
-      let resp = await newClient.get("/admins/transactions/search", {
-        params: {
-          searchParam: debouncedSearch.trim(),
-        },
+      let resp = await newClient.get("/api/admins/transactions/search", {
+        // params: {
+        //   searchParam: debouncedSearch.trim(),
+        // },
       });
       return resp.data;
     },
