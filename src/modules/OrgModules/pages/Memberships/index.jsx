@@ -370,7 +370,7 @@ export default function OrgMembership() {
               className="bg-mobiDarkCloud rounded-md shadow-md py-2 px-4 md:w-[70%] w-full flex items-center justify-between"
             >
               <div className="flex flex-col items-center w-full gap-3">
-                <span className={`flex gap-1`}>Add Member</span>
+                <span className={`flex gap-1`}>Invite Member</span>
                 <svg
                   width="54"
                   height="54"
