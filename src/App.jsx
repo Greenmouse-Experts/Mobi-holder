@@ -16,7 +16,7 @@ import OrgRoutes from "./routes/OrgRoutes";
 import SuperAdminRoutes from "./routes/SuperAdminRoutes";
 import ProtectedRoute from "./routes/ProtectedRoutes";
 import AdminProtectedRoute from "./routes/AdminProtectedRoute";
-
+import "@mantine/core/styles.css";
 function App() {
   const [splash, setSplash] = useState(false);
 

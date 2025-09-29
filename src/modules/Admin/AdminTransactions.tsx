@@ -3,6 +3,7 @@ import { useMemo, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import apiClient, { newClient } from "../../api/apiFactory";
 import Header from "../SuperAdmin/header";
+import SimplePagination from "../../components/shared/SimplePagination";
 // import Header from "../header";
 
 // import { getTransactions } from '../../services/transactions';
@@ -69,6 +70,11 @@ export interface TransactionsResponse {
   code: number;
   message: string;
   data: Transaction[];
+  pagination: {
+    total: number;
+    limit: number;
+    page: number;
+  };
 }
 function useDebouncedValue<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
@@ -83,6 +89,8 @@ function useDebouncedValue<T>(value: T, delay: number): T {
 
 export default function AdminTransactions() {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+
   const debouncedSearch = useDebouncedValue(search, 400);
   const user = useSelector(
     (state: { orgData: { orgData: any } }) => state.orgData.orgData,
@@ -91,9 +99,10 @@ export default function AdminTransactions() {
     queryKey: ["org-transactions", debouncedSearch],
     queryFn: async () => {
       let resp = await newClient.get("/api/admins/transactions/search", {
-        // params: {
-        //   searchParam: debouncedSearch.trim(),
-        // },
+        params: {
+          searchParam: debouncedSearch.trim(),
+          page: page,
+        },
       });
       return resp.data;
     },
@@ -213,6 +222,7 @@ export default function AdminTransactions() {
               )}
             </tbody>
           </table>
+          <SimplePagination page={page} total={query.data?.pagination.total} />
         </div>
       )}
     </div>
