@@ -144,7 +144,7 @@ export default function ViewPersonalCard() {
               </p>
               <p className="text-base">Update your existing card</p>
             </div>
-            <div className="w-full flex justify-end">
+            {/* <div className="w-full flex justify-end">
               <Button
                 onClick={() => setShowExportModal(true)}
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg"
@@ -152,7 +152,7 @@ export default function ViewPersonalCard() {
               >
                 Export Card
               </Button>
-            </div>
+            </div>*/}
           </div>
 
           <div className="w-full flex flex-grow">
