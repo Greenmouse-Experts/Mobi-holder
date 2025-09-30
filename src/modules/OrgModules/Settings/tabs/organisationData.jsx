@@ -86,7 +86,7 @@ export default function OrganisationData() {
       companyName: data.companyName,
       companyEmail: data.companyEmail,
       phoneNumber: data.phoneNumber,
-      natureOfOrganization,
+      natureOfOrganization: data.natureOfOrganization || "closed",
     };
 
     // Remove fields that shouldn't be in update payload
@@ -104,11 +104,12 @@ export default function OrganisationData() {
           state: data.state,
           street: data.address,
         },
-        natureOfOrganization,
+        natureOfOrganization: data.natureOfOrganization || "closed",
       },
       headers: true,
       onSuccess: (response) => {
         dispatch(setOrg(response.data.data));
+        window.location.reload();
         setIsLoading(false);
       },
       onError: () => setIsLoading(false),
@@ -152,7 +153,10 @@ export default function OrganisationData() {
       method: "PUT",
       data: { photo: uploadedUrl },
       headers: true,
-      onSuccess: (response) => dispatch(setOrg(response.data.data)),
+      onSuccess: (response) => {
+        dispatch(setOrg(response.data.data));
+        get_docs.refetch();
+      },
     });
   };
 
@@ -251,8 +255,8 @@ export default function OrganisationData() {
               type="text"
               name="companyName"
               register={register}
-              watch={watch}
-              setValue={setValue}
+              // watch={watch}
+              // setValue={setValue}
               rules={{ required: "Company Name is required" }}
               errors={errors}
               placeholder="Company Name"
@@ -267,8 +271,6 @@ export default function OrganisationData() {
                 type="text"
                 name="phoneNumber"
                 register={register}
-                watch={watch}
-                setValue={setValue}
                 rules={{ required: "Phone Number is required" }}
                 errors={errors}
                 placeholder="Phone Number"
@@ -281,8 +283,6 @@ export default function OrganisationData() {
                 type="text"
                 name="companyEmail"
                 register={register}
-                watch={watch}
-                setValue={setValue}
                 rules={{ required: "Company Email is required" }}
                 errors={errors}
                 placeholder="Email"
@@ -297,8 +297,6 @@ export default function OrganisationData() {
               type="text"
               name="address"
               register={register}
-              watch={watch}
-              setValue={setValue}
               rules={{ required: "Company Address is required" }}
               errors={errors}
               placeholder="Enter your address"
@@ -314,8 +312,6 @@ export default function OrganisationData() {
                 type="text"
                 name="country"
                 register={register}
-                watch={watch}
-                setValue={setValue}
                 rules={{ required: "Country is required" }}
                 errors={errors}
                 placeholder="Choose your country"
@@ -329,8 +325,6 @@ export default function OrganisationData() {
                 type="text"
                 name="state"
                 register={register}
-                watch={watch}
-                setValue={setValue}
                 rules={{ required: "State is required" }}
                 errors={errors}
                 placeholder="Choose your state"
