@@ -213,11 +213,15 @@ export default function ViewPersonalCard() {
                             <Input
                               {...field}
                               type="date"
-                              value={dateInput(idCard.issuedDate)}
+                              value={
+                                idCard.issuedDate
+                                  ? dateInput(idCard.issuedDate)
+                                  : ""
+                              }
                               register={register}
                               rules={{ required: "issued Date is required" }}
                               errors={errors}
-                              placeholder="Enter expiry date"
+                              placeholder="Enter issue date"
                             />
                           )}
                         />
