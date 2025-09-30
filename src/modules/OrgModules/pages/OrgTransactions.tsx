@@ -4,13 +4,6 @@ import { useMemo, useState, useEffect } from "react";
 import Header from "../../../components/Header";
 import { useSelector } from "react-redux";
 // import { getTransactions } from '../../services/transactions';
-interface Plan {
-  id: number;
-  name: string;
-  price: string;
-  validity: number;
-  description: string;
-}
 
 interface PaystackResponse {
   amount: number;
@@ -22,45 +15,17 @@ interface PaystackResponse {
   reference: string;
 }
 
-interface Individual {
-  isVerified: boolean;
-  id: string;
-  mobiHolderId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  emailVerifiedAt: string;
-  username: string;
-  phoneNumber: string;
-  dateOfBirth: string | null;
-  companyName: string | null;
-  companyAddress: string | null;
-  companyEmail: string | null;
-  aboutCompany: string | null;
-  natureOfOrganization: string | null;
-  isSuperAdmin: boolean;
-  accountType: string;
-  acceptedTnC: boolean;
-  photo: string | null;
-  wallet: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 export interface Transaction {
   id: number;
-  individualId: string;
-  organizationId: string;
-  subscriptionId: number;
-  plan: Plan;
+  userId: string;
+  type: string;
   amount: string;
-  paystackResponse: PaystackResponse;
   status: string;
   reference: string;
+  description: string;
+  paystackResponse: PaystackResponse;
   createdAt: string;
   updatedAt: string;
-  individual: Individual;
 }
 
 export interface TransactionsResponse {
@@ -107,7 +72,7 @@ export default function OrgTransactions() {
   if (query.isError) {
     return (
       <>
-        <Header mobile organisation data={user} title={"Designation"} />
+        <Header mobile organisation data={user} title={"Transactions"} />
         <div className="flex flex-col items-center justify-center mt-8 p-4 min-h-[520px] rounded-lg shadow-md">
           <div className="mb-4">
             <svg
@@ -148,7 +113,7 @@ export default function OrgTransactions() {
         <input
           type="text"
           className="w-full px-4 bg-white font-semibold py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Search by name, email, plan, or reference..."
+          placeholder="Search by type, description, or reference..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -165,9 +130,8 @@ export default function OrgTransactions() {
             <thead>
               <tr className="bg-gray-100 text-gray-700">
                 <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Name</th>
-                <th className="py-2 px-4 border-b">Email</th>
-                <th className="py-2 px-4 border-b">Plan</th>
+                <th className="py-2 px-4 border-b">Type</th>
+                <th className="py-2 px-4 border-b">Description</th>
                 <th className="py-2 px-4 border-b">Amount</th>
                 <th className="py-2 px-4 border-b">Status</th>
                 <th className="py-2 px-4 border-b">Reference</th>
@@ -176,7 +140,7 @@ export default function OrgTransactions() {
             <tbody>
               {filteredTransactions.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-6 text-gray-500">
+                  <td colSpan={6} className="text-center py-6 text-gray-500">
                     No transactions found.
                   </td>
                 </tr>
@@ -186,18 +150,13 @@ export default function OrgTransactions() {
                     <td className="py-2 px-4 border-b">
                       {new Date(tx.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="py-2 px-4 border-b">
-                      {tx.individual?.firstName} {tx.individual?.lastName}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {tx.individual?.email}
-                    </td>
-                    <td className="py-2 px-4 border-b">{tx.plan?.name}</td>
+                    <td className="py-2 px-4 border-b">{tx.type}</td>
+                    <td className="py-2 px-4 border-b">{tx.description}</td>
                     <td className="py-2 px-4 border-b">{tx.amount}</td>
                     <td className="py-2 px-4 border-b">
                       <span
                         className={
-                          tx.status === "success"
+                          tx.status === "successful"
                             ? "text-green-600 font-semibold"
                             : tx.status === "failed"
                               ? "text-red-600 font-semibold"
