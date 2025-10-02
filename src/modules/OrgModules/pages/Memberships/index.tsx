@@ -274,7 +274,6 @@ export default function OrgMembership() {
   useEffect(() => {
     console.info(allMembers[0]);
   }, [allMembers]);
-
   return (
     <>
       {" "}

@@ -69,6 +69,7 @@ const OrgRoutes = [
   <Route path="event-history" element={<OrgEventHistory />} />,
   <Route path="id-cards" element={<OrgIDCardsPage />} />,
   <Route path="membership" element={<OrgMembership />} />,
+  <Route path="memberships" element={<OrgMembership />} />,
   <Route path="add-card" element={<OrgAddCard />} />,
   <Route path="cards/structure" element={<CardStructure />} />,
   <Route path="cards/createUser/:id" element={<CreateUserCard />} />,
