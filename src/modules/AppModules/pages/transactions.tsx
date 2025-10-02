@@ -67,7 +67,13 @@ export interface TransactionsResponse {
   code: number;
   message: string;
   data: Transaction[];
+  pagination: {
+    total: number;
+    limit: number;
+    page: number;
+  };
 }
+
 function useDebouncedValue<T>(value: T, delay: number): T {
   const [debounced, setDebounced] = useState(value);
 
@@ -157,14 +163,13 @@ export default function UserTransactions() {
           Error loading transactions.
         </div>
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
           <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow">
             <thead>
               <tr className="bg-gray-100 text-gray-700">
                 <th className="py-2 px-4 border-b">Date</th>
-                <th className="py-2 px-4 border-b">Name</th>
-                <th className="py-2 px-4 border-b">Email</th>
-                <th className="py-2 px-4 border-b">Plan</th>
+                <th className="py-2 px-4 border-b">Type</th>
+                <th className="py-2 px-4 border-b">Description</th>
                 <th className="py-2 px-4 border-b">Amount</th>
                 <th className="py-2 px-4 border-b">Status</th>
                 <th className="py-2 px-4 border-b">Reference</th>
@@ -173,7 +178,7 @@ export default function UserTransactions() {
             <tbody>
               {filteredTransactions.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center py-6 text-gray-500">
+                  <td colSpan={6} className="text-center py-6 text-gray-500">
                     No transactions found.
                   </td>
                 </tr>
@@ -183,18 +188,13 @@ export default function UserTransactions() {
                     <td className="py-2 px-4 border-b">
                       {new Date(tx.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="py-2 px-4 border-b">
-                      {tx.individual?.firstName} {tx.individual?.lastName}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {tx.individual?.email}
-                    </td>
-                    <td className="py-2 px-4 border-b">{tx.plan?.name}</td>
+                    <td className="py-2 px-4 border-b">{tx.type}</td>
+                    <td className="py-2 px-4 border-b">{tx.description}</td>
                     <td className="py-2 px-4 border-b">{tx.amount}</td>
                     <td className="py-2 px-4 border-b">
                       <span
                         className={
-                          tx.status === "success"
+                          tx.status === "successful"
                             ? "text-green-600 font-semibold"
                             : tx.status === "failed"
                               ? "text-red-600 font-semibold"
