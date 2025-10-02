@@ -63,6 +63,7 @@ export default function OrganisationData() {
     register: registerUpload,
     setValue: setValueUpload,
     handleSubmit: handleSubmitUpload,
+    reset: resetUpload,
     formState: { errors: errorsUpload },
   } = useForm();
 
@@ -73,6 +74,14 @@ export default function OrganisationData() {
       return resp.data.data;
     },
   });
+
+  useEffect(() => {
+    resetUpload({
+      registrationNumber: get_docs?.data?.registrationNumber,
+      registrationDate: get_docs?.data?.registrationDate,
+    });
+    setFiles([get_docs?.data?.documentUrl]);
+  }, [get_docs.data]);
   const uploadedIDData = get_docs.data?.data;
 
   const changeProfile = (data) => {
@@ -206,6 +215,7 @@ export default function OrganisationData() {
         ? [uploadedIDData.documentUrl]
         : [];
 
+  // return <>{JSON.stringify(get_docs.data)}</>;
   return (
     <>
       {/* Profile Form */}
@@ -408,7 +418,7 @@ export default function OrganisationData() {
                 </p>
                 <DropZone onUpload={handleDrop} />
               </div>
-              <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="grid grid-cols-1 gap-4 mt-4">
                 {displayFiles.map((fileObj, index) => (
                   <div key={index} className="relative">
                     <img
