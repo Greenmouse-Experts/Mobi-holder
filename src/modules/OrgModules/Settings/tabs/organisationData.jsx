@@ -1,4 +1,3 @@
-import Input from "../../../../components/Input";
 import { Button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
@@ -12,6 +11,7 @@ import { setOrg } from "../../../../reducers/organisationSlice";
 import Loader from "../../../../components/Loader";
 import useFileUpload from "../../../../api/hooks/useFileUpload";
 import { useQuery } from "@tanstack/react-query";
+import SimpleInput from "../../../../components/shared/SimpleInput";
 
 // Helper function to parse address
 const parseAddress = (address) => {
@@ -250,7 +250,8 @@ export default function OrganisationData() {
 
           {/* Company Name */}
           <div className="flex flex-col w-full gap-6">
-            <p className="-mb-3 text-mobiFormGray">Company Name</p>
+            <SimpleInput {...register("companyName")} label="Company Name" />
+            {/* <p className="-mb-3 text-mobiFormGray">Company Name</p>
             <Input
               type="text"
               name="companyName"
@@ -260,31 +261,27 @@ export default function OrganisationData() {
               rules={{ required: "Company Name is required" }}
               errors={errors}
               placeholder="Company Name"
-            />
+            />*/}
           </div>
 
           {/* Phone and Email */}
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
             <div className="flex flex-col w-full gap-6">
-              <p className="-mb-3 text-mobiFormGray">Company Phone Number</p>
-              <Input
-                type="text"
-                name="phoneNumber"
-                register={register}
-                rules={{ required: "Phone Number is required" }}
-                errors={errors}
+              <SimpleInput
+                {...register("phoneNumber", {
+                  required: "Phone Number is required",
+                })}
+                label="Company Phone Number"
                 placeholder="Phone Number"
               />
             </div>
 
             <div className="flex flex-col w-full gap-6">
-              <p className="-mb-3 text-mobiFormGray">Company Email</p>
-              <Input
-                type="text"
-                name="companyEmail"
-                register={register}
-                rules={{ required: "Company Email is required" }}
-                errors={errors}
+              <SimpleInput
+                {...register("companyEmail", {
+                  required: "Company Email is required",
+                })}
+                label="Company Email"
                 placeholder="Email"
               />
             </div>
@@ -292,13 +289,11 @@ export default function OrganisationData() {
 
           {/* Address */}
           <div className="flex flex-col w-full gap-6">
-            <p className="-mb-3 text-mobiFormGray">Company Address</p>
-            <Input
-              type="text"
-              name="address"
-              register={register}
-              rules={{ required: "Company Address is required" }}
-              errors={errors}
+            <SimpleInput
+              {...register("address", {
+                required: "Company Address is required",
+              })}
+              label="Company Address"
               placeholder="Enter your address"
             />
           </div>
@@ -306,27 +301,17 @@ export default function OrganisationData() {
           {/* Country and State */}
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-6">
             <div className="flex md:w-1/2 flex-col gap-6">
-              <p className="-mb-3 text-mobiFormGray">Country</p>
-              <Input
-                icon="human.svg"
-                type="text"
-                name="country"
-                register={register}
-                rules={{ required: "Country is required" }}
-                errors={errors}
+              <SimpleInput
+                {...register("country", { required: "Country is required" })}
+                label="Country"
                 placeholder="Choose your country"
               />
             </div>
 
             <div className="flex md:w-1/2 flex-col gap-6">
-              <p className="-mb-3 text-mobiFormGray">State</p>
-              <Input
-                icon="human.svg"
-                type="text"
-                name="state"
-                register={register}
-                rules={{ required: "State is required" }}
-                errors={errors}
+              <SimpleInput
+                {...register("state", { required: "State is required" })}
+                label="State"
                 placeholder="Choose your state"
               />
             </div>
@@ -383,43 +368,35 @@ export default function OrganisationData() {
 
             {/* Document Number */}
             <div className="flex flex-col w-full gap-6">
-              <p className="-mb-3 text-mobiFormGray">Card/Document Number</p>
-              <Input
-                type="text"
-                name="registrationNumber"
-                value={uploadedIDData?.registrationNumber}
-                register={registerUpload}
-                errors={errorsUpload}
-                rules={{ required: "Document Number is required" }}
+              <SimpleInput
+                {...registerUpload("registrationNumber", {
+                  required: "Document Number is required",
+                })}
+                label="Card/Document Number"
                 placeholder="Enter card Number"
+                defaultValue={uploadedIDData?.registrationNumber}
               />
             </div>
 
             {/* Registration Date */}
             <div className="flex flex-col w-full gap-6">
-              <p className="-mb-3 text-mobiFormGray">
-                Company Registration Date
-              </p>
-              <Input
+              <SimpleInput
                 type="date"
-                name="registrationDate"
-                register={registerUpload}
-                value={uploadedIDData?.registrationDate}
-                onChange={(value) =>
-                  setValueUpload("registrationDate", value, {
-                    shouldValidate: true,
-                  })
-                }
-                disableFutureDates
-                rules={{
+                {...registerUpload("registrationDate", {
                   required: "Registration Date is required",
                   validate: (value) => {
                     const date = new Date(value);
                     return !isNaN(date.getTime()) || "Invalid date";
                   },
-                }}
-                errors={errorsUpload}
+                })}
+                label="Company Registration Date"
                 placeholder="Enter registration date"
+                defaultValue={uploadedIDData?.registrationDate}
+                onChange={(value) =>
+                  setValueUpload("registrationDate", value, {
+                    shouldValidate: true,
+                  })
+                }
               />
             </div>
 
