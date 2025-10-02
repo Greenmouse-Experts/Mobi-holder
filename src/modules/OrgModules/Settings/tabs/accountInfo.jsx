@@ -7,6 +7,7 @@ import { useState } from "react";
 import { setOrg } from "../../../../reducers/organisationSlice";
 import { Button } from "@material-tailwind/react";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
+import SimpleInput from "../../../../components/shared/SimpleInput";
 
 export default function AccountInfo() {
   const user = useSelector((state) => state.orgData.orgData);
@@ -58,13 +59,14 @@ export default function AccountInfo() {
       <div className="w-full flex flex-col gap-6">
         <div className="flex flex-col w-full gap-6">
           <p className="-mb-3 text-mobiFormGray">MobiHolder ID</p>
-          <Input
+          <SimpleInput {...register("mobiholderId")} />
+          {/* <Input
             type="text"
             register={register}
             name="mobiholderId"
             disabled
             placeholder="MobiHolder ID"
-          />
+          />*/}
         </div>
       </div>
 
@@ -83,13 +85,7 @@ export default function AccountInfo() {
         </div>
         <div className="flex flex-col w-full gap-6">
           <p className="-mb-3 text-mobiFormGray">Date Joined</p>
-          <Input
-            disabled
-            name="dateJoined"
-            register={register}
-            type="text"
-            placeholder="Email"
-          />
+          <SimpleInput {...register("dateJoined")} />
         </div>
       </div>
       <div className="flex">
