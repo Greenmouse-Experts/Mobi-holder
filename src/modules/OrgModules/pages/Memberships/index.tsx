@@ -281,6 +281,9 @@ export default function OrgMembership() {
       <div className="w-full flex h-full animate__animated animate__fadeIn">
         <div className="w-full flex flex-col gap-5 h-full">
           <Header mobile organisation data={user} title={"Membership"} />
+          <p className="px-3 text-base">
+            Manage your members and subscriptions, all in one place
+          </p>
           <div className="w-full flex flex-col gap-2">
             <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">
               Membership
@@ -394,9 +397,9 @@ export default function OrgMembership() {
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
+              title="All Members"
               filter
-              subTitle={<span>All Members</span>}
+              // subTitle={<span>All Members</span>}
               exportData
               tableHeader={TableHeaders}
               sortFunc={(field, order) => {
