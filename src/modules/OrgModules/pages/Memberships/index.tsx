@@ -134,7 +134,7 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
                 <p className="-mb-3 text-mobiFormGray">Reason for declining</p>
                 <Input
                   type="text"
-                  name="firstname"
+                  name="reason"
                   register={register}
                   placeholder={"Reason for declining"}
                 />

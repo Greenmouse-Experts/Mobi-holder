@@ -192,7 +192,11 @@ export default function JoinOrganisation() {
                     >
                       Date Joined (Required)
                     </label>
-                    <div className="relative">
+                    <div
+                      className="relative "
+                      onClick={(e) => e.stopPropagation()}
+                      onMouseDown={(e) => e.stopPropagation()}
+                    >
                       <Input
                         type="date"
                         name="dateJoined"

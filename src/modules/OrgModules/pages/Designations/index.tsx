@@ -95,7 +95,7 @@ export default function Designations() {
   };
 
   return (
-    <div className="px-4 md:px-0 min-h-screen  w-screen font-sans relative">
+    <div className="px-4 md:px-0 md:w-full  w-screen font-sans relative">
       <Header
         mobile
         organisation
