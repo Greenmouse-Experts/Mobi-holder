@@ -6,7 +6,7 @@ import Input from "../../../../components/Input";
 import { useForm } from "react-hook-form";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import AvatarInitials from "../../../../components/AvatarInitials";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Building, MapPin } from "lucide-react"; // Import Lucide icons
 import { toast } from "react-toastify";
@@ -40,6 +40,15 @@ interface paramsData {
   createdAt: string;
   updatedAt: string;
 }
+
+function getFormattedCurrentDate(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export default function JoinOrganisation() {
   //@ts-ignore
   const user = useSelector((state) => state.userData.data);
@@ -50,7 +59,7 @@ export default function JoinOrganisation() {
     (state) => state.userData.paramsData,
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [iniData, setIniDate] = useState("");
+  const [joinDate, setJoinDate] = useState(getFormattedCurrentDate());
   const [role, setRole] = useState("");
   const {
     register,
@@ -63,13 +72,12 @@ export default function JoinOrganisation() {
 
   const joinOrganisation = (data) => {
     console.log(role, "role");
-    if (!iniData.trim()) return toast.error("date joined required");
     if (!role.trim()) return toast.error("role is required");
     const payload = {
       organizationId: paramsData.id,
       ...data,
       // Format the date if necessary, or send as-is (YYYY-MM-DD for input type="date")
-      joinDate: iniData,
+      joinDate: joinDate,
       designation: role,
     };
     setIsLoading(true);
@@ -184,29 +192,18 @@ export default function JoinOrganisation() {
                 className="space-y-8"
               >
                 <div className="w-full flex flex-col gap-6">
-                  {/* Date Joined */}
+                  {/* Date Joined - Removed Input, now auto-set */}
                   <div className="flex flex-col relative w-full gap-2">
                     <label
                       htmlFor="dateJoined"
                       className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                     >
-                      Date Joined (Required)
+                      Date Joined (Auto-filled with today's date)
                     </label>
-                    <div
-                      className="relative "
-                      onClick={(e) => e.stopPropagation()}
-                      onMouseDown={(e) => e.stopPropagation()}
-                    >
-                      <Input
-                        type="date"
-                        name="dateJoined"
-                        value={iniData}
-                        onChange={setIniDate}
-                        errors={errors}
-                        placeholder="Select Date"
-                        className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-mobiPink focus:border-mobiPink dark:bg-gray-700 dark:text-white"
-                      />
+                    <div className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                      {joinDate}
                     </div>
+                    {/* Hidden input to satisfy useForm if needed, but we use joinDate state directly */}
                   </div>
 
                   {/* Role/Designation */}
