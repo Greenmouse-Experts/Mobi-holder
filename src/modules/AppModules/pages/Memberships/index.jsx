@@ -72,6 +72,7 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
       console.error("closeModal is not defined");
     }
   };
+  // return <></>;
 
   return (
     <>
@@ -278,12 +279,16 @@ export default function Membership() {
     });
   };
   const [isVisible, setVisible] = useState(false);
-  const dialogRef = useRef();
+  const dialogRef = useRef;
   return (
     <>
       <div className="w-full flex h-full animate__animated animate__fadeIn">
         <div className="w-full flex flex-col gap-5 h-full">
           <Header mobile data={user} title={"Membership"} />
+          <p className="px-3 text-lg">
+            Discover organizations, join as a member, and manage your
+            subscriptions in one place.
+          </p>
           <div className="w-full flex flex-col gap-8 md:my-5 my-2 px-3">
             <div className="w-full flex flex-col gap-2">
               <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">
@@ -353,7 +358,6 @@ export default function Membership() {
               </div>
             </Link>
           </div>
-
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
               title="All Organisations"
@@ -517,7 +521,6 @@ export default function Membership() {
               )}
             </Table>
           </div>
-
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
               title="Today"
@@ -617,7 +620,6 @@ export default function Membership() {
               )}
             </Table>
           </div>
-
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
               title="Today"

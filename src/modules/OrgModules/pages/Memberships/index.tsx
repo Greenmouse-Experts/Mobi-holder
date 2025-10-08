@@ -72,6 +72,7 @@ const UserDetails = ({ closeModal, userInfo, type, reload }) => {
     }
   };
 
+  // return <></>;
   return (
     <>
       <div className="w-full flex max-h-[95vh] overflow-auto flex-col px-3 py-6 gap-3 -mt-3">

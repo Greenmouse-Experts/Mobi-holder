@@ -217,7 +217,8 @@ export default function IDCardsPage() {
                 ID Card Management
               </p>
               <p className="text-base">
-                Create, mange and do more with our ID card module
+                Create & manage your personal and organization-issued ID cards
+                with ease
               </p>
             </div>
           </div>
@@ -252,7 +253,7 @@ export default function IDCardsPage() {
               className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between"
             >
               <div className="flex flex-col items-center w-full gap-3">
-                <span className={`flex gap-1`}>Add Your Card</span>
+                <span className={`flex gap-1`}>Digitize your card</span>
                 <svg
                   width="54"
                   height="54"

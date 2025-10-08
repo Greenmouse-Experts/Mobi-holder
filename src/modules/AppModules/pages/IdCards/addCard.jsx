@@ -46,11 +46,16 @@ export default function AddCard() {
       headers: true,
       data: payload,
       onSuccess: (response) => {
+        let data = response.data.data;
+        const id = data.id;
+        console.log(data);
         setIsLoading(false);
         setFiles([]); // Clear front ID card files
         setBackFiles([]); // Clear back ID card files
         reset(); // Reset all form fields to their default values
         setIssuedDate(null); // Clear the issuedDate state variable
+        navigate("/app/previewcard/" + id);
+
         // Optionally, if you want to navigate back to the previous page:
         // navigate(-1);
         // Or if you want to reload the entire page:
