@@ -59,6 +59,7 @@ export default function ViewPersonalCard() {
         setValue("expiryDate", card.expiryDate);
         setBackFiles([images.backIdCard]);
         setIsLoading(false);
+        setValue("issuedDate", card.issuedDate);
       },
       onError: () => {},
     });
