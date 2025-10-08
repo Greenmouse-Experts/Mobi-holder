@@ -180,7 +180,7 @@ export default function OrgIDCardsPage() {
                 ID Card Management
               </p>
               <p className="text-base">
-                Create, mange and do more with our ID card module
+                Create, customize, and manage ID cards for your members
               </p>
             </div>
           </div>
