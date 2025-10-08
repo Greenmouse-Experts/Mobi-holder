@@ -66,9 +66,10 @@ export default function OrgViewInvites() {
   };
 
   const inviteUser = (data) => {
+    console.log(data, eventDetails);
     setDisabled(true);
     const payload = {
-      eventId: id,
+      eventId: eventDetails.id,
       userId: data.userId,
       ticketId: data.ticketId,
       isFree: eventDetails.ticketType === "Free",
