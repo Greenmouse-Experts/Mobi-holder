@@ -241,7 +241,7 @@ export default function ViewInvites() {
                 Invites
               </p>
               <p className="text-base">
-                Invites for: sss
+                Invites for:{" "}
                 <span className="text-mobiBlue">{eventDetails.name}</span>
               </p>
             </div>
