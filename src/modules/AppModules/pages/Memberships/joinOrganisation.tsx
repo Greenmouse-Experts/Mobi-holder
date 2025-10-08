@@ -65,7 +65,11 @@ export default function JoinOrganisation() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      organizationEmail: paramsData?.companyEmail || "",
+    },
+  });
   const { mutate } = useApiMutation();
 
   const navigate = useNavigate();
@@ -229,14 +233,23 @@ export default function JoinOrganisation() {
                     >
                       Organisation Email (Optional)
                     </label>
-                    <Input
+                    <input
+                      {...register("organizationEmail")}
+                      // type="text"
+                      // name="organizationEmail"
+                      // register={register}
+                      placeholder="Organisation Email"
+                      className="p-3 border bg-transparent border-gray-300 dark:border-gray-600 rounded-lg focus:ring-mobiPink focus:border-mobiPink dark:bg-gray-700 dark:text-white"
+                    />
+                    {/*{paramsData.companyEmail}*/}
+                    {/*<Input
                       type="text"
                       name="organizationEmail"
-                      value={paramsData?.companyEmail}
+                      // defaultValue={paramsData?.companyEmail}
                       register={register}
                       placeholder="Organisation Email"
                       className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-mobiPink focus:border-mobiPink dark:bg-gray-700 dark:text-white"
-                    />
+                    />*/}
                   </div>
                 </div>
 
