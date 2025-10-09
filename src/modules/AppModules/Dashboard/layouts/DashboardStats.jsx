@@ -1,8 +1,9 @@
 import StatCard from "../../../../components/StatsCard";
 import cards from "../../../../assets/cards.svg";
 import organisation from "../../../../assets/organisation.svg";
-import subscriptions from "../../../../assets/subscriptions.svg";
+import subscriptionsIcon from "../../../../assets/subscriptions.svg";
 import calendar from "../../../../assets/calendar.svg";
+import { List } from "lucide-react";
 
 const DashboardStats = ({ orgData, idCards, subscriptions, events }) => {
   // return <>{ JSON.stringify(subscriptions)}</>
@@ -35,11 +36,14 @@ const DashboardStats = ({ orgData, idCards, subscriptions, events }) => {
         label="Subscriptions"
         iconColor="bg-mobiSubPurple"
         IconComponent={
-          <img
-            src={subscriptions}
-            alt="Subscriptions"
-            style={{ width: "20px" }}
-          />
+          <>
+            <img
+              src={subscriptionsIcon}
+              alt="Subscriptions"
+              style={{ width: "20px" }}
+            />
+            {/* <List />*/}
+          </>
         }
         colorGradient={["rgba(239, 107, 228, 1)", "rgba(52, 59, 79, 1)"]}
       />
