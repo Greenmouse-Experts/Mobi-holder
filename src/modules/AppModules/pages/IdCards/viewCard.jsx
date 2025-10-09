@@ -10,10 +10,15 @@ import StaffCardPortrait from "../../../../components/StaffCardPortrait";
 import { dateFormat } from "../../../../helpers/dateHelper";
 import { useQuery } from "@tanstack/react-query";
 import { FaFilePdf } from "react-icons/fa";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { useRef } from "react";
 
 export default function ViewCard() {
   const user = useSelector((state) => state.userData.data);
   const { register } = useForm();
+  const cardRef = useRef(null);
+  const detailsRef = useRef(null);
 
   const { id } = useParams();
 
@@ -63,9 +68,85 @@ export default function ViewCard() {
     );
   const cardData = query?.data?.data || {};
 
-  const handleExportPdf = () => {
-    // Placeholder for PDF export logic
-    alert("Export to PDF functionality not implemented yet.");
+  const handleExportPdf = async () => {
+    try {
+      const pdf = new jsPDF("p", "mm", "a4");
+      const cardOwnerName = `${cardData.individual?.firstName || ""} ${cardData.individual?.lastName || ""}`;
+
+      // Add title
+      pdf.setFontSize(20);
+      pdf.text("ID Card & Details", 20, 20);
+
+      pdf.setFontSize(12);
+      pdf.text(`Card Owner: ${cardOwnerName}`, 20, 35);
+      pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 45);
+
+      // Capture the card
+      if (cardRef.current) {
+        const cardCanvas = await html2canvas(cardRef.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+        });
+
+        const cardImgData = cardCanvas.toDataURL("image/png");
+        const cardImgWidth = 170;
+        const cardImgHeight =
+          (cardCanvas.height * cardImgWidth) / cardCanvas.width;
+
+        pdf.addImage(cardImgData, "PNG", 20, 60, cardImgWidth, cardImgHeight);
+      }
+
+      // Capture the details section
+      if (detailsRef.current) {
+        const detailsCanvas = await html2canvas(detailsRef.current, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+        });
+
+        const detailsImgData = detailsCanvas.toDataURL("image/png");
+        const detailsImgWidth = 170;
+        const detailsImgHeight =
+          (detailsCanvas.height * detailsImgWidth) / detailsCanvas.width;
+
+        // Calculate position to place details below card
+        const cardHeight = cardRef.current
+          ? (cardRef.current.offsetHeight * 170) / cardRef.current.offsetWidth
+          : 0;
+        const detailsY = 60 + cardHeight + 20; // 20mm spacing
+
+        // Check if we need a new page
+        if (detailsY + detailsImgHeight > 280) {
+          // A4 height minus margins
+          pdf.addPage();
+          pdf.addImage(
+            detailsImgData,
+            "PNG",
+            20,
+            20,
+            detailsImgWidth,
+            detailsImgHeight,
+          );
+        } else {
+          pdf.addImage(
+            detailsImgData,
+            "PNG",
+            20,
+            detailsY,
+            detailsImgWidth,
+            detailsImgHeight,
+          );
+        }
+      }
+
+      // Save the PDF
+      const fileName = `ID_Card_${cardOwnerName.replace(/\s+/g, "_")}_${new Date().getTime()}.pdf`;
+      pdf.save(fileName);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      alert("Failed to generate PDF. Please try again.");
+    }
   };
 
   const cardOwnerName = `${cardData.individual?.firstName || ""} ${cardData.individual?.lastName || ""}`;
@@ -112,7 +193,7 @@ export default function ViewCard() {
           {/* Main Content Area */}
           <div className="w-full  min-h-[500px] gap-6">
             {/* Card Display Area (Left/Center) */}
-            <div className="w-full grid place-items-center ">
+            <div ref={cardRef} className="w-fullgri ">
               {cardData.template?.layout === "horizontal" ||
               cardData.template?.layout === "Landscape" ? (
                 <StaffCard
@@ -131,7 +212,13 @@ export default function ViewCard() {
             </div>
 
             <div className="w-full mt-4">
-              <div className="w-full p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
+              <div
+                ref={detailsRef}
+                className="w-full p-8 bg-white rounded-2xl shadow-xl border border-gray-200"
+              >
+                <h2 className="text-xl font-semibold mb-6 text-gray-800 border-b pb-2">
+                  Card Details
+                </h2>
                 <form className="flex flex-col gap-6">
                   {/* Organisation */}
                   <div className="flex flex-col gap-2">
