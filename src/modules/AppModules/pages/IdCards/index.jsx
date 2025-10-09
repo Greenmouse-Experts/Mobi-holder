@@ -290,7 +290,7 @@ export default function IDCardsPage() {
                   className="px-3 bg-mobiDarkRoamn  py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[300px]"
                 />
               </div>
-              <div className="flex flex-col gap-2">
+              {/* <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium">Filter by Status</label>
                 <select
                   value={orgCardsStatusFilter}
@@ -304,15 +304,14 @@ export default function IDCardsPage() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div>*/}
             </div>
           </div>
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
               filter
-              subTitle={<span>Manage ID Cards</span>}
+              title={<span>Manage ID Cards</span>}
               exportData
               tableHeader={TableHeaders}
               sortFunc={(field, order) => {

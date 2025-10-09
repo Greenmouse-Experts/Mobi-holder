@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { OrgDashContaienr } from "../../OrgDashboard/layouts/OrgDashContainer";
+import { OrgDashContainer } from "../../OrgDashboard/layouts/OrgDashContainer";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { newApi } from "../../../../api/hooks/useApiMutation";
 import Input from "../../../../components/Input";
@@ -61,7 +61,7 @@ interface USER_DATA {
 
 export const LoadingComponent = () => {
   return (
-    <OrgDashContaienr>
+    <OrgDashContainer>
       <div className="w-full mx-auto p-6 bg-mobiDarkCloud bg-mobiDarkCloud rounded-lg shadow-md">
         <div className="animate-pulse">
           <div className="h-8 bg-gray-300 rounded w-1/4 mb-6"></div>
@@ -79,13 +79,13 @@ export const LoadingComponent = () => {
           </div>
         </div>
       </div>
-    </OrgDashContaienr>
+    </OrgDashContainer>
   );
 };
 
 export const ErrorComponent = ({ refetch }: { refetch: () => void }) => {
   return (
-    <OrgDashContaienr>
+    <OrgDashContainer>
       <div className="w-full mx-auto p-6 bg-mobiDarkCloud rounded-lg shadow-md">
         <div className="text-center py-12">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
@@ -103,7 +103,7 @@ export const ErrorComponent = ({ refetch }: { refetch: () => void }) => {
           </button>
         </div>
       </div>
-    </OrgDashContaienr>
+    </OrgDashContainer>
   );
 };
 
@@ -164,7 +164,7 @@ export default function EditMember() {
   if (query.isError) return <ErrorComponent refetch={query.refetch} />;
 
   return (
-    <OrgDashContaienr>
+    <OrgDashContainer>
       <div className="w-full mx-auto p-6 bg-mobiDarkCloud rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-mobiTableText">
           Edit Member
@@ -267,7 +267,7 @@ export default function EditMember() {
           </div>
         </form>
       </div>
-    </OrgDashContaienr>
+    </OrgDashContainer>
   );
 }
 

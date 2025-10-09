@@ -12,7 +12,7 @@ import {
 } from "@material-tailwind/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { newClient } from "../../api/apiFactory";
-import { OrgDashContaienr } from "../OrgModules/OrgDashboard/layouts/OrgDashContainer";
+import { OrgDashContainer } from "../OrgModules/OrgDashboard/layouts/OrgDashContainer";
 // import apiClient from "../../api/apiFactory";
 
 export default function OrgNotifications({ organisation }) {
@@ -79,7 +79,7 @@ export default function OrgNotifications({ organisation }) {
       : allNotifications;
   return (
     <>
-      <OrgDashContaienr>
+      <OrgDashContainer>
         <div className="w-full flex h-full animate__animated animate__fadeIn">
           <div className="w-full flex flex-col gap-5 h-full">
             <div className="w-full flex flex-col gap-8 my-2  px-3">
@@ -215,7 +215,7 @@ export default function OrgNotifications({ organisation }) {
             </div>
           </div>
         </div>
-      </OrgDashContaienr>
+      </OrgDashContainer>
     </>
   );
 }

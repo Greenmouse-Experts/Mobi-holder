@@ -344,6 +344,16 @@ export default function OrgIDCardsPage() {
                               Set As Default
                             </span>
                           </MenuItem>
+                          <MenuItem className="flex flex-col gap-3">
+                            <span
+                              className="cursor-pointer w-full"
+                              onClick={() =>
+                                navigate("/org/cards/structure/" + data.id)
+                              }
+                            >
+                              Edit Structure
+                            </span>
+                          </MenuItem>
                         </MenuList>
                       </Menu>
                     </td>

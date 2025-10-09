@@ -2,11 +2,21 @@ import { PropsWithChildren } from "react";
 import Header from "../../../../components/Header";
 import { useSelector } from "react-redux";
 
-export function OrgDashContaienr(props: PropsWithChildren) {
+export function OrgDashContainer(props: {
+  children: React.ReactNode;
+  title?: string;
+}) {
+  //@ts-ignore
   const user = useSelector((state) => state.orgData.orgData);
   return (
     <>
-      <Header mobile organisation data={user} title={"Membership"} />
+      {/* @ts-ignore */}
+      <Header
+        mobile
+        organisation
+        data={user}
+        title={props?.title || "Membership"}
+      />
       {props.children}
     </>
   );

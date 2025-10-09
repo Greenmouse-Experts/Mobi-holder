@@ -43,6 +43,7 @@ import EditMember from "../modules/OrgModules/pages/Memberships/EditMember";
 import OrgTransactions from "../modules/OrgModules/pages/OrgTransactions";
 import GeneralNotification from "../modules/General/GeneralNotification";
 import OrgNotifications from "../modules/General/OrgNotifications";
+import EditStructure from "../modules/OrgModules/pages/IdCards/editStructure";
 
 const OrgRoutes = [
   <Route path="dashboard" element={<OrgDashboard />} />,
@@ -72,6 +73,7 @@ const OrgRoutes = [
   <Route path="memberships" element={<OrgMembership />} />,
   <Route path="add-card" element={<OrgAddCard />} />,
   <Route path="cards/structure" element={<CardStructure />} />,
+  <Route path="cards/structure/:id" element={<EditStructure />} />,
   <Route path="cards/createUser/:id" element={<CreateUserCard />} />,
   <Route path="card/viewCard/:id" element={<PreviewCard />} />,
   <Route path="card/updateCard/:id" element={<UpdateCard />} />,
