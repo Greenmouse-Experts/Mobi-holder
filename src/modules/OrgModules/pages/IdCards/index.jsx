@@ -22,6 +22,7 @@ import RevokeCardModal from "./modal/revokeCard";
 import ReusableModal from "../../../../components/ReusableModal";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export default function OrgIDCardsPage() {
   const user = useSelector((state) => state.orgData.orgData);
@@ -65,7 +66,15 @@ export default function OrgIDCardsPage() {
       onError: () => {},
     });
   };
-
+  const delete_mutation = useMutation({
+    mutationFn: async (id) => {
+      let resp = await newApi.delete(`/api/idcards/template?templateId=` + id);
+      return resp.data;
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.message || "failed");
+    },
+  });
   const set_default_mutation = useMutation({
     mutationFn: async (id) => {
       let resp = await newApi.get(
@@ -351,7 +360,32 @@ export default function OrgIDCardsPage() {
                                 navigate("/org/cards/structure/" + data.id)
                               }
                             >
-                              Edit Structure
+                              Edit Template
+                            </span>
+                          </MenuItem>
+                          <MenuItem className="flex flex-col gap-3">
+                            <span
+                              className="cursor-pointer w-full"
+                              onClick={async () => {
+                                try {
+                                  toast.promise(
+                                    async () => {
+                                      return await delete_mutation.mutateAsync(
+                                        data.id,
+                                      );
+                                    },
+                                    {
+                                      success: "Template deleted successfully",
+                                      error: "Failed to delete template",
+                                      pending: "Deleting template...",
+                                    },
+                                  );
+                                } catch (error) {
+                                  console.log(" failederror");
+                                }
+                              }}
+                            >
+                              Delete
                             </span>
                           </MenuItem>
                         </MenuList>

@@ -21,7 +21,7 @@ interface TemplateData {
   createdAt: string;
   updatedAt: string;
 }
-interface API_RESPONSE {
+export interface API_RESPONSE {
   code: number;
   message: string;
   data: TemplateData;
