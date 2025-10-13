@@ -99,10 +99,10 @@ export function SimpleDesignationSelect(props: {
       let new_data = { ...e, label: e.name, value: e.name };
       return new_data;
     }) || [];
-  mapped_data.push({
-    label: "Member",
-    value: "Member",
-  });
+  // mapped_data.push({
+  //   label: "Member",
+  //   value: "Member",
+  // });
   if (props.initialValue?.trim()) {
     mapped_data.push({
       label: props.initialValue,
