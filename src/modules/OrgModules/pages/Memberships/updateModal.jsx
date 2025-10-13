@@ -9,6 +9,7 @@ const UpdateMembershipStatusModal = ({ closeModal, userInfo, reload }) => {
   const [deactivationReason, setDeactivationReason] = useState("");
 
   const updateMember = (status) => {
+    // return console.log(userInfo)
     const payload = {
       memberId: userInfo.memberId,
       membershipId: userInfo.id,
