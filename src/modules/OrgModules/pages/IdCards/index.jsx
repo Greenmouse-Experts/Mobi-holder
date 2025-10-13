@@ -189,7 +189,7 @@ export default function OrgIDCardsPage() {
                 ID Card Management
               </p>
               <p className="text-base">
-                Change, Create ID card to Create card template
+                Create, customize, and manage ID cards for your members
               </p>
             </div>
           </div>
@@ -234,7 +234,7 @@ export default function OrgIDCardsPage() {
               className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between"
             >
               <div className="flex flex-col items-center w-full gap-3">
-                <span className={`flex gap-1`}>Create ID Card</span>
+                <span className={`flex gap-1`}>Create Card Template</span>
                 <svg
                   width="54"
                   height="54"
