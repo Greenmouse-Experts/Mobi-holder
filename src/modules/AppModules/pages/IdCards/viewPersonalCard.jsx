@@ -246,7 +246,7 @@ export default function ViewPersonalCard() {
                               }
                               name="expiryDate"
                               register={register}
-                              rules={{ required: "Expiry Date is required" }}
+                              // rules={{ required: "Expiry Date is required" }}
                               errors={errors}
                               placeholder="Enter expiry date"
                             />
