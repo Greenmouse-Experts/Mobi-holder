@@ -481,7 +481,6 @@ export default function IDCardsPage() {
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
               filter
               subTitle={<span>Personal ID Cards</span>}
               exportData

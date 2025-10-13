@@ -553,7 +553,6 @@ export default function OrgMembership() {
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <div className="lg:w-[63%] md:w-[63%] w-full flex flex-col gap-5">
               <Table
-                title="Today"
                 filter
                 subTitle={<span>Pending Requests (Initiated)</span>}
                 exportData
@@ -659,7 +658,6 @@ export default function OrgMembership() {
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <div className="w-full flex flex-col gap-5">
               <Table
-                title="Today"
                 filter
                 subTitle={<span>Pending Requests (Received)</span>}
                 exportData
@@ -756,7 +754,6 @@ export default function OrgMembership() {
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
               filter
               subTitle={<span>BlackListed Members</span>}
               exportData
@@ -816,6 +813,9 @@ export default function OrgMembership() {
                       </td>
                       <td className="px-3 py-3 text-mobiTableText">
                         {data.individual.email}
+                      </td>
+                      <td className="px-3 py-3 text-mobiTableText">
+                        {formatDate(data.dateJoined)}
                       </td>
                       <td className="px-3 py-3 text-mobiTableText">
                         <Badge status={data.status} />

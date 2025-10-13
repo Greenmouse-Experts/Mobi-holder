@@ -11,6 +11,7 @@ import {
   MenuHandler,
   MenuItem,
   MenuList,
+  Tooltip,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import useApiMutation, { newApi } from "../../../../api/hooks/useApiMutation";
@@ -23,6 +24,18 @@ import ReusableModal from "../../../../components/ReusableModal";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import {
+  Pencil,
+  Trash2,
+  CheckCircle,
+  Eye,
+  RotateCw,
+  Fingerprint,
+  Users,
+  CreditCard,
+  PlusCircle,
+  MoreVertical,
+} from "lucide-react";
 
 export default function OrgIDCardsPage() {
   const user = useSelector((state) => state.orgData.orgData);
@@ -153,8 +166,11 @@ export default function OrgIDCardsPage() {
       data: payload,
       onSuccess: (response) => {
         getMemberCards();
+        toast.success("ID Card activated successfully");
       },
-      onError: () => {},
+      onError: () => {
+        toast.error("Failed to activate ID Card");
+      },
     });
   };
 
@@ -165,13 +181,24 @@ export default function OrgIDCardsPage() {
     }
     return (
       <Button
-        className="bg-mobiPink w-full px-1 rounded-full text-xs"
+        className="bg-mobiPink w-full px-1 rounded-full text-xs shadow-none hover:shadow-none"
         onClick={() => navigate(`/org/cards/createUser/${id}`)}
       >
-        <span className="text-xs normal-case">Create ID</span>
+        <span className="text-xs normal-case flex items-center justify-center gap-1">
+          <PlusCircle className="w-4 h-4" /> Create ID
+        </span>
       </Button>
     );
   };
+
+  const ColorDisplay = ({ color }) => (
+    <Tooltip content={color}>
+      <div
+        className="w-8 h-8 rounded-full border border-gray-600 shadow-inner"
+        style={{ backgroundColor: color }}
+      ></div>
+    </Tooltip>
+  );
 
   return (
     <>
@@ -188,25 +215,19 @@ export default function OrgIDCardsPage() {
               <p className="lg:text-2xl md:text-xl text-lg font-semibold md:hidden">
                 ID Card Management
               </p>
-              <p className="text-base">
+              <p className="text-base text-gray-400">
                 Create, customize, and manage ID cards for your members
               </p>
             </div>
           </div>
 
-          <div className="w-full md:px-0 px-3 md:flex-row flex flex-col gap-5">
+          <div className="w-full md:px-0 px-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <StatCard
               cronTop
               number={allMembers.length}
               label="Total Members"
               iconColor="bg-mobiLightGreen"
-              IconComponent={
-                <img
-                  src={cards}
-                  alt="ID Cards"
-                  style={{ width: "22px", color: "rgba(107, 239, 215, 1)" }}
-                />
-              }
+              IconComponent={<Users className="w-6 h-6 text-mobiLightGreen" />}
               colorGradient={["rgba(107, 239, 215, 1)", "rgba(52, 59, 79, 1)"]}
             />
             <StatCard
@@ -214,53 +235,44 @@ export default function OrgIDCardsPage() {
               number={memberCards.length}
               label="Total ID Cards"
               iconColor="bg-mobiOrange"
-              IconComponent={
-                <img src={cards} alt="ID Cards" style={{ width: "22px" }} />
-              }
+              IconComponent={<CreditCard className="w-6 h-6 text-mobiOrange" />}
               colorGradient={["rgba(239, 149, 107, 1)", "rgba(52, 59, 79, 1)"]}
             />
             <StatCard
               number={templates.length}
-              label="ID Card Category"
+              label="ID Card Templates"
               iconColor="bg-mobiSkyCloud"
               IconComponent={
-                <img src={cards} alt="ID Cards" style={{ width: "22px" }} />
+                <Fingerprint className="w-6 h-6 text-mobiSkyCloud" />
               }
               colorGradient={["rgba(107, 155, 239, 1)", "rgba(52, 59, 79, 1)"]}
             />
 
             <Link
               to={"/org/cards/structure"}
-              className="bg-mobiDarkCloud cursor-pointer rounded-md shadow-md py-2 px-4 md:w-1/2 flex items-center justify-between"
+              className="bg-mobiDarkCloud cursor-pointer rounded-lg shadow-lg p-4 flex items-center justify-between transition duration-300 ease-in-out hover:bg-mobiTheme"
             >
-              <div className="flex flex-col items-center w-full gap-3">
-                <span className={`flex gap-1`}>Create Card Template</span>
-                <svg
-                  width="54"
-                  height="54"
-                  viewBox="0 0 54 54"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="27" cy="27" r="27" fill="#2A2D4B" />
-                  <path
-                    d="M23.8033 37V16H28.1805V37H23.8033ZM15 28.5814V24.4031H37V28.5814H15Z"
-                    fill="#242EF2"
-                  />
-                  <path
-                    d="M23.8033 37V16H28.1805V37H23.8033ZM15 28.5814V24.4031H37V28.5814H15Z"
-                    fill="#242EF2"
-                  />
-                </svg>
+              <div className="flex flex-col items-start w-full gap-2">
+                <span className="text-lg font-semibold ">
+                  Create Card Template
+                </span>
+                <span className="text-sm text-gray-400">
+                  Design a new ID card layout
+                </span>
+              </div>
+              <div className="flex-shrink-0">
+                <PlusCircle className="w-10 h-10 text-mobiPink" />
               </div>
             </Link>
           </div>
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
+              title="ID Card Templates"
               filter
-              subTitle={<span>Manage ID Templates</span>}
+              subTitle={
+                <span>Manage and customize your ID card templates</span>
+              }
               exportData
               tableHeader={NewTableHeaders}
               sortFunc={(field, order) => {
@@ -300,7 +312,7 @@ export default function OrgIDCardsPage() {
                 templates.map((data, index) => (
                   <tr
                     key={index}
-                    className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"}`}
+                    className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"} hover:bg-mobiDarkCloud/70 transition duration-150`}
                   >
                     <td className="px-3 py-3 text-mobiTableText">
                       {data.name}
@@ -309,70 +321,58 @@ export default function OrgIDCardsPage() {
                       {data.layout}
                     </td>
                     <td className="px-3 py-3 text-mobiTableText">
-                      <span
-                        className="w-20 h-4 py-2 px-10"
-                        style={{ backgroundColor: `${data.backgroundColor}` }}
-                      />
+                      <ColorDisplay color={data.backgroundColor} />
                     </td>
                     <td className="px-3 py-3 text-mobiTableText">
-                      <span
-                        className="w-20 h-4 py-2 px-10"
-                        style={{ backgroundColor: `${data.textColor}` }}
-                      />
+                      <ColorDisplay color={data.textColor} />
                     </td>
                     <td className="px-3 py-3 text-mobiTableText">
-                      {data.is_default ? "Default" : "---"}
+                      {data.is_default ? (
+                        <Badge status="default" />
+                      ) : (
+                        <span className="text-gray-500">---</span>
+                      )}
                     </td>
                     <td className="px-6 py-3 cursor-pointer">
                       <Menu placement="left">
                         <MenuHandler>
-                          <span className="flex w-full cursor-pointer">
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z"
-                                stroke="#AEB9E1"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </span>
+                          <Button
+                            variant="text"
+                            className="p-0 m-0 min-w-0 h-auto text-mobiTableText hover:bg-transparent"
+                          >
+                            <MoreVertical className="w-5 h-5" />
+                          </Button>
                         </MenuHandler>
-                        <MenuList>
-                          <MenuItem className="flex flex-col gap-3">
-                            <span
-                              className="cursor-pointer"
+                        <MenuList className="bg-mobiDarkCloud border-mobiTheme shadow-lg">
+                          {!data.is_default && (
+                            <MenuItem
+                              className="flex items-center gap-2 text-mobiTableText hover:bg-mobiTheme hover:text-white"
                               onClick={() => setDefaultTemplate(data.id)}
                             >
+                              <CheckCircle className="w-4 h-4" />
                               Set As Default
-                            </span>
+                            </MenuItem>
+                          )}
+                          <MenuItem
+                            className="flex items-center gap-2 text-mobiTableText hover:bg-mobiTheme hover:text-white"
+                            onClick={() =>
+                              navigate("/org/cards/structure/" + data.id)
+                            }
+                          >
+                            <Pencil className="w-4 h-4" />
+                            Edit Template
                           </MenuItem>
-                          <MenuItem className="flex flex-col gap-3">
-                            <span
-                              className="cursor-pointer w-full"
-                              onClick={() =>
-                                navigate("/org/cards/structure/" + data.id)
-                              }
-                            >
-                              Edit Template
-                            </span>
-                          </MenuItem>
-                          <MenuItem className="flex flex-col gap-3">
-                            <span
-                              className="cursor-pointer w-full"
+                          {!data.is_default && (
+                            <MenuItem
+                              className="flex items-center gap-2 text-red-400 hover:bg-red-900/50 hover:text-red-300"
                               onClick={async () => {
                                 try {
                                   toast.promise(
                                     async () => {
-                                      return await delete_mutation.mutateAsync(
+                                      await delete_mutation.mutateAsync(
                                         data.id,
                                       );
+                                      getTemplates(); // Refresh templates after deletion
                                     },
                                     {
                                       success: "Template deleted successfully",
@@ -381,13 +381,14 @@ export default function OrgIDCardsPage() {
                                     },
                                   );
                                 } catch (error) {
-                                  console.log(" failederror");
+                                  console.log("deletion error", error);
                                 }
                               }}
                             >
+                              <Trash2 className="w-4 h-4" />
                               Delete
-                            </span>
-                          </MenuItem>
+                            </MenuItem>
+                          )}
                         </MenuList>
                       </Menu>
                     </td>
@@ -417,9 +418,11 @@ export default function OrgIDCardsPage() {
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
+              title="Issued ID Cards"
               filter
-              subTitle={<span>Manage ID Cards</span>}
+              subTitle={
+                <span>Manage all issued ID cards for your members</span>
+              }
               exportData
               tableHeader={TableHeaders}
               sortFunc={(field, order) => {
@@ -459,7 +462,7 @@ export default function OrgIDCardsPage() {
                 memberCards.map((data, index) => (
                   <tr
                     key={index}
-                    className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"}`}
+                    className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"} hover:bg-mobiDarkCloud/70 transition duration-150`}
                   >
                     <td className="px-3 py-3 text-mobiTableText">
                       {data.individual.firstName} {data.individual.lastName}
@@ -480,63 +483,48 @@ export default function OrgIDCardsPage() {
                     <td className="px-6 py-3 cursor-pointer">
                       <Menu placement="left">
                         <MenuHandler>
-                          <span className="flex w-full cursor-pointer">
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z"
-                                stroke="#AEB9E1"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </span>
+                          <Button
+                            variant="text"
+                            className="p-0 m-0 min-w-0 h-auto text-mobiTableText hover:bg-transparent"
+                          >
+                            <MoreVertical className="w-5 h-5" />
+                          </Button>
                         </MenuHandler>
-                        <MenuList>
-                          <MenuItem className="flex flex-col gap-3">
-                            <span
-                              className="cursor-pointer"
-                              onClick={() =>
-                                navigate(`/org/card/viewCard/${data.id}`)
-                              }
-                            >
-                              View Card
-                            </span>
+                        <MenuList className="bg-mobiDarkCloud border-mobiTheme shadow-lg">
+                          <MenuItem
+                            className="flex items-center gap-2 text-mobiTableText hover:bg-mobiTheme hover:text-white"
+                            onClick={() =>
+                              navigate(`/org/card/viewCard/${data.id}`)
+                            }
+                          >
+                            <Eye className="w-4 h-4" />
+                            View Card
                           </MenuItem>
-                          <MenuItem className="flex flex-col gap-3">
-                            <span
-                              className="cursor-pointer"
-                              onClick={() =>
-                                navigate(`/org/card/updateCard/${data.id}`)
-                              }
-                            >
-                              Update Card
-                            </span>
+                          <MenuItem
+                            className="flex items-center gap-2 text-mobiTableText hover:bg-mobiTheme hover:text-white"
+                            onClick={() =>
+                              navigate(`/org/card/updateCard/${data.id}`)
+                            }
+                          >
+                            <Pencil className="w-4 h-4" />
+                            Update Card
                           </MenuItem>
                           {data.status !== "revoked" && (
-                            <MenuItem className="flex flex-col gap-3">
-                              <span
-                                className="cursor-pointer"
-                                onClick={() => handleRevokeCard(data)}
-                              >
-                                Revoke ID Card
-                              </span>
+                            <MenuItem
+                              className="flex items-center gap-2 text-red-400 hover:bg-red-900/50 hover:text-red-300"
+                              onClick={() => handleRevokeCard(data)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Revoke ID Card
                             </MenuItem>
                           )}
                           {data.status === "revoked" && (
-                            <MenuItem className="flex flex-col gap-3">
-                              <span
-                                className="cursor-pointer"
-                                onClick={() => handleActivateCard(data)}
-                              >
-                                Activate ID Card
-                              </span>
+                            <MenuItem
+                              className="flex items-center gap-2 text-green-400 hover:bg-green-900/50 hover:text-green-300"
+                              onClick={() => handleActivateCard(data)}
+                            >
+                              <RotateCw className="w-4 h-4" />
+                              Activate ID Card
                             </MenuItem>
                           )}
                         </MenuList>
@@ -568,9 +556,13 @@ export default function OrgIDCardsPage() {
 
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
-              title="Today"
+              title="All Members"
               filter
-              subTitle={<span>All Members</span>}
+              subTitle={
+                <span>
+                  Overview of all organization members and their ID card status
+                </span>
+              }
               exportData
               tableHeader={TableHeaders}
               sortFunc={(field, order) => {
@@ -610,7 +602,7 @@ export default function OrgIDCardsPage() {
                 allMembers.map((data, index) => (
                   <tr
                     key={index}
-                    className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"}`}
+                    className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"} hover:bg-mobiDarkCloud/70 transition duration-150`}
                   >
                     <td className="px-3 py-3 text-mobiTableText">
                       {data.individual.firstName} {data.individual.lastName}
@@ -629,24 +621,12 @@ export default function OrgIDCardsPage() {
                     <td className="px-3 py-3 text-mobiTableText">
                       {renderCardStatus(data.individual.id)}
                     </td>
-                    <td className="px-6 py-3 cursor-pointer">
-                      <span className="flex w-full cursor-pointer">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M21 12L9 12M21 6L9 6M21 18L9 18M5 12C5 12.5523 4.55228 13 4 13C3.44772 13 3 12.5523 3 12C3 11.4477 3.44772 11 4 11C4.55228 11 5 11.4477 5 12ZM5 6C5 6.55228 4.55228 7 4 7C3.44772 7 3 6.55228 3 6C3 5.44772 3.44772 5 4 5C4.55228 5 5 5.44772 5 6ZM5 18C5 18.5523 4.55228 19 4 19C3.44772 19 3 18.5523 3 18C3 17.4477 3.44772 17 4 17C4.55228 17 5 17.4477 5 18Z"
-                            stroke="#AEB9E1"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
+                    <td className="px-6 py-3 text-mobiTableText">
+                      <Tooltip content="No additional actions available">
+                        <span className="flex w-full">
+                          <MoreVertical className="w-5 h-5" />
+                        </span>
+                      </Tooltip>
                     </td>
                   </tr>
                 ))

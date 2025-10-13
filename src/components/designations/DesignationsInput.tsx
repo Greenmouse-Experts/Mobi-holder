@@ -113,6 +113,7 @@ export function SimpleDesignationSelect(props: {
     <select
       {...props.props}
       className="p-4 bg-gray-100 text-black w-full rounded-md"
+      defaultValue={props?.initialValue}
     >
       {mapped_data.map((callbackfn) => {
         return <option value={callbackfn.value}>{callbackfn.label}</option>;

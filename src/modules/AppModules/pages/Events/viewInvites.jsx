@@ -340,7 +340,6 @@ export default function ViewInvites() {
 
               <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-1">
                 <Table
-                  title="Today"
                   filter
                   subTitle={<span>Invite Sent</span>}
                   exportData
