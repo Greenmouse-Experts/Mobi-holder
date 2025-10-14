@@ -111,7 +111,7 @@ export default function CardStructure() {
             mobile
             organisation
             data={user}
-            title={"Create ID Card Category"}
+            title={"Create ID Card Tempplate"}
           />
           <div className="w-full flex justify-between items-center gap-8 md:my-5 my-2 px-3">
             <div className="w-full flex flex-col gap-2">
