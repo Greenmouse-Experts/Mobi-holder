@@ -31,7 +31,7 @@ function SignUp() {
               <div className="w-full flex flex-col h-full">
                 <CardType
                   type="Individual"
-                  text="manage your own account."
+                  text="For personal use — manage your own account."
                   link="/signup/individual"
                 />
               </div>
