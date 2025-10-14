@@ -39,7 +39,9 @@ export default function UpdateCard() {
       hideToast: true,
       onSuccess: (response) => {
         setCardData(response.data.data);
-        setValue("expiryDate", cardData.expiryDate);
+        const expiryDate = response.data.data.expiryDate;
+        console.log("getCard", response.data.data);
+        setValue("expiryDate", expiryDate);
         setIsLoading(false);
       },
       onError: () => {},
