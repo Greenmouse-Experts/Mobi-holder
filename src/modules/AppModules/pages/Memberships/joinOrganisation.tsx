@@ -3,7 +3,7 @@ import Header from "../../../../components/Header";
 import Badge from "../../../../components/Badge";
 import { Button } from "@material-tailwind/react";
 import Input from "../../../../components/Input";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import useApiMutation from "../../../../api/hooks/useApiMutation";
 import AvatarInitials from "../../../../components/AvatarInitials";
 import { useEffect, useState } from "react";
@@ -63,6 +63,7 @@ export default function JoinOrganisation() {
   const [role, setRole] = useState("");
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -204,10 +205,15 @@ export default function JoinOrganisation() {
                     >
                       Date Joined (Auto-filled with today's date)
                     </label>
-                    <div className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                    {/*<div className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                       {joinDate}
-                    </div>
-                    {/* Hidden input to satisfy useForm if needed, but we use joinDate state directly */}
+                    </div>*/}
+                    {/*@ts-ignore*/}
+                    <Input
+                      type="date"
+                      value={joinDate}
+                      onChange={setJoinDate}
+                    ></Input>
                   </div>
 
                   {/* Role/Designation */}
