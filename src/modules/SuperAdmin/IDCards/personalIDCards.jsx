@@ -89,7 +89,7 @@ export default function AllPersonalIDCards() {
                 exportToExcel(
                   NewTableHeaders,
                   personalCards.map((item) => [
-                    `${item.individual.firstName} ${item.individual.lastName}`,
+                    `${item.individual?.firstName} ${item.individual?.lastName}`,
                     item.issuingOrganization,
                     item.cardNumber,
                     item.designation,
@@ -109,7 +109,7 @@ export default function AllPersonalIDCards() {
                     className={`py-5 ${index % 2 === 0 ? "bg-mobiDarkCloud" : "bg-mobiTheme"}`}
                   >
                     <td className="px-3 py-3 text-mobiTableText">
-                      {data.individual.firstName} {data.individual.lastName}
+                      {data.individual?.firstName} {data.individual?.lastName}
                     </td>
                     <td className="px-3 py-3 text-mobiTableText">
                       {data.issuingOrganization}
