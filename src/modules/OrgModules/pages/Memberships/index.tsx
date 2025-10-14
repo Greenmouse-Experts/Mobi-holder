@@ -757,7 +757,7 @@ export default function OrgMembership() {
           <div className="w-full flex lg:flex-row md:flex-row flex-col gap-5 my-6">
             <Table
               filter
-              title={<span>BlackListed Members</span>}
+              title={<span>Blacklisted Members</span>}
               exportData
               tableHeader={TableHeaders}
               sortFunc={(field, order) => {
