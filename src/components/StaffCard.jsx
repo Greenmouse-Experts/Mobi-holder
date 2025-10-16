@@ -6,7 +6,7 @@ const StaffCard = ({ data, background, company, textColor }) => {
   const organizationName = data.organization
     ? data.organization.companyName
     : company;
-
+  const org = data.organization;
   return (
     <div
       className="md:w-[400px] w-full rounded-lg shadow-xl border border-gray-200 overflow-hidden p-4"
@@ -25,6 +25,17 @@ const StaffCard = ({ data, background, company, textColor }) => {
           }}
         >
           <div className="flex flex-col gap-1">
+            <div className="h-10 w-fit aspect-square rounded-full bg-gray-300">
+              {org.photo ? (
+                <img
+                  src={org.photo}
+                  alt="Organization Logo"
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-300"></div>
+              )}
+            </div>
             <div className="text-xs font-semibold uppercase tracking-wider opacity-90">
               {organizationName}
             </div>

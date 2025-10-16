@@ -165,7 +165,7 @@ export default function ViewCard() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-4 border-b border-gray-200">
             <div className="flex flex-col gap-1">
               <h1 className="text-3xl font-bold text-gray-800">
-                ID Card Preview
+                ID Card Previews
               </h1>
               <p className="text-base text-gray-600">
                 Viewing card for:{" "}
