@@ -169,7 +169,20 @@ export default function OrgAdminSetUp({ moveBack }) {
                       icon="padlock.svg"
                       name="password"
                       register={register}
-                      rules={{ required: "Password is required" }}
+                      rules={{
+                        required: "Password is required",
+                        minLength: {
+                          value: 8,
+                          message:
+                            "Password must be at least 8 characters long",
+                        },
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/,
+                          message:
+                            "Password must include uppercase, lowercase, number, and special character",
+                        },
+                      }}
                       errors={errors}
                       type="password"
                       placeholder="Password"
