@@ -232,7 +232,20 @@ export default function IndividualSignUp() {
                       icon="padlock.svg"
                       name="password"
                       register={register}
-                      rules={{ required: "Password is required" }}
+                      rules={{
+                        required: "Password is required",
+                        minLength: {
+                          value: 8,
+                          message:
+                            "Password must be at least 8 characters long",
+                        },
+                        pattern: {
+                          value:
+                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).*$/,
+                          message:
+                            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+                        },
+                      }}
                       errors={errors}
                       type="password"
                       placeholder="Password"
